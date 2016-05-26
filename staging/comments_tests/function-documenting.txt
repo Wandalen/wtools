@@ -1,0 +1,9 @@
+1. short description in the first sentence
+2. detailed description in next few sentences
+3. parameters of function
+4. output of function
+5. mention about using global variables if it does
+6. mention about throwing errors if it does
+7. the simplest sample of function usage
+8. to which class / library does it belong.
+9. mention about symmetrical( related ) function if such exist
