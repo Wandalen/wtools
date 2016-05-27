@@ -1,8 +1,20 @@
-(function _file_wTools_s_(){
+Skip to content
+Personal Open source Business Explore
+Sign upSign inPricingBlogSupport
+This repository
+Search
+ Watch 1  Star 0  Fork 0 Wandalen/wTools
+ Code  Issues 0  Pull requests 0  Pulse  Graphs
+Branch: master Find file Copy pathwTools/staging/wTools.s
+94b4af0  an hour ago
+ Kostiantyn Wandalen arrayRange
+0 contributors
+RawBlameHistory    6440 lines (4794 sloc)  121 KB
+(function _wTools(){
 
 'use strict';
 
-// //
+//
 
 var _global_ = undefined;
 
@@ -38,11 +50,6 @@ if( typeof DEBUG === 'undefined' )
 }
 
 //
-
-/**
- * wTools - main class.
- * @class AppViewer
- */
 
 var Self = wTools;
 var _ = wTools;
@@ -1214,6 +1221,8 @@ var err = function err()
 var errLog = function errLog()
 {
 
+  _.assert( arguments.length === 1 );
+
   var c = _global_.logger || console;
   var err = _err
   ({
@@ -1676,9 +1685,16 @@ var namesCoded = function( namesMap )
   return result;
 }
 
-// --
-// type test
-// --
+/**
+ * function objectIs checks incoming param whether it is object. 
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ * @param {object} src - the parameter to check whether it is object.
+ * @return {boolean} value.
+ * @global variable _ObjectToString used.
+ * @usage example: var obj = {x : 100};  objectIs(obj) // output: true; objectIs(10) //output: false;
+ * @method strIs.
+ * @memberof wTools#.
+ */
 
 var objectIs = function( src )
 {
@@ -1707,7 +1723,16 @@ var mapIs = function( src )
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
-//
+/**
+ * Checks incoming param whether it is an array. 
+ * Returns "true" if incoming param is array. Othervise "false" returned.
+ * @param {object} src - the object to check whether it is an array.
+ * @return {boolean} value.
+ * @global variable _ObjectToString used.
+ * @usage example: var arr = [1, 2]; arrayIs(arr) // output: true; arrayIs(10) //output: false;
+ * @method arrayIs.
+ * @memberof wTools#.
+ */
 
 var arrayIs = function( src )
 {
@@ -1738,20 +1763,19 @@ var hasLength = function( src )
   return false;
 }
 
-//
+/**
+ * function strIs checks incoming param whether it is string. 
+ * Returns "true" if incoming param is string. Othervise "false" returned.
+ * @param {object} src - the object to check whether it is number.
+ * @return {boolean} value.
+ * @global variable _ObjectToString used.
+ * @usage example: strIs('song') // output: true; strIs(10) //output: false;
+ * @method strIs.
+ * @memberof wTools#.
+ */
 
 var strIs = function( src )
 {
-  var result = _ObjectToString.call( src ) === '[object String]';
-  return result;
-}
-
-//
-
-var strIsNotEmpty = function( src )
-{
-  if( !src )
-  return false;
   var result = _ObjectToString.call( src ) === '[object String]';
   return result;
 }
@@ -1764,7 +1788,16 @@ var symbolIs = function( src )
   return result;
 }
 
-//
+/**
+ * function numberIs checks incoming param whether it is number. 
+ * Returns "true" if incoming param is number. Othervise "false" returned.
+ * @param {object} src - the object to check whether it is number.
+ * @return {boolean} value.
+ * @global variable _ObjectToString used.
+ * @usage example: numberIs(5) // output: true; numberIs('song') //output: false;
+ * @method numberIs
+ * @memberof wTools#
+ */
 
 var numberIs = function( src )
 {
@@ -2113,16 +2146,7 @@ var numberFrom = function( src )
 // --
 // str
 // --
-/**
-*Return type of src.
-  *@example
-  var str = _.strTypeOf('testing');
-*@param {*} src
-*@return {string}
-*string name of type src
-*@method strTypeOf
-*@memberof wTools#
-*/
+
 var strTypeOf = function( src )
 {
 
@@ -2131,20 +2155,12 @@ var strTypeOf = function( src )
 
   if( !result )
   throw _.err( 'strTypeOf:','unknown type',name );
+
   return result[ 2 ];
 }
 
 //
-/**
-*Return in one string value of all arguments.
-  *@example
-   var args = _.str('test2');
-*@return {string}
-*If no arguments return empty string
-*@method str
-*@memberof wTools#
 
-*/
 var str = function()
 {
 
@@ -2162,52 +2178,21 @@ var str = function()
 }
 
 //
-/**
-*Compares two strings.
-*@param {string} src - source string
-*@param {string} begin
-  *example
-   var scr = ._strBegins("abc","a");
-*@return {Boolean}
-*If param begin is match with param src first chars than return true
-*@method strBegins
-*@memberof wTools#
-*/
+
 var strBegins = function( src,begin )
 {
   return src.lastIndexOf( begin,0 ) === 0;
 }
 
 //
-/**
-*Compares two strings.
-*@param {string} src - source string
-*@param {string} end
-   *example
-    var scr = ._strEnds("abc","c");
-*@return {Boolean}
-*If param end is match with param src last chars than return true
-*@method strEnds
-*@memberof wTools#
-*/
+
 var strEnds = function( src,end )
 {
   return src.indexOf( end,src.length - end.length ) !== -1;
 }
 
 //
-/**
-*Cut begin of the string.
-*@param {string} src
-*@param {string} begin
-  *example 
-   var scr = ._strBeginRemove("abc","a");
-*@return {string}
-*If result of method strBegins - false, than return src
-*else cut begin of param src
-*@method strBeginRemove
-*@memberof wTools#
-*/
+
 var strBeginRemove = function( src,begin )
 {
   if( !strBegins( src,begin ) )
@@ -2216,18 +2201,7 @@ var strBeginRemove = function( src,begin )
 }
 
 //
-/**
-*Cut end of the string.
-*@param {string} src
-*@param {string} end
-  *example
-   var scr = ._strEndRemove("abc","c");
-*@return {string}
-*If result of method strEnds - false, than return src
-*Else cut end of param src
-*@method strEndRemove
-*@memberof wTools#
-*/
+
 var strEndRemove = function( src,end )
 {
   if( !strEnds( src,end ) )
@@ -2237,18 +2211,7 @@ var strEndRemove = function( src,end )
 }
 
 //
-/**
-*Prepend string to begin of other string.
-*@param {string} src
-*@param {string} begin
-  *example
-   var scr = ._strPrependOnce("test","test");
-*@return {string}
-*If begin match with first chars of param src, return src
-*Else add param src to param begin
-*@method strPrependOnce 
-*@memberof wTools#
-*/
+
 var strPrependOnce = function( src,begin )
 {
   if( src.lastIndexOf( begin,0 ) === 0 )
@@ -2258,18 +2221,7 @@ var strPrependOnce = function( src,begin )
 }
 
 //
-/**
-*Append string to end of other string.
-*@param {string} src
-*@param {string} end
-  *example
-   var src = ._strAppendOnce("test","test");
-*@return {string}
-*If end match with last chars of param src, return src
-*Else add param end to param src
-*@method strPrependOnce 
-*@memberof wTools#
-*/
+
 var strAppendOnce = function( src,end )
 {
   if( src.indexOf( end,src.length - end.length ) !== -1 )
@@ -2281,15 +2233,6 @@ var strAppendOnce = function( src,end )
 // --
 // regexp
 // --
-
-  /**
-   * The complete RegexpObject object.
-   * @typedef {Object} RegexpObject
-   * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
-   * @property {REgExp[]} includeAll - Array of RegExps, to check matching all of them;
-   * @property {REgExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
-   * @property {REgExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
-   */
 
 var regexpModeNames = namesCoded
 ({
@@ -2311,16 +2254,6 @@ var regexpModeNamesToReplace = namesCoded
   excludeAll : 'excludeAll',
 });
 
-/**
- * Escapes special characters with a slash (\). Supports next set of characters: .*+?^=!:${}()|[]/\
- *
- * @example
- * wTools.regexpEscape('Hello. How are you?'); // "Hello\. How are you\?"
- * @param {String} src Regexp string
- * @returns {String} Escaped string
- * @method regexpEscape
- * @memberOf wTools#
- */
 var regexpEscape = function( src )
 {
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
@@ -2328,17 +2261,6 @@ var regexpEscape = function( src )
 
 //
 
-/**
- * Turn a *-wildcard style glob into a regular expression
- * @example
- * var glob = '* /www/*.js';
- * wTools.regexpForGlob(glob);
- * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
- * @param {String} glob *-wildcard style glob
- * @returns {RegExp} RegExp that represent passed glob
- * @method regexpForGlob
- * @memberOf wTools#
- */
 var regexpForGlob = function( glob )
 {
   var result = '';
@@ -2375,16 +2297,6 @@ var regexpForGlob = function( glob )
 
 //
 
-/**
- * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
- *
- * @example
- * wTools.regexpMakeArray(['red', 'white', /[a-z]/]); // [/red/, /white/, /[a-z]/]
- * @param {String[]|String} src - array of strings/regexps or single string/regexp
- * @returns {RegExp[]} Array of regexps
- * @method regexpMakeArray
- * @memberOf wTools#
- */
 var regexpMakeArray = function( src )
 {
   _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
@@ -2403,17 +2315,6 @@ var regexpMakeArray = function( src )
 
 //
 
-
-/**
- * Make regexp from string.
- *
- * @example
- * wTools.regexpMakeExpression('Hello. How are you?'); // /Hello\. How are you\?/
- * @param {String} src - string or regexp
- * @returns {String} Regexp
- * @method regexpMakeExpression
- * @memberOf wTools#
- */
 var regexpMakeExpression = function( src )
 {
 
@@ -2429,27 +2330,6 @@ var regexpMakeExpression = function( src )
 
 //
 
-/**
- * Checks if any regexp passed in `arr` is found in string `ins`
- * If match was found - returns match index
- * If no matches found and regexp array is not empty - returns false
- * If regexp array is empty - returns some default value passed in the `none` input param
- *
- * @example
- * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
- *
- * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpAny(regArr2, str, false); // 1
- *
- * var regArr3 = [/yellow/, /white/, /greey/]
- * wTools._regexpAny(regArr3, str, false); // false
- * @param {String[]} arr Array of regular expressions strings
- * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
- * @param {*} none - Default return value if array is empty
- * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
- * @method _regexpAny
- * @memberOf wTools#
- */
 var _regexpAny = function( arr,ins,none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -2467,27 +2347,6 @@ var _regexpAny = function( arr,ins,none )
 
 //
 
-/**
- * Checks if all regexps passed in `arr` are found in string `ins`
- * If any of regex was not found - returns match index
- * If regexp array is not empty and all regexps passed test - returns true
- * If regexp array is empty - returns some default value passed in the `none` input param
- *
- * @example
- * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
- *
- * var regArr1 = [/red/, /green/, /blue/];
- * wTools._regexpAll(regArr1, str, false); // true
- *
- * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpAll(regArr2, str, false); // 0
- * @param {String[]} arr Array of regular expressions strings
- * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
- * @param {*} none - Default return value if array is empty
- * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
- * @method _regexpAll
- * @memberOf wTools#
- */
 var _regexpAll = function( arr,ins,none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -2505,39 +2364,6 @@ var _regexpAll = function( arr,ins,none )
 
 //
 
-  /**
-   * Function for testing `ins` string for different regexps combination. If all condition passed in `src` object are
-   * met method return true
-   *
-   * @example
-   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
-   *     regArr1 = [/red/, /green/, /blue/],
-   *     regArr2 = [/yellow/, /blue/, /red/],
-   *     regArr3 = [/yellow/, /white/, /greey/],
-   *     options = {
-   *        includeAny : regArr2,
-   *        includeAll : regArr1,
-   *        excludeAny : regArr3,
-   *        excludeAll : regArr2
-   *     };
-   *
-   * wTools.regexpTest(options, str); // true
-   * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
-   * are the arrays of regexps;
-   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
-   * return false
-   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
-   * false
-   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If any of them don't match `ins` string method
-   * return false
-   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one of regexps don't match `ins` string
-   * method return false
-   * @param ins String for testing
-   * @returns {boolean} If all test passed return true;
-   * @method regexpTest
-   * @memberOf wTools#
-     */
-
 var regexpTest = function( src,ins )
 {
   var result = regexpTestReason( src,ins );
@@ -2554,23 +2380,6 @@ var regexpTest = function( src,ins )
 
 //
 
-  /**
-   * Test the `ins` string by condition specified in `src`. If all condition are met, return true
-   * regexpTestReason(options, str); // true
-   * @param {Object} src Object with options for test
-   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
-   * return the "excludeAll" string, otherwise checks next property in the `src` object
-   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
-   * it source string, otherwise checks next property in the `src` object
-   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If all of them match `ins` string method check
-   * next property in `src` object, otherwise return source of regexp that don't match.
-   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one regexp don't match method return
-   * "inlcude none from includeAny" string. Else method return true;
-   * @param {String} ins String for testing
-   * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
-   * @method regexpTestReason
-   * @memberOf wTools#
-     */
 var regexpTestReason = function( src,ins )
 {
 
@@ -2605,36 +2414,13 @@ var regexpTestReason = function( src,ins )
   {
     var r = _._regexpAny( src.includeAny,ins,true );
     if( r === false )
-    return 'include none from includeAny';
+    return 'inlcude none from includeAny';
   }
 
   return true;
 }
 
 //
-
-  /**
-   *  Generates "but" regular expression pattern. Accepts a list of words, which will be used in regexp.
-   *  The result regexp matches the strings that do not contain any of those words.
-   *
-   * @example
-   * wTools.regexpBut_('yellow', 'red', 'green'); //   /^(?:(?!yellow|red|green).)+$/
-   *
-   * var options = {
-   *    but: ['yellow', 'red', 'green'],
-   *    atLeastOnce: false
-   * };
-   * wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/
-   *
-   * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
-   * @param {String[]} [options.but=null] a list of words,from each will consist regexp
-   * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
-   * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
-   * options object.
-   * @returns {RegExp} Result regexp
-   * @method regexpBut_
-   * @memberOf wTools#
-   */
 
 var regexpBut_ = function( options )
 {
@@ -2672,46 +2458,6 @@ regexpBut_.defaults =
 
 //
 
-  /**
-   * Extends `result` of RegexpObjects by merging other RegexpObjects.
-   * The properties such as includeAll, excludeAny are complemented from appropriate properties in source  objects
-     by merging all of them;
-   * Properties includeAny and excludeAll are always replaced by appropriate properties from sources without merging,
-   *
-   * @example
-   * var dest = {
-   *     includeAny : [/yellow/, /blue/],
-   *     includeAll : [/red/],
-   *     excludeAny : [/yellow/],
-   *     excludeAll : [/red/]
-   * },
-   *
-   * src1 = {
-   *     includeAll : [/green/],
-   *     excludeAny : [/white/],
-   *     excludeAll : [/green/, /blue/]
-   * },
-   * src2 = {
-   *     includeAny : [/red/],
-   *     includeAll : [/brown/],
-   *     excludeAny : [/greey/],
-   * }
-   *
-   * wTools.regexpObjectShrink(dest, src1, src2);
-   *
-   * //{
-   * //    includeAny : [/red/],
-   * //    includeAll : [/red/, /green/, /brown/],
-   * //    excludeAny : [/yellow/, /white/, /greey/],
-   * //    excludeAll : [/green/, /blue/]
-   * //};
-   * @param {RegexpObject} result RegexpObject to merge in.
-   * @param {...RegexpObject} [src] RegexpObjects to merge from.
-   * @returns {RegexpObject} Reference to `result` parameter;
-   * @method regexpObjectShrink
-   * @memberOf wTools#
-   */
-
 var regexpObjectShrink = function( result )
 {
 
@@ -2727,48 +2473,8 @@ var regexpObjectShrink = function( result )
 
 //
 
-  /**
-   * Extends `result` of RegexpObjects by merging other RegexpObjects.
-   * Appropriate properties such as includeAny, includeAll, excludeAny and excludeAll are complemented from appropriate
-   * properties in source objects by merging;
-   *
-   * @example
-   * var dest = {
-   *     includeAny : [/yellow/, /blue/],
-   *     includeAll : [/red/],
-   *     excludeAny : [/yellow/],
-   *     excludeAll : [/red/]
-   * },
-   *
-   * src1 = {
-   *     includeAll : [/green/],
-   *     excludeAny : [/white/],
-   *     excludeAll : [/green/, /blue/]
-   * },
-   * src2 = {
-   *     includeAny : [/red/],
-   *     includeAll : [/brown/],
-   *     excludeAny : [/greey/],
-   * }
-   *
-   * wTools.regexpObjectBroaden(dest, src1, src2);
-   *
-   * //{
-   * //    includeAny : [/yellow/, /blue/, /red/],
-   * //    includeAll : [/red/, /green/, /brown/],
-   * //    excludeAny : [/yellow/, /white/, /greey/],
-   * //    excludeAll : [/red/, /green/, /blue/]
-   * //};
-   * @param {RegexpObject} result RegexpObject to merge in.
-   * @param {...RegexpObject} [src] RegexpObjects to merge from.
-   * @returns {RegexpObject} Reference to `result` parameter;
-   * @method regexpObjectBroaden
-   * @memberOf wTools#
-   */
-
 var regexpObjectBroaden = function( result )
 {
-
 
   _regexpObjectExtend
   ({
@@ -2785,31 +2491,11 @@ var regexpObjectBroaden = function( result )
 
 //
 
-  /**
-   * Merge several RegexpObjects extending one by others.
-      Order of extending make difference because joining of some parameters without lose is not possible.
-      options.shrinking gives a hint in what direction the lost should be made.
-
-   * @param {object} options - options of merging.
-   * @param {RegexpObject} options.dst
-      RegexpObject to merge in.
-   * @param {RegexpObject} options.srcs -
-      RegexpObjects to merge from.
-   * @param {Boolean} options.shrinking -
-      Shrinking or broadening mode.
-      Joining of some parameters without lose is not possible.
-      This parameter gives a hint in what direction the lost should be made.
-   * @returns {RegexpObject}
-      merged RegexpObject.
-   * @method _regexpObjectExtend
-   * @memberOf wTools#
-   */
-
 var _regexpObjectExtend = function( options )
 {
 
   _.assertMapOnly( _regexpObjectExtend.defaults,options );
-  _.mapComplement( options,_regexpObjectExtend.defaults );
+  _.mapComplement( options,buffersSerialize.defaults );
 
   _.assert( _.mapIs( options.dst ) );
   _.assert( _.arrayLike( options.srcs ) );
@@ -3138,7 +2824,7 @@ var _routineBind = function _routineBind( options )
     if( context !== undefined && args === undefined )
     {
       if( options.seal === true )
-      throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
+      throw _.err( 'not tested, not clear what convetion to use' );
       return _FunctionBind.call( routine, context );
     }
     else if( context !== undefined )
@@ -3240,7 +2926,7 @@ var routineSeal = function routineSeal( context, routine, args )
 }
 
 //
-/*
+
 var routineDelayed = function routineDelayed( delay,routine )
 {
 
@@ -3260,7 +2946,7 @@ var routineDelayed = function routineDelayed( delay,routine )
   }
 
 }
-*/
+
 //
 
 var routinesCall = function routinesCall()
@@ -3444,10 +3130,12 @@ var timeOut = function( delay,onReady )
 }
 
 //
-/*
+
 var timePeriodic = function( delay,onReady )
 {
   var id;
+
+  /*throw _.err( 'not tested' );*/
 
   _assert( _.routineIs( onReady ) );
 
@@ -3476,7 +3164,7 @@ var timePeriodicStop = function( id )
 {
   clearInterval( id );
 }
-*/
+
 //
 
 var _timeNow_gen = function()
@@ -4582,16 +4270,13 @@ var arrayRandom = function( options )
 //
 
 /**
- * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
- *
- * @example
-    var range = _.arrayRange([ 1,10 ]);
+ * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1;
  *
  * @param {arrayLike} range
-    The first and the last+1 elements of the progression.
+ *  The first and the last+1 elements of the progression.
  * @return {array}
-    An array of numbers for the requested range. May be an empty
-    array if adding the step would not converge toward the end value.
+ *  An array of numbers for the requested range. May be an empty
+ *    array if adding the step would not converge toward the end value.
  * @method arrayRange
  * @memberof wTools#
  */
@@ -6505,7 +6190,6 @@ var Proto =
   mapIs: mapIs,
 
   strIs: strIs,
-  strIsNotEmpty: strIsNotEmpty,
   symbolIs: symbolIs,
 
   bufferIs: bufferIs,
@@ -6596,7 +6280,7 @@ var Proto =
   routineBind: routineBind,
   routineJoin: routineJoin,
   routineSeal: routineSeal,
-  /*routineDelayed: routineDelayed,*/
+  routineDelayed: routineDelayed,
 
   routinesCall: routinesCall,
 
@@ -6608,11 +6292,11 @@ var Proto =
   timeReady: timeReady,
   timeOnce: timeOnce,
   timeOut: timeOut,
-/*
+
   timePeriodic: timePeriodic,
   timePeriodicStart: timePeriodic,
   timePeriodicStop: timePeriodicStop,
-*/
+
   _timeNow_gen: _timeNow_gen,
   timeSpent: timeSpent,
   dateToStr: dateToStr,
@@ -6799,3 +6483,5 @@ _global_.wTools = Self;
 /*_.constant( _global_,{ Config : Config } );*/
 
 })();
+Status API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Contact Help

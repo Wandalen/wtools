@@ -1,3 +1,0 @@
-numberIs;
-arrayIs;
-strIs;
