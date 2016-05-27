@@ -1717,11 +1717,14 @@ var mapIs = function( src )
 }
 
 /**
- * Checks incoming param whether it is an array. Returns "true" if incoming param is array. Othervise "false" returned.
+ * Checks incoming param whether it is an array. 
+ * Returns "true" if incoming param is array. Othervise "false" returned.
  * @param {object} src - the object to check whether it is an array.
  * @return {boolean} value.
- * @method arrayIs
- * @memberof wTools#
+ * @global variable _ObjectToString used.
+ * @usage example: var arr = [1, 2]; arrayIs(arr) // output: true; arrayIs(10) //output: false;
+ * @method arrayIs.
+ * @memberof wTools#.
  */
 
 var arrayIs = function( src )
@@ -1753,7 +1756,16 @@ var hasLength = function( src )
   return false;
 }
 
-//
+/**
+ * function strIs checks incoming param whether it is string. 
+ * Returns "true" if incoming param is string. Othervise "false" returned.
+ * @param {object} src - the object to check whether it is number.
+ * @return {boolean} value.
+ * @global variable _ObjectToString used.
+ * @usage example: strIs('song') // output: true; strIs(10) //output: false;
+ * @method strIs.
+ * @memberof wTools#.
+ */
 
 var strIs = function( src )
 {
@@ -1775,8 +1787,8 @@ var symbolIs = function( src )
  * @param {object} src - the object to check whether it is number.
  * @return {boolean} value.
  * @global variable _ObjectToString used.
- * @usage example: numberIs(5) // output: true; number('song') //output: false;
- * @related function: _ObjectToString.
+ * @usage example: numberIs(5) // output: true; numberIs('song') //output: false;
+ * @method numberIs
  * @memberof wTools#
  */
 

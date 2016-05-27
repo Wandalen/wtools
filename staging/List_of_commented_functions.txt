@@ -1,2 +1,3 @@
 numberIs;
 arrayIs;
+strIs;
