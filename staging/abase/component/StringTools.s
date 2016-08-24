@@ -97,7 +97,7 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
  * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line.
- * @param {number} [ o.precision=3 ] - An integer specifying the number of significant digits, exampe : [ '8.01' ].
+ * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].Number must be between 1 and 21 or null.
  * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1,2,3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
@@ -105,43 +105,99 @@ var toStrFields = function( src,o )
  * @returns {string} Returns string that represents object data.
  *
  * @example
+ * //Each time function parses next level of object depth
+ * //the ( o.dtab ) string ( '-' ) is attached to ( o.tab ).
+ * //returns
+ * // { // level 1
+ * // -a : 1,
+ * // -b : 2,
+ * // -c :
+ * // -{ // level 2
+ * // --subd : "some test",
+ * // --sube : true,
+ * // --subf : {  x : 1  // level 3}
+ * // -}
+ * // }
+ * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
+ *
+ * @example
+ * //returns " \n1500 "
+ * _.toStr( ' \n1500 ', { unescape : 1 } );
+ *
+ * @example
+ * //returns
+ * // "
+ * // 1500 "
+ * _.toStr( ' \n1500 ' );
+ *
+ * @example
+ * //returns 1.50e+3
+ * _.toStr( 1500, { precision : 3 });
+ *
+ * @example
+ * //returns [ 1, 2, 3, 4 ]
+ * _.toStr( [ 1,2,3,4 ] );
+ *
+ * @example
+ * //returns [Array with 3 elements]
+ * _.toStr( [ 'a','b','c' ], { levels : 0 } );
+ *
+ * @example
+ * //returns
+ * // [
+ * //  { a : 1 },
+ * //  { b : 2 }
+ * // ]
+ * _.toStr( [ { a : 1 },{ b : 2 } ], { levels : 2 } );
+ *
+ * @example
  * //returns 1 , 2 , 3 , 4
- * _.toStr( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } );
+ * _.toStr( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } );
  *
  * @example
- * //returns [ Array with 4 elements ]
- * _.toStr( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } );
+ * //returns [ 0.11, 40 ]
+ * _.toStr( [ 0.11112, 40.4 ], { precision : 2 } );
  *
  * @example
- * //returns { routine add }
- * _.toStr( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } );
+ * //returns [ 2.00, 1.56 ]
+ * _.toStr( [ 1.9999, 1.5555 ], { fixed : 2 } );
  *
- *  @example
+ * @example
+ * //returns
+ * // [
+ * //  0,
+ * //  [
+ * //   1,
+ * //   2,
+ * //   3
+ * //  ],
+ * //  4
+ * // ]
+ * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
+ *
+ * @example
+ * //returns { routine sample }
+ * _.toStr( function sample( ){ });
+ *
+ * @example
+ * //returns [object Function]
+ * _.toStr( function add( ){ }, { levels : 0 } );
+ *
+ * @example
+ * //returns { o : 1, y : 3 }
+ * _.toStr( { o : 1, y : 3 } );
+ *
+ * @example
  * //returns { Object with 1 elements }
- * _.toStr( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } );
+ * _.toStr( { o : 1 }, { levels : 0 } );
  *
  * @example
  * //returns a : 1 | b : 2
  * _.toStr( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } );
  *
- * * @example
- * //Each time function parses next level of object depth
- * //the ( o.dtab ) string ( '-' ) is attached to ( o.tab ).
- * //returns
- * { // level 1
- * -a : 1,
- * -b : 2,
- * -c :
- * -{ // level 2
- * --subd : "some test",
- * --sube : true,
- * --subf : {  x : 1  // level 3}
- * -}
- * }
- * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
- *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @memberof wTools
  *
  */
