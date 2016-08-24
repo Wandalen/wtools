@@ -247,7 +247,7 @@ var toStrFine_gen = function()
 
     /**/
 
-    precision : 3,
+    precision : null,
     fixed : 3,
     comma : ', ',
     multiline : 0,
