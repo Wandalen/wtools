@@ -72,11 +72,11 @@ var toStrFields = function( src,o )
 
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
- * by argument( o ).
+ * by argument( o ).If object ( src ) has own ( toStr ) method defined function uses it for convertion.
  *
  * @param {object} src - Source object for representing it as string.
- * @param {object} o - Convertion options.
- * @param {boolean} [ o.wrap=true ] - wrap array-like and object-like entities
+ * @param {object} o - Convertion o.
+ * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
@@ -96,52 +96,174 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
- * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line.
- * @param {number} [ o.precision=3 ] - An integer specifying the number of significant digits, exampe : [ '8.01' ].
- * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
- * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1,2,3 ].
+ * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
+ * Number must be between 1 and 21.
+ * @param {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Number must be between 0 and 20.
+ * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
  * @param {boolean} [ o.unescape=0 ] - Disables escaping of special characters.
  * @returns {string} Returns string that represents object data.
  *
  * @example
+ * //Each time function parses next level of object depth
+ * //the ( o.dtab ) string ( '-' ) is attached to ( o.tab ).
+ * //returns
+ * // { // level 1
+ * // -a : 1,
+ * // -b : 2,
+ * // -c :
+ * // -{ // level 2
+ * // --subd : "some test",
+ * // --sube : true,
+ * // --subf : {  x : 1  // level 3}
+ * // -}
+ * // }
+ * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
+ *
+ * @example
+ * //returns " \n1500 "
+ * _.toStr( ' \n1500 ', { unescape : 1 } );
+ *
+ * @example
+ * //returns
+ * // "
+ * // 1500 "
+ * _.toStr( ' \n1500 ' );
+ *
+ * @example
+ * //returns 14.5333
+ * _.toStr( 14.5333 );
+ *
+ * @example
+ * //returns 1.50e+3
+ * _.toStr( 1500, { precision : 3 } );
+ *
+ * @example
+ * //returns 14.53
+ * _.toStr( 14.5333, { fixed : 2 } );
+ *
+ * @example
+ * //returns true
+ * _.toStr( 1 !== 2 );
+ *
+ * @example
+ * //returns ''
+ * _.toStr( 1 !== 2, { noAtomic :  1 } );
+ *
+ * @example
+ * //returns [ 1, 2, 3, 4 ]
+ * _.toStr( [ 1, 2, 3, 4 ] );
+ *
+ * @example
+ * //returns [Array with 3 elements]
+ * _.toStr( [ 'a','b','c' ], { levels : 0 } );
+ *
+ * @example
+ * //returns [ 1, 2, 3 ]
+ * _.toStr( _.toStr( [ 'a','b','c', 1, 2, 3 ], { levels : 2, noString : 1} ) );
+ *
+ * @example
+ * //returns
+ * // [
+ * //  { Object with 1 elements },
+ * //  { Object with 1 elements }
+ * // ]
+ * _.toStr( [ { a : 1 }, { b : 2 } ] );
+ *
+ * @example
+ * //returns
+ * // a : 1
+ * // b : 2
+ * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2, wrap : 0 } );
+ *
+ * @example
+ * //returns
+ * // [
+ * //  { a : 1 },
+ * //  { b : 2 }
+ * // ]
+ * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2 } );
+ *
+ * @example
  * //returns 1 , 2 , 3 , 4
- * _.toStr( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } );
+ * _.toStr( [ 1,2,3,4 ], { wrap : 0, comma : ' , ' } );
  *
  * @example
- * //returns [ Array with 4 elements ]
- * _.toStr( ['a','b','c'], { levels : 0, wrap : 0 } );
+ * //returns [ 0.11, 40 ]
+ * _.toStr( [ 0.11112, 40.4 ], { precision : 2 } );
  *
  * @example
- * //returns { routine add }
- * _.toStr( function add( ){ }, { levels : 1 } );
+ * //returns [ 2.00, 1.56 ]
+ * _.toStr( [ 1.9999, 1.5555 ], { fixed : 2 } );
  *
- *  @example
+ * @example
+ * //returns
+ * // [
+ * //  0,
+ * //  [
+ * //   1,
+ * //   2,
+ * //   3
+ * //  ],
+ * //  4
+ * // ]
+ * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
+ *
+ * @example
+ * //returns { routine sample }
+ * _.toStr( function sample( ){ });
+ *
+ * @example
+ * //returns [object Function]
+ * _.toStr( function add( ){ }, { levels : 0 } );
+ *
+ * @example
+ * //If object ( src ) has own ( toStr ) method defined function uses it for convertion
+ * //returns
+ * //function func(  ) {
+ * //console.log('sample');
+ * //}
+ * var x = function func (  )
+ * {
+ *   console.log( 'sample' );
+ * }
+ * x.toStr = x.toString;
+ * _.toStr( x );
+ *
+ * @example
+ * //returns { o : 1, y : 3 }
+ * _.toStr( { o : 1, y : 3 } );
+ *
+ * @example
  * //returns { Object with 1 elements }
  * _.toStr( { o : 1 }, { levels : 0 } );
+ *
+ * @example
+ * //returns
+ * {
+ *    o : { p : "value" }
+ * }
+ * _.toStr( { o : { p : 'value' } }, { levels : 2 } );
+ *
+ * @example
+ * //returns
+ * // {
+ * //   y : "value1"
+ * // }
+ * _.toStr( { y : 'value1', o : { p : 'value2' } }, { levels : 2, noSubObject : 1} );
  *
  * @example
  * //returns a : 1 | b : 2
  * _.toStr( { a : 1, b : 2 }, { wrap : 0, comma : ' | ' } );
  *
- * * @example
- * //Each time function parses next level of object depth
- * //the ( o.dtab ) string ( '-' ) is attached to ( o.tab ).
- * //returns
- * { // level 1
- * -a : 1,
- * -b : 2,
- * -c :
- * -{ // level 2
- * --subd : "some test",
- * --sube : true,
- * --subf : {  x : 1  // level 3}
- * -}
- * }
- * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
+ * @example
+ * //returns { b : 1, c : 2 }
+ * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , noString : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @memberof wTools
  *
  */
@@ -187,12 +309,11 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
-    singleElementPerLine : 0,
 
     /**/
 
-    precision : 3,
-    fixed : 3,
+    precision : null,
+    fixed : null,
     comma : ', ',
     multiline : 0,
     unescape : 0,
@@ -218,7 +339,8 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,o )
   {
 
-    _.assert( _.objectIs( o ) || o === undefined,'expects map o' );
+    if( o !== undefined && !_.objectIs( o ) )
+    throw _.err( '_.toStrFine :','o must be object' );
 
     var o = o || {};
 
@@ -268,15 +390,22 @@ var _toStrFine = function _toStrFine( src,o )
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
 
+  if( o.noAtomic )
+  if( _.atomicIs( src ) )
+  return;
+
+  /*o.noError = 1;*/
+
+  if( isArray && o.noArray )
+  return;
+
+  if( isObject && o.noObject )
+  return;
+
   //
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
-    if( isObject && o.noObject )
-    return;
-    if( isArray && o.noArray )
-    return;
-
     var r = src.toStr( o );
     if( _.objectIs( r ) )
     {
@@ -308,7 +437,7 @@ var _toStrFine = function _toStrFine( src,o )
   {
     if( o.noRoutine )
     return;
-    result += _toStrFromRoutine( src,o );
+    result += '{ routine ' + ( src.name || 'noname' ) + ' }';
   }
   else if( _.numberIs( src ) )
   {
@@ -326,32 +455,28 @@ var _toStrFine = function _toStrFine( src,o )
   {
     if( o.noDate )
     return;
+
     result += src.toISOString();
   }
   else if( isArray )
   {
-    if( o.noArray )
-    return;
     var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
-    if( o.noObject )
-    return;
     var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
   {
+    /*throw _.err( 'not tested' );*/
     result += src.toString();
   }
   else
   {
-    if( o.noAtomic )
-    return;
     result += String( src );
   }
 
@@ -401,38 +526,13 @@ var _toStrShort = function( src,o )
   else if( _.objectIs( src ) || _.objectLike( src ) )
   {
 
-    result += '[ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' ]';
+    result += '{ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' }';
 
   }
   else
   {
     result += String( src );
   }
-
-  return result;
-}
-
-//
-
-var _toStrIsSimpleElement = function( element )
-{
-  if( _.strIs( element ) )
-  return element.length < 40;
-  else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
-  return !element.length;
-  else if( _.objectIs( element ) || _.objectLike( element ) )
-  return !_.entityLength( element );
-  else
-  return _.atomicIs( element );
-}
-
-//
-
-var _toStrFromRoutine = function( src,o )
-{
-  var result = '';
-
-  result = '[ routine ' + ( src.name || src._name || 'without name' ) + ' ]';
 
   return result;
 }
@@ -538,10 +638,10 @@ var _toStrFromArray = function( src,o )
   //
 
   var length = src.length;
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
+  var o = _.mapExtend( {},o );
+  o.tab = o.tab + o.dtab;
+  o.level = o.level + 1;
+  o.prependTab = 0;
 
   //
 
@@ -559,8 +659,8 @@ var _toStrFromArray = function( src,o )
   result += _toStrFromContainer
   ({
     values : src,
-    optionsContainer : o,
-    optionsItem : optionsItem,
+    containerOptions : o,
+    itemOptions : o,
     simple : simple,
     prefix : '[',
     postfix : ']',
@@ -585,7 +685,7 @@ var _toStrFromObject = function( src,o )
   if( o.noObject )
   return;
 
-  /* */
+  //
 
   var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   var length = names.length;
@@ -596,7 +696,7 @@ var _toStrFromObject = function( src,o )
     return { text : '{}', simple : 1 };
   }
 
-  /* */
+  //
 
   var simple = !o.multiline;
   if( simple )
@@ -609,7 +709,7 @@ var _toStrFromObject = function( src,o )
     break;
   }
 
-  /* */
+  //
 
   var optionsItem = _.mapExtend( {},o );
   optionsItem.noObject = o.noSubObject ? 1 : 0;
@@ -621,8 +721,8 @@ var _toStrFromObject = function( src,o )
   ({
     values : src,
     names : names,
-    optionsContainer : o,
-    optionsItem : optionsItem,
+    containerOptions : o,
+    itemOptions : optionsItem,
     simple : simple,
     prefix : '{',
     postfix : '}',
@@ -637,12 +737,10 @@ var _toStrFromContainer = function( o )
 {
   var result = '';
 
-  _.assert( arguments.length );
-
   var values = o.values;
   var names = o.names;
-  var optionsContainer = o.optionsContainer;
-  var optionsItem = o.optionsItem;
+  var containerOptions = o.containerOptions;
+  var o = o.itemOptions;
 
   var simple = o.simple;
   var prefix = o.prefix;
@@ -651,47 +749,47 @@ var _toStrFromContainer = function( o )
   // line postfix
 
   var linePostfix = '';
-  if( optionsContainer.comma )
-  linePostfix += optionsContainer.comma;
+  if( containerOptions.comma )
+  linePostfix += containerOptions.comma;
   if( !simple )
-  linePostfix += '\n' + optionsItem.tab;
+  linePostfix += '\n' + o.tab;
 
   // prepend
 
-  if( optionsContainer.prependTab  )
+  if( containerOptions.prependTab  )
   {
-    if( optionsContainer.wrap )
+    if( containerOptions.wrap )
     {
       //if( !simple )
       //result += '\n';
-      result += optionsContainer.tab;
+      result += containerOptions.tab;
     }
   }
 
   // wrap
 
-  if( optionsContainer.wrap )
+  if( containerOptions.wrap )
   {
     result += prefix;
     if( simple )
     result += ' ';
     else
-    result += '\n' + optionsItem.tab;
+    result += '\n' + o.tab;
   }
   else if( !simple )
   {
-    /*result += '\n' + optionsItem.tab;*/
+    /*result += '\n' + o.tab;*/
   }
 
   // prepend
 
-  if( optionsContainer.prependTab  )
+  if( containerOptions.prependTab  )
   {
-    if( !optionsContainer.wrap )
+    if( !containerOptions.wrap )
     {
       //if( !simple )
       //result += '\n';
-      result += optionsItem.tab;
+      result += o.tab;
     }
   }
 
@@ -702,13 +800,13 @@ var _toStrFromContainer = function( o )
   for( var n = 0, l = ( names ? names.length : values.length ) ; n < l ; n++ )
   {
 
-    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
-    _assert( optionsItem.level === optionsContainer.level + 1 );
+    _assert( o.tab === containerOptions.tab + containerOptions.dtab );
+    _assert( o.level === containerOptions.level + 1 );
 
     if( names )
-    r = _toStrFine( values[ names[ n ] ],optionsItem );
+    r = _toStrFine( values[ names[ n ] ],o );
     else
-    r = _toStrFine( values[ n ],optionsItem );
+    r = _toStrFine( values[ n ],o );
 
     if( r === undefined )
     continue;
@@ -716,16 +814,16 @@ var _toStrFromContainer = function( o )
     if( r.text === undefined )
     continue;
 
-    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
+    _assert( o.tab === containerOptions.tab + containerOptions.dtab );
 
     if( written > 0 )
     result += linePostfix;
 
     if( names )
     {
-      result += String( names[ n ] ) + optionsContainer.colon;
+      result += String( names[ n ] ) + containerOptions.colon;
       if( !r.simple )
-      result += '\n' + optionsItem.tab;
+      result += '\n' + o.tab;
 
     }
 
@@ -736,16 +834,30 @@ var _toStrFromContainer = function( o )
 
   // wrap
 
-  if( optionsContainer.wrap )
+  if( containerOptions.wrap )
   {
     if( simple )
     result += ' ';
     else
-    result += '\n' + optionsContainer.tab;
+    result += '\n' + containerOptions.tab;
     result += postfix;
   }
 
   return result;
+}
+
+//
+
+var _toStrIsSimpleElement = function( element )
+{
+  if( _.strIs( element ) )
+  return element.length < 40;
+  else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
+  return !element.length;
+  else if( _.objectIs( element ) || _.objectLike( element ) )
+  return !_.entityLength( element );
+  else
+  return _.atomicIs( element );
 }
 
 //
@@ -2338,14 +2450,12 @@ var Proto =
   _toStrFine : _toStrFine,
 
   _toStrShort : _toStrShort,
-  _toStrIsSimpleElement : _toStrIsSimpleElement,
-
-  _toStrFromRoutine : _toStrFromRoutine,
   _toStrFromNumber : _toStrFromNumber,
   _toStrFromStr : _toStrFromStr,
   _toStrFromArray : _toStrFromArray,
   _toStrFromObject : _toStrFromObject,
   _toStrFromContainer : _toStrFromContainer,
+  _toStrIsSimpleElement : _toStrIsSimpleElement,
 
   //
 
