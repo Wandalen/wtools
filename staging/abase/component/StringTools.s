@@ -72,7 +72,7 @@ var toStrFields = function( src,o )
 
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
- * by argument( o ).
+ * by argument( o ).If object ( src ) has own ( toStr ) method defined function uses it for convertion.
  *
  * @param {object} src - Source object for representing it as string.
  * @param {object} o - Convertion o.
@@ -131,16 +131,50 @@ var toStrFields = function( src,o )
  * _.toStr( ' \n1500 ' );
  *
  * @example
+ * //returns 14.5333
+ * _.toStr( 14.5333 );
+ *
+ * @example
  * //returns 1.50e+3
- * _.toStr( 1500, { precision : 3 });
+ * _.toStr( 1500, { precision : 3 } );
+ *
+ * @example
+ * //returns 14.53
+ * _.toStr( 14.5333, { fixed : 2 } );
+ *
+ * @example
+ * //returns true
+ * _.toStr( 1 !== 2 );
+ *
+ * @example
+ * //returns ''
+ * _.toStr( 1 !== 2, { noAtomic :  1 } );
  *
  * @example
  * //returns [ 1, 2, 3, 4 ]
- * _.toStr( [ 1,2,3,4 ] );
+ * _.toStr( [ 1, 2, 3, 4 ] );
  *
  * @example
  * //returns [Array with 3 elements]
  * _.toStr( [ 'a','b','c' ], { levels : 0 } );
+ *
+ * @example
+ * //returns [ 1, 2, 3 ]
+ * _.toStr( _.toStr( [ 'a','b','c', 1, 2, 3 ], { levels : 2, noString : 1} ) );
+ *
+ * @example
+ * //returns
+ * // [
+ * //  { Object with 1 elements },
+ * //  { Object with 1 elements }
+ * // ]
+ * _.toStr( [ { a : 1 }, { b : 2 } ] );
+ *
+ * @example
+ * //returns
+ * // a : 1
+ * // b : 2
+ * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2, wrap : 0 } );
  *
  * @example
  * //returns
@@ -148,11 +182,11 @@ var toStrFields = function( src,o )
  * //  { a : 1 },
  * //  { b : 2 }
  * // ]
- * _.toStr( [ { a : 1 },{ b : 2 } ], { levels : 2 } );
+ * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2 } );
  *
  * @example
  * //returns 1 , 2 , 3 , 4
- * _.toStr( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } );
+ * _.toStr( [ 1,2,3,4 ], { wrap : 0, comma : ' , ' } );
  *
  * @example
  * //returns [ 0.11, 40 ]
@@ -184,6 +218,19 @@ var toStrFields = function( src,o )
  * _.toStr( function add( ){ }, { levels : 0 } );
  *
  * @example
+ * //If object ( src ) has own ( toStr ) method defined function uses it for convertion
+ * //returns
+ * //function func(  ) {
+ * //console.log('sample');
+ * //}
+ * var x = function func (  )
+ * {
+ *   console.log( 'sample' );
+ * }
+ * x.toStr = x.toString;
+ * _.toStr( x );
+ *
+ * @example
  * //returns { o : 1, y : 3 }
  * _.toStr( { o : 1, y : 3 } );
  *
@@ -192,8 +239,26 @@ var toStrFields = function( src,o )
  * _.toStr( { o : 1 }, { levels : 0 } );
  *
  * @example
+ * //returns
+ * {
+ *    o : { p : "value" }
+ * }
+ * _.toStr( { o : { p : 'value' } }, { levels : 2 } );
+ *
+ * @example
+ * //returns
+ * // {
+ * //   y : "value1"
+ * // }
+ * _.toStr( { y : 'value1', o : { p : 'value2' } }, { levels : 2, noSubObject : 1} );
+ *
+ * @example
  * //returns a : 1 | b : 2
- * _.toStr( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } );
+ * _.toStr( { a : 1, b : 2 }, { wrap : 0, comma : ' | ' } );
+ *
+ * @example
+ * //returns { b : 1, c : 2 }
+ * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , noString : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
