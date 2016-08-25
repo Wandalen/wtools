@@ -309,12 +309,11 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
-    singleElementPerLine : 0,
 
     /**/
 
     precision : null,
-    fixed : 3,
+    fixed : null,
     comma : ', ',
     multiline : 0,
     unescape : 0,
