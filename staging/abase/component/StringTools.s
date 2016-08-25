@@ -96,10 +96,11 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
- * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line.
- * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].Number must be between 1 and 21 or null.
- * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
- * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1,2,3 ].
+ * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
+ * Number must be between 1 and 21.
+ * @param {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Number must be between 0 and 20.
+ * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
  * @param {boolean} [ o.unescape=0 ] - Disables escaping of special characters.
  * @returns {string} Returns string that represents object data.
