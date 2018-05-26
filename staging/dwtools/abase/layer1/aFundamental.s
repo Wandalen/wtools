@@ -14053,34 +14053,60 @@ function arraySetDiff( src1,src2 )
 
 function arraySetIntersection( src )
 {
+  const last = arguments.length - 1;
+  var seen = {};
   var result = [];
-
-  _.assert( _.arrayLike( src ) );
-
-  for( var i = 0 ; i < src.length ; i++ )
+  for( var i = 0; i < arguments.length; i++)
   {
-
-    for( var a = 1 ; a < arguments.length ; a++ )
-    {
-
-      _.assert( _.arrayLike( arguments[ a ] ) );
-
-      // throw _.err( 'Not tested' );
-      if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
-      {
-        // throw _.err( 'Not tested' );
-        break;
-      }
-
-    }
-
-    if( a !== arguments.length )
-    result.push( src[ i ] );
-
+    _.assert( _.arrayLike( arguments[i] ) );
   }
-
+  for ( var i = 0; i < last; i++ )   {
+    for ( var j = 0; j < arguments[i].length; j++ )  {
+        if ( seen[arguments[i][j]] )  {
+            seen[arguments[i][j]] += 1;
+        }
+        else if ( !i )    {
+            seen[arguments[i][j]] = 1;
+        }
+    }
+  }
+  for ( var i = 0; i < arguments[last].length; i++ ) {
+    if ( seen[arguments[last][i]] >= last )
+        result.push( arguments[last][i] );
+    }
   return result;
 }
+
+//function arraySetIntersection( src )
+//{
+//  var result = [];
+//
+//  _.assert( _.arrayLike( src ) );
+//
+//  for( var i = 0 ; i < src.length ; i++ )
+//  {
+//
+//    for( var a = 1 ; a < arguments.length ; a++ )
+//    {
+//
+//      _.assert( _.arrayLike( arguments[ a ] ) );
+//
+//      // throw _.err( 'Not tested' );
+//      if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
+//      {
+//        // throw _.err( 'Not tested' );
+//        break;
+//      }
+//
+//    }
+//
+//    if( a !== arguments.length )
+//    result.push( src[ i ] );
+//
+//  }
+//
+//  return result;
+//}
 
 //
 /*

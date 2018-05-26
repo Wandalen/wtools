@@ -10148,10 +10148,33 @@ function arraySetDiff( test )
 function arraySetIntersection( test )
 {
 
+  test.description = 'three arguments with one intersect';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var c = [ 4, 15, 16, 17 ];
+  var got = _.arraySetIntersection( a, b, c );
+  var expected = [ 4 ];
+  test.identical( got, expected );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
+
+  test.description = 'three arguments with many intersects';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var c = [ 1, 2, 4, 15, 16, 17 ];
+  var got = _.arraySetIntersection( a, b, c );
+  var expected = [ 1, 2, 4 ];
+  test.identical( got, expected );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
+
+
   test.description = 'three arguments with no intersects';
   var a = [ 1, 2, 3, 4, 15 ];
-  var b = [ 6, 7, 8, 9, 10 ];
-  var c = [ 16, 17, 18 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var c = [ 15, 16, 17 ];
   var got = _.arraySetIntersection( a, b, c );
   var expected = [];
   test.identical( got, expected );
@@ -10241,9 +10264,9 @@ function arraySetIntersection( test )
     { args : [ [ ], [ 1 ] ], expected : [] },
     { args : [ [ 1 ], [ 2 ] ], expected : [] },
     { args : [ [ 1, 2, 3 ], [ 2 ] ], expected : [ 2 ] },
-    { args : [ [ 1, 2, 3 ], [ 2 ], [ 1 ], [ 3 ] ], expected : [ 1, 2, 3 ] },
-    { args : [ [ 1, 1, 1 ], [ 1 ] ], expected : [ 1, 1, 1 ] },
-    { args : [ [ 1, 2, 3 ], [ 0 ], [ 4 ], [ 0, 0, 3 ] ], expected : [ 3 ] },
+    { args : [ [ 1, 2, 3 ], [ 2 ], [ 1 ], [ 3 ] ], expected : [] },
+    { args : [ [ 1, 1, 1 ], [ 1 ] ], expected : [ 1 ] },
+    { args : [ [ 1, 2, 3 ], [ 0 ], [ 4 ], [ 0, 0, 3 ] ], expected : [] },
     { args : [ [ 1, 2, 3 ], [ 0 ], 1, [ 3 ] ], error : true },
     { args : [ 1 ], error : true },
   ]
