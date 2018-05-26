@@ -14053,28 +14053,40 @@ function arraySetDiff( src1,src2 )
 
 function arraySetIntersection( src )
 {
+
   const last = arguments.length - 1;
-  var seen = {};
+  var seen = [];
   var result = [];
-  for( var i = 0; i < arguments.length; i++)
+
+  for( var i = 0; i < arguments.length ; i++ )
   {
     _.assert( _.arrayLike( arguments[i] ) );
   }
-  for ( var i = 0; i < last; i++ )   {
-    for ( var j = 0; j < arguments[i].length; j++ )  {
-        if ( seen[arguments[i][j]] )  {
+
+  for ( var i = 0; i < last; i++ )
+  {
+
+    for ( var j = 0; j < arguments[i].length ; j++ )
+    {
+        if ( seen[arguments[i][j]] )
+        {
             seen[arguments[i][j]] += 1;
         }
-        else if ( !i )    {
+        else if ( !i )
+        {
             seen[arguments[i][j]] = 1;
         }
     }
   }
-  for ( var i = 0; i < arguments[last].length; i++ ) {
+
+  for ( var i = 0; i < arguments[last].length ; i++ )
+  {
     if ( seen[arguments[last][i]] >= last )
         result.push( arguments[last][i] );
-    }
+  }
+
   return result;
+
 }
 
 //function arraySetIntersection( src )
