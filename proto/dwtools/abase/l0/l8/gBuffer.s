@@ -2628,9 +2628,9 @@ function bufferResize_( dst, srcBuffer, size )
 
 //
   /**
-   * The bufferBytesGet() routine converts and returns a new instance of Uint8Array constructor( array of 8-bit unsigned integers ).
+   * The bufferBytesGet() routine converts and returns a new instance of U8x constructor( array of 8-bit unsigned integers ).
    *
-   * @param { BufferRaw|BufferNode|BufferTyped|string } src - Defined buffer or string.
+   * @param { BufferRaw|BufferNode|BufferTyped|BufferView|String } src - Defined buffer or string.
    *
    * @example
    * let src2 = new BufferRaw( 5 );
@@ -2648,14 +2648,16 @@ function bufferResize_( dst, srcBuffer, size )
    * // returns [ 5, 0, 6, 0, 7, 0 ]
    *
    * @example
-   * let src4 = 'Hello World';
+   * let src4 = 'string';
    * _.bufferBytesGet(src4);
-   * // returns [ 72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100 ]
+   * // returns [ 115, 116, 114, 105, 110, 103 ]
    *
    *
-   * @returns { typedArray } Returns a new instance of Uint8Array constructor.
+   * @returns { typedArray } Returns a new instance of U8x constructor.
    * @function bufferBytesGet
    * @throws { Error } Will throw an Error if { src } is not a typed array object or string.
+   * @throws { Error } Will throw an Error if (arguments.length) is more than one.
+   * @throws { Error } Will throw an Error if routine has no argument.
    * @memberof wTools
    */
 

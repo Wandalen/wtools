@@ -10583,62 +10583,111 @@ function bufferResize_( test )
 
 function bufferBytesGet( test )
 {
+  /* BufferNode */
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'from empty BufferNode';
+    var src = BufferNode.alloc( 5 );
+    var got = _.bufferBytesGet( src );
+    var expected = new U8x( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+
+    test.case = 'from BufferNode (array)';
+    var src = BufferNode.from( [ 2, 4 ] );
+    var got = _.bufferBytesGet( src );
+    var expected = new U8x( [ 2, 4 ] );
+    test.identical( got, expected );
+
+    test.case = 'from BufferNode (identical symbols)';
+    var src = BufferNode.alloc( 5, 'a' );
+    var got = _.bufferBytesGet( src );
+    var expected = new U8x( [ 97, 97, 97, 97, 97 ] );
+    test.identical( got, expected );
+
+    test.case = 'from BufferNode (string)';
+    var src = BufferNode.from( 'string' );
+    var got = _.bufferBytesGet( src );
+    var expected = new U8x( [ 115, 116, 114, 105, 110, 103 ] );
+    test.identical( got, expected );
+
+    test.case = 'from BufferNode (string with base64)';
+    var src = BufferNode.from( 'string', 'base64' );
+    var got = _.bufferBytesGet( src );
+    var expected = new U8x( [ 178, 218, 226, 158 ] );
+    test.identical( got, expected );
+  }
 
   test.case = 'from string';
   var src = 'string';
   var got = _.bufferBytesGet( src );
-  var expected = new U8x([ 115, 116, 114, 105, 110, 103 ]);
+  var expected = new U8x( [ 115, 116, 114, 105, 110, 103 ] );
   test.identical( got, expected );
 
   /* BufferRaw */
 
-  test.case = 'from BufferRaw';
+  test.case = 'from empty BufferRaw';
   var src = new BufferRaw( 5 );
   var got = _.bufferBytesGet( src );
   var expected = new U8x( [ 0, 0, 0, 0, 0, ] );
   test.identical( got, expected );
 
-  test.case = 'from BufferRawShared';
+  test.case = 'from BufferRaw';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferBytesGet( src );
+  var expected = new U8x( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+
+
+  test.case = 'from empty BufferRawShared';
   var src = new BufferRawShared( 5 );
   var got = _.bufferBytesGet( src );
   var expected = new U8x( [ 0, 0, 0, 0, 0, ] );
   test.identical( got, expected );
 
-  /* BufferNode */
-
-  test.case = 'from BufferNode (array)';
-  var src = BufferNode.from( [ 2, 4 ] );
-  var got = _.bufferBytesGet( src );
-  var expected = new U8x( [ 2, 4 ] );
-  test.identical( got, expected );
-
-
-  test.case = 'from BufferNode (string)';
-  var src = BufferNode.alloc( 5, 'a' );
-  var got = _.bufferBytesGet( src );
-  var expected = new U8x( [ 97, 97, 97, 97, 97 ] );
+  test.case = 'from changed BufferRawShared';
+  var src = new BufferRawShared( 5 );
+  var view = new U8x( src );
+  view[ 1 ] = 2;
+  view[ 2 ] = 4;
+  var got = _.bufferBytesGet( view );
+  var expected = new U8x( [ 0, 2, 4, 0, 0 ] );
   test.identical( got, expected );
 
   /* BufferTyped */
+
+  test.case = 'from typed array U8x'
+  var src = new U8x( [ 1, 2, 10 ] );
+  var got = _.bufferBytesGet( src );
+  test.identical( got, src );
 
   test.case = 'from typed array I16x';
   var src = new I16x( [ 1, 2, 10 ] );
   var got = _.bufferBytesGet( src );
   var expected = new U8x( [ 1, 0, 2, 0, 10, 0 ] );
   test.identical( got, expected );
+  test.is( got !== src );
 
   test.case = 'from typed array F32x';
   var src = new F32x( [ 1, 2 ] );
   var got = _.bufferBytesGet( src );
   var expected = new U8x( [ 0, 0, 128, 63, 0, 0, 0, 64 ] );
   test.identical( got, expected );
+  test.is( got !== src );
 
   /* BufferView */
 
-  test.case = 'from BufferView'
+  test.case = 'from empty BufferView';
   var src = new BufferView( new BufferRaw( 5 ) );
   var got = _.bufferBytesGet( src );
   var expected = new U8x( [ 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferView';
+  var src = new BufferView( new U8x( [ 1, 2, 3 ] ).buffer );
+  var got = _.bufferBytesGet( src );
+  var expected = new U8x( [ 1, 2, 3 ] );
   test.identical( got, expected );
 
   /**/
@@ -10661,56 +10710,355 @@ function bufferBytesGet( test )
 
 function bufferRetype( test )
 {
+  /* BufferNode */
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'empty BufferNode to U8x';
+    var src = BufferNode.alloc( 5 );
+    var got = _.bufferRetype( src, U8x );
+    var expected = new U8x( [ 0, 0, 0, 0, 0 ] );
+    test.identical(got, expected);
+
+    test.case = 'empty BufferNode to I16x';
+    var src = BufferNode.alloc( 5 );
+    var got = _.bufferRetype( src, I16x );
+    var expected = new I16x( [ 0, 0 ] );
+    test.identical( got, expected );
+
+    test.case = 'empty BufferNode to F32x';
+    var src = BufferNode.alloc( 5 );
+    var got = _.bufferRetype( src, F32x );
+    var expected = new F32x( [ 0 ] );
+    test.identical( got, expected );
+
+    test.case = 'empty BufferNode to U64x';
+    var src = BufferNode.alloc( 5 );
+    var got = _.bufferRetype( src, U64x );
+    var expected = new U64x( [ 0 ] );
+    test.identical( got, expected );
+
+    /**/
+
+    test.case = 'BufferNode to U8x';
+    var src = BufferNode.from( 'string' );
+    var got = _.bufferRetype( src, U8x );
+    var expected = new U8x( [ 115, 116, 114, 105, 110, 103 ] );
+    test.identical( got, expected );
+
+    test.case = 'BufferNode to I16x';
+    var src = BufferNode.from( 'string' );
+    var got = _.bufferRetype( src, I16x );
+    var expected = new I16x([ 29811, 26994, 26478, 0, -8512, 1161 ]);
+    test.identical( got, expected );
+
+    test.case = 'BufferNode to F32x';
+    var src = BufferNode.from( 'string' );
+    var got = _.bufferRetype( src, F32x );
+    var expected = new F32x( [ 1.83193727646451e+25 ] );
+    test.identical( got, expected );
+
+    test.case = 'BufferNode to U64x';
+    var src = BufferNode.from( 'str' );
+    var got = _.bufferRetype( src, U64x );
+    var expected = new U64x( [ 2340630459507n, 8899172278733n, 2340624598336n ] );
+    test.identical( got, expected );
+
+  }
 
   /* BufferRaw */
 
-  test.case = 'from BufferRaw, return the new type of U8x';
+  test.case = 'empty BufferRaw to - U8x';
   var src = new BufferRaw( 5 );
   var got = _.bufferRetype( src, U8x );
-  var expected = new U8x( [ 0, 0, 0, 0, 0, ] );
+  var expected = new U8x( [ ] );
   test.identical( got, expected );
 
-  test.case = 'from BufferRawShared, return the new type of U8x';
+  test.case = 'empty BufferRaw to - I16x';
+  var src = new BufferRaw( 5 );
+  var got = _.bufferRetype( src, I16x );
+  var expected = new I16x( [ ] );
+  test.identical( got, expected );
+
+  test.case = 'empty BufferRaw to - F32x';
+  var src = new BufferRaw( 5 );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ ] );
+  test.identical( got, expected );
+
+  test.case = 'empty BufferRaw to - U64x';
+  var src = new BufferRaw( 5 );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [ ] );
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'BufferRaw to - U8x';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferRetype( src );
+  var expected = new U8x( [ ] );
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw to - I16x';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferRetype( src );
+  var expected = new U8x( [  ] );
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw to - F32x';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferRetype( src );
+  var expected = new U8x( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw to - U64x';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferRetype( src );
+  var expected = new U8x( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+
+  test.case = 'BufferRawShared to U8x';
   var src = new BufferRawShared( 5 );
-  var got = _.bufferBytesGet( src,  U8x );
+  var got = _.bufferRetype( src,  U8x );
   var expected = new U8x( [ 0, 0, 0, 0, 0, ] );
   test.identical( got, expected );
 
-  /* BufferNode */
-
-  test.case = 'from BufferNode, return the new type of U16x';
-  var src = BufferNode.from( 'str' );
-  var got = _.bufferRetype( src, U16x );
-  var expected = new U16x( [ 29811, 114, 2 ] );
-  test.identical( got, expected );
-
-
-  test.case = 'from BufferNode, return the new type of I16x';
-  var src = BufferNode.alloc( 5, 2 );
-  var got = _.bufferRetype(src,  I16x);
-  var expected =   new I16x([ 514, 514 ]) ;
-  test.identical( got, expected );
 
   /* BufferTyped */
 
-  test.case = 'from I8x typed array, return the new type of I16x';
-  var view1 = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
-  var got = _.bufferRetype(view1, I16x);
-  var expected = new I16x( [ 513, 1027, 1541 ] );
+  /* I8x */
+
+  test.case = 'empty I8x to U8x';
+  var src = new I8x( 5 );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
 
-  test.case = 'from I16x typed array, return the new type of I8x';
-  var view1 = new I16x( [ 513, 1027, 1541 ] );
-  var got = _.bufferRetype(view1, I8x);
-  var expected = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
+  test.case = 'empty I8x to U16x ';
+  var src = new I8x( 5 );
+  var got = _.bufferRetype( src, U16x );
+  var expected = new U16x( [ 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I8x to F32x ';
+  var view1 = new I8x( 5 );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I8x to U64x '; 
+  var src = new I8x( 5 )
+  var got = _.bufferRetype(src, U64x);
+  var expected = new U64x( [  ] );
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'I8x to U8x';
+  var src = new I8x( [ -2, -1, 0, 1, 2, 3 ] );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 254, 255, 0, 1, 2, 3 ] );
+  test.identical( got, expected );
+
+  test.case = 'I8x to U16x';
+  var src = new I8x( [ -2, -1, 0, 1, 2, 3 ] );
+  var got = _.bufferRetype( src, I16x );
+  var expected = new I16x( [ -2, 256, 770 ] );
+  test.identical( got, expected );
+
+  test.case = 'I8x to F32x';
+  var src = new I8x ( [ -2, -1, 0, 1, 2, 3 ] );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ 2.3693552403567875e-38 ] );
+  test.identical( got, expected );
+
+  test.case = 'I8x to U64x'; // error
+  var src = new I8x ( [ -2, -1, 0, 1, 2, 3 ] );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [ 1, 2, 3, 4, 5, 6 ] );
+  test.identical( got, expected );
+
+  /* I32x */
+
+  test.case = 'empty I32x to U8x ';
+  var src = new I32x( 3 );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I32x to U16x ';
+  var src = new I32x( 3 );
+  var got = _.bufferRetype( src, U16x );
+  var expected = new U16x( [ 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I32x to F32x ';
+  var view1 = new I32x( 3 );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [  0, 0, 0  ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I32x to U64x ';
+  var src = new I32x( 3 )
+  var got = _.bufferRetype(src, U64x);
+  var expected = new U64x( [ 0 ] );
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'I32x to U8x';
+  var src = new I32x( [ -2, 1 ] );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 254, 255, 255, 255, 1, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'I32x to U16x';
+  var src = new I32x( [ -2, 1 ] );
+  var got = _.bufferRetype( src, U16x );
+  var expected = new U16x( [ 65534, 65535, 1, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'I32x to F32x';
+  var src = new I32x ( [ -1, 1 ] );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ ] );
+  test.identical( got, expected );
+
+  test.case = 'I32x to U64x';
+  var src = new I32x ( [ -2, 1 ] );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [ ] );
+  test.identical( got, expected );
+
+  /* I64x */
+
+  test.case = 'empty I64x to U8x ';
+  var src = new I64x( 1 );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I64x to U16x ';
+  var src = new I64x( 1 );
+  var got = _.bufferRetype( src, U16x );
+  var expected = new U16x( [ 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I64x to F32x ';
+  var view1 = new I64x( 1 );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty I64x to U64x';
+  var src = new I64x( _.bigIntsFrom( 1 ));
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [ ] );
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'I64x to U8x';
+  var src = new I64x( _.bigIntsFrom( [ -8, 2 ] ) );
+  var got = _.bufferRetype( src, U8x );
+  var expected = new U8x( [ 248, 255, 255, 255, 255, 255, 255, 255, 2, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'I64x to U16x';
+  var src = new I64x( _.bigIntsFrom( [ -8, 2 ] ) );
+  var got = _.bufferRetype( src, U16x );
+  var expected = new U16x( [ 65528, 65535, 65535, 65535, 2, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'I64x to F32x';
+  var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
+  var got = _.bufferRetype(src, F32x);
+  var expected = new F32x( [ 1.401298464324817e-45, 0, 2.802596928649634e-45, 0, 4.203895392974451e-45, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'I64x to U64x';
+  var src = new I64x ( _.bigIntsFrom( [ 1, 2 ] ) );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [  ] );
+  test.identical( got, expected );
+
+  /* F32x */
+
+  test.case = 'empty F32x to U8x ';
+  var src = new F32x( 3 );
+  var got = _.bufferRetype(src, U8x);
+  var expected = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty F32x to U16x ';
+  var src = new F32x( 3 );
+  var got = _.bufferRetype(src, U16x);
+  var expected = new U16x( [ 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty F32x to I32x ';
+  var view1 = new F32x( 3 );
+  var got = _.bufferRetype(src, I32x);
+  var expected = new I32x( [  0, 0, 0  ] );
+  test.identical( got, expected );
+
+  test.case = 'empty F32x to I64x ';
+  var src = new F32x( 3 );
+  var got = _.bufferRetype(src, I64x);
+  var expected = new I64x( [ 0 ] );
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'F32x to U8x';
+  var src = new F32x( [ -2, 1 ] );
+  var got = _.bufferRetype(src, U8x);
+  var expected = new U8x( [ 254, 255, 255, 255, 1, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'F32x to U16x';
+  var src = new F32x( [ -2, 1 ] );
+  var got = _.bufferRetype(src, U16x);
+  var expected = new U16x( [ 65534, 65535, 1, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'F32x to I32x';
+  var src = new F32x ( [ -1, 1 ] );
+  var got = _.bufferRetype(src, I32x);
+  var expected = new I32x( [ ] );
+  test.identical( got, expected );
+
+  test.case = 'F32x to U64x';
+  var src = new F32x ( [ -2, 1 ] );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [  ] );
   test.identical( got, expected );
 
   /* BufferView */
 
-  test.case = 'from BufferView, return the new type of U8x'
+  test.case = 'empty BufferView to U8x';
   var src = new BufferView( new BufferRaw( 5 ) );
   var got = _.bufferRetype( src, U8x );
   var expected = new U8x( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'BufferView to I16x';
+  var src = new BufferView( new BufferRaw( 5 ) );
+  var got = _.bufferRetype( src, I16x );
+  var expected = new I16x( [ 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty BufferView to F32x';
+  var src = new BufferView( new BufferRaw( 5 ) );
+  var got = _.bufferRetype( src, F32x );
+  var expected = new F32x( [ 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'empty BufferView to U64x';
+  var src = new BufferView( new BufferRaw( 5 ) );
+  var got = _.bufferRetype( src, U64x );
+  var expected = new U64x( [ 0 ] );
   test.identical( got, expected );
 
   /**/
@@ -10733,7 +11081,7 @@ function bufferRetype( test )
   test.shouldThrowErrorSync( () => _.bufferRetype( new I8x( [ 1, 2 ] ), 'wrong' ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.bufferBytesGet( new BufferRaw( 5 ) ), I8x, 'extra' );
+  test.shouldThrowErrorSync( () => _.bufferRetype( new BufferRaw( 5 ) ), I8x, 'extra' );
 }
 
 //
