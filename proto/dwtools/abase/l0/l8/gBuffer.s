@@ -2628,36 +2628,35 @@ function bufferResize_( dst, srcBuffer, size )
 
 //
   /**
-   * The bufferBytesGet() routine converts and returns a new instance of U8x constructor( array of 8-bit unsigned integers ).
+   * The routine bufferBytesGet() converts {-src-} and returns a new instance of U8x constructor (array of 8-bit unsigned integers).
    *
-   * @param { BufferRaw|BufferNode|BufferTyped|BufferView|String } src - Defined buffer or string.
+   * @param { BufferRaw|BufferNode|BufferTyped|BufferView|String } src - Instance of any buffer or string.
    *
    * @example
-   * let src2 = new BufferRaw( 5 );
-   * _.bufferBytesGet(src2);
+   * let src = new BufferRaw( 5 );
+   * _.bufferBytesGet(src);
    * // returns [ 0, 0, 0, 0, 0, ]
    *
    * @example
-   * let src1 = BufferNode.alloc( 5, 'a' );
+   * let src = BufferNode.alloc( 5, 'a' );
    * _.bufferBytesGet(src);
    * // returns [ 97, 97, 97, 97, 97 ]
    *
    * @example
-   * let src3 = new I32x( [ 5, 6, 7 ] );
-   * _.bufferBytesGet(src3);
+   * let src = new I32x( [ 5, 6, 7 ] );
+   * _.bufferBytesGet(src);
    * // returns [ 5, 0, 6, 0, 7, 0 ]
    *
    * @example
-   * let src4 = 'string';
-   * _.bufferBytesGet(src4);
+   * let src = 'string';
+   * _.bufferBytesGet(src);
    * // returns [ 115, 116, 114, 105, 110, 103 ]
-   *
    *
    * @returns { typedArray } Returns a new instance of U8x constructor.
    * @function bufferBytesGet
-   * @throws { Error } Will throw an Error if { src } is not a typed array object or string.
-   * @throws { Error } Will throw an Error if (arguments.length) is more than one.
-   * @throws { Error } Will throw an Error if routine has no argument.
+   * @throws { Error } If {-src-} is not a instance of any buffer or string.
+   * @throws { Error } If (arguments.length) is more than one.
+   * @throws { Error } If routine has no argument.
    * @memberof wTools
    */
 
