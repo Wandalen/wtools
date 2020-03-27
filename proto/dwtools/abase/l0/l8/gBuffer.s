@@ -3048,6 +3048,58 @@ function bufferCutOffLeft( src, del )
 }
 
 //
+
+function bufferIsolate_pre( routine, args )
+{
+  let o;
+
+  if( args.length > 1 )
+  {
+    o = { src : args[ 0 ], delimeter : args[ 1 ], times : args[ 2 ] };
+  }
+  else {
+    o = args[ 0 ];
+    _.assert( args.length === 1, 'Expects single argument' );
+  }
+
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strsLikeAll( o.delimeter ) );
+  _.assert( _.numberIs( o.times ) );
+
+  return o;
+}
+
+//
+
+function bufferIsolate_body( o )
+{
+
+ //
+
+}
+
+//
+
+function bufferIsolateLeftOrNone_body( o )
+{
+  o.left = 1;
+  o.none = 1;
+  let result = _.bufferIsolate.body( o );
+  return result;
+}
+
+bufferIsolateLeftOrNone_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  times : 1,
+  quote : null,
+}
+
+//
 //
 // function buffersSerialize( o )
 // {
@@ -3291,6 +3343,9 @@ let Routines =
   bufferRight,
   bufferSplit,
   bufferCutOffLeft,
+
+  bufferIsolate : _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolate_body ),
+  bufferIsolateLeftOrNone: _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrNone_body ),
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
