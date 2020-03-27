@@ -3065,8 +3065,8 @@ function bufferIsolate_pre( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.strsLikeAll( o.delimeter ) );
+  // _.assert( _.strIs( o.src ) );
+  // _.assert( _.strsLikeAll( o.delimeter ) );
   _.assert( _.numberIs( o.times ) );
 
   return o;
@@ -3083,28 +3083,29 @@ function bufferIsolate_body( o )
   let more = o.left ? bufferLeft : bufferRight;
   let delta = (o.left ? +1 : -1);
 
-  _.assertRoutineOptions(bufferIsolate_body, arguments);
+  // _.assertRoutineOptions(bufferIsolate_body, arguments); // check
   _.assert(_.bufferTypedIs(o.delimeter));
 
-  while (times > 0) {
-    let foundIndex = more( index );
+  while ( times > 0 ) {
+    let foundIndex = more( o.src, o.delimeter );
 
-    if (foundIndex === -1)
-      break;
+    if ( foundIndex === -1 )
+    break;
 
     times -= 1;
 
-    if (o.left)
+    if ( o.left )
       index = foundIndex + delta;
     else
       index = foundIndex + o.delimeter.length + delta;
 
-    // if (times === 0) {
-    //   result.push(o.src.substring(0, found.index));  //buffer?
-    //   result.push(found.entry);
-    //   result.push(o.src.substring(found.index + found.entry.length));
-    //   return result;
-    // }
+    if ( times === 0 )
+    {
+      result.push( o.src.slice( 0, foundIndex ) );
+      result.push( o.src.slice( foundIndex, index ) );
+      result.push( o.src.slice( index, o.src.length ) );
+      return result;
+    }
 
     /* */
 
@@ -3140,7 +3141,7 @@ function bufferIsolate_body( o )
 
   function everything( side )
   {
-    return ( side ) ? [ o.src, undefined, [] ] : [ [], undefined, o.src ];  //buffer?
+    return ( side ) ? [ o.src, undefined, new U8x( [ ] ) ] : [ new U8x( [ ] ), undefined, o.src ];  // check
   }
 
   /* */
@@ -3150,7 +3151,7 @@ function bufferIsolate_body( o )
 bufferIsolate_body.defaults =
 {
   src : null,
-  // delimeter : ' ',
+  delimeter : new U8x( [ ] ),
   left : 1,
   times : 1,
   none : 1,
@@ -3169,7 +3170,7 @@ function bufferIsolateLeftOrNone_body( o )
 bufferIsolateLeftOrNone_body.defaults =
 {
   src : null,
-  delimeter : ' ',
+  delimeter : new U8x( [ ] ),
   times : 1,
   quote : null,
 }
