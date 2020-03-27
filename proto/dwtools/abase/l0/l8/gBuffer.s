@@ -3076,9 +3076,84 @@ function bufferIsolate_pre( routine, args )
 
 function bufferIsolate_body( o )
 {
+  let result = []; //?
+  let times = o.times;
+  let delimeter;
+  let index = o.left ? 0 : o.src.length;
+  let more = o.left ? bufferLeft : bufferRight;
+  let delta = (o.left ? +1 : -1);
 
- //
+  _.assertRoutineOptions(bufferIsolate_body, arguments);
+  _.assert(_.bufferTypedIs(o.delimeter));
 
+  while (times > 0) {
+    let foundIndex = more( index );
+
+    if (foundIndex === -1)
+      break;
+
+    times -= 1;
+
+    if (o.left)
+      index = foundIndex + delta;
+    else
+      index = foundIndex + o.delimeter.length + delta;
+
+    // if (times === 0) {
+    //   result.push(o.src.substring(0, found.index));  //buffer?
+    //   result.push(found.entry);
+    //   result.push(o.src.substring(found.index + found.entry.length));
+    //   return result;
+    // }
+
+    /* */
+
+    if( o.left )
+    {
+      if( index >= o.src.length )
+      break;
+    }
+    else
+    {
+      if( index <= 0 )
+      break;
+    }
+
+  }
+
+  /* */
+
+  if (!result.length) {
+
+    if (o.times === 0)
+    return everything(!o.left);
+    else if (times === o.times)
+    return everything(o.left ^ o.none);
+    else
+    return everything(o.left);
+
+  }
+
+  return result;
+
+  /* */
+
+  function everything( side )
+  {
+    return ( side ) ? [ o.src, undefined, [] ] : [ [], undefined, o.src ];  //buffer?
+  }
+
+  /* */
+
+}
+
+bufferIsolate_body.defaults =
+{
+  src : null,
+  // delimeter : ' ',
+  left : 1,
+  times : 1,
+  none : 1,
 }
 
 //
