@@ -14,6 +14,11 @@ let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 function _errUncaughtHandler1()
 {
 
+  // debugger;
+  // if( typeof _starter_ === 'undefined' )
+  // debugger;
+  // starter._includingSource
+
   let args = _.setup._errUncaughtPre( arguments );
   let result = _.setup._errUncaughtHandler2.apply( this, args );
 

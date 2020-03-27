@@ -707,23 +707,22 @@ function locationToStack( o )
   _.assertMapHasOnly( o, locationToStack.defaults );
   _.introspector.locationNormalize( o );
 
-  // original : null,
-  // filePath : null,
-  // routineName : null,
-  // routineAlias : null,
-  // internal : null,
-  // line : null,
-  // col : null,
-  // filePathLineCol : null,
-  // routineFilePathLineCol : null,
-  // fileName : null,
-  // fileNameLineCol : null,
-
   if( !o.filePathLineCol )
   return null;
 
-  debugger; xxx
+  if( o.routineFilePathLineCol )
+  {
+    _.assert( 0, 'not tested' );
+  }
 
+  if( o.routineName )
+  return `at ${o.routineName} (${o.filePathLineCol})`;
+  else
+  return `at (${o.filePathLineCol})`;
+
+  /*
+    at Object.locationToStack (http://127.0.0.1:5000//builder/include/dwtools/abase/l0/l3/iIntrospector.s:723:10)
+  */
 }
 
 locationToStack.defaults =

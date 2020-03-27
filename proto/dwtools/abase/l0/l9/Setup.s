@@ -18,9 +18,18 @@ function _errUncaughtHandler2( err, kind )
   let postfix = `--------------- ${kind} ---------------<\n`;
   let logger = _global.logger || _global.console;
 
-  /* */
+  /* xxx qqq : resolve issue in browser
+    if file has syntax error then unachught error should not ( probably ) be throwen
+    because browser thows uncontrolled information about syntax error after that
+    avoid duplication of errors in log
+  */
+
+  if( _.errIsAttended( err ) )
+  return;
 
   debugger;
+
+  /* */
 
   consoleUnbar();
   attend( err );
@@ -54,7 +63,6 @@ function _errUncaughtHandler2( err, kind )
 
   function errLog()
   {
-    debugger;
     try
     {
       err = _.errProcess( err );
@@ -171,7 +179,6 @@ function _setupUncaughtErrorHandler9()
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
 
-    debugger;
     if( _._err )
     err = _._err
     ({

@@ -785,10 +785,14 @@ function _Setup()
   if( typeof require === 'undefined' )
   return;
 
+  /* qqq xxx : remove that if-return branch */
   if( _global_.Config.interpreter === 'browser' )
   return;
 
+  debugger;
   let Module = require( 'module' );
+  debugger;
+
   let NjsResolveFilename = Module._resolveFilename;
   let NjsLoad = Module._load;
   let including = false;

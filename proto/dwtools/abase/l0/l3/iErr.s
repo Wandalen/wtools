@@ -246,7 +246,6 @@ function _err( o )
   debugger;
   if( _global_.debugger )
   debugger;
-  debugger;
 
   /* algorithm */
 
