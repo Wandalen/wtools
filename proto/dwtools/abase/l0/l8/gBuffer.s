@@ -3312,53 +3312,53 @@ bufferSplit,
 bufferCutOffLeft,
 
 strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
-strIsolateLeftOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrNone_body ),
-strIsolateLeftOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrAll_body ),
-strIsolateRightOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrNone_body ),
-strIsolateRightOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrAll_body ),
+strIsolateLeftOrNone
+strIsolateLeftOrAll
+strIsolateRightOrNone
+strIsolateRightOrAll
 
 */
 
   // to replace
 
   /*
-  | routine         | makes new dst container                      | saves dst container                                      |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
-  | bufferBut_      | _.bufferBut_( src, range )                   | _.bufferBut_( src )                                      |
-  |                 | if src is not resizable and  change length   | _.bufferBut_( dst, dst )                                 |
-  |                 | _.bufferBut_( null, src, range )             | _.bufferBut_( dst, dst, range ) if dst is resizable      |
-  |                 | _.bufferBut_( dst, src, range )              | or dst not change length                                 |
-  |                 | if dst not resizable and change length       | _.bufferBut_( dst, src, range ) if dst is resizable      |
-  |                 |                                              | or dst not change length                                 |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
-  | bufferSelect__  | _.bufferSelect__( src, range )               | _.bufferSelect__( src )                                  |
-  |                 | if src is not resizable and  change length   | _.bufferSelect__( dst, dst )                             |
-  |                 | _.bufferSelect__( null, src, range )         | _.bufferSelect__( dst, dst, range ) if dst is resizable  |
-  |                 | _.bufferSelect__( dst, src, range )          | or dst not change length                                 |
-  |                 | if dst not resizable and change length       | _.bufferSelect__( dst, src, range ) if dst is resizable  |
-  |                 |                                              | or dst not change length                                 |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
-  | bufferGrow_     | _.bufferGrow_( src, range )                  | _.bufferGrow_( src )                                     |
-  |                 | if src is not resizable and  change length   | _.bufferGrow_( dst, dst )                                |
-  |                 | _.bufferGrow_( null, src, range )            | _.bufferGrow_( dst, dst, range ) if dst is resizable     |
-  |                 | _.bufferGrow_( dst, src, range )             | or dst not change length                                 |
-  |                 | if dst not resizable and change length       | _.bufferGrow_( dst, src, range ) if dst is resizable     |
-  |                 |                                              | or dst not change length                                 |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
-  | bufferRelength_ | _.bufferRelength_( src, range )              | _.bufferRelength_( src )                                 |
-  |                 | if src is not resizable and  change length   | _.bufferRelength_( dst, dst )                            |
-  |                 | _.bufferRelength_( null, src, range )        | _.bufferRelength_( dst, dst, range ) if dst is resizable |
-  |                 | _.bufferRelength_( dst, src, range )         | or dst not change length                                 |
-  |                 | if dst not resizable and change length       | _.bufferRelength_( dst, src, range ) if dst is resizable |
-  |                 |                                              | or dst not change length                                 |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
-  | bufferResize_   | _.bufferResize_( null, src, size )           | _.bufferResize_( src, size )                             |
-  | bufferResize_   | every time                                   | if src is not BufferRaw or buffer not changes length     |
-  |                 | _.bufferResize_( src, size )                 | _.bufferResize_( dst, dst, size ) if buffer not changes  |
-  |                 | if src is BufferRaw or buffer changes length | _.bufferResize_( dst, src, size )                        |
-  |                 | _.bufferResize_( dst, src, range )           | if dst.byteLength >= size                                |
-  |                 | if dst.byteLength < size                     |                                                          |
-  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | routine           | makes new dst container                        | saves dst container                                        |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+  | bufferBut_        | _.bufferBut_( src, range )                     | _.bufferBut_( src )                                        |
+  |                   | if src is not resizable and  change length     | _.bufferBut_( dst, dst )                                   |
+  |                   | _.bufferBut_( null, src, range )               | _.bufferBut_( dst, dst, range ) if dst is resizable        |
+  |                   | _.bufferBut_( dst, src, range )                | or dst not change length                                   |
+  |                   | if dst not resizable and change length         | _.bufferBut_( dst, src, range ) if dst is resizable        |
+  |                   |                                                | or dst not change length                                   |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+  | bufferSelect__    | _.bufferSelect__( src, range )                 | _.bufferSelect__( src )                                    |
+  |                   | if src is not resizable and  change length     | _.bufferSelect__( dst, dst )                               |
+  |                   | _.bufferSelect__( null, src, range )           | _.bufferSelect__( dst, dst, range ) if dst is resizable    |
+  |                   | _.bufferSelect__( dst, src, range )            | or dst not change length                                   |
+  |                   | if dst not resizable and change length         | _.bufferSelect__( dst, src, range ) if dst is resizable    |
+  |                   |                                                | or dst not change length                                   |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+  | bufferGrow_       | _.bufferGrow_( src, range )                    | _.bufferGrow_( src )                                       |
+  |                   | if src is not resizable and  change length     | _.bufferGrow_( dst, dst )                                  |
+  |                   | _.bufferGrow_( null, src, range )              | _.bufferGrow_( dst, dst, range ) if dst is resizable       |
+  |                   | _.bufferGrow_( dst, src, range )               | or dst not change length                                   |
+  |                   | if dst not resizable and change length         | _.bufferGrow_( dst, src, range ) if dst is resizable       |
+  |                   |                                                | or dst not change length                                   |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+  | bufferRelength_   | _.bufferRelength_( src, range )                | _.bufferRelength_( src )                                   |
+  |                   | if src is not resizable and  change length     | _.bufferRelength_( dst, dst )                              |
+  |                   | _.bufferRelength_( null, src, range )          | _.bufferRelength_( dst, dst, range ) if dst is resizable   |
+  |                   | _.bufferRelength_( dst, src, range )           | or dst not change length                                   |
+  |                   | if dst not resizable and change length         | _.bufferRelength_( dst, src, range ) if dst is resizable   |
+  |                   |                                                | or dst not change length                                   |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+  | bufferResize_     | _.bufferResize_( null, src, size )             | _.bufferResize_( src, size )                               |
+  | bufferResize_     | every time                                     | if src is not BufferRaw or buffer not changes length       |
+  |                   | _.bufferResize_( src, size )                   | _.bufferResize_( dst, dst, size ) if buffer not changes    |
+  |                   | if src is BufferRaw or buffer changes length   | _.bufferResize_( dst, src, size )                          |
+  |                   | _.bufferResize_( dst, src, range )             | if dst.byteLength >= size                                  |
+  |                   | if dst.byteLength < size                       |                                                            |
+  | ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
   */
 
 }

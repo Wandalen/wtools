@@ -311,7 +311,7 @@ function finally_( delay, procedure, onTime )
 
 //
 
-function periodic( timer )
+function periodic( delay, procedure, onTime, onCancel )
 {
   if( !_.procedureIs( procedure ) )
   {

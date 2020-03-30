@@ -3,8 +3,8 @@ root:
   - wTools.out
 consistency:
   wTools.out.will.yml: &ref_0
-    hash: e124a7e1c9d6ccf42a298b8836f0d50f
-    size: 47077
+    hash: c8af7e1d994026bf65e5a97077b5be36
+    size: 47256
   ../.ex.will.yml: &ref_1
     hash: 742015b531952d05816c35ee9f9ff3ca
     size: 2109
@@ -1758,4 +1758,6 @@ module:
       ../.im.will.yml:
         hash: e0b9ac504d07fa8723c98f50459f4829
         size: 5603
-      wTools.out.will.yml: *ref_0
+      wTools.out.will.yml:
+        hash: c8af7e1d994026bf65e5a97077b5be36
+        size: 47256

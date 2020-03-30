@@ -295,6 +295,90 @@ let wDomBaseLayer5 =
 
 // amid
 
+// amid / l1
+
+let wGraphBasic =
+{
+  sourcePath : sourcePath( 'amid/l1/graphBasic/IncludeTop.s', 'wgraphbasic' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.AbstractGraphSystem },
+}
+
+let wGraphTools =
+{
+  sourcePath : sourcePath( 'amid/l1/graphTools/IncludeTop.s', 'wgraphtools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.GraphSystem },
+}
+
+// let wGraphLive =
+// {
+//   sourcePath : sourcePath( 'amid/l1/graphTools/IncludeLive', 'wgraphlive' ),
+//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
+// }
+
+let wSchema =
+{
+  sourcePath : sourcePath( 'amid/l1/schema/IncludeMid.s', 'wSchema' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.schema },
+}
+
+let wStxt =
+{
+  sourcePath : sourcePath( 'amid/l1/stxt/Include.s', 'wstxtparser' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.stxt && !!_global.wTools.stxt.Parser },
+}
+
+let wLoggerSocket =
+{
+  sourcePath : sourcePath( 'amid/l1_logger/Socket.s', 'wloggersocket' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LoggerSocketReceiver },
+}
+
+// mid / l3
+
+let wStager =
+{
+  sourcePath : sourcePath( 'amid/l3/stager/Stager.s', 'wstager' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stager },
+}
+
+let wIntrospector =
+{
+  sourcePath : sourcePath( 'amid/l3/introspector/IncludeMid.s', 'wintrospectorbasic' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.introspector && !!_global.wTools.thisFile },
+}
+
+let wPersistent =
+{
+  sourcePath : sourcePath( 'amid/l3/persistent/Include.s', 'wpersistent' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.persistent },
+}
+
+let wRemote =
+{
+  sourcePath : sourcePath( 'amid/l3/remote/Include.s', 'wremote' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.remote },
+}
+
+let wGitTools =
+{
+  sourcePath : sourcePath( 'amid/l3/git/IncludeMid.s', 'wgittools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
+}
+
+let wNpmTools =
+{
+  sourcePath : sourcePath( 'amid/l3/npm/IncludeMid.s', 'wnpmtools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.npm },
+}
+
+let wYamlTools =
+{
+  sourcePath : sourcePath( 'amid/l3/yaml/IncludeMid.s', 'wyamltools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
+}
+
+//
+
 let wRegexpObject =
 {
   sourcePath : sourcePath( 'amid/bclass/RegexpObject.s', 'wRegexpObject' ),
@@ -335,12 +419,6 @@ let wCommandsConfig =
 {
   sourcePath : sourcePath( 'amid/l7/commands/mixin/CommandsConfig.s', 'wcommandsconfig' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfig },
-}
-
-let wStxt =
-{
-  sourcePath : sourcePath( 'amid/l1/stxt/Include.s', 'wstxtparser' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.stxt && !!_global.wTools.stxt.Parser },
 }
 
 let wFiles =
@@ -409,30 +487,6 @@ let wStateSession =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
 }
 
-let wStager =
-{
-  sourcePath : sourcePath( 'amid/l3/stager/Stager.s', 'wstager' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stager },
-}
-
-let wIntrospector =
-{
-  sourcePath : sourcePath( 'amid/l3/introspector/IncludeMid.s', 'wintrospectorbasic' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.introspector && !!_global.wTools.thisFile },
-}
-
-let wPersistent =
-{
-  sourcePath : sourcePath( 'amid/l3/persistent/Include.s', 'wpersistent' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.persistent },
-}
-
-let wRemote =
-{
-  sourcePath : sourcePath( 'amid/l3/remote/Include.s', 'wremote' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.remote },
-}
-
 let wNameMapper =
 {
   sourcePath : sourcePath( 'amid/l5_mapper/NameMapper.s', 'wnamemapper' ),
@@ -461,48 +515,6 @@ let wTemplateFileWriter =
 {
   sourcePath : sourcePath( 'amid/l5_mapper/TemplateFileWriter.s', 'wtemplatefilewriter' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
-}
-
-let wGraphBasic =
-{
-  sourcePath : sourcePath( 'amid/l1/graphBasic/IncludeTop.s', 'wgraphbasic' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.AbstractGraphSystem },
-}
-
-let wGraphTools =
-{
-  sourcePath : sourcePath( 'amid/l1/graphTools/IncludeTop.s', 'wgraphtools' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.GraphSystem },
-}
-
-let wGitTools =
-{
-  sourcePath : sourcePath( 'amid/l3/git/IncludeMid.s', 'wgittools' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
-}
-
-let wNpmTools =
-{
-  sourcePath : sourcePath( 'amid/l3/npm/IncludeMid.s', 'wnpmtools' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.npm },
-}
-
-let wYamlTools =
-{
-  sourcePath : sourcePath( 'amid/l3/yaml/IncludeMid.s', 'wyamltools' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
-}
-
-// let wGraphLive =
-// {
-//   sourcePath : sourcePath( 'amid/l1/graphTools/IncludeLive', 'wgraphlive' ),
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
-// }
-
-let wSchema =
-{
-  sourcePath : sourcePath( 'amid/l1/schema/IncludeMid.s', 'wSchema' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.schema },
 }
 
 let wScriptLauncher =
@@ -727,6 +739,27 @@ let Modules =
 
   // mid
 
+  // mid / l1
+
+  wGraphBasic,
+  wGraphTools,
+  wSchema,
+  wStxt,
+
+  wLoggerSocket,
+
+  // mid / l3
+
+  wStager,
+  wIntrospector,
+  wPersistent,
+  wRemote,
+  wGitTools,
+  wNpmTools,
+  wYamlTools,
+
+  //
+
   wRegexpObject,
   wColor,
   wColor256,
@@ -734,7 +767,6 @@ let Modules =
   wVocabulary,
   wCommandsAggregator,
   wCommandsConfig,
-  wStxt,
 
   wFiles,
   wFilesArchive,
@@ -748,10 +780,6 @@ let Modules =
   wVerbal,
   wStateStorage,
   wStateSession,
-  wStager,
-  wIntrospector,
-  wPersistent,
-  wRemote,
 
   wNameMapper,
   wTemplateTreeResolver,
@@ -759,18 +787,6 @@ let Modules =
   wTemplateTreeEnvironment,
   wTemplateFileWriter,
 
-  // wGraph,
-  // wGraphLive,
-
-  wGraphBasic,
-  wGraphTools,
-
-  wGitTools,
-  wNpmTools,
-  wYamlTools,
-
-
-  wSchema,
   wScriptLauncher,
   wExchangePoint,
   wCommunicator,
