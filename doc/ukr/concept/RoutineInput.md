@@ -67,7 +67,7 @@ function someFunction1( optionsMap )
     // some code
   }
 }
-bar( { option1 : 1, option2 : 2 } ); // logs option1
+someFunction1( { option1 : 1, option2 : 2 } ); // logs option1
 ```
 В приведеному вище спрощеному прикладі рутина `someFunction1` приймає як аргумент мапу опцій. Цей спосіб передачі вхідних даних 
 має ряд переваг в порівнянні з масивом аргументів:
@@ -79,7 +79,7 @@ bar( { option1 : 1, option2 : 2 } ); // logs option1
 ```js
 function someFunction2( mapOptions )
 {
-  let result = someFunction( mapOptions );
+  let result = someFunction1( mapOptions );
   // some code
 }
 ```
@@ -98,7 +98,7 @@ function someFunction( o )
   o.randomTotal = someFunction.defaults.randomTotal;
 
   const result = [];
-  for ( let i = 0; i < o.randomTotal; i++ )
+  for( let i = 0; i < o.randomTotal; i++ )
   result.push( _.intRandom( [ -100, 100 ] ) );
 
   return result;
