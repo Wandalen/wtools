@@ -15,6 +15,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/RoutineInput.md#мапа-дефолтних-значень">
+    Мапа дефолтних значень
+  </a></summary>
+    Короткий опис...
+</details>
+
+<details>
   <summary><a href="./concept/Vectorization.md#векторизація">
     Векторизація
   </a></summary>
