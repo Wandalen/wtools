@@ -21,7 +21,7 @@ The `arrayRemoveElement` routine contains the following arguments:
 - comparison element `{ val : 0 }`;
 - evaluator `( e ) => e.val`.
 
-To remove the `{val: 0}` element from the `dst` container, you cannot simply use the comparison` === `.
+To remove the `{val: 0}` element from the `dst` container, you cannot simply use the comparison  `===`.
 You must first convert elements to their equivalent forms.
 The `arrayRemoveElement` routine iterates over the elements of the array, applying the evaluator at each step to both
 the container element and the comparison element.
@@ -35,16 +35,16 @@ _.arrayRemoveElement( dst, 0, ( e ) => e.val );
 console.log( result );
 // log : [ { val : 3 }, { val : 0 }, { val : 5 } ]
 ```
-Евалуатор не виявив жодного співпадіння, адже другий агрумен `0` після застосування евалуатора матиме значення `undefined`. 
-Жоден елемент в контейнері `dst` після застосування евалуатора не перетвориться в таке значення.
-Ця проблема вирішується у прикладі нижче.
+The evaluator did not find any matches, because the second argument `0` after the conversion will have the value` undefined`.
+No element in the `dst` container will be converted to this value after using the evaluator.
+This problem is solved in the example below.
 
-Якщо евалуатор складається з двох рутин, то перша застосовується до елементів контейнера переданого в першому аргументі, 
-а друга застосовується до елементів контейнера переданого в другому аргументі.
+If the evaluator consists of two routines, the first applies to the elements of the container passed in the first argument,
+and the second applies to the elements of the container passed in the second argument.
 
 **Example: an evaluator consisting of two routines**
 
-Можемо задати два евалуатора, окремо для першого та для другого аргумента.
+We can specify two evaluators, separately for the first and for the second argument.
 
 ```js
 var dst = [ { val : 3 }, { val : 0 }, { val : 5 } ];
@@ -54,11 +54,8 @@ var result = _.arrayRemoveElement( dst, 0, evalutor1, evalutor2 );
 console.log( result );
 // log: [ { val : 3 }, { val : 5 } ]
 ```
-Після виконання програми в контейнері `dst` не залишиться елемента `{ val : 0 }` попри те, що другий аргумент `0`.
-Евалуатор `evalutor1` застосовується лише до контейнера `dst`, а евалуатор `evaluator2` застосовується лише 
-другого аргумента, який є скаляром `0`. 
-
-[Повернутись до змісту](../README.md#концепції)
-
+After executing the program in the `dst` container there will be no element `{val: 0}` despite the fact that the second argument is `0`.
+The `evalutor1` applies only to the elements of the` dst` container, and the `evaluator2` applies only to the second argument,
+which is the` 0` scalar.
 
 [Back to content](../README.md#concepts)
