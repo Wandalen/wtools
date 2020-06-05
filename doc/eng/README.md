@@ -27,7 +27,10 @@
   <summary><a href="./concept/Evaluator.md#evaluator">
     Evaluator
   </a></summary>
-  Some description
+    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them.
+    If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>.
+    The evaluator as a callback function is passed to the routines intended for working with 
+    <a href="./concept/Long.md">Long</a> types.
 </details>
 
 <details>
@@ -35,7 +38,8 @@
     Equalizer
   </a></summary>
   This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met, 
-  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with arrays.
+  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with
+  <a href="./concept/Long.md">Long</a> types.
 </details>
 
 <details>

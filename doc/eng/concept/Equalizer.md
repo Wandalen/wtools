@@ -1,7 +1,8 @@
 # Equalizer
 
 This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met, 
-otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with arrays.
+otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with 
+[Long](./Long.md) types.
 
 <!-- xxx : check consistancy -->
 
