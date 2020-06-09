@@ -9,8 +9,37 @@ on :
     branches : [ master ]
 
 jobs :
-  build :
+
+  # xxx : uncomment later
+  # Cancel:
+  #   name : 'Cancel Previous Runs'
+  #   runs-on : ubuntu-latest
+  #   timeout-minutes : 1
+  #   steps :
+  #     - uses : styfle/cancel-workflow-action@0.3.2
+  #       with :
+  #         workflow_id : ${{ github.workflow }}
+  #         access_token : ${{ github.token }}
+
+  Fast :
     if : "!startsWith( github.event.head_commit.message, 'version' )"
+    runs-on : ${{ matrix.os }}
+    strategy :
+      fail-fast  : false
+      matrix :
+        os : [ windows-latest, ubuntu-latest, macos-latest ]
+        node-version : [ 14.x ]
+    steps :
+    - uses : actions/checkout@v2
+    - name : ${{ matrix.node-version }}
+      uses : actions/setup-node@v1
+      with :
+        node-version : ${{ matrix.node-version }}
+    - run : npm i
+    - run : npm test
+
+  Full :
+    if : "startsWith( github.event.head_commit.message, 'version' )"
     runs-on : ${{ matrix.os }}
     strategy :
       fail-fast  : false

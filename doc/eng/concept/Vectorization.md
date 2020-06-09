@@ -58,7 +58,7 @@ console.log( getFullName2( user ) );
 // John Smith
 console.log( getFullName2( users ) );
 // [ 'John Smith', 'Samantha Blum', 'Edward Pitt' ]
-```  
+```
 
 ### Manual vectorization
 

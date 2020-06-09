@@ -353,20 +353,15 @@ function _Setup9()
 
   _.assert( !!_.time && !!_.time.now );
 
+  _.setup.startTime = _.time.now();
+
 }
 
 // --
 // routines
 // --
 
-let Fields =
-{
-
-  _entryProcedureStack : null,
-
-}
-
-let Routines =
+let Extension =
 {
 
   _errUncaughtHandler2,
@@ -379,11 +374,14 @@ let Routines =
 
   _Setup9,
 
+  //
+
+  startTime : null,
+  _entryProcedureStack : null,
+
 }
 
-Object.assign( Self, Fields );
-Object.assign( Self, Routines );
-
+Object.assign( Self, Extension );
 Self._Setup9();
 
 // --

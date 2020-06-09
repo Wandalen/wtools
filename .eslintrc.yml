@@ -129,9 +129,9 @@ rules :
     - max : 3
   max-len :
     - error
-    -
-      code : 130
+    - code : 130
       comments : 130
+      ignoreComments : true
       ignoreUrls : true
       ignoreStrings : true
       ignoreRegExpLiterals : true
@@ -184,7 +184,7 @@ rules :
   no-labels : error
   no-lone-blocks : error
   no-lonely-if : off
-  no-loop-func : error
+  no-loop-func : off
   no-magic-numbers : off
   no-mixed-operators : off
   no-mixed-requires : error

@@ -113,6 +113,6 @@ console.log( typeof a, typeof b, typeof c );
 
 String types are indicated as above, that is, in single quotes, in double quotes, or the data type is created using the `String` constructor.
 
-The strings in `JavaScript` after the definition remain unchanged.
+The strings in `JavaScript` after the declaration remain unchanged.
 
 [Back to content](../README.md#Concepts)
