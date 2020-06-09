@@ -1,7 +1,6 @@
 const _ = require( 'wTools' );
 
 /* operations for regular arrays are performed on `unroll-arrays` too  */
-
 // creating unroll array
 var unroll = _.unrollMake( [ 2, 3, 4 ] );
 var result = _.arrayAppend( unroll, 5 ); // returns [ 2, 3, 4, 5 ]
@@ -13,7 +12,6 @@ unroll.push( 'str' );
 console.log( _.unrollIs( unroll ) ); // true
 
 /* operations for `unroll-arrays` are performed on regular arrays too */
-
 var arr = [ 0, 1, 2, 3 ];
 var result = _.unrollPrepend( arr, 4 ); // returns [ 4, 0, 1, 2, 3 ]
 
@@ -48,7 +46,6 @@ var result = _.unrollNormalize( [ 0, 7, unroll1, [ unroll2, unroll1 ] ] ); // re
 console.log( _.unrollIs( result ) ); // false
 
 /* unrolling of multidimensional 'unroll-arrays' */
-
 var unroll1 = _.unrollMake( [ 1, 2 ] );
 var unroll2 = _.unrollMake( [ 3, 4 ] );
 var unroll3 = _.unrollMake( [ 5, 6 ] );
