@@ -78,7 +78,7 @@
 
 <details>
   <summary><a href="./concept/TypePrimitive.md#тип-string">
-    Тип string
+    Тип <code>string</code>
   </a></summary>
     Примітивний тип даних для представлення текстових даних.
 </details>
@@ -98,10 +98,10 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypeUnroll.md">
+  <summary><a href="./concept/TypeUnroll.md#тип-unroll">
     Тип <code>unroll</code>
   </a></summary>
-    <code>Unroll</code> - тип даних - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над ним.
+    Тип даних <code>unroll</code> - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над ним.
 </details>
 
 <details>
