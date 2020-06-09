@@ -1,6 +1,11 @@
 const _ = require( 'wTools' );
 
-// unroll array
-var unroll = _.unrollMake( [ 2, 3, 4 ] );
-var result = _.arrayAppend( unroll, 5 ); // returns [ 2, 3, 4, 5 ]
-console.log( _.unrollIs( result ) ); // true
+var unroll1 = _.unrollMake( [ 1, 1, 3 ] );
+var unroll2 = _.unrollMake( [ 4, 5, 6 ] );
+var unroll3 = _.unrollMake( [ 7, 8, 9 ] );
+unroll1[ 3 ] = unroll2;
+unroll2[ 3 ] = unroll3;
+console.log( unroll1 );
+
+var result = _.unrollFrom( [ 'a', 'b', unroll1 ] );
+console.log( result );

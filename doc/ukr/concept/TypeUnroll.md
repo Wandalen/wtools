@@ -1,79 +1,62 @@
 # Тип `unroll`
 
-Тип даних `unroll` - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над ним.
+Тип даних `unroll` - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над останнім.
 
-При виконанні над `unroll-масивом` операцій як зі звичайним масивом, він веде себе як звичайний масив і не змінює свого типу.
-Над `unroll-масивами` можливо виконувати операції, як і над звичайним масивом: `Prepend`, `Append`, `Remove`, `Replace`,
-`Flatten`. Якщо виконуються операції рутинами, в назві яких є префікс `unroll`, то вкладення `unroll-масивів` розгортається.
-В результаті розгортання `unroll-масивів`, кожен елемент `unroll-масиву` стане елементом масиву в якому знаходився
-`unroll-масив`, а сам `unroll-масив` перестане бути елементом свого контейнера - відбудеться розгортання.
-
-Результатом операції над багато-рівневим масивом `unroll-масивів` в якому є інші `unroll-масиви` буде плоский масив,
-що складається із елементів, котрі містилися в вкладених `unroll-масивах`. Якщо масив має декілька рівнів вкладення,
-то вкладені `unroll-масиви` розгортаються до найближчого звичайного масиву. Якщо на всіх рівнях вкладення знаходяться
-`unroll-масиви`, то такий масив розгортається до плаского масиву.
-
-Рутини призначені для роботи з `unroll-масивами` можна виконувати над звичайними масивами. Така рутина не змінює тип масиву.
-
-### Приклади
-
-Виконання над `unroll-масивом` операції звичайного масиву
-
+При виконанні над `unroll-масивом` операцій, призначених для звичайного масиву(`arrayPrepend`, `arrayAppend`, `arrayRemove`,
+`arrayReplace`, `arrayFlatten` та будь-яких із Array.prototype), він веде себе як звичайний масив і не змінює свого типу.
 ```js
-// unroll array
+// creating unroll array
 var unroll = _.unrollMake( [ 2, 3, 4 ] );
+var result = _.arrayAppend( unroll, 5 ); // returns [ 2, 3, 4, 5 ]
 
-var result = _.arrayAppend( unroll, 5 );
-// returns [ 2, 3, 4, 5 ]
-_.unrollIs( result );
-// returns true
+console.log( _.unrollIs( result ) ); // true
+
+unroll.push( 'str' );
+
+console.log( _.unrollIs( unroll ) ); // true
 ```
 
-Виконання над звичайним масивом операції для `unroll-масивів`
-
+Рутини призначені для роботи з `unroll-масивами` можна застосовувати до звичайних масивів, це не змінює їх тип.
 ```js
-var result = _.unrollAppend( [ 0, 1, 2, 3 ], 4 );
-// returns [ 0, 1, 2, 3, 4 ]
-_.unrollIs( result );
-// returns false
+var arr = [ 0, 1, 2, 3 ];
+var result = _.unrollPrepend( arr, 4 ); // returns [ 4, 0, 1, 2, 3 ]
+
+console.log( _.unrollIs( result ) ); // false
 ```
 
-Додавання елементів до `unroll-масиву` рутиною для роботи з `unroll-масивами`
-
+При використанні рутин, в назві яких є префікс `unroll` - вміст `unroll-масивів` буде розгорнено.
+В результаті розгортання `unroll-масивів`, кожен елемент `unroll-масиву` стане елементом масиву в якому знаходився
+`unroll-масив`, а сам `unroll-масив` перестане бути елементом свого контейнера.
 ```js
-var unroll = _.unrollMake( [ 0, 1, 'str' ] );
-var result = _.unrollAppend( unroll, 2, unroll );
-// returns [ 0, 1, 'str', 2, 0, 1, 'str' ]
+var unroll1 = _.unrollMake( [ 7, [ 2 ] ] );
+var unroll2 = _.unrollMake( [ 0, 1, 'str' ] );
+var result = _.unrollAppend( unroll1, unroll2 ); // returns [ 7, [ 2 ], 0, 1, 'str' ]
+
+console.log( _.unrollIs( result ) ); //  true
 ```
-
-Додавання елементів до звичайного-масиву рутиною для роботи з `unroll-масивами`
-
-```js
-var unroll = _.unrollMake( [ 0, 1, 'str' ] );
-var result = _.unrollAppend( [ 7, [ 2 ] ], unroll );
-// returns [ 7, [ 2 ], 0, 1, 'str' ]
-```
-
-Розгортання `unroll-масивів`
-
 ```js
 var unroll1 = _.unrollMake( [ '5' ] );
 var unroll2 = _.unrollMake( [ 'str', 3, [ 4 ] ] );
-var result1 = _.unrollNormalize( _.unrollFrom( [ 1, 2, unroll1, unroll2 ] ) );
-// returns [ 1, 2, '5', 'str', 3, [ 4 ] ]
+
+// creating an unroll-array from a given array
+var result = _.unrollFrom( [ 1, 2, unroll1, unroll2 ] ); // returns [ 1, 2, '5', 'str', 3, [ 4 ] ]
+
+console.log( _.unrollIs( result ) ); //  true
 ```
-
-Розгортання `unroll-масивів`
-
 ```js
-
 var unroll1 = _.unrollMake( [ '5' ] );
 var unroll2 = _.unrollMake( [ 'str', [ 3 ] ] );
-var result2 = _.unrollNormalize( [ 0, 7, unroll1, [ unroll2, unroll1 ] ] );
-// returns [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
-_.unrollIs( result2 );
-// returns false
+
+// unrolling elements that are unroll-array
+var result = _.unrollNormalize( [ 0, 7, unroll1, [ unroll2, unroll1 ] ] ); // returns [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
+
+console.log( _.unrollIs( result ) ); // false
 ```
+
+Результатом операції над багато-рівневим масивом `unroll-масивів` в якому є інші `unroll-масиви` буде плоский масив,
+що складається із елементів, котрі містилися у вкладених `unroll-масивах`. Якщо масив має декілька рівнів вкладення,
+то вкладені `unroll-масиви` розгортаються до найближчого звичайного масиву. Якщо на всіх рівнях вкладення знаходяться
+`unroll-масиви`, то такий масив розгортається до плаского масиву.
 
 ### Підсумок
 
