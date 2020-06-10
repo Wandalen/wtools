@@ -27,19 +27,15 @@
   <summary><a href="./concept/Evaluator.md#evaluator">
     Evaluator
   </a></summary>
-    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them.
-    If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>.
-    The evaluator as a callback function is passed to the routines intended for working with 
-    <a href="./concept/Long.md">Long</a> types.
+  Some description
 </details>
 
 <details>
   <summary><a href="./concept/Equalizer.md#equalizer">
     Equalizer
   </a></summary>
-  This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met, 
-  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with
-  <a href="./concept/Long.md">Long</a> types.
+  This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met,
+  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with arrays.
 </details>
 
 <details>
@@ -57,10 +53,10 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypeUnroll.md#type-unroll">
+  <summary><a href="./concept/TypeUnroll.md">
     Type <code>unroll</code>
   </a></summary>
-    Data type <code>unroll</code> - a special type of array that can be unrolled in another array when performing an operation on it.
+    <code>Unroll</code> - data type, it is a special kind of array, capable to be unrolled in another array when performing operations on it.
 </details>
 
 <details>
@@ -98,41 +94,6 @@
     Non-standard implementation of untyped buffer with built-in access to buffer data.
 </details>
 
-<details>
-  <summary><a href="./concept/Modularity.md#The-system-and-its-components">
-    The system and its components
-  </a></summary>
-    A system is a group of interacting or interrelated entities that form a unified whole.
-</details>
-
-<details>
-  <summary><a href="./concept/Modularity.md#Interface">
-    Interface
-  </a></summary>
-    Interface is a shared boundary between system components.
-</details>
-
-<details>
-  <summary><a href="./concept/Modularity.md#Documentation">
-    Documentation
-  </a></summary>
-    Documentation is a set of documents to describe interface, its components or concepts behind the system.
-</details>
-
-<details>
-  <summary><a href="./concept/Modularity.md#Test">
-    Test
-  </a></summary>
-    Test is code or procedures which ensure that variation of input of the interface of the system produces expected output.
-</details>
-
-<details>
-  <summary><a href="./concept/Modularity.md#Modularization">
-    Modularization
-  </a></summary>
-    Modularization is the architectural design process of replacing a monolithic system by several modules which are interrelated somehow.
-</details>
-
 ## Tutorials
 
 <details>
@@ -150,6 +111,41 @@
 </details>
 
 ## Theoretical
+
+<details>
+  <summary><a href="./theoretical/Modularity.md#The-system-and-its-components">
+    The system and its components
+  </a></summary>
+    A system is a group of interacting or interrelated entities that form a unified whole.
+</details>
+
+<details>
+  <summary><a href="./theoretical/Modularity.md#Interface">
+    Interface
+  </a></summary>
+    Interface is a shared boundary between system components.
+</details>
+
+<details>
+  <summary><a href="./theoretical/Modularity.md#Documentation">
+    Documentation
+  </a></summary>
+    Documentation is a set of documents to describe interface, its components or concepts behind the system.
+</details>
+
+<details>
+  <summary><a href="./theoretical/Modularity.md#Test">
+    Test
+  </a></summary>
+    Test is code or procedures which ensure that variation of input of the interface of the system produces expected output.
+</details>
+
+<details>
+  <summary><a href="./theoretical/Modularity.md#Modularization">
+    Modularization
+  </a></summary>
+    Modularization is the architectural design process of replacing a monolithic system by several modules which are interrelated somehow.
+</details>
 
 <details>
   <summary><a href="./theoretical/ErrorHandling.md">
@@ -178,4 +174,3 @@
   </a></summary>
     Modularization of the system has several effects on the workflow.
 </details>
-

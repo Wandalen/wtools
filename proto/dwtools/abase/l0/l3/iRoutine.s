@@ -659,7 +659,7 @@ function routinesCompose()
 
 routinesCompose.pre = _routinesCompose_pre;
 routinesCompose.body = _routinesCompose_body;
-routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
+routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose.body.defaults );
 
 //
 
@@ -790,6 +790,81 @@ function routineExtend( dst, src )
 
 //
 
+function routineExtend_( dst, src )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.routineIs( dst ) || dst === null );
+  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
+
+  /* generate dst routine */
+
+  if( dst === null )
+  {
+
+    let dstMap = Object.create( null );
+    for( let a = 0 ; a < arguments.length ; a++ )
+    {
+      let src = arguments[ a ];
+      if( src === null )
+      continue;
+      _.mapExtend( dstMap, src )
+    }
+
+    if( dstMap.pre && dstMap.body )
+    {
+      dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+    }
+    else
+    {
+      _.assert( _.routineIs( src ) );
+      dst = function(){ return src.apply( this, arguments ); }
+    }
+  }
+
+  /* shallow clone properties of dst routine */
+
+  for( let s in dst )
+  {
+    let property = dst[ s ];
+    if( _.mapIs( property ) )
+    {
+      property = _.mapExtend( null, property );
+      dst[ s ] = property;
+    }
+  }
+
+  /* extend dst routine */
+
+  for( let a = 0 ; a < arguments.length ; a++ )
+  {
+    let src = arguments[ a ];
+    if( src === null )
+    continue;
+    _.assert( _.mapLike( src ) || _.routineIs( src ) );
+    for( let s in src )
+    {
+      let property = src[ s ];
+      let d = Object.getOwnPropertyDescriptor( dst, s );
+      if( d && !d.writable )
+      continue;
+      if( _.objectIs( property ) )
+      {
+        _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+        // property = Object.create( property );
+        property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
+        if( dst[ s ] )
+        _.mapSupplement( property, dst[ s ] );
+      }
+      dst[ s ] = property;
+    }
+  }
+
+  return dst;
+}
+
+//
+
 function routineDefaults( dst, src, defaults )
 {
 
@@ -832,7 +907,7 @@ function routineFromPreAndBody_pre( routine, args )
 function routineFromPreAndBody_body( o )
 {
 
-  _.assert( arguments.length === 1 ); // args, r, o, k
+  _.assert( arguments.length === 1 );
 
   if( !_.routineIs( o.pre ) )
   {
@@ -882,7 +957,7 @@ function routineFromPreAndBody_body( o )
 
   _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routineExtend( callPreAndBody, o.body );
+  _.routineExtend_( callPreAndBody, o.body );
 
   callPreAndBody.pre = o.pre;
   callPreAndBody.body = o.body;
@@ -1825,7 +1900,8 @@ let Routines =
   routineOptionsFromThis,
 
   routinesCompose,
-  routineExtend,
+  routineExtend, /* xxx : deprecate */
+  routineExtend_,
   routineDefaults,
   routineFromPreAndBody,
 

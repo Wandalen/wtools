@@ -67,30 +67,30 @@ function samples( test )
     if( _.longHas( found[ i ].exts, 'throwing' ) )
     {
       appStartNonThrowing( { execPath : found[ i ].relative } )
-      .then( ( got ) =>
+      .then( ( op ) =>
       {
         console.log( _.time.spent( startTime ) );
         test.description = 'nonzero exit code';
-        test.notIdentical( got.exitCode, 0 );
+        test.notIdentical( op.exitCode, 0 );
         return null;
       } )
     }
     else
     {
       appStartNonThrowing( { execPath : found[ i ].relative } )
-      .then( ( got ) =>
+      .then( ( op ) =>
       {
         console.log( _.time.spent( startTime ) );
         test.description = 'good exit code';
-        test.identical( got.exitCode, 0 );
-        if( got.exitCode )
+        test.identical( op.exitCode, 0 );
+        if( op.exitCode )
         return null;
         test.description = 'have no uncaught errors';
-        test.identical( _.strCount( got.output, 'ncaught' ), 0 );
-        test.identical( _.strCount( got.output, 'rror' ), 0 );
+        test.identical( _.strCount( op.output, 'ncaught' ), 0 );
+        test.identical( _.strCount( op.output, 'rror' ), 0 );
         test.description = 'have some output';
-        test.ge( got.output.split( '\n' ).length, 1 );
-        test.ge( got.output.length, 3 );
+        test.ge( op.output.split( '\n' ).length, 1 );
+        test.ge( op.output.length, 3 );
         return null;
       } )
     }
@@ -105,6 +105,7 @@ function samples( test )
 
 function eslint( test )
 {
+  let context = this;
   let rootPath = path.join( __dirname, '..' );
   let eslint = process.platform === 'win32' ? 'node_modules/eslint/bin/eslint' : 'node_modules/.bin/eslint';
   eslint = path.join( rootPath, eslint );
@@ -117,8 +118,9 @@ function eslint( test )
     execPath : eslint,
     mode : 'fork',
     currentPath : rootPath,
-    args : [ '-c', '.eslintrc.yml', '--ext', '.js,.s,.ss', '--ignore-pattern', '*.html', '--ignore-pattern', '*.txt' ],
-    throwingExitCode : 0
+    args : [ '-c', '.eslintrc.yml', '--ext', '.js,.s,.ss', '--ignore-pattern', '*.html', '--ignore-pattern', '*.txt', '--ignore-pattern', '*.png' ],
+    throwingExitCode : 0,
+    outputCollecting : 1,
   } )
 
   /**/
@@ -128,9 +130,11 @@ function eslint( test )
     test.case = 'eslint proto';
     return start( 'proto/**' );
   } )
-  .then( ( got ) =>
+  .then( ( op ) =>
   {
-    test.identical( got.exitCode, 0 );
+    test.identical( op.exitCode, 0 ); debugger;
+    if( op.output.length < 1000 )
+    logger.log( op.output );
     return null;
   } )
 
@@ -141,12 +145,16 @@ function eslint( test )
   {
     test.case = 'eslint samples';
     return start( 'sample/**' )
-    .then( ( got ) =>
+    .then( ( op ) =>
     {
-      test.identical( got.exitCode, 0 );
+      test.identical( op.exitCode, 0 );
+      if( op.output.length < 1000 )
+      logger.log( op.output );
       return null;
     } )
   } )
+
+  /**/
 
   return ready;
 }
@@ -160,7 +168,7 @@ var Self =
 
   name : 'Integration',
   routineTimeOut : 500000,
-  silencing : 1,
+  silencing : 0,
 
   tests :
   {

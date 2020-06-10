@@ -111,9 +111,9 @@ let wArraySparse =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sparse },
 }
 
-let wAppBasic =
+let wProcess =
 {
-  sourcePath : sourcePath( 'abase/l4_process/Basic.s', 'wappbasic' ),
+  sourcePath : sourcePath( 'abase/l4_process/Basic.s', 'wprocess' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.process && !!_global.wTools.process.start },
 }
 
@@ -699,7 +699,7 @@ let Modules =
   wLookerExtra,
   wArraySorted,
   wArraySparse,
-  wAppBasic,
+  wProcess,
   wUriBasic,
   wTraverser,
   wBaseEncoder,
@@ -860,7 +860,7 @@ module[ 'exports' ] = _;
 - wequaler -> wequaler
 - wpathbasic -> wpathbasic
 - wuribasic -> wuribasic
-- wappbasic -> wappbasic
+- wprocess -> wprocess
 - wentitybasic -> wentitybasic
 - wweburibasic -> wweburibasic
 - wroutinebasic -> wroutinebasic
@@ -869,7 +869,7 @@ module[ 'exports' ] = _;
 - wEqualer -> wEqualer
 - wPathBasic -> wPathBasic
 - wUriBasic -> wUriBasic
-- wAppBasic -> wProcessBasic
+- wProcess -> wProcessBasic
 - wEntityBasic -> wEntityBasic
 - wWebUriBasic -> wWebUriBasic
 - wRoutineBasic -> wRoutineBasic

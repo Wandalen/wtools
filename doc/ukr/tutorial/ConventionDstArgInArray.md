@@ -1,116 +1,53 @@
-# Array routines call conventions: dst argument
+# Конвенції рутин _.array*: аргумент dst
 
-Про що свідчить використання аргумента <code>dst</code>.
-
-Рутини модуля, що виконують операції з масивами та мапами можуть містити аргументи, котрі містять приставки `src` i `dst`.
+Про що свідчить використання аргументів <code>dst</code> і <code>src</code>.
 
 ### Використання рутин з аргументами `src` i `dst`
 
-<details>
-  <summary><u>Структура файлів</u></summary>
-
-```
-argument
-    ├── SrcAndDst.js
-    └── package.json
-```
-
-</details>
-
-Створіть приведену конфігурацію для порівняння рутин, що використовують в аргументах `src` i `dst`.
-
-Для використання рутин треба підключити модуль `Tools`. Скопіюйте приведений нижче код в файл `package.json`.
-
-<details>
-    <summary><u>Код файла <code>package.json</code></u></summary>
-
-```json    
-{
-  "dependencies": {
-    "wTools": ""
-  }
-}
-```
-
-</details>
-
-Для встановлення залежностей скористуйтесь командою `npm install`. Після встановлення залежностей модуль готовий до роботи.
-
-На прикладі рутин `arrayAppend` i `arrayCountElement` розглянемо підходи в використанні аргументів. Рутина `arrayAppend` в якості першого аргумента приймає `dstArray` - масив призначення, а другим `ins` - елемент, що буде додано. Рутина `arrayCountElement` в якості першого аргументу приймає `srcArray`, а другим - `element`, елемент для порівняння.
-
-<details>
-  <summary><u>Код файла <code>SrcAndDst.js</code></u></summary>
+Найменування аргументів рутин `_.array*` може розповісти про те, як використовується переданий масив рутиною.
 
 ```js
-require( 'wTools' );
+let srcArray = [ 1, 2, 'a', 'b', true, 1,  [ 1 ] ];
+let result = _.arraySlice( srcArray );
 
-// original array
-
-let origin = [ 1, 2, 'a', 'b', true, 1,  [ 1 ] ];
-
-// second argument in the routines
-
-let elem = 1;
-
-// routine uses argument srcArray
-
-let srcArray = wTools.longSlice( origin );
-
-let result = wTools.arrayCountElement( srcArray, elem );
-
-console.log( 'The result is:' );
-console.log( result );
-console.log( 'The original array is:');
-console.log( origin );
-console.log( 'srcArray changed to:' );
-console.log( srcArray );
-
-// routine uses argument dstArray
-
-let dstArray = wTools.longSlice( origin );
-
-let result1 = wTools.arrayAppend( dstArray, elem );
-
-console.log( 'The result is:' );
-console.log( result1 );
-console.log( 'The original array is:');
-console.log( origin );
-console.log( 'dstArray changed to:' );
-console.log( dstArray );
+console.log( `The original array is : ${ srcArray }` );
+// log : The original array is : [ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
+console.log( `The copied array is : ${ result }` );
+// log : The copied array is : [ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
+console.log( srcArray === result );
+// log : false
 ```
 
-</details>
+Рутина `arraySlice` приймає масив `srcArray` ( назву аргумента відповідає назві параметра рутини ) та повертає його копію. Приставка `src` в назві параметра говорить про те, що переданий масив використовується як джерело даних. Дані джерела при виконанні рутин не змінюються, про це свідчить вивід консолі. 
 
-Внесіть в файл `SrcAndDst.js` приведений код.
+```js
+let dstArray = [ 1, 2, 'a', 'b', true, 1,  [ 1 ] ];
+let result = _.arrayEmpty( dstArray );
 
-На початку файла приведені спільні змінні для обох рутин. Змінна `origin` - початковий масив для передачі в рутини. Змінна `elem` використовується в якості другого аргумента рутин `arrayAppend` та `arrayCountElement`.
-
-Для створення копій масиву `origin` використовується рутина `longSlice`. Якщо не задати початок і кінець масиву для копіювання, рутина `longSlice` копіює весь масив від початку до кінця.
-
-<details>
-  <summary><u>Вивід команди <code>node SrcAndDst.js</code></u></summary>
-
-```
-$ node SrcAndDst.js
-The result is:
-2
-The original array is:
-[ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
-srcArray changed to:
-[ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
-The result is:
-[ 1, 2, 'a', 'b', true, 1, [ 1 ], 1 ]
-The original array is:
-[ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
-dstArray changed to:
-[ 1, 2, 'a', 'b', true, 1, [ 1 ], 1 ]
+console.log( `The original array is : ${ dstArray }` );
+// log : The original array is : []
+console.log( `The copied array is : ${ result }` );
+// log : The copied array is : []
+console.log( dstArray === result );
+// log : true
 ```
 
-</details>
+Рутина `arrayEmpty` приймає масив `dstArray` ( назву аргумента відповідає назві параметра рутини ) та очищає його від елементів. Приставка `dst` в назві параметра говорить про те, що переданий масив використовується як контейнер призначення і результат виконання операції записується в нього. Вивід консолі свідчить про те, що рутина очистила масив `dstArray`, а змінна `result` є ще одним посиланням на даний масив.
 
-Запустіть виконання файла командою `node SrcAndDst.js`. Порівняйте вивід з приведеним вище.
+```js
+let dstArray = [ 1, 2 ];
+let srcArray = [ [ 3 ], [ 4 ] ];
+let result = _.arrayFlatten( dstArray, srcArray );
 
-Рутина `arrayCountElement` повернула кількість входження елементу `1` в масиві `srcArray`. При цьому копія і оригінал масиву ідентичні. А рутина `arrayAppend`, котра використовує аргумент `dstArray` повернула новий масив `result`, що має значення `[ 1, 2, 'a', 'b', true, 1, [ 1 ], 1 ]`. При порівнянні оригіналу масиву і копії в `dstArray` видно, що рутина `arrayAppend` змінила копію.
+console.log( `The destination array is : ${ dstArray }` );
+// log : The destination array is : [ 1, 2, 3, 4 ]
+console.log( `The source array is : ${ srcArray }` );
+// log : The source array is : [ [ 3 ], [ 4 ] ]
+console.log( dstArray === result );
+// log : true
+```
+
+Рутина одночасно може містити параметри з приставкою `dst` і `src`. В такому разі контейнер призначення завжди записується першим. В приведеному вище прикладі рутина `arrayFlatten` додала до масиву `dstArray` значення з розгорнутого масиву `srcArray`. При цьому масив `srcArray` не змінився.
 
 ### Підсумок
 

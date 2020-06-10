@@ -92,10 +92,9 @@ rules :
   indent :
     - error
     - 2
-    -
-      outerIIFEBody : 0
+    - outerIIFEBody : 0
       MemberExpression : 0
-      ignoredNodes : [ "IfStatement.body", "WhileStatement.body", "ForStatement.body" ]
+      ignoredNodes : [ "IfStatement > IfStatement.consequent", "IfStatement > IfStatement.alternate", "IfStatement.body", "WhileStatement.body", "ForStatement.body" ]
   indent-legacy : off
   init-declarations : off
   key-spacing :

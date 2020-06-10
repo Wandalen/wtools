@@ -172,31 +172,31 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/ConventionCallbecksInArray.md">
-    Array routines call conventions: callbacks
+  <summary><a href="./tutorial/ConventionCallbacksInArray.md">
+    Конвенції рутин _.array*: callbacks
   </a></summary>
     Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
 </details>
 
 <details>
   <summary><a href="./tutorial/ConventionDstArgInArray.md">
-    Array routines call conventions: dst argument
+    Конвенції рутин _.array*: аргумент dst
   </a></summary>
-    Про що свідчить використання аргумента <code>dst</code>.
+    Про що свідчить використання аргументів <code>dst</code> і <code>src</code>.
+</details>
+
+<details>
+  <summary><a href="./tutorial/ConventionDstNull.md">
+    Конвенції: dst=null
+  </a></summary>
+    Для чого передається <code>null</code> в параметр <code>dst</code>.
 </details>
 
 <details>
   <summary><a href="./tutorial/ConventionDefaultsMapInRoutine.md">
-    Routines call convention: routine defaults map
+    Конвенції: мапа дефолтних значень
   </a></summary>
-    Як зберігаються та змінюються налаштування за замовчуванням в рутинах.
-</details>
-
-<details>
-  <summary><a href="./tutorial/ConventionDstNullNew.md">
-    Call conventions: dst - null
-  </a></summary>
-    Передача значення <code>null</code> в параметр <code>dst</code>.
+    Як зберігаються та змінюються налаштування в рутинах.
 </details>
 
 <details>

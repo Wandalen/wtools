@@ -10,16 +10,15 @@ on :
 
 jobs :
 
-  # xxx : uncomment later
-  # Cancel:
-  #   name : 'Cancel Previous Runs'
-  #   runs-on : ubuntu-latest
-  #   timeout-minutes : 1
-  #   steps :
-  #     - uses : styfle/cancel-workflow-action@0.3.2
-  #       with :
-  #         workflow_id : ${{ github.workflow }}
-  #         access_token : ${{ github.token }}
+  Cancel:
+    name : 'Cancel Previous Runs'
+    runs-on : ubuntu-latest
+    timeout-minutes : 1
+    steps :
+      - uses : styfle/cancel-workflow-action@0.4.0
+        with :
+          access_token : ${{ github.token }}
+          # workflow_id : ${{ github.workflow }}
 
   Fast :
     if : "!startsWith( github.event.head_commit.message, 'version' )"
@@ -36,6 +35,8 @@ jobs :
       with :
         node-version : ${{ matrix.node-version }}
     - run : npm i
+    - run : git config --global user.email "testrunner@example.com"
+    - run : git config --global user.name "TestRunner"
     - run : npm test
 
   Full :
@@ -53,4 +54,6 @@ jobs :
       with :
         node-version : ${{ matrix.node-version }}
     - run : npm i
+    - run : git config --global user.email "testrunner@example.com"
+    - run : git config --global user.name "TestRunner"
     - run : npm test
