@@ -64,13 +64,13 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 50,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 10 times.
+The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 50 000 000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 10 times.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
 ### Measurement results
 
-The measurements results should be compiled into a table indicating the interpreter and its version. The results can vary greatly from interpreter to interpreter, version to version.
+The measurements results should be compiled into a table indicating the interpreter and its version. The results may differ significantly depending on the interpreter and its version.
 
 | Interpretor  | forLoop  | forEach  |
 |--------------|----------|----------|
@@ -83,7 +83,7 @@ The report shows that the `for` loop works twice as fast as the` forEach` loop. 
 
 ### Validity and pitfalls
 
-It is difficult to guarantee the validity of the measurements results, but it is possible to avoid some of the common mistakes. The obtained data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
+It is difficult to guarantee the validity of the measurements results, but it is possible to avoid some common mistakes. The obtained data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
 
 The impact of an environment must be minimized. Weighty tasks that are performing in the background on your machine can significantly distort the result. The results cannot be compared if they were obtained under different conditions. If the environment changes, then the result changes. The results measured on the different machines cannot be compared. And no matter how hard you try, there is still the impact of uncontrollable factors. So, you need to do the measurement several times and take the average or total value.
 
@@ -91,7 +91,7 @@ The measurement cannot be valid if the time interval is a millisecond. Finger ru
 
 Another mistake: including test data generation in the total time. Input data generation takes time. The data should be prepared before the start of time measurement and used when needed.
 
-Interpreter optimization is another pitfall. The interpreter may throw away some of the code if it notices that it is not being used. So the tested algorithm should have valid arguments, and the result of the execution should be used somehow.
+Interpreter optimization is another pitfall. The interpreter may throw away some code if it notices that it is not being used. So the tested algorithm should have valid arguments, and the result of the execution should be used somehow.
 
 ### Summary
 
