@@ -1,12 +1,13 @@
 {
-  "name": "wTools",
-  "version": "0.8.654",
-  "engine": "node >= 8.0.0",
-  "enabled": 1,
-  "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
-  "license": "MIT",
-  "author": "Kostiantyn Wandalen <wanalen@01.school>",
-  "contributors": [
+  "name" : "wTools",
+  "version" : "0.8.660",
+  "engine" : "node >= 10.0.0",
+  "enabled" : 1,
+  "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
+  "license" : "MIT",
+  "author" : "Kostiantyn Wandalen <wanalen@01.school>",
+  "contributors" :
+  [
     "Kostiantyn Wandalen <wanalen@01.school>",
     "Volodymyr M. <volodymyr.migdal@gmail.com>",
     "Ihor O. <iostashvxi@gmail.com>",

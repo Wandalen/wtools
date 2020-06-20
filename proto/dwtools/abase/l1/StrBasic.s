@@ -4632,7 +4632,6 @@ function strLinesNumber( o )
     }
     else if( _.numberIs( o.zeroChar ) )
     {
-      debugger;
       let src = _.arrayIs( o.src ) ? o.src.join( '\n' ) : o.src;
       o.zeroLine = _.strLinesCount( src.substring( 0, o.zeroChar+1 ) );
     }
@@ -4668,23 +4667,6 @@ function strLinesNumber( o )
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
 
-  // if( o.onLine )
-  // for( let l = 0; l < lines.length; l += 1 )
-  // {
-  //   lines[ l ] = o.onLine( [ ( l + o.zeroLine ), ' : ', lines[ l ] ], o.zeroLine + l, o );
-  //   if( lines[ l ] === undefined )
-  //   {
-  //     lines.splice( l, 1 );
-  //     l -= 1;
-  //   }
-  //   _.assert( _.strIs( lines[ l ] ) );
-  // }
-  // else
-  // for( let l = 0; l < lines.length; l += 1 )
-  // {
-  //   lines[ l ] = ( l + o.zeroLine ) + ' : ' + lines[ l ];
-  // }
-
   /* */
 
   return lines.join( '\n' );
@@ -4696,6 +4678,7 @@ strLinesNumber.defaults =
   zeroLine : null,
   zeroChar : null,
   onLine : null,
+  highlighting : '*', /* qqq2 : implement and cover option o.highlighting */
 }
 
 /*
@@ -4746,12 +4729,12 @@ Dmytro : covered
  * @param {Number} [ o.number=0 ] - If true, puts line counter before each line by using o.range[ 0 ] as initial value of a counter.
  * @param {String} [ o.delimteter='\n' ] - Sets new line character.
  * @param {String} [ o.line=null ] - Sets line number from which to start selecting, is used only if ( o.range ) is null.
- * @param {Number} [ o.numberOfLines=3 ] - Sets maximal number of lines to select, is used only if ( o.range ) is null and ( o.line ) option is specified.
+ * @param {Number} [ o.nearestLines=3 ] - Sets maximal number of lines to select, is used only if ( o.range ) is null and ( o.line ) option is specified.
  * @param {String} [ o.selectMode='center' ] - Determines in what way funtion must select lines, works only if ( o.range ) is null and ( o.line ) option is specified.
  * Possible values:
- * - 'center' - uses ( o.line ) index as center point and selects ( o.numberOfLines ) lines in both directions.
- * - 'begin' - selects ( o.numberOfLines ) lines from start point ( o.line ) in forward direction;
- * - 'end' - selects ( o.numberOfLines ) lines from start point ( o.line ) in backward direction.
+ * - 'center' - uses ( o.line ) index as center point and selects ( o.nearestLines ) lines in both directions.
+ * - 'begin' - selects ( o.nearestLines ) lines from start point ( o.line ) in forward direction;
+ * - 'end' - selects ( o.nearestLines ) lines from start point ( o.line ) in backward direction.
  * @returns {string} Returns selected lines as new string or empty if nothing selected.
  *
  * @example
@@ -4780,19 +4763,19 @@ Dmytro : covered
  *
  * @example
  * // setting preferred number of lines to select, line option must be specified
- * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 1 });
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, nearestLines : 1 });
  * // returns 'b'
  *
  * @example
  * // selecting 2 two next lines starting from second
- * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'begin' });
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, nearestLines : 2, selectMode : 'begin' });
  * // returns
  * // 'b
  * // c'
  *
  * @example
  * // selecting 2 two lines starting from second in backward direction
- * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'end' });
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, nearestLines : 2, selectMode : 'end' });
  * // returns
  * // 'a
  * // b'
@@ -4838,11 +4821,11 @@ function strLinesSelect( o )
     if( o.line !== null )
     {
       if( o.selectMode === 'center' )
-      o.range = [ o.line - Math.ceil( ( o.numberOfLines + 1 ) / 2 ) + 1, o.line + Math.floor( ( o.numberOfLines - 1 ) / 2 ) + 1 ];
+      o.range = [ o.line - Math.ceil( ( o.nearestLines + 1 ) / 2 ) + 1, o.line + Math.floor( ( o.nearestLines - 1 ) / 2 ) + 1 ];
       else if( o.selectMode === 'begin' )
-      o.range = [ o.line, o.line + o.numberOfLines ];
+      o.range = [ o.line, o.line + o.nearestLines ];
       else if( o.selectMode === 'end' )
-      o.range = [ o.line - o.numberOfLines+1, o.line+1 ];
+      o.range = [ o.line - o.nearestLines+1, o.line+1 ];
     }
     else
     {
@@ -4932,7 +4915,7 @@ strLinesSelect.defaults =
   range : null,
 
   line : null,
-  numberOfLines : 3,
+  nearestLines : 3,
   selectMode : 'center',
   highlighting : '*',
 
@@ -4952,29 +4935,27 @@ Dmytro : covered
 //
 
 /**
- * Get the nearest ( o.numberOfLines ) lines to the range ( o.charsRange ) from source string( o.src ).
+ *
+ * Get the nearest ( o.nearestLines ) lines to the range ( o.charsRangeLeft ) from source string( o.src ).
  * Returns object with two elements: .
  * Can be called in two ways:
  * - First by passing all parameters in one options map( o ) ;
  * - Second by passing source string( o.src ) and range( o.range ) as array or number;
- *
- * @param { Object } o - Options.
- * @param { String } [ o.src ] - Source string.
- * @param { Array|Number } [ o.range ] - Sets range of lines to select from( o.src ) or single line number.
- * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
- * @returns { Object } o - Returns object with Options with fields:
- * @returns { Array } [ o.splits ] - Array with three entries:
- * o.splits[ 0 ] and o.splits[ 2 ] contains a string with the nearest lines,
- * and o.splits[ 1 ] contains the substring corresponding to the range.
- * @returns { Array } [ o.spans ] - Array with indexes of begin and end of nearest lines.
+
+ * The routine strLinesNearest returns the nearest {-o.numberOfLines-} lines to the range {-o.charsRangeLeft-} from source string {-o.src-}.
+ * Returns object with two elements: splits - array with a substring & the nearest lines and spans - array of indexes of the nearest lines.
+ * Can be called in two ways:
+ * - First by passing all parameters in one options map {-o-} ;
+ * - Second by passing source string {-o.src-} and range {-o.range-} as array or number;
+
  *
  * @example
  * // selecting single line
  * _.strLinesNearest
  * ({
  *   src : `\na\nbc\ndef\nghij\n\n`,
- *   charsRange : [ 2, 4 ],
- *   numberOfLines : 1,
+ *   charsRangeLeft : [ 2, 4 ],
+ *   nearestLines : 1,
  * });
  * // returns o.splits = [ 'a', '\nb', 'c' ];
  * // returns o.spans = [ 1, 2, 4, 5 ];
@@ -4984,17 +4965,26 @@ Dmytro : covered
  * _.strLinesNearest
  * ({
  *   src : `\na\nbc\ndef\nghij\n\n`,
- *   charsRange : 3,
- *   numberOfLines : 2,
+ *   charsRangeLeft : 3,
+ *   nearestLines : 2,
  * });
  * // returns o.splits = [ 'a\n', 'b', 'c' ];
  * // returns o.spans = [ 1, 3, 4, 5 ];
  *
- * @method strLinesNearest
+ * @returns { MapLike } - Returns object with next fields:
+ * splits - Array with three entries:
+ * splits[ 0 ] and splits[ 2 ] contains a string with the nearest lines,
+ * and splits[ 1 ] contains the substring corresponding to the range.
+ * spans - Array with indexes of begin and end of nearest lines.
+ * @param { MapLike } o - Options.
+ * @param { String } o.src - Source string.
+ * @param { Array|Number } o.range - Sets range of lines to select from {-o.src-} or single line number.
+ * @param { Number } o.numberOfLines - Sets number of lines to select.
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.charsRange ) is not a Array or Number.
- * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @throws { Exception } Throw an exception if {-o.src-} is not a String.
+ * @throws { Exception } Throw an exception if {-o.charsRangeLeft-} is not a Array or Number.
+ * @throws { Exception } Throw an exception if {-o-} is extended by unknown property.
+ * @function strLinesNearest
  * @namespace Tools
  */
 
@@ -5003,14 +4993,14 @@ function strLinesNearest_pre( routine, args )
 
   let o = args[ 0 ];
   if( args[ 1 ] !== undefined )
-  o = { src : args[ 0 ], charsRange : args[ 1 ] };
+  o = { src : args[ 0 ], charsRangeLeft : args[ 1 ] };
 
   _.routineOptions( routine, o );
 
-  if( _.numberIs( o.charsRange ) )
-  o.charsRange = [ o.charsRange, o.charsRange+1 ];
+  if( _.numberIs( o.charsRangeLeft ) )
+  o.charsRangeLeft = [ o.charsRangeLeft, o.charsRangeLeft+1 ];
 
-  _.assert( _.rangeIs( o.charsRange ) );
+  _.assert( _.rangeIs( o.charsRangeLeft ) );
 
   return o;
 }
@@ -5021,57 +5011,60 @@ function strLinesNearest_body( o )
 {
   let result = Object.create( null );
   // let resultCharRange = [];
-  let i, numberOfLines;
+  let i, nearestLines;
 
   result.splits = [];
-  result.spans = [ o.charsRange[ 0 ], o.charsRange[ 0 ], o.charsRange[ 1 ], o.charsRange[ 1 ] ];
-  logger.log( 'Result', result )
-  logger.log( )
-  /* */
+  result.spans = [ o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ], o.charsRangeLeft[ 1 ] ];
 
-  if( o.numberOfLines === 0 )
+  // logger.log( 'Result', result )
+  // logger.log( )
+  // /* */
+
+  if( o.nearestLines === 0 )
   {
     // result = [];
     result.splits = [];
     result.splits[ 0 ] = '';
-    result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
+    result.splits[ 1 ] = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
     result.splits[ 2 ] = '';
     return result;
   }
 
   /* */
 
-  let numberOfLinesLeft = Math.ceil( ( o.numberOfLines+1 ) / 2 );
-  numberOfLines = numberOfLinesLeft;
-  if( numberOfLines > 0 )
+  let nearestLinesLeft = Math.ceil( ( o.nearestLines+1 ) / 2 );
+  nearestLines = nearestLinesLeft;
+  if( nearestLines > 0 )
   {
-    for( i = o.charsRange[ 0 ]-1 ; i >= 0 ; i-- )
+    for( i = o.charsRangeLeft[ 0 ]-1 ; i >= 0 ; i-- )
     {
       if( o.src[ i ] === '\n' )
-      numberOfLines -= 1;
-      if( numberOfLines <= 0 )
+      nearestLines -= 1;
+      if( nearestLines <= 0 )
       break;
     }
     i = i+1;
   }
   result.spans[ 0 ] = i;
 
+/*
   // 0 -> 0 + 0 = 0
   // 1 -> 1 + 1 = 2
   // 2 -> 2 + 1 = 3
   // 3 -> 2 + 2 = 4
+*/
 
   /* */
 
-  let numberOfLinesRight = o.numberOfLines + 1 - numberOfLinesLeft;
-  numberOfLines = numberOfLinesRight;
-  if( numberOfLines > 0 )
+  let nearestLinesRight = o.nearestLines + 1 - nearestLinesLeft;
+  nearestLines = nearestLinesRight;
+  if( nearestLines > 0 )
   {
-    for( i = o.charsRange[ 1 ] ; i < o.src.length ; i++ )
+    for( i = o.charsRangeLeft[ 1 ] ; i < o.src.length ; i++ )
     {
       if( o.src[ i ] === '\n' )
-      numberOfLines -= 1;
-      if( numberOfLines <= 0 )
+      nearestLines -= 1;
+      if( nearestLines <= 0 )
       break;
     }
   }
@@ -5083,9 +5076,9 @@ function strLinesNearest_body( o )
   result.splits[ 1 ] = o.src.substring( result.spans[ 1 ], result.spans[ 2 ] );
   result.splits[ 2 ] = o.src.substring( result.spans[ 2 ], result.spans[ 3 ] );
 
-  // result.splits[ 0 ] = o.src.substring( resultCharRange[ 0 ], o.charsRange[ 0 ] );
-  // result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
-  // result.splits[ 2 ] = o.src.substring( o.charsRange[ 1 ], resultCharRange[ 1 ] );
+  // result.splits[ 0 ] = o.src.substring( resultCharRange[ 0 ], o.charsRangeLeft[ 0 ] );
+  // result.splits[ 1 ] = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
+  // result.splits[ 2 ] = o.src.substring( o.charsRangeLeft[ 1 ], resultCharRange[ 1 ] );
 
   return result;
 }
@@ -5093,8 +5086,8 @@ function strLinesNearest_body( o )
 strLinesNearest_body.defaults =
 {
   src : null,
-  charsRange : null,
-  numberOfLines : 3,
+  charsRangeLeft : null,
+  nearestLines : 3,
   // outputFormat : 'map',
 }
 
@@ -5102,28 +5095,76 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
 
 //
 
-function strLinesNearestReport_body( o )
+/**
+ * The routine strLinesNearestLog returns a report about found string from the source string {-o.src-}.
+ * Returns object with 2 elements: nearest - array with a substring & the nearest lines around, report - string with the found substring & surrounding lines.
+ *
+ * @example
+ * // selecting first 5 letters, next 3 letters and rest letters
+ * _.strLinesNearestLog
+ * ({
+ *   src : 'function add( x,y ) { return x + y }',
+ *   charsRangeLeft : [ 5, 8 ],
+ *   gray : 1,
+ *   numberOfLines : 1
+ * });
+ * // returns {
+ * //           nearest : [ 'funct', 'ion', ' add( x,y ) { return x + y }' ],
+ * //           report : '1 : function add( x,y ) { return x + y }'
+ * //         }
+ *
+ * @returns { MapLike } - Returns object with next fileds:
+ *    nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft if {-numberOfLines-} allows, 2 - chars in range {-o.charsRangeLeft-}, 3 - lines to the right of {-o.charsRangeLeft-} if {-numberOfLines-} allows.
+ *    report { String } - report about found string along with surrounding lines {-numberOfLines-}
+ * @param { MapLike } o - Options.
+ * @param { String } o.src - Source string.
+ * @param { Array|Number } o.charsRangeLeft - Sets range of lines to select from {-o.src-} or single line number.
+ * @param { Number } o.numberOfLines - Sets number of lines to select.
+ * @param { Number } o.gray - 0: Paints searched text in yellow, everything else in gray, 1: No highlighting
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if {-o.src-} is not a String.
+ * @throws { Exception } Throw an exception if {-o.charsRangeLeft-} is not a Array or Number.
+ * @throws { Exception } Throw an exception if {-o-} is extended by unknown property.
+ * @function strLinesNearestLog
+ * @namespace Tools
+*/
+
+function strLinesNearestLog_body( o )
 {
-  let result = Object.create( null );
+  let result = o;
 
-  debugger;
+  _.assert( o.sub === null || _.strIs( o.sub ) );
+
+  // debugger;
+  if( !result.nearest )
   result.nearest = _.strLinesNearest.body( o ).splits;
-  // result.linesRange = _.strLinesRangeWithCharRange.body( o );
 
-  result.report = result.nearest.slice();
+  result.log = result.nearest.slice();
+  if( o.gray )
+  {
+    if( o.sub !== null )
+    result.log[ 1 ] = `{- ${result.log[ 1 ]} -} -> {- ${o.sub} -}`;
+  }
+  else
+  {
+    let str;
+    if( o.sub === null )
+    str = _.color.strFormat( result.log[ 1 ], { fg : 'yellow' } );
+    else
+    str = _.color.strFormat( result.log[ 1 ], { fg : 'red' } ) + _.color.strFormat( o.sub, { fg : 'green' } );
+    result.log[ 1 ] = _.color.strUnescape( str );
+  }
+  result.log = result.log.join( '' );
+
+  result.log = _.strLinesSplit( result.log );
   if( !o.gray )
-  result.report[ 1 ] = _.color.strUnescape( _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } ) );
-  result.report = result.report.join( '' );
+  result.log = _.color.strEscape( result.log );
 
-  result.report = _.strLinesSplit( result.report );
-  if( !o.gray )
-  result.report = _.color.strEscape( result.report );
-
-  let f = _.strLinesCount( o.src.substring( 0, o.charsRange[ 0 ] ) )-1;
-  result.report = _.strLinesNumber
+  let zeroLine = _.strLinesCount( o.src.substring( 0, o.charsRangeLeft[ 0 ] ) ) - 1;
+  result.log = _.strLinesNumber
   ({
-    src : result.report,
-    first : f,
+    src : result.log,
+    zeroLine,
     onLine : ( line ) =>
     {
       if( !o.gray )
@@ -5135,19 +5176,20 @@ function strLinesNearestReport_body( o )
     }
   });
 
-  debugger;
   return result;
 }
 
-strLinesNearestReport_body.defaults =
+strLinesNearestLog_body.defaults =
 {
   src : null,
-  charsRange : null,
-  numberOfLines : 3,
+  sub : null,
+  nearest : null, /* qqq2 : cover the option */
+  charsRangeLeft : null,
+  nearestLines : 3,
   gray : 0,
 }
 
-let strLinesNearestReport = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
+let strLinesNearestLog = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestLog_body );
 
 //
 
@@ -5188,11 +5230,11 @@ function strLinesRangeWithCharRange_pre( routine, args )
 
   let o = args[ 0 ];
   if( args[ 1 ] !== undefined )
-  o = { src : args[ 0 ], charsRange : args[ 1 ] }
+  o = { src : args[ 0 ], charsRangeLeft : args[ 1 ] }
 
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( _.rangeIs( o.charsRange ) );
+  _.assert( _.rangeIs( o.charsRangeLeft ) );
   _.assert( _.strIs( o.src ) );
   _.routineOptions( routine, o );
 
@@ -5204,8 +5246,8 @@ function strLinesRangeWithCharRange_pre( routine, args )
 function strLinesRangeWithCharRange_body( o )
 {
 
-  let pre = o.src.substring( 0, o.charsRange[ 0 ] );
-  let mid = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
+  let pre = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
+  let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
   let result = []
 
   result[ 0 ] = _.strLinesCount( pre )-1;
@@ -5217,7 +5259,7 @@ function strLinesRangeWithCharRange_body( o )
 strLinesRangeWithCharRange_body.defaults =
 {
   src : null,
-  charsRange : null,
+  charsRangeLeft : null,
 }
 
 let strLinesRangeWithCharRange = _.routineFromPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
@@ -5350,7 +5392,7 @@ let Proto =
   strLinesNumber,
   strLinesSelect,
   strLinesNearest, /* aaa : check coverage */ /* Dmytro : checked, improved formatting */
-  strLinesNearestReport,
+  strLinesNearestLog, /* qqq2 : cover please */
   strLinesCount,
   strLinesRangeWithCharRange,
 

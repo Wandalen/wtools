@@ -3,11 +3,11 @@ root:
   - wTools.out
 consistency:
   wTools.out.will.yml: &ref_0
-    hash: 0d854f017cfdb601a0b0eb990416292b
-    size: 48730
+    hash: 764f51672ed87465712d441731415a56
+    size: 47021
   ../.ex.will.yml: &ref_1
-    hash: 929dd0ff9220afc144ad11483eb37e23
-    size: 2145
+    hash: a47cab429a59df45409bf603a519a239
+    size: 2146
   ../.im.will.yml: &ref_2
     hash: e0b9ac504d07fa8723c98f50459f4829
     size: 5603
@@ -23,7 +23,7 @@ module:
       enabled: 1
       version: 0.9.0
       interpreters:
-        - njs >= 8.0.0
+        - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
       keywords:
@@ -344,9 +344,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           debug: debug
@@ -361,9 +358,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           debug: release
@@ -378,9 +372,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           debug: debug
@@ -395,9 +386,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           debug: release
@@ -412,9 +400,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           raw: raw
           debug: release
@@ -430,9 +415,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           raw: compiled
@@ -449,9 +431,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: no.tests
           raw: compiled
@@ -467,9 +446,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: only.tests
           raw: compiled
@@ -485,9 +461,6 @@ module:
           prefixPath: ''
         dst:
           prefixPath: ''
-        mandatory: 1
-        dstRewritingOnlyPreserving: 1
-        linking: hardLinkMaybe
         criterion:
           tests: only.tests
           raw: compiled
@@ -1025,7 +998,7 @@ module:
       enabled: 1
       version: 0.9.0
       interpreters:
-        - njs >= 8.0.0
+        - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
       keywords:
@@ -1572,7 +1545,7 @@ module:
           debug: release
       reflect.proto.debug.raw:
         opts:
-          filePath: 'reflector::reflect.proto*'
+          filePath: 'reflector::reflect.proto.debug.raw'
         criterion:
           tests: no.tests
           debug: debug
@@ -1582,7 +1555,7 @@ module:
           - files.reflect
       reflect.proto.release.raw:
         opts:
-          filePath: 'reflector::reflect.proto*'
+          filePath: 'reflector::reflect.proto.release.raw'
         criterion:
           tests: no.tests
           debug: release
@@ -1592,7 +1565,7 @@ module:
           - files.reflect
       reflect.proto.debug.compiled:
         opts:
-          filePath: 'reflector::reflect.proto*'
+          filePath: 'reflector::reflect.proto.debug.compiled'
         criterion:
           tests: no.tests
           debug: debug
@@ -1602,7 +1575,7 @@ module:
           - files.reflect
       reflect.proto.release.compiled:
         opts:
-          filePath: 'reflector::reflect.proto*'
+          filePath: 'reflector::reflect.proto.release.compiled'
         criterion:
           tests: no.tests
           debug: release
@@ -1613,7 +1586,7 @@ module:
       transpile.proto.raw:
         opts:
           entry: 'path::entry.proto.no.tests'
-          filePath: 'reflector::transpile.proto.raw*'
+          filePath: 'reflector::transpile.proto.raw'
         criterion:
           raw: raw
           debug: release
@@ -1623,7 +1596,7 @@ module:
       transpile.proto.no.tests.compiled.debug:
         opts:
           entry: 'path::entry.proto.*=1'
-          filePath: 'reflector::transpile.proto.no.tests.compiled*'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.debug'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1634,7 +1607,7 @@ module:
       transpile.proto.no.tests.compiled.release:
         opts:
           entry: 'path::entry.proto.*=1'
-          filePath: 'reflector::transpile.proto.no.tests.compiled*'
+          filePath: 'reflector::transpile.proto.no.tests.compiled.release'
         criterion:
           tests: no.tests
           raw: compiled
@@ -1646,7 +1619,7 @@ module:
         opts:
           entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: 'reflector::transpile.proto.only.tests.compiled*'
+          filePath: 'reflector::transpile.proto.only.tests.compiled.debug'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1658,7 +1631,7 @@ module:
         opts:
           entry: 'path::entry.proto.*=1'
           external.before: '{path::out.*=1}/Main.s'
-          filePath: 'reflector::transpile.proto.only.tests.compiled*'
+          filePath: 'reflector::transpile.proto.only.tests.compiled.release'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1764,8 +1737,8 @@ module:
           - 'build::npm.*=5'
     consistency:
       ../.ex.will.yml:
-        hash: 929dd0ff9220afc144ad11483eb37e23
-        size: 2145
+        hash: a47cab429a59df45409bf603a519a239
+        size: 2146
       ../.im.will.yml:
         hash: e0b9ac504d07fa8723c98f50459f4829
         size: 5603

@@ -146,6 +146,13 @@
     <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
+<details>
+  <summary><a href="./concept/Stream.md">
+    Тип <code>Stream</code>
+  </a></summary>
+    <code>Stream</code> - абстрактний інтерфейс для роботи з потоковими даними.
+</details>
+
 ## Туторіали
 
 <!--
@@ -246,4 +253,11 @@
     Налаштування рутин при векторизації
   </a></summary>
     Як використовувати опції рутини <code>vectorize</code> при створенні векторизованої рутини.
+</details>
+
+<details>
+  <summary><a href="./tutorial/Ofication.md">
+    Офікація рутини
+  </a></summary>
+    Офікація рутини - перетворення рутини, котра очікує масив аргументів в таку рутину, яка очікує мапу опцій <code>о</code>.
 </details>

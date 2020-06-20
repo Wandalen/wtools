@@ -99,6 +99,22 @@
 </details>
 
 <details>
+  <summary><a href="./concept/BufferView.md">
+    Type <code>BufferView</code>
+  </a></summary>
+    Standard untyped buffers that type data of `BufferRaw` dynamically.
+</details>
+
+## Tutorials
+
+<details>
+  <summary><a href="./tutorial/RoutineFromPreAndBody.md">
+    Routine routineFromPreAndBody
+  </a></summary>
+    Automatically combining of the data preparation routine and routine for data processing.
+</details>
+
+<details>
   <summary><a href="./concept/Modularity.md#The-system-and-its-components">
     The system and its components
   </a></summary>

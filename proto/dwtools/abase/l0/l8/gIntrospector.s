@@ -74,7 +74,7 @@ function code( o )
     ({
       src : o.sourceCode,
       line : o.location.line,
-      numberOfLines : o.numberOfLines,
+      nearestLines : o.nearestLines,
       selectMode : o.selectMode,
       zeroLine : 1,
       numbering : 1,
@@ -128,7 +128,7 @@ function code( o )
 code.defaults =
 {
   level : 0,
-  numberOfLines : 5,
+  nearestLines : 5,
   withPath : 1,
   asMap : 0,
   selectMode : 'center',

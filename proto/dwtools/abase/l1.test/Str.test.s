@@ -6,7 +6,6 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
-  // _.include( 'wStringer' );
 }
 
 var _global = _global_;
@@ -7646,91 +7645,91 @@ function strLinesSelect( test )
 
   test.open('selectMode : center' );
 
-  test.case = 'line - 2, numberOfLines - 3, zeroLine - 1';
+  test.case = 'line - 2, nearestLines - 3, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 2,
-    numberOfLines : 3,
+    nearestLines : 3,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = 'a\nb\nc';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 3, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 3, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 3,
+    nearestLines : 3,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = 'a\nb';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 1, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 1, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 1,
+    nearestLines : 1,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 99, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 99, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 99,
+    nearestLines : 99,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = src;
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - -1, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - -1, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : -1,
+    nearestLines : -1,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 0, numberOfLines - 1, zeroLine - 1';
+  test.case = 'line - 0, nearestLines - 1, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 0,
-    numberOfLines : 1,
+    nearestLines : 1,
     selectMode : 'center',
     zeroLine : 1
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 0, numberOfLines - 1, zeroLine - 1';
+  test.case = 'line - 0, nearestLines - 1, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src : '',
     line : 1,
-    numberOfLines : 1,
+    nearestLines : 1,
     selectMode : 'center',
     zeroLine : 1
   });
@@ -7743,65 +7742,65 @@ function strLinesSelect( test )
 
   test.open( 'selectMode : begin' );
 
-  test.case = 'line - 1, numberOfLines - 2, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 2, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 2,
+    nearestLines : 2,
     selectMode : 'begin',
     zeroLine : 1
   });
   var expected = 'a\nb';
   test.identical( got, expected );
 
-  test.case = 'line - -1, numberOfLines - 2, zeroLine - 1';
+  test.case = 'line - -1, nearestLines - 2, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : -1,
-    numberOfLines : 2,
+    nearestLines : 2,
     selectMode : 'begin',
     zeroLine : 1
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 0, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 0, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 0,
+    nearestLines : 0,
     selectMode : 'begin',
     zeroLine : 1
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 99, zeroLine - 1';
+  test.case = 'line - 1, nearestLines - 99, zeroLine - 1';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 99,
+    nearestLines : 99,
     selectMode : 'begin',
     zeroLine : 1
   });
   var expected = src;
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 5, zeroLine - 2';
+  test.case = 'line - 1, nearestLines - 5, zeroLine - 2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 5,
+    nearestLines : 5,
     selectMode : 'begin',
     zeroLine : 2
   });
@@ -7814,61 +7813,61 @@ function strLinesSelect( test )
 
   test.open( 'selectMode : end' );
 
-  test.case = 'line - 4, numberOfLines - 2';
+  test.case = 'line - 4, nearestLines - 2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 4,
-    numberOfLines : 2,
+    nearestLines : 2,
     selectMode : 'end'
   });
   var expected = 'c\nd';
   test.identical( got, expected );
 
-  test.case = 'line - -1, numberOfLines - 2';
+  test.case = 'line - -1, nearestLines - 2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : -1,
-    numberOfLines : 2,
+    nearestLines : 2,
     selectMode : 'end'
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - -1, numberOfLines - 2';
+  test.case = 'line - -1, nearestLines - 2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 0,
+    nearestLines : 0,
     selectMode : 'end'
   });
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - -1, numberOfLines - 99';
+  test.case = 'line - -1, nearestLines - 99';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 99,
+    nearestLines : 99,
     selectMode : 'end'
   });
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'line - 1, numberOfLines - 5, zeroLine - 2';
+  test.case = 'line - 1, nearestLines - 5, zeroLine - 2';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     line : 1,
-    numberOfLines : 5,
+    nearestLines : 5,
     selectMode : 'end',
     zeroLine : 2
   });
@@ -8079,12 +8078,12 @@ function strLinesSelectHighlighting( test )
   var expected = '   9 : i\n* 10 : j';
   test.identical( got, expected );
 
-  test.case = 'line - 9, numberOfLines - 2, numbering - 1, highlighting - 1';
+  test.case = 'line - 9, nearestLines - 2, numbering - 1, highlighting - 1';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
     src : src,
-    numberOfLines : 2,
+    nearestLines : 2,
     line : 9,
     numbering : 1,
     highlighting : 1
@@ -8105,12 +8104,12 @@ function strLinesSelectHighlighting( test )
   var expected = '  1 : a\n* 2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.case = 'line - 10, numberOfLines - 3, numbering - 1, highlighting - 1, selectMode - end';
+  test.case = 'line - 10, nearestLines - 3, numbering - 1, highlighting - 1, selectMode - end';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
     src : src,
-    numberOfLines : 3,
+    nearestLines : 3,
     line : 10,
     numbering : 1,
     highlighting : 1,
@@ -8119,12 +8118,12 @@ function strLinesSelectHighlighting( test )
   var expected = '   8 : h\n   9 : i\n* 10 : j';
   test.identical( got, expected );
 
-  test.case = 'line - 7, numberOfLines - 2, numbering - 1, highlighting - 1, selectMode - begin';
+  test.case = 'line - 7, nearestLines - 2, numbering - 1, highlighting - 1, selectMode - begin';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
     src : src,
-    numberOfLines : 2,
+    nearestLines : 2,
     line : 7,
     numbering : 1,
     highlighting : 1,
@@ -8300,7 +8299,7 @@ ghij
 
   test.open( 'Range is a number' );
 
-  test.case = 'numberOfLines : 0';
+  test.case = 'nearestLines : 0';
   var crange = 6;
 
   var expectedSplits =
@@ -8314,8 +8313,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 0,
+    charsRangeLeft : crange,
+    nearestLines : 0,
   });
 
   test.will = 'check strLinesNearest';
@@ -8324,7 +8323,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 1';
+  test.case = 'nearestLines : 1';
   var crange = 6;
 
   var expectedSplits =
@@ -8338,8 +8337,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 1,
+    charsRangeLeft : crange,
+    nearestLines : 1,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8347,7 +8346,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 2';
+  test.case = 'nearestLines : 2';
   var crange = 6;
 
   var expectedSplits =
@@ -8361,8 +8360,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 2,
+    charsRangeLeft : crange,
+    nearestLines : 2,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8370,7 +8369,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 8 ( > all lines )';
+  test.case = 'nearestLines : 8 ( > all lines )';
   var crange = 6;
 
   var expectedSplits =
@@ -8384,8 +8383,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 8,
+    charsRangeLeft : crange,
+    nearestLines : 8,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8407,8 +8406,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 8,
+    charsRangeLeft : crange,
+    nearestLines : 8,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8420,7 +8419,7 @@ ghij
 
   test.open( 'aligned range, single line' );
 
-  test.case = 'numberOfLines not defined ( = 3 )';
+  test.case = 'nearestLines not defined ( = 3 )';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -8434,8 +8433,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : undefined,
+    charsRangeLeft : crange,
+    nearestLines : undefined,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8443,7 +8442,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : NaN';
+  test.case = 'nearestLines : NaN';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -8457,8 +8456,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : NaN,
+    charsRangeLeft : crange,
+    nearestLines : NaN,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8466,7 +8465,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : null';
+  test.case = 'nearestLines : null';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -8480,8 +8479,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : null,
+    charsRangeLeft : crange,
+    nearestLines : null,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8489,7 +8488,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 0';
+  test.case = 'nearestLines : 0';
   var crange = [ 6, 9 ];
 
   var expectedSplits =
@@ -8503,8 +8502,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 0,
+    charsRangeLeft : crange,
+    nearestLines : 0,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8512,7 +8511,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 1';
+  test.case = 'nearestLines : 1';
   var crange = [ 6, 9 ];
 
   var expectedSplits =
@@ -8526,8 +8525,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 1,
+    charsRangeLeft : crange,
+    nearestLines : 1,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8535,7 +8534,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 2';
+  test.case = 'nearestLines : 2';
   var crange = [ 6, 9 ];
 
   var expectedSplits =
@@ -8549,8 +8548,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 2,
+    charsRangeLeft : crange,
+    nearestLines : 2,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8558,7 +8557,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 3';
+  test.case = 'nearestLines : 3';
   var crange = [ 6, 9 ];
 
   var expectedSplits =
@@ -8572,8 +8571,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 3,
+    charsRangeLeft : crange,
+    nearestLines : 3,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8581,7 +8580,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 4';
+  test.case = 'nearestLines : 4';
 
   var crange = [ 6, 9 ];
   var sub = _.strOnly( srcStr,crange );
@@ -8597,8 +8596,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8610,7 +8609,7 @@ ghij
 
   test.open( 'not aligned range, several lines' );
 
-  test.case = 'numberOfLines : 0';
+  test.case = 'nearestLines : 0';
   var crange = [ 4, 11 ];
 
   var expectedSplits =
@@ -8624,8 +8623,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 0,
+    charsRangeLeft : crange,
+    nearestLines : 0,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8633,7 +8632,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 1';
+  test.case = 'nearestLines : 1';
   var crange = [ 4, 11 ];
 
   var expectedSplits =
@@ -8647,8 +8646,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 1,
+    charsRangeLeft : crange,
+    nearestLines : 1,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8656,7 +8655,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 2';
+  test.case = 'nearestLines : 2';
   var crange = [ 4, 11 ];
 
   var expectedSplits =
@@ -8670,8 +8669,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 2,
+    charsRangeLeft : crange,
+    nearestLines : 2,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8679,7 +8678,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 3';
+  test.case = 'nearestLines : 3';
   var crange = [ 4, 11 ];
 
   var expectedSplits =
@@ -8693,8 +8692,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 3,
+    charsRangeLeft : crange,
+    nearestLines : 3,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8702,7 +8701,7 @@ ghij
 
   /* */
 
-  test.case = 'numberOfLines : 4';
+  test.case = 'nearestLines : 4';
   var crange = [ 4,11 ];
 
   var expectedSplits =
@@ -8716,8 +8715,8 @@ ghij
   var got = _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   });
 
   test.identical( got.splits, expectedSplits );
@@ -8736,28 +8735,28 @@ ghij
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : null,
-    numberOfLines : 4,
+    charsRangeLeft : null,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    charsRange : 'crange',
-    numberOfLines : 4,
+    charsRangeLeft : 'crange',
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : srcStr,
-    numberOfLines : 4,
+    nearestLines : 4,
   }));
 
   test.close( 'Wrong range' );
@@ -8769,43 +8768,43 @@ ghij
   var crange = [ 4, 11 ];
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : null,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : NaN,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : undefined,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : 3,
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.shouldThrowErrorSync( () =>  _.strLinesNearest
   ({
     src : [ 'abd', 'ef' ],
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   }));
 
   test.close( 'Wrong src' );
@@ -8824,13 +8823,198 @@ ghij
   let o =
   {
     src : [ 'abd', 'ef' ],
-    charsRange : crange,
-    numberOfLines : 4,
+    charsRangeLeft : crange,
+    nearestLines : 4,
   };
   test.shouldThrowErrorSync( () =>  _.strLinesNearest(  ));
   test.shouldThrowErrorSync( () =>  _.strLinesNearest( o, o ));
 
   test.close( 'Wrong arg' );
+}
+
+//
+
+function strLinesNearestLog( test )
+{
+
+  test.open( 'single line' );
+
+  test.case = 'changes - charsRangeLeft: one letter to the left';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 7 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest =  [ 'f', 'unctio', 'n add( x,y ) { return x + y }' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - charsRangeLeft: a few letters to the left';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 7 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'funct', 'io', 'n add( x,y ) { return x + y }' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - charsRangeLeft: one letter in the range';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 6 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'funct', 'i', 'on add( x,y ) { return x + y }' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - charsRangeLeft: a few letters in the range';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'funct', 'ion', ' add( x,y ) { return x + y }' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - charsRangeLeft: one letter to the right';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 35 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'f', 'unction add( x,y ) { return x + y ', '}' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - charsRangeLeft: a few letters to the right';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 33 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'f', 'unction add( x,y ) { return x + ', 'y }' ];
+  var expectedReport = '1 : function add( x,y ) { return x + y }';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* */
+
+  test.case = 'src - empty string';
+  var src = '';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 7 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ '', '', '' ];
+  var expectedReport = '1 : ';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.close( 'single line' );
+
+  /* - */
+
+  test.open( 'multiline' );
+
+  test.case = 'changes - src: one letter to the right';
+  var src = 'a\nb\nc';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'a', '\nb\n', 'c' ];
+  var expectedReport = '2 : a\n3 : b\n4 : c';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - src: a few letters to the right';
+  var src = 'a\nb\ncd';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, numberOfLines : 1 });
+  var expectedNearest = [ 'a', '\nb\n', 'cd' ];
+  var expectedReport = '2 : a\n3 : b\n4 : cd';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* */
+
+  test.case = 'changes - numberOfLines: multiline report';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3' ];
+  var expectedReport = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - numberOfLines: out of the range';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 2 });
+  var expectedNearest = [ '0\n1', '\na', 'bcde' ];
+  var expectedReport = '3 : 0\n4 : 1\n5 : abcde';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  test.case = 'changes - numberOfLines: big amount';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 10 });
+  var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3\n4\n5' ];
+  var expectedReport = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3\n8 : 4\n9 : 5';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* */
+
+  test.case = 'wrong range (first === second) - charsRangeLeft: [ 5, 5 ]'
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 5 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ '0\n1\na', '', 'bcde\n2\n3' ];
+  var expectedReport = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (first > second) - charsRangeLeft: [ 1, 0 ]';
+  var src = 'abc';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 0 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ 'a', '', 'bc' ];
+  var expectedReport = '1: abc';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (first === second) - charsRangeLeft: [ 0, 0 ]';
+  var src = 'abcdefg';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 0, 0 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ '', '', 'abcdefg' ];
+  var expectedReport = '1: abcdefg';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (first > second) - charsRangeLeft: [ 7, 2 ]';
+  var src = 'abcdefg';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 7, 2 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ 'abcdefg', '', '' ];
+  var expectedReport = '1: abcdefg';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.report, expectedReport );
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (negative first) - charsRangeLeft: [ -1, 2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ -1, 2 ], gray : 1, numberOfLines : 5 }));
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (negative second) - charsRangeLeft: [ 1, -2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 1, -2 ], gray : 1, numberOfLines : 5 }));
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (first out of the range) - charsRangeLeft: [ 100, 2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 100, 2 ], gray : 1, numberOfLines : 5 }));
+
+  /* NEWLY ADDED: TO BE REVIEWED */
+  test.case = 'wrong range (second out of the range) - charsRangeLeft: [ 1, 200 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 200 ], gray : 1, numberOfLines : 5 }));
+
+  test.close( 'multiline' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog());
+
+  test.case = 'wrong type of args';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog( 3 ));
+
 }
 
 //
@@ -9205,6 +9389,7 @@ var Self =
     strLinesSelectHighlighting,
     strLinesSelectZeroLine,
     strLinesNearest,
+    strLinesNearestLog,
     strLinesCount,
     strLinesRangeWithCharRange,
 

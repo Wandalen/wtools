@@ -4373,7 +4373,7 @@ let Extension =
   objectSetWithKeys,
   mapSet : objectSetWithKeys,
   objectSetWithKeyStrictly,
-  mapDelete,
+  mapDelete, /* qqq2 : cover please */
   mapEmpty,
 
   // map transformer
