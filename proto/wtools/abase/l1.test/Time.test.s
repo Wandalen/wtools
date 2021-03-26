@@ -92,7 +92,6 @@ const Proto =
     t1 : 10,
     t2 : 1000,
   },
-  /* aaa xxx : minimize number of time parameters. too many of such */ /* Dmytro : minimized, the step is power of 10 */
 
   tests :
   {
