@@ -219,6 +219,99 @@ resolveBasic.description  =
 
 //
 
+function resolveModuleFromToolsPath( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let toolsPath = _.module.toolsPathGet();
+
+  /* - */
+
+  var programPath = a.abs( 'program' );
+  programPrepare( programPath );
+
+  a.shell({ execPath : `node ${ programPath }` })
+  .then( ( op ) =>
+  {
+    test.case = 'only path to program';
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, `toolsPath : ${ toolsPath }` ), 1 );
+    test.identical( _.strCount( op.output, `included` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  var programPath = a.abs( 'dir/program' );
+  programPrepare( programPath );
+
+  a.shell({ execPath : `node ${ programPath }` })
+  .then( ( op ) =>
+  {
+    test.case = 'program path without part `.git`, one level of nesting';
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, `toolsPath : ${ toolsPath }` ), 1 );
+    test.identical( _.strCount( op.output, `included` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  var programPath = a.abs( '.git/program' );
+  programPrepare( programPath );
+
+  a.shell({ execPath : `node ${ programPath }` })
+  .then( ( op ) =>
+  {
+    test.case = 'program path with part `.git`, one level of nesting';
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, `toolsPath : ${ toolsPath }` ), 1 );
+    test.identical( _.strCount( op.output, `included` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  var programPath = a.abs( '.git/hooks/program' );
+  programPrepare( programPath );
+
+  a.shell({ execPath : `node ${ programPath }` })
+  .then( ( op ) =>
+  {
+    test.case = 'program path with part `.git`, two level of nesting';
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, `toolsPath : ${ toolsPath }` ), 1 );
+    test.identical( _.strCount( op.output, `included` ), 1 );
+    return null;
+  });
+
+  /* - */
+
+  return a.ready;
+
+  /* */
+
+  function programPrepare( dstPath )
+  {
+    a.fileProvider.filesDelete( a.abs( '.' ) );
+    let sourceCode =
+`
+console.log( \`toolsPath : ${ toolsPath }\` );
+const _ = require( '${ toolsPath }' );
+_.include( 'wPathBasic' );
+console.log( 'included' );
+`;
+    a.fileProvider.fileWrite( dstPath, sourceCode );
+  }
+}
+
+resolveModuleFromToolsPath.description  =
+`
+  Routine _.include should resolve path to modules from nested directories.
+`;
+
+//
+
 function toolsPathGetBasic( test )
 {
   let context = this;
@@ -4575,6 +4668,7 @@ const Proto =
     modulePredeclareBasic2,
     moduleExportsUndefined,
     resolveBasic,
+    resolveModuleFromToolsPath,
     toolsPathGetBasic,
     toolsPathGetProgram,
 
