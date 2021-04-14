@@ -1527,6 +1527,21 @@ function strRemove( srcStr, insStr )
   return result;
 }
 
+//
+
+function strLine( src, index )
+{
+  _.assert( _.strIs( src ), 'Expects string as first argument' );
+  _.assert( _.numberIs( index ), 'Expects number as first argument' );
+
+  let srcArray = src.split( '\n' );
+
+  if( srcArray.length === 1 || index >= srcArray.length )
+  return src;
+
+  return srcArray[ index ];
+}
+
 // --
 // routines
 // --
@@ -1654,6 +1669,8 @@ let ExtensionTools =
   strRemoveBegin,
   strRemoveEnd,
   strRemove,
+
+  strLine,
 
   // fields
 

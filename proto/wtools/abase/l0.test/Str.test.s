@@ -22318,6 +22318,36 @@ function strSplitInlinedStereo_OptionsCombined( test )
 
 }
 
+//
+
+function strLine( test )
+{
+  test.case = 'empty str';
+  var src = '';
+  var got = _.strLine( src, 1 );
+  test.identical( got, src );
+
+  test.case = 'lines < index';
+  var src = 'a\nb\nc';
+  var got = _.strLine( src, 10 );
+  test.identical( got, src );
+
+  test.case = 'get first line';
+  var src = 'a\nb\nc';
+  var got = _.strLine( src, 1 );
+  test.identical( got, 'a' );
+
+  test.case = 'get middle line';
+  var src = 'a\nb\nc';
+  var got = _.strLine( src, 2 );
+  test.identical( got, 'b' );
+
+  test.case = 'get last line';
+  var src = 'a\nb\nc';
+  var got = _.strLine( src, 3 );
+  test.identical( got, 'c' );
+}
+
 // --
 // test suite
 // --
@@ -22434,6 +22464,8 @@ const Proto =
     strSplitInlinedStereo_OptionPreservingOrdinary,
     strSplitInlinedStereo_OptionPreservingInlined,
     strSplitInlinedStereo_OptionsCombined,
+
+    strLine,
 
   }
 
