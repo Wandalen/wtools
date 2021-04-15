@@ -1540,6 +1540,19 @@ function strLine( src, index )
   return '';
 
   return srcArray[ index ];
+
+  // if( index === 0 )
+  // {
+  //   let i = src.indexOf( '\n' );
+  //   if( i === -1 )
+  //   return src;
+  //   return src.slice( 0, i );
+  // }
+
+  // let matches = src.match( /\n(.)+/g );
+
+  // return matches[ i+1 ]; /* first line was skipped */
+
 }
 
 // --
