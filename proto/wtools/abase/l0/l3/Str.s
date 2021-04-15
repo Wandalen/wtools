@@ -1532,7 +1532,7 @@ function strRemove( srcStr, insStr )
 function strLine( src, index )
 {
   _.assert( _.strIs( src ), 'Expects string as first argument' );
-  _.assert( _.numberIs( index ), 'Expects number as first argument' );
+  _.assert( _.numberIs( index ), 'Expects number as second argument' );
 
   let srcArray = src.split( '\n' );
 
