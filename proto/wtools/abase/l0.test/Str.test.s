@@ -22325,26 +22325,26 @@ function strLine( test )
   test.case = 'empty str';
   var src = '';
   var got = _.strLine( src, 1 );
-  test.identical( got, src );
+  test.identical( got, '' );
 
   test.case = 'lines < index';
   var src = 'a\nb\nc';
   var got = _.strLine( src, 10 );
-  test.identical( got, src );
+  test.identical( got, '' );
 
   test.case = 'get first line';
   var src = 'a\nb\nc';
-  var got = _.strLine( src, 1 );
+  var got = _.strLine( src, 0 );
   test.identical( got, 'a' );
 
   test.case = 'get middle line';
   var src = 'a\nb\nc';
-  var got = _.strLine( src, 2 );
+  var got = _.strLine( src, 1 );
   test.identical( got, 'b' );
 
   test.case = 'get last line';
   var src = 'a\nb\nc';
-  var got = _.strLine( src, 3 );
+  var got = _.strLine( src, 2 );
   test.identical( got, 'c' );
 }
 

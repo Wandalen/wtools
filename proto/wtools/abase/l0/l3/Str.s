@@ -1536,8 +1536,8 @@ function strLine( src, index )
 
   let srcArray = src.split( '\n' );
 
-  if( srcArray.length === 1 || index >= srcArray.length )
-  return src;
+  if( index >= srcArray.length )
+  return '';
 
   return srcArray[ index ];
 }
