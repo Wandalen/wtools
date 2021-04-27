@@ -20,6 +20,6 @@ let Extension =
 
 }
 
-_.mapSupplement( _.process, Extension );
+_.props.supplement( _.process, Extension );
 
 })();

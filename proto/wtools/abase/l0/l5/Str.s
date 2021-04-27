@@ -15,7 +15,7 @@ function strQuote( o )
 {
 
   if( !_.mapIs( o ) )
-  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
   _.map.assertHasOnly( o, strQuote.defaults );
@@ -53,7 +53,7 @@ function strUnquote( o )
 {
 
   if( !_.mapIs( o ) )
-  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
   o.quote = strUnquote.defaults.quote;
   _.map.assertHasOnly( o, strUnquote.defaults );
@@ -221,7 +221,7 @@ function strQuoteAnalyze( o )
   result.quotes = [];
 
   if( !_.mapIs( o ) )
-  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuoteAnalyze.defaults.quote;
   _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
@@ -377,7 +377,7 @@ strQuoteAnalyze.defaults =
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //
-//   if( _.arrayLike( src ) )
+//   if( _.argumentsArray.like( src ) )
 //   {
 //     let result = [];
 //     for( let s = 0 ; s < src.length ; s++ )
@@ -464,7 +464,7 @@ function strLeft_( src, ins, cinterval )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -606,7 +606,7 @@ aa_bb_bb|b|_cc_cc
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //
-//   if( _.arrayLike( src ) )
+//   if( _.argumentsArray.like( src ) )
 //   {
 //     let result = [];
 //     for( let s = 0 ; s < src.length ; s++ )
@@ -736,7 +736,7 @@ function strRight_( src, ins, cinterval )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -1609,7 +1609,7 @@ strStrip.defaults =
 //     let result = [];
 //     for( let s = 0 ; s < o.src.length ; s++ )
 //     {
-//       let optionsForStrip = _.mapExtend( null, o );
+//       let optionsForStrip = _.props.extend( null, o );
 //       optionsForStrip.src = optionsForStrip.src[ s ];
 //       result[ s ] = strStrip( optionsForStrip );
 //     }
@@ -3002,7 +3002,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
 function strSplitInlinedStereo_( o )
 {
   /*
-    New delimiter.
+    New delimeter.
     was : 'this #background:red#is#background:default# text and is not'.
     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
     */
@@ -3031,7 +3031,7 @@ function strSplitInlinedStereo_( o )
   splitOptions.stripping = 0;
   splitOptions.preservingEmpty = 1;
 
-  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimiters */
+  let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimeters */
   result = preprocessBeforeJoin( result );
 
   if( o.inliningDelimeters ) /* new */
@@ -3278,7 +3278,7 @@ function strSplitInlinedStereo_( o )
   //     {
   //       let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
 
-  //       if( !_.arrayLike( result[ result.length - 1 ] ) )
+  //       if( !_.argumentsArray.like( result[ result.length - 1 ] ) )
   //       {
   //         result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
   //       }
@@ -3304,12 +3304,12 @@ function strSplitInlinedStereo_( o )
   //     if( o.preservingDelimeters )
   //     {
   //       if( o.stripping )
-  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
   //       {
   //         return o.prefix + el.trim() + o.postfix;
   //       } ) : o.prefix + strip + o.postfix );
   //       else
-  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
   //       {
   //         return o.prefix + el + o.postfix;
   //       } ) : o.prefix + strip + o.postfix );
@@ -3317,7 +3317,7 @@ function strSplitInlinedStereo_( o )
   //     else
   //     {
   //       if( o.stripping )
-  //       result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
   //       else
   //       result.push( strip );
   //     }
@@ -3384,7 +3384,7 @@ function strSplitInlinedStereo_( o )
 
   //   result = result.map( ( el ) =>
   //   {
-  //     if( !_.arrayLike( el ) )
+  //     if( !_.argumentsArray.like( el ) )
   //     {
   //       if( el.indexOf( replacementForQuotes ) !== -1 )
   //       return el.replace( reg, '"❮"' )
@@ -3399,7 +3399,7 @@ function strSplitInlinedStereo_( o )
   // {
   //   result = result.map( ( el ) =>
   //   {
-  //     if( !_.arrayLike( el ) )
+  //     if( !_.argumentsArray.like( el ) )
   //     {
   //       let res = o.onOrdinary( el );
   //       if( res !== undefined )
@@ -3418,15 +3418,15 @@ function strSplitInlinedStereo_( o )
 
   // function handleEmptyLines()
   // {
-  //   if( _.arrayLike( result[ 0 ] ) )
+  //   if( _.argumentsArray.like( result[ 0 ] ) )
   //   result.unshift( '' );
-  //   if( _.arrayLike( result[ result.length-1 ] ) )
+  //   if( _.argumentsArray.like( result[ result.length-1 ] ) )
   //   result.push( '' );
   //   let len = result.length;
   //   for( let i = 0; i < len; i++ )
   //   {
-  //     if( _.arrayLike( result[ i ] ) )
-  //     if( _.arrayLike( result[ i + 1 ] ) )
+  //     if( _.argumentsArray.like( result[ i ] ) )
+  //     if( _.argumentsArray.like( result[ i + 1 ] ) )
   //     {
   //       result.splice( i + 1, 0, '' );
   //       len++;
@@ -3475,7 +3475,7 @@ strSplitInlinedStereo_.defaults =
 // function strSplitInlinedStereo_( o )
 // {
 //   /*
-//     New delimiter.
+//     New delimeter.
 //     was : 'this #background:red#is#background:default# text and is not'.
   //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
   // */
@@ -3540,7 +3540,7 @@ strSplitInlinedStereo_.defaults =
 //       {
 //         let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
 
-//         if( _.arrayLike( result[ result.length - 1 ] ) )
+//         if( _.argumentsArray.like( result[ result.length - 1 ] ) )
 //         {
 //           result.push( o.prefix + tempStr );
 //         }
@@ -3708,7 +3708,7 @@ strSplitInlinedStereo_.defaults =
 //   {
 //     result = result.map( ( el ) =>
 //     {
-//       if( _.arrayLike( el ) )
+//       if( _.argumentsArray.like( el ) )
 //       {
 //         return el;
 //       }
@@ -3727,15 +3727,15 @@ strSplitInlinedStereo_.defaults =
 
 //   function handleEmptyLines()
 //   {
-//     if( _.arrayLike( result[ 0 ] ) )
+//     if( _.argumentsArray.like( result[ 0 ] ) )
 //     result.unshift( '' );
-//     if( _.arrayLike( result[ result.length-1 ] ) )
+//     if( _.argumentsArray.like( result[ result.length-1 ] ) )
 //     result.push( '' );
 //     let len = result.length;
 //     for( let i = 0; i < len; i++ )
 //     {
-//       if( _.arrayLike( result[ i ] ) )
-//       if( _.arrayLike( result[ i + 1 ] ) )
+//       if( _.argumentsArray.like( result[ i ] ) )
+//       if( _.argumentsArray.like( result[ i + 1 ] ) )
 //       {
 //         result.splice( i + 1, 0, '' );
 //         len++;
@@ -3750,12 +3750,12 @@ strSplitInlinedStereo_.defaults =
 //     if( o.preservingDelimeters )
 //     {
 //       if( o.stripping )
-//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
 //       {
 //         return o.prefix + el.trim() + o.postfix;
 //       }) : o.prefix + strip + o.postfix );
 //       else
-//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
 //       {
 //         return o.prefix + el + o.postfix;
 //       }) : o.prefix + strip + o.postfix );
@@ -3763,7 +3763,7 @@ strSplitInlinedStereo_.defaults =
 //     else
 //     {
 //       if( o.stripping )
-//       result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
+//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
 //       else
 //       result.push( strip );
 //     }
@@ -3822,7 +3822,7 @@ strSplitInlinedStereo_.defaults =
 //   let delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
 //   let delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
 //   debugger;
-//   console.log(`l: ${delimLeftPosition}, r:${delimRightPosition}`)
+//   console.log( `l: ${delimLeftPosition}, r:${delimRightPosition}` )
 
 //   let delimLeftCount = _.strCount( o.src, o.delimeter[ 0 ] );
 //   let delimRightCount = _.strCount( o.src, o.delimeter[ 1 ] );
@@ -3969,7 +3969,7 @@ function exportStringShallow( src, opts )
 function _exportStringShallow( src, o )
 {
 
-  _.assertRoutineOptions( _exportStringShallow, o );
+  _.routine.assertOptions( _exportStringShallow, o );
   _.assert( arguments.length === 2 );
   _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
   _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
@@ -4023,7 +4023,7 @@ function _exportStringShallow( src, o )
     }
 
     if( o.widthLimit !== 0 )
-    result = _.strShort({ src : result, widthLimit : o.widthLimit });
+    result = _.strShort_({ src : result, widthLimit : o.widthLimit }).result;
 
   }
   catch( err )
@@ -4038,7 +4038,7 @@ function _exportStringShallow( src, o )
 _exportStringShallow.defaults =
 {
   format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort | aaa : Done. */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -4049,7 +4049,7 @@ function exportStringShallowCode( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routineOptions( exportStringShallowCode, o );
+  o = _.routine.options_( exportStringShallowCode, o || null );
   o.format = o.format || exportStringShallowCode.defaults.format;
 
   return _.entity._exportStringShallow( src, o );
@@ -4058,7 +4058,7 @@ function exportStringShallowCode( src, o ) /* */
 exportStringShallowCode.defaults =
 {
   format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -4069,7 +4069,7 @@ function exportStringShallowDiagnostic( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routineOptions( exportStringShallowDiagnostic, o );
+  o = _.routine.options_( exportStringShallowDiagnostic, o || null );
   o.format = o.format || exportStringShallowDiagnostic.defaults.format;
 
   return _.entity._exportStringShallow( src, o );
@@ -4078,7 +4078,7 @@ function exportStringShallowDiagnostic( src, o ) /* */
 exportStringShallowDiagnostic.defaults =
 {
   format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort */
+  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
   heightLimit : 1, /* qqq for Yevhen : implement and cover */
 }
 
@@ -4138,9 +4138,9 @@ let Extension =
   _strRightSingle_,
   strRight_,
 
-  strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
-  strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
-  strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
+  strsEquivalentAll : _.vectorizeAll( _.str.equivalent, 2 ),
+  strsEquivalentAny : _.vectorizeAny( _.str.equivalent, 2 ),
+  strsEquivalentNone : _.vectorizeNone( _.str.equivalent, 2 ),
 
   strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */ /* !!! : use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
   strInsideOf_,
@@ -4211,8 +4211,8 @@ let ExtensionEntity =
 
 //
 
-_.mapExtend( Self, Extension );
-_.mapExtend( _.entity, ExtensionEntity );
+_.props.extend( Self, Extension );
+_.props.extend( _.entity, ExtensionEntity );
 
 _.assert( !!_.strSplit.defaults.preservingEmpty );
 

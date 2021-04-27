@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.constructible = _global_.wTools.constructible || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 // --

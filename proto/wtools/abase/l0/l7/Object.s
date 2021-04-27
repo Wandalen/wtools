@@ -1,4 +1,4 @@
-( function _l8_Object_s_()
+( function _l7_Object_s_()
 {
 
 'use strict';
@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 // --

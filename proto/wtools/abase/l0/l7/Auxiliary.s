@@ -1,4 +1,4 @@
-( function _l8_Auxiliary_s_()
+( function _l7_Auxiliary_s_()
 {
 
 'use strict';
@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 // --

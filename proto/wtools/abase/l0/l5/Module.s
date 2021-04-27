@@ -10,7 +10,7 @@ const _ = _global_.wTools;
 const Self = _.module = _.module || Object.create( null );
 
 // --
-// routines
+// implementation
 // --
 
 // --
@@ -22,6 +22,6 @@ let Extension =
 
 }
 
-_.mapSupplement( _, Extension );
+_.props.supplement( _, Extension );
 
 })();

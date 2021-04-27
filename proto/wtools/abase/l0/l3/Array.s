@@ -5,82 +5,60 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
-const _ArrayIndexOf = Array.prototype.indexOf;
-const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
+
+_.assert( !!_.argumentsArray._elementWithKey, 'Expects routine argumentsArray._elementWithKey' );
+_.assert( !!_.argumentsArray.exportString, 'Expects routine _.argumentsArray.exportString' );
 
 // --
-// array
+// editor
 // --
 
 /**
- * The arrayIs() routine determines whether the passed value is an Array.
+ * The routine slice() returns a shallow copy of a portion of {-srcArray-} into a new array object.
+ * The copy makes from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
  *
- * If the {-srcMap-} is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
+ * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
+ * @param { Number } f - Defines the start index of copying.
+ * Negative value of argument {-f-} indicates an offset from the end of the sequence.
+ * If {-f-} is undefined, slice begins from index 0.
+ * If {-f-} is greater than the length of the sequence, an empty array is returned.
+ * @param { Number } l - Defines last index of copying. An element with this index not included.
+ * Negative value of {-l-} indicates an offset from the end of the sequence.
+ * If {-l-} is omitted, slice extracts through the end of the sequence ( srcArray.length ).
+ * If {-l-} is greater than the length of the sequence, slice extracts through to the end of the sequence (arr.length).
  *
  * @example
- * _.arrayIs( [ 1, 2 ] );
- * // returns true
+ * _.array.slice( [ 1, 2, 3, 4, '5' ] );
+ * // returns [ 1, 2, 3, 4, '5' ]
  *
  * @example
- * _.arrayIs( 10 );
- * // returns false
+ * _.array.slice( [ 1, 2, 3, 4, '5' ], 1, 4 );
+ * // returns [ 2, 3, 4 ]
  *
- * @returns { boolean } Returns true if {-srcMap-} is an Array.
- * @function arrayIs
- * @namespace Tools
+ * @example
+ * _.array.slice( [ 1, 2, 3, 4, '5' ], -2, 5 );
+ * // returns [ 4, '5' ]
+ *
+ * @example
+ * _.array.slice( [ 1, 2, 3, 4, '5' ], 2, -1 );
+ * // returns [ 3, 4 ]
+ *
+ * @example
+ * _.array.slice( [ 1, 2, 3, 4, '5' ], 6, 9 );
+ * // returns []
+ *
+ * @returns { Array } Returns a new Array containing the extracted elements.
+ * @function slice
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-srcArray-} is not an array or unroll.
+ * @namespace Tools/array
  */
 
-function arrayIs( src )
+function slice( srcArray, f, l )
 {
-  return Array.isArray( src );
-  // return Object.prototype.toString.call( src ) === '[object Array]';
-}
-
-//
-
-function arrayIsEmpty( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length === 0;
-}
-
-//
-
-function arrayIsPopulated( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length > 0;
-}
-
-//
-
-function arrayLikeResizable( src )
-{
-  if( Object.prototype.toString.call( src ) === '[object Array]' )
-  return true;
-  return false;
-}
-
-//
-
-/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
-function arrayLike( src ) /* qqq : cover */
-{
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.argumentsArray.is( src ) )
-  return true;
-  // if( _.class.methodIteratorOf( src ) ) /* yyy */
-  // // if( !_.mapIs( src ) && _.object.is( src ) )
-  // if( !_.mapIs( src ) )
-  // return true;
-  return false;
+  _.assert( this.likeResizable( srcArray ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  return srcArray.slice( f, l );
 }
 
 // --
@@ -94,7 +72,6 @@ function arrayPrepend( dstArray, ins )
     dstArray = [];
     arguments[ 0 ] = dstArray;
   }
-
   arrayPrepended.apply( this, arguments );
   return dstArray;
 }
@@ -238,7 +215,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 function arrayPrepended( dstArray, ins )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
   return 0;
@@ -295,7 +272,7 @@ function arrayPrependedOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
   let evaluator1 = arguments[ 2 ];
   let evaluator2 = arguments[ 3 ];
 
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
 
@@ -447,7 +424,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
 
@@ -463,7 +440,7 @@ function arrayPrependedElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ 
   let evaluator1 = arguments[ 2 ];
   let evaluator2 = arguments[ 3 ];
 
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
 
@@ -690,7 +667,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
 function arrayPrependedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayPrependedArray :', 'Expects longLike' );
 
   let result = insArray.length;
@@ -746,7 +723,7 @@ function arrayPrependedArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   _.assert( _.longLike( insArray ) );
 
   let result = 0;
@@ -1025,7 +1002,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 function arrayPrependedArrays( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArrays :', 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'arrayPrependedArrays :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayPrependedArrays :', 'Expects longLike entity' );
 
   let result = 0;
@@ -1094,7 +1071,7 @@ function arrayPrependedArraysOnce( /* dstArray, insArray, evaluator1, evaluator2
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArraysOnce :', 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'arrayPrependedArraysOnce :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayPrependedArraysOnce :', 'Expects longLike entity' );
 
   let result = 0;
@@ -1188,7 +1165,7 @@ function arrayPrependedArraysOnceStrictly( /* dstArray, insArray, evaluator1, ev
 // function arrayAppend_( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
+//   _.assert( _.array.is( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -1304,7 +1281,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -1408,7 +1385,7 @@ function arrayAppendElementOnceStrictly( dstArray, ins )
 function arrayAppendedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.array.is( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -1576,7 +1553,7 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
 function arrayAppendedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
-  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayPrependedArray :', 'Expects longLike' );
 
   let result = insArray.length;
@@ -1670,7 +1647,7 @@ function arrayAppendArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */
   }
   else if( dstArray === undefined )
   {
-    if( _.arrayIs( insArray ) )
+    if( _.array.is( insArray ) )
     {
       dstArray = [];
       arguments[ 0 ] = dstArray;
@@ -1748,19 +1725,19 @@ function arrayAppendedArrays( dstArray, insArray )
 
   // if( !_.longLike( insArray ) )
   // {
-  //   if( !_.arrayIs( dstArray ) )
+  //   if( !_.array.is( dstArray ) )
   //   return [ dstArray, insArray ];
   //   else
   //   dstArray.push( insArray );
   //   return 1;
   // }
 
-  // if( !_.arrayIs( insArray ) && insArray !== undefined )
+  // if( !_.array.is( insArray ) && insArray !== undefined )
   // insArray = [ insArray ];
-  // if( !_.arrayIs( insArray ) && insArray !== undefined )
+  // if( !_.array.is( insArray ) && insArray !== undefined )
   // insArray = [ insArray ];
 
-  _.assert( _.arrayIs( dstArray ), 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'Expects array' );
   _.assert( _.longLike( insArray ), 'Expects longLike entity' );
 
   let result = 0;
@@ -1796,10 +1773,10 @@ function arrayAppendedArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 
   if( dstArray === undefined )
   return insArray;
 
-  if( !_.arrayIs( insArray ) && insArray !== undefined )
+  if( !_.array.is( insArray ) && insArray !== undefined )
   insArray = [ insArray ];
 
-  _.assert( _.arrayIs( dstArray ), 'Expects array' );
+  _.assert( _.array.is( dstArray ), 'Expects array' );
   _.assert( _.longLike( insArray ), 'Expects longLike entity' );
 
   let result = 0;
@@ -1873,37 +1850,73 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
 }
 
 // --
-// fields
+// container interface
 // --
 
-let Fields =
+function _elementWithKeyDel( src, key )
 {
+  if( !this._hasKey( src, key ) )
+  return false;
+  src.splice( key, 1 );
+  return true;
+}
 
-  // ArrayType : Array,
+//
 
-  accuracy : 1e-7,
-  accuracySqrt : 1e-4,
-  accuracySqr : 1e-14,
+function elementWithKeyDel( src, key )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( src ) );
+  return this._elementWithKeyDel( src, key );
+}
 
+//
+
+function _elementWithCardinalDel( src, cardinal )
+{
+  let has = this._keyWithCardinal( src, cardinal );
+  if( !has[ 1 ] )
+  return false;
+  delete src[ has[ 0 ] ];
+  return true;
+}
+
+//
+
+function elementWithCardinalDel( src, cardinal )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( src ) );
+  return this._elementWithCardinalDel( src, cardinal, val );
+}
+
+//
+
+function _empty( dst )
+{
+  dst.splice( 0, dst.length );
+  return dst;
+}
+
+//
+
+function empty( dst )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( this.like( dst ) );
+  return this._empty( dst );
 }
 
 // --
-// routines
+// declaration
 // --
 
-let Routines =
+let ToolsExtension =
 {
-
-  //
-
-  arrayIs,
-  arrayIsEmpty,
-  arrayIsPopulated,
-  arrayLikeResizable,
-  arrayLike,
 
   // array prepend
 
+  /* zzz : move maybe? */
   arrayPrepend,
   arrayPrependOnce,
   arrayPrependOnceStrictly,
@@ -1934,6 +1947,7 @@ let Routines =
 
   // array append
 
+  /* zzz : move maybe? */
   arrayAppend,
   arrayAppendOnce,
   arrayAppendOnceStrictly,
@@ -1962,11 +1976,107 @@ let Routines =
   arrayAppendedArraysOnce,
   arrayAppendedArraysOnceStrictly,
 
+  // fields
+
+  accuracy : 1e-7,
+  accuracySqrt : 1e-4,
+  accuracySqr : 1e-14,
+
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _, ToolsExtension );
+
+//
+
+let ArrayExtension =
+{
+
+  // editor
+
+  slice,
+
+  // equaler
+
+  _identicalShallow : _.argumentsArray._identicalShallow,
+  identicalShallow : _.argumentsArray.identicalShallow,
+  identical : _.argumentsArray.identical,
+  _equivalentShallow : _.argumentsArray._equivalentShallow,
+  equivalentShallow : _.argumentsArray.equivalentShallow,
+  equivalent : _.argumentsArray.equivalent,
+
+  // exporter
+
+  exportString : _.argumentsArray.exportString,
+  exportStringShallow : _.argumentsArray.exportStringShallow,
+  exportStringShallowDiagnostic : _.argumentsArray.exportStringShallowDiagnostic,
+  exportStringShallowCode : _.argumentsArray.exportStringShallowCode,
+  exportStringDiagnostic : _.argumentsArray.exportStringDiagnostic,
+  exportStringCode : _.argumentsArray.exportStringCode,
+
+  // container interface
+
+  _lengthOf : _.argumentsArray._lengthOf,
+  lengthOf : _.argumentsArray.lengthOf, /* qqq : cover */
+
+  _hasKey : _.argumentsArray._hasKey,
+  hasKey : _.argumentsArray._hasKey, /* qqq : cover */
+  _hasCardinal : _.argumentsArray._hasKey,
+  hasCardinal : _.argumentsArray._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.argumentsArray._hasKey,
+  keyWithCardinal : _.argumentsArray._hasKey, /* qqq : cover */
+
+  _elementGet : _.argumentsArray._elementWithKey,
+  elementGet : _.argumentsArray.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.argumentsArray._elementWithKey,
+  elementWithKey : _.argumentsArray.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.argumentsArray._elementWithImplicit,
+  elementWithImplicit : _.argumentsArray.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.argumentsArray._elementWithCardinal,
+  elementWithCardinal : _.argumentsArray.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.argumentsArray._elementSet,
+  elementSet : _.argumentsArray.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.argumentsArray._elementWithKeySet,
+  elementWithKeySet : _.argumentsArray.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.argumentsArray._elementWithCardinalSet,
+  elementWithCardinalSet : _.argumentsArray.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementDel : _elementWithKeyDel,
+  elementDel : elementWithKeyDel, /* qqq : cover */
+  _elementWithKeyDel,
+  elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel,
+  elementWithCardinalDel,  /* qqq : cover */
+  _empty,
+  empty, /* qqq : for Yevhen : cover */
+
+  _each : _.argumentsArray._each,
+  each : _.argumentsArray.each, /* qqq : cover */
+  _eachLeft : _.argumentsArray._eachLeft,
+  eachLeft : _.argumentsArray.eachLeft, /* qqq : cover */
+  _eachRight : _.argumentsArray._eachRight,
+  eachRight : _.argumentsArray.eachRight, /* qqq : cover */
+
+  _while : _.argumentsArray._while,
+  while : _.argumentsArray.while, /* qqq : cover */
+  _whileLeft : _.argumentsArray._whileLeft,
+  whileLeft : _.argumentsArray.whileLeft, /* qqq : cover */
+  _whileRight : _.argumentsArray._whileRight,
+  whileRight : _.argumentsArray.whileRight, /* qqq : cover */
+
+  _aptLeft : _.argumentsArray._aptLeft,
+  aptLeft : _.argumentsArray.aptLeft, /* qqq : cover */
+  first : _.argumentsArray.first,
+  _aptRight : _.argumentsArray._aptRight, /* qqq : cover */
+  aptRight : _.argumentsArray.aptRight,
+  last : _.argumentsArray.last, /* qqq : cover */
+
+}
+
+//
+
+Object.assign( _.array, ArrayExtension );
 
 })();

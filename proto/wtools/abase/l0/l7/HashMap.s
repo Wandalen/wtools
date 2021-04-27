@@ -1,4 +1,4 @@
-( function _l8_HashMap_s_()
+( function _l7_HashMap_s_()
 {
 
 'use strict';

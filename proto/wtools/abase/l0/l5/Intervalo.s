@@ -7,7 +7,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 // --
-// checker
+// dichotomy
 // --
 
 function isEmpty( ointerval )
@@ -64,7 +64,7 @@ function sureIn( src, ointerval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unroll.from([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -76,7 +76,7 @@ function assertIn( src, ointerval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unroll.from([ _.ointerval.has( ointerval, src ), () => 'Out of ointerval' + _.rangeToStr( ointerval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -233,13 +233,13 @@ const Self = new Proxy( Orange, Handler );
 Self.original = Orange;
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
 {
 
-  // checker
+  // dichotomy
 
   is : _.intervalIs,
   isValid : _.intervalIsValid,
@@ -269,9 +269,9 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 _.assert( _.ointerval !== undefined );
-_.mapSupplement( Self, _.ointerval );
+_.props.supplement( Self, _.ointerval );
 _.ointerval = Self;
 // _.assert( _.auxIs( _.ointerval ) ); /* xxx : uncomment? */
 

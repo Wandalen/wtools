@@ -222,7 +222,7 @@ function Chain()
     return new Chain( ... arguments );
   }
 
-  let result = _.arrayMake( arguments.length );
+  let result = _.array.make( arguments.length );
   _.assert( arguments.length >= 1, 'Expects events names' );
   for( let i = 0 ; i < arguments.length ; i++ )
   result[ i ] = _.event.Name( arguments[ i ] );
@@ -600,7 +600,7 @@ function off( ehandler, o )
   for( let c in o.callbackMap )
   {
     if( o.callbackMap[ c ] === null )
-    _.arrayEmpty( ehandler.events[ c ] );
+    _.array.empty( ehandler.events[ c ] );
     else
     _.arrayRemoveOnceStrictly( ehandler.events[ c ], o.callbackMap[ c ], callbackEqualize );
   }
@@ -780,6 +780,6 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

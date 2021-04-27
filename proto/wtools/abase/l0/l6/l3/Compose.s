@@ -66,7 +66,7 @@ function chainingChainer( /* args, result, op, k */ )
   return args;
   if( result === _.dont )
   return _.dont;
-  return _.unrollFrom( result );
+  return _.unroll.from( result );
 }
 
 // --

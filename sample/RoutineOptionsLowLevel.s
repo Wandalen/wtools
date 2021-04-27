@@ -1,32 +1,11 @@
 
 /* minimal require */
 
-require( '../proto/wtools/abase/l0/l0/l0/Global.s' );
-require( '../proto/wtools/abase/l0/l0/l3/Config.s' );
-require( '../proto/wtools/abase/l0/l0/l3/Predefined.s' );
-require( '../proto/wtools/abase/l0/l0/l5/Setup.s' );
-require( '../proto/wtools/abase/l0/l3/ArgumentsArray.s' );
-require( '../proto/wtools/abase/l0/l3/Array.s' );
-require( '../proto/wtools/abase/l0/l3/Auxiliary.s' );
-require( '../proto/wtools/abase/l0/l3/Diagnostic.s' );
-require( '../proto/wtools/abase/l0/l3/Err.s' );
-require( '../proto/wtools/abase/l0/l3/Object.s' );
-require( '../proto/wtools/abase/l0/l3/Primitive.s' );
-require( '../proto/wtools/abase/l0/l3/Routine.s' );
+require( '../proto/wtools/abase/l0/Include1.s' );
 
 //
 
 let _ = _global_.wTools;
-
-//
-
-console.log( 'routineOptions, defaults in third argument' );
-var routine = () => true;
-var defaults = { a : null, b : 1 };
-var options = { a : 1, b : undefined };
-_.routine.options( routine, options, defaults );
-console.log( options );
-/* log : { a : 1, b : 1 } */
 
 console.log( 'routineOptions, defaults in routine field' );
 var routine = () => true;
@@ -34,17 +13,9 @@ routine.defaults = { a : null, b : 1 };
 var options = { a : 1, b : undefined };
 _.routine.options( routine, options );
 console.log( options );
-/* log : { a : 1, b : 1 } */
+/* log : { a : 1, b : undefined } */
 
 //
-
-console.log( 'assertRoutineOptions, defaults in third argument' );
-var routine = () => true;
-var defaults = { a : null, b : 1 };
-var options = { a : 1, b : null };
-_.routine.assertOptions( routine, options, defaults );
-console.log( options );
-/* log : { a : 1, b : null } */
 
 console.log( 'assertRoutineOptions, defaults in routine field' );
 var routine = () => true;

@@ -10,7 +10,6 @@ _ArrayIncludes = function( e ){ _ArrayIndexOf.call( this, e ) }
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 /*
                |  can grow   |  can shrink  |   range
@@ -111,7 +110,7 @@ function _longMake_functor( onMake )
     src = null;
 
     if( src === null )
-    src = this.longDescriptor.make;
+    src = this.tools./*longDescriptor*/defaultLong.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
@@ -141,56 +140,56 @@ function _longMake_functor( onMake )
  * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * _.longMake();
+ * _.long.make();
  * // returns []
  *
  * @example
- * _.longMake( null );
+ * _.long.make( null );
  * // returns []
  *
  * @example
- * _.longMake( null, null );
+ * _.long.make( null, null );
  * // returns []
  *
  * @example
- * _.longMake( 3 );
+ * _.long.make( 3 );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
- * _.longMake( 3, null );
+ * _.long.make( 3, null );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
- * _.longMake( [ 1, 2, 3, 4 ] );
+ * _.long.make( [ 1, 2, 3, 4 ] );
  * // returns [ 1, 2, 3, 4 ];
  *
  * @example
- * _.longMake( [ 1, 2, 3, 4 ], null );
+ * _.long.make( [ 1, 2, 3, 4 ], null );
  * // returns [ 1, 2, 3, 4 ];
  *
  * @example
- * _.longMake( [ 1, 2 ], 4 );
+ * _.long.make( [ 1, 2 ], 4 );
  * // returns [ 1, 2, undefined, undefined ];
  *
  * @example
- * let got = _.longMake( _.unrollMake( [] ), [ 1, 2, 3 ] );
+ * let got = _.long.make( _.unroll.make( [] ), [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ 1, 2, 3 ];
  * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let got = _.longMake( new F32x( [ 1, 2, 3 ] ), 1 );
+ * let got = _.long.make( new F32x( [ 1, 2, 3 ] ), 1 );
  * console.log( got );
  * // log Float32Array[ 1 ];
  *
  * @example
- * let got = _.longMake( Array, null );
+ * let got = _.long.make( Array, null );
  * console.log( got );
  * // log [];
  *
  * @example
- * let got = _.longMake( Array, 3 );
+ * let got = _.long.make( Array, 3 );
  * console.log( got );
  * // log [ undefined, undefined, undefined ];
  *
@@ -209,74 +208,74 @@ function _longMake_functor( onMake )
 /* aaa : longMake does not create unrolls, but should */
 /* Dmytro : longMake creates unrolls */
 
-let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
-{
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
-
-  let result;
-  if( _.routine.is( src ) )
-  {
-    if( ins && ins.length === length )
-    {
-      if( src === Array )
-      {
-        if( _.longLike( ins ) )
-        {
-          if( ins.length === 1 )
-          result = [ ins[ 0 ] ];
-          else if( !_.arrayLike( ins ) )
-          result = new( _.constructorJoin( src, [ ... ins ] ) );
-          else
-          result = new( _.constructorJoin( src, ins ) );
-        }
-        else
-        {
-          result = new src( ins );
-        }
-      }
-      else
-      {
-        result = new src( ins );
-      }
-    }
-    else
-    {
-      result = new src( length );
-      // let minLength = Math.min( length, ins.length );
-      // if( !ins && minLength )
-      // debugger;
-      for( let i = 0 ; i < minLength ; i++ )
-      result[ i ] = ins[ i ];
-    }
-  }
-  else if( _.arrayIs( src ) )
-  {
-    _.assert( length >= 0 );
-    result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
-    // let minLength = Math.min( length, ins.length );
-    for( let i = 0 ; i < minLength ; i++ )
-    result[ i ] = ins[ i ];
-  }
-  else
-  {
-    if( ins && length === ins.length )
-    {
-      result = new src.constructor( ins );
-    }
-    else
-    {
-      result = new src.constructor( length );
-      // let minLength = Math.min( length, ins.length );
-      for( let i = 0 ; i < minLength ; i++ )
-      result[ i ] = ins[ i ];
-    }
-  }
-
-  return result;
-});
+// let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   let result;
+//   if( _.routine.is( src ) )
+//   {
+//     if( ins && ins.length === length )
+//     {
+//       if( src === Array )
+//       {
+//         if( _.longLike( ins ) )
+//         {
+//           if( ins.length === 1 )
+//           result = [ ins[ 0 ] ];
+//           else if( !_.argumentsArray.like( ins ) )
+//           result = new( _.constructorJoin( src, [ ... ins ] ) );
+//           else
+//           result = new( _.constructorJoin( src, ins ) );
+//         }
+//         else
+//         {
+//           result = new src( ins );
+//         }
+//       }
+//       else
+//       {
+//         result = new src( ins );
+//       }
+//     }
+//     else
+//     {
+//       result = new src( length );
+//       // let minLength = Math.min( length, ins.length );
+//       // if( !ins && minLength )
+//       // debugger;
+//       for( let i = 0 ; i < minLength ; i++ )
+//       result[ i ] = ins[ i ];
+//     }
+//   }
+//   else if( _.arrayIs( src ) )
+//   {
+//     _.assert( length >= 0 );
+//     result = _.unrollIs( src ) ? _.unroll.make( length ) : new src.constructor( length );
+//     // let minLength = Math.min( length, ins.length );
+//     for( let i = 0 ; i < minLength ; i++ )
+//     result[ i ] = ins[ i ];
+//   }
+//   else
+//   {
+//     if( ins && length === ins.length )
+//     {
+//       result = new src.constructor( ins );
+//     }
+//     else
+//     {
+//       result = new src.constructor( length );
+//       // let minLength = Math.min( length, ins.length );
+//       for( let i = 0 ; i < minLength ; i++ )
+//       result[ i ] = ins[ i ];
+//     }
+//   }
+//
+//   return result;
+// });
 
 // function longMake( src, ins )
 // {
@@ -332,7 +331,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //   src = null;
 //
 //   if( src === null )
-//   src = this.longDescriptor.make;
+//   src = this.tools./*longDescriptor*/defaultLong.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
@@ -348,7 +347,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //         {
 //           if( ins.length === 1 )
 //           result = [ ins[ 0 ] ];
-//           else if( !_.arrayLike( ins ) )
+//           else if( !_.argumentsArray.like( ins ) )
 //           result = new( _.constructorJoin( src, [ ... ins ] ) );
 //           else
 //           result = new( _.constructorJoin( src, ins ) );
@@ -375,12 +374,12 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //   {
 //     if( length === ins.length )
 //     {
-//       result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+//       result = _.unrollIs( src ) ? _.unroll.make( ins ) : new( _.constructorJoin( src.constructor, ins ) );
 //     }
 //     else
 //     {
 //       _.assert( length >= 0 );
-//       result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
+//       result = _.unrollIs( src ) ? _.unroll.make( length ) : new src.constructor( length );
 //       let minLen = Math.min( length, ins.length );
 //       for( let i = 0 ; i < minLen ; i++ )
 //       result[ i ] = ins[ i ];
@@ -401,7 +400,7 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 //     }
 //   }
 //
-//   _.assert( result instanceof this.longDescriptor.type );
+//   _.assert( result instanceof this.tools./*longDescriptor*/defaultLong.type );
 //   // _.assert( _.longLike( result ) );
 //
 //   return result;
@@ -415,17 +414,17 @@ let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 function longMakeEmpty( src )
 {
   if( arguments.length === 0 )
-  return this.longDescriptor.make( 0 );
+  return this.tools./*longDescriptor*/defaultLong.make( 0 );
 
   _.assert( arguments.length === 1 );
 
   if( _.unrollIs( src ) )
   {
-    return _.unrollMake( 0 );
+    return _.unroll.make( 0 );
   }
   else if( src === null || _.argumentsArray.is( src ) )
   {
-    return this.longDescriptor.make( 0 );
+    return this.tools./*longDescriptor*/defaultLong.make( 0 );
   }
   // else if( _.longLike( src ) )
   else if( _.vector.like( src ) )
@@ -437,7 +436,8 @@ function longMakeEmpty( src )
   {
     let result = new src();
     // let result = new src.onstructor(); /* Dmytro : src is a class, it calls without constructor property */
-    _.assert( _.long_.lengthOf( result ) === 0, 'Constructor should return empty long' );
+    // _.assert( _.long.lengthOf( result ) === 0, 'Constructor should return empty long' );
+    _.assert( result.length === 0, 'Constructor should return empty long' );
     return result;
   }
   _.assert( 0, `Unknown long subtype ${_.entity.strType( src )}` );
@@ -464,54 +464,54 @@ function longMakeEmpty( src )
 //   return result;
 // }
 
+// //
 //
-
-let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLength */ )
-{
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
-
-  let result;
-  if( _.routine.is( src ) )
-  {
-    result = new src( length );
-  }
-  else if( _.arrayIs( src ) )
-  {
-    debugger;
-    if( length === src.length )
-    {
-      result = new( _.constructorJoin( src.constructor, src ) );
-    }
-    else if( length < src.length )
-    {
-      result = src.slice( 0, length );
-    }
-    else
-    {
-      result = new src.constructor( length );
-      for( let i = 0 ; i < minLength ; i++ )
-      result[ i ] = src[ i ];
-    }
-  }
-  else
-  {
-    if( length === src.length )
-    {
-      result = new src.constructor( ins );
-    }
-    else
-    {
-      result = new src.constructor( length );
-      for( let i = 0 ; i < minLength ; i++ )
-      result[ i ] = src[ i ];
-    }
-  }
-
-  return result;
-});
+// let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   let result;
+//   if( _.routine.is( src ) )
+//   {
+//     result = new src( length );
+//   }
+//   else if( _.arrayIs( src ) )
+//   {
+//     debugger;
+//     if( length === src.length )
+//     {
+//       result = new( _.constructorJoin( src.constructor, src ) );
+//     }
+//     else if( length < src.length )
+//     {
+//       result = src.slice( 0, length );
+//     }
+//     else
+//     {
+//       result = new src.constructor( length );
+//       for( let i = 0 ; i < minLength ; i++ )
+//       result[ i ] = src[ i ];
+//     }
+//   }
+//   else
+//   {
+//     if( length === src.length )
+//     {
+//       result = new src.constructor( ins );
+//     }
+//     else
+//     {
+//       result = new src.constructor( length );
+//       for( let i = 0 ; i < minLength ; i++ )
+//       result[ i ] = src[ i ];
+//     }
+//   }
+//
+//   return result;
+// });
 
 // function _longMakeOfLength( src, len )
 // {
@@ -545,10 +545,10 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
 //   len = 0;
 //
 //   if( _.argumentsArray.is( src ) )
-//   src = this.longDescriptor.name === 'ArgumentsArray' ? this.longDescriptor.make : this.longDescriptor.make( src );
+//   src = this.tools./*longDescriptor*/defaultLong.name === 'ArgumentsArray' ? this.tools./*longDescriptor*/defaultLong.make : this.tools./*longDescriptor*/defaultLong.make( src );
 //
 //   if( src === null )
-//   src = this.longDescriptor.make;
+//   src = this.tools./*longDescriptor*/defaultLong.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( len ) );
@@ -609,56 +609,56 @@ let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLen
  * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * _.longMakeUndefined();
+ * _.long.makeUndefined();
  * // returns []
  *
  * @example
- * _.longMakeUndefined( null );
+ * _.long.makeUndefined( null );
  * // returns []
  *
  * @example
- * _.longMakeUndefined( null, null );
+ * _.long.makeUndefined( null, null );
  * // returns []
  *
  * @example
- * _.longMakeUndefined( 3 );
+ * _.long.makeUndefined( 3 );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
- * _.longMakeUndefined( 3, undefined );
+ * _.long.makeUndefined( 3, undefined );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
- * _.longMakeUndefined( [ 1, 2, 3, 4 ] );
+ * _.long.makeUndefined( [ 1, 2, 3, 4 ] );
  * // returns [ undefined, undefined, undefined, undefined ];
  *
  * @example
- * _.longMakeUndefined( [ 1, 2, 3, 4 ], null );
+ * _.long.makeUndefined( [ 1, 2, 3, 4 ], null );
  * // returns [ undefined, undefined, undefined, undefined ];
  *
  * @example
- * _.longMakeUndefined( [ 1, 2, 3, 4 ], 2 );
+ * _.long.makeUndefined( [ 1, 2, 3, 4 ], 2 );
  * // returns [ undefined, undefined ];
  *
  * @example
- * let got = _.longMakeUndefined( _.unrollMake( [] ), [ 1, 2, 3 ] );
+ * let got = _.long.makeUndefined( _.unroll.make( [] ), [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ undefined, undefined, undefined ];
  * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let got = _.longMakeUndefined( new F32x( [ 1, 2, 3, 4 ] ), 2 );
+ * let got = _.long.makeUndefined( new F32x( [ 1, 2, 3, 4 ] ), 2 );
  * console.log( got );
  * // log Float32Array[ undefined, undefined ];
  *
  * @example
- * let got = _.longMakeUndefined( Array, null );
+ * let got = _.long.makeUndefined( Array, null );
  * console.log( got );
  * // log [];
  *
  * @example
- * let got = _.longMakeUndefined( Array, 3 );
+ * let got = _.long.makeUndefined( Array, 3 );
  * console.log( got );
  * // log [ undefined, undefined, undefined ];
  *
@@ -679,32 +679,32 @@ aaa : longMakeUndefined does not create unrolls, but should
 Dmytro : longMakeUndefined creates unrolls.
 */
 
-let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLength */ )
-{
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
-
-  let result;
-  if( _.routine.is( src ) )
-  result = new src( length );
-  else if( _.unrollIs( src ) )
-  result = _.unrollMake( length );
-  else if( src === null )
-  result = this.longDescriptor.make( length );
-  else
-  result = new src.constructor( length );
-
-  return result;
-})
+// let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   let result;
+//   if( _.routine.is( src ) )
+//   result = new src( length );
+//   else if( _.unrollIs( src ) )
+//   result = _.unroll.make( length );
+//   else if( src === null )
+//   result = this.tools./*longDescriptor*/defaultLong.make( length );
+//   else
+//   result = new src.constructor( length );
+//
+//   return result;
+// })
 
 // function longMakeUndefined( ins, len )
 // {
 //   let result, length;
 //
 //   /* aaa3 : ask. use default long container */
-//   /* Dmytro : explained, used this.longDescriptor */
+//   /* Dmytro : explained, used this.tools.longDescriptor */
 //   // if( ins === null )
 //   // result = [];
 //
@@ -743,9 +743,9 @@ let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLen
 //   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.unrollIs( ins ) )
-//   result = _.unrollMake( length );
+//   result = _.unroll.make( length );
 //   else if( ins === null ) /* aaa3 : ask */
-//   result = this.longDescriptor.make( length );
+//   result = this.tools./*longDescriptor*/defaultLong.make( length );
 //   else
 //   result = new ins.constructor( length );
 //
@@ -771,9 +771,9 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
   if( _.routine.is( src ) )
   result = new src( length );
   else if( _.unrollIs( src ) )
-  result = _.unrollMake( length );
+  result = _.unroll.make( length );
   else if( src === null )
-  result = this.longDescriptor.make( length );
+  result = this.tools./*longDescriptor*/defaultLong.make( length );
   else
   result = new src.constructor( length );
 
@@ -816,7 +816,7 @@ let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength
 //   if( _.routine.is( ins ) )
 //   result = new ins( length );
 //   else if( _.unrollIs( ins ) )
-//   result = _.unrollMake( length );
+//   result = _.unroll.make( length );
 //   else
 //   result = new ins.constructor( length );
 //
@@ -862,7 +862,7 @@ function longMakeFilling( type, value, length )
   _.assert( _.number.is( length ) );
   _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
 
-  result = this.longMake( type, length );
+  result = this.long.make( type, length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = value;
 
@@ -877,7 +877,7 @@ function longMakeFilling( type, value, length )
 function longFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( src instanceof this.longDescriptor.type )
+  if( src instanceof this.tools./*longDescriptor*/defaultLong.type )
   if( !_.unrollIs( src ) && _.longIs( src ) )
   return src;
   return this.longMake.call( this, src );
@@ -933,7 +933,7 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.longDescriptor.type && _.longIs( src ) )
+  if( src instanceof this.tools./*longDescriptor*/defaultLong.type && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
@@ -942,10 +942,10 @@ function longFromCoercing( src )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
-  return this.longDescriptor.from( src );
+  return this.tools./*longDescriptor*/defaultLong.from( src );
 
   if( _.object.is( src ) )
-  return this.longFromCoercing( _.mapToArray( src ) );
+  return this.longFromCoercing( _.props.pairs( src ) );
 
   /* aaa : cover */
   /* Dmytro : covered */
@@ -1177,7 +1177,7 @@ function longDuplicate( o ) /* xxx : review interface */
   if( o.dst )
   _.assert( o.dst.length >= length );
 
-  o.dst = o.dst || _.longMakeUndefined( o.src, length );
+  o.dst = o.dst || _.long.makeUndefined( o.src, length );
 
   let rlength = o.dst.length;
 
@@ -1231,7 +1231,7 @@ function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyp
   debugger;
 
   if( _.unrollIs( src ) )
-  return _.unrollMake( src );
+  return _.unroll.make( src );
   else if( _.arrayIs( src ) )
   return src.slice();
   else if( _.argumentsArray.is( src ) )
@@ -1421,7 +1421,7 @@ function longRepresent( src, begin, end )
 //   if( l < f )
 //   l = f;
 //
-//   result = _.longMakeUndefined( array, l-f );
+//   result = _.long.makeUndefined( array, l-f );
 //   // if( _.bufferTypedIs( array ) )
 //   // result = new array.constructor( l-f );
 //   // else
@@ -1460,7 +1460,7 @@ function longRepresent( src, begin, end )
  * // log false
  *
  * @example
- * let src = _.unrollMake( [] );
+ * let src = _.unroll.make( [] );
  * let got = _.longJoin( src, 1, 'str', new F32x( [ 3 ] ) );
  * console.log( got );
  * // log [ 1, 'str', 3 ]
@@ -1532,7 +1532,7 @@ function longJoin()
   else
   {
     if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) || _.argumentsArray.is( arguments[ 0 ] ) )
-    result = _.longMakeUndefined( arguments[ 0 ], length );
+    result = _.long.makeUndefined( arguments[ 0 ], length );
     else if( _.bufferNodeIs( arguments[ 0 ] ) )
     result = BufferNode.alloc( length );
     else
@@ -1632,7 +1632,7 @@ function longEmpty( dstLong )
 //  * // log false
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longBut( src, 2, [ 'str' ] );
 //  * console.log( got );
 //  * // log [ 1, 2, 'str', 4, 5 ]
@@ -1688,7 +1688,7 @@ function longEmpty( dstLong )
 //
 //   if( range === undefined )
 //   return _.longJoin( array );
-//   // return _.longMake( array );
+//   // return _.long.make( array );
 //
 //   if( _.arrayIs( array ) )
 //   return _.arrayBut( array, range, val );
@@ -1714,7 +1714,7 @@ function longEmpty( dstLong )
 //   let d2 = d - len;
 //   let l2 = array.length - d2;
 //
-//   let result = _.longMakeUndefined( array, l2 );
+//   let result = _.long.makeUndefined( array, l2 );
 //
 //   // debugger;
 //   // _.assert( 0, 'not tested' )
@@ -1772,7 +1772,7 @@ function longEmpty( dstLong )
 //  * // log false
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longButInplace( src, [ 1, 4 ], [ 'str' ] );
 //  * console.log( got );
 //  * // log [ 1, 'str', 5 ]
@@ -1859,7 +1859,7 @@ function longEmpty( dstLong )
 //   // let d = range[ 1 ] - range[ 0 ];
 //   // let range[ 1 ] = src.length - d + ( ins ? ins.length : 0 );
 //   //
-//   // result = _.longMakeUndefined( src, range[ 1 ] );
+//   // result = _.long.makeUndefined( src, range[ 1 ] );
 //   //
 //   // debugger;
 //   // _.assert( 0, 'not tested' )
@@ -1977,7 +1977,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.longMakeUndefined( src, resultLength );
+    result = _.long.makeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
@@ -1992,12 +1992,12 @@ function longBut_( /* dst, src, cinterval, ins */ )
     }
     else if( dst.length !== resultLength || _.argumentsArray.is( dst ) )
     {
-      result = _.longMakeUndefined( dst, resultLength );
+      result = _.long.makeUndefined( dst, resultLength );
     }
   }
   else if( dst.length !== resultLength )
   {
-    dst = _.longMakeUndefined( dst, resultLength );
+    dst = _.long.makeUndefined( dst, resultLength );
   }
 
   /* */
@@ -2041,7 +2041,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //  * // log false
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longOnly( src, 2, [ 'str' ] );
 //  * console.log( got );
 //  * // log [ 3, 4, 5 ]
@@ -2096,7 +2096,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 //
 //   if( range === undefined )
-//   // return _.longMake( array, array.length ? array.length : 0 );
+//   // return _.long.make( array, array.length ? array.length : 0 );
 //   return _.longJoin( array );
 //
 //   if( _.number.is( range ) )
@@ -2130,10 +2130,10 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   // l = array.length;
 //
 //   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-//   // return _.longMake( array, array.length );
+//   // return _.long.make( array, array.length );
 //   return _.longJoin( array );
 //
-//   result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+//   result = _.long.makeUndefined( array, range[ 1 ]-range[ 0 ] );
 //
 //   let f2 = Math.max( range[ 0 ], 0 );
 //   let l2 = Math.min( array.length, range[ 1 ] );
@@ -2179,7 +2179,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //  * // log true
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longOnlyInplace( src, 2, [ 'str' ] );
 //  * console.log( got );
 //  * // log [ 3, 4, 5 ]
@@ -2296,7 +2296,7 @@ function longBut_( /* dst, src, cinterval, ins */ )
 //   // // else
 //   // // result = new Array( l-f );
 //   //
-//   // result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+//   // result = _.long.makeUndefined( array, range[ 1 ]-range[ 0 ] );
 //   //
 //   // /* */
 //   //
@@ -2365,7 +2365,7 @@ function longOnly_( dst, src, cinterval )
   let result = dst;
   if( dst === null )
   {
-    result = _.longMakeUndefined( src, resultLength );
+    result = _.long.makeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
@@ -2385,7 +2385,7 @@ function longOnly_( dst, src, cinterval )
     }
     else if( dst.length !== resultLength || _.argumentsArray.is( dst ) )
     {
-      result = _.longMakeUndefined( dst, resultLength );
+      result = _.long.makeUndefined( dst, resultLength );
     }
   }
   else if( dst.length !== resultLength )
@@ -2427,7 +2427,7 @@ function longOnly_( dst, src, cinterval )
 //  * // log false
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longGrow( src, 7, 'str' );
 //  * console.log( got );
 //  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
@@ -2516,7 +2516,7 @@ function longOnly_( dst, src, cinterval )
 //   let l2 = Math.min( array.length, l );
 //
 //   // debugger;
-//   let result = _.longMakeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
+//   let result = _.long.makeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
 //   for( let r = f2 ; r < l2 + f2 ; r++ )
 //   result[ r ] = array[ r - f2 ];
 //
@@ -2560,7 +2560,7 @@ function longOnly_( dst, src, cinterval )
 //  * // log true
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longGrowInplace( src, 7, 'str' );
 //  * console.log( got );
 //  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
@@ -2695,7 +2695,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.longMakeUndefined( src, resultLength );
+    result = _.long.makeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
@@ -2712,7 +2712,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
     }
     else if( dst.length !== resultLength || _.argumentsArray.is( dst ) )
     {
-      result = _.longMakeUndefined( dst, resultLength );
+      result = _.long.makeUndefined( dst, resultLength );
     }
   }
   else if( dst.length !== resultLength )
@@ -2760,7 +2760,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //  * // log false
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longRelength( src, 7, 'str' );
 //  * console.log( got );
 //  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
@@ -2813,7 +2813,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //
 //   if( range === undefined )
 //   return _.longJoin( array );
-//   // return _.longMake( array );
+//   // return _.long.make( array );
 //
 //   if( _.number.is( range ) )
 //   range = [ range, array.length ];
@@ -2833,9 +2833,9 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //   f = 0;
 //
 //   if( f === 0 && l === array.length )
-//   return _.longMake( array );
+//   return _.long.make( array );
 //
-//   result = _.longMakeUndefined( array, l-f );
+//   result = _.long.makeUndefined( array, l-f );
 //
 //   /* */
 //
@@ -2882,7 +2882,7 @@ function longGrow_( /* dst, src, cinterval, ins */ )
 //  * // log true
 //  *
 //  * @example
-//  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+//  * var src = _.unroll.make( [ 1, 2, 3, 4, 5 ] );
 //  * var got = _.longRelengthInplace( src, 7, 'str' );
 //  * console.log( got );
 //  * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
@@ -3011,7 +3011,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.longMakeUndefined( src, resultLength );
+    result = _.long.makeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
@@ -3036,7 +3036,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
     }
     else if( dst.length !== resultLength || _.argumentsArray.is( dst ) )
     {
-      result = _.longMakeUndefined( dst, resultLength );
+      result = _.long.makeUndefined( dst, resultLength );
     }
   }
   else if( dst.length !== resultLength )
@@ -3121,61 +3121,61 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 //
 //   return result;
 // }
-
 //
-
-/**
- * The longIdenticalShallow() routine checks the equality of two arrays.
- *
- * @param { longLike } src1 - The first array.
- * @param { longLike } src2 - The second array.
- *
- * @example
- * _.longIdenticalShallow( [ 1, 2, 3 ], [ 1, 2, 3 ] );
- * // returns true
- *
- * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function longIdenticalShallow
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @namespace Tools
- */
-
-/* xxx : vector? */
-/* qqq : extend test */
-function longIdenticalShallow( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // qqq : for Yevhen : !
-  // _.assert( _.longLike( src1 ) );
-  // _.assert( _.longLike( src2 ) );
-
-  if( !_.longLike( src1 ) )
-  return false;
-  if( !_.longLike( src2 ) )
-  return false;
-
-  return _._longIdenticalShallow( src1, src2 );
-
-}
-
+// //
 //
-
-function _longIdenticalShallow( src1, src2 )
-{
-  let result = true;
-
-  if( src1.length !== src2.length )
-  return false;
-
-  for( let s = 0 ; s < src1.length ; s++ )
-  {
-    result = src1[ s ] === src2[ s ];
-    if( result === false )
-    return false;
-  }
-
-  return result;
-}
+// /**
+//  * The long.identicalShallow() routine checks the equality of two arrays.
+//  *
+//  * @param { longLike } src1 - The first array.
+//  * @param { longLike } src2 - The second array.
+//  *
+//  * @example
+//  * _.long.identicalShallow( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+//  * // returns true
+//  *
+//  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
+//  * @function long.identicalShallow
+//  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+//  * @namespace Tools
+//  */
+//
+// /* xxx : vector? */
+// /* qqq : extend test */
+// function long.identicalShallow( src1, src2 )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   // qqq : for Yevhen : !
+//   // _.assert( _.longLike( src1 ) );
+//   // _.assert( _.longLike( src2 ) );
+//
+//   if( !_.longLike( src1 ) )
+//   return false;
+//   if( !_.longLike( src2 ) )
+//   return false;
+//
+//   return _._long.identicalShallow( src1, src2 );
+//
+// }
+//
+// //
+//
+// function _long.identicalShallow( src1, src2 )
+// {
+//   let result = true;
+//
+//   if( src1.length !== src2.length )
+//   return false;
+//
+//   for( let s = 0 ; s < src1.length ; s++ )
+//   {
+//     result = src1[ s ] === src2[ s ];
+//     if( result === false )
+//     return false;
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -3187,7 +3187,7 @@ function longHas( /* array, element, evaluator1, evaluator2 */ )
   let evaluator2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayLike( array ) );
+  _.assert( _.argumentsArray.like( array ) );
 
   if( !evaluator1 && !evaluator2 )
   {
@@ -3727,11 +3727,11 @@ let Extension =
 
   _longMake_functor,
 
-  longMake,
-  longMakeEmpty,
-  _longMakeOfLength,
-  longMakeUndefined,
-  longMakeZeroed,
+  // longMake,
+  // longMakeEmpty,
+  // _longMakeOfLength,
+  // longMakeUndefined,
+  longMakeZeroed, /* xxx : review */
   longMakeFilling,
   /* qqq : check routine longMakeFilling, and add perfect coverage */
   /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
@@ -3767,10 +3767,10 @@ let Extension =
 
   // longCompare,
 
-  longIdenticalShallow,
-  _longIdenticalShallow,
-  longIdentical : longIdenticalShallow,
-  longEquivalentShallow : longIdenticalShallow,
+  // long.identicalShallow,
+  // _long.identicalShallow,
+  // long.identical : long.identicalShallow,
+  // longEquivalentShallow : long.identicalShallow,
 
   longHas,
   longHasAny,
@@ -3829,6 +3829,6 @@ let Extension =
 
 }
 
-_.mapSupplement( _, Extension );
+_.props.supplement( _, Extension );
 
 })();

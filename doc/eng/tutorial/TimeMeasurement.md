@@ -62,23 +62,35 @@ function forEach( src, onEach )
 ```
 
 </details>
+<br>
+The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`.
+The testing program should consist of 2 cases ( can be written as 1 case, then by changing size of entity and number of iterations - run code to produce results for the second case ):
 
-The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 50 000 000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 10 times.
+- Large entity, small amount of iterations ( measure cyclic, mostly code that runs on entity );
+- Small entity, large amount of iterations ( measure non-cyclic, mostly code that runs outside of entity );
 
+The size of entity and iterations should be choosen to always produce similar results .
+
+The program measures the time it takes to iterate elements of an array of length 50 000 000, run both algorithms 10 times.<br>
+Also the program measures the time it takes to iterate elements of an array of length 500, run both algorithms 100000 times.<br>
 The program outputs the variable `counter` to avoid unwanted optimization.
-
+After completion, time that the test routine took should be analyzed to make sure that it runs nearly times of algorithms checked combined.
 ### Measurement results
 
-The measurements results should be compiled into a table indicating the interpreter and its version. The results may differ significantly depending on the interpreter and its version.
+The measurements results should be compiled into a table indicating the interpreter and its version. The results may differ significantly depending on the interpreter and its version. Also test case should be specified.
+Can use abbreviations such as :
 
-| Interpretor  | forLoop  | forEach  |
-|--------------|----------|----------|
-| Njs v10.16.0 | 9.940 s  | 17.410 s |
-| Njs v11.3.0  | 10.182 s | 17.403 s |
-| Njs v12.7.0  | 11.533 s | 21.673 s |
-| Njs v13.3.0  | 11.448 s | 21.324 s |
+- BASI = big array( length : \<length> ), small amount of iterations ( size : \<size> )
+- SABI = small array ( length : \<length> ), big amount of iterations ( size : \<size> )
 
-The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
+| Interpretor  | forLoop( BASI ) | forEach(BASI) | forLoop( SABI ) | forEach(SABI) |
+| ------------ | --------------- | ------------- | --------------- | ------------- |
+| Njs v10.16.0 | 9.940 s         | 17.410 s      | 0.134 s         | 0.728 s       |
+| Njs v11.3.0  | 10.182 s        | 17.403 s      | 0.137 s         | 0.758 s       |
+| Njs v12.7.0  | 11.533 s        | 21.673 s      | 0.134 s         | 0.801 s       |
+| Njs v13.3.0  | 11.448 s        | 21.324 s      | 0.135 s         | 0.811 s       |
+
+The report shows that the `for` loop works at least twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
 
 ### Validity and pitfalls
 

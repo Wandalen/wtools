@@ -5,228 +5,224 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 // --
 // implementation
 // --
 
-/**
- * The routine unrollMake() returns a new unroll-array maiden from {-src-}.
- *
- * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array. Making an unroll normalizes its content.
- *
- * @param { Number|Long|Set|Null|Undefined } src - The number or other instance to make unroll-array. If null is provided,
- * then routine returns an empty Unroll.
- *
- * @example
- * let src = _.unrollMake();
- * // returns []
- * _.unrollIs( src );
- * // returns true
- *
- * @example
- * let src = _.unrollMake( null );
- * // returns []
- * _.unrollIs( src );
- * // returns true
- *
- * @example
- * let src = _.unrollMake( null, null );
- * // returns []
- * _.unrollIs( src );
- * // returns true
- *
- * @example
- * let src = _.unrollMake( 3 );
- * // returns [ undefined, undefined, undefined ]
- * _.unrollIs( src );
- * // returns true
- *
- * @example
- * let src = _.unrollMake( [ 1, 2, 'str' ] );
- * // returns [ 1, 2, 'str' ]
- * _.unrollIs( src );
- * // returns true
- *
- * @returns { Unroll } - Returns a new Unroll maiden from {-src-}.
- * Otherwise, it returns the empty Unroll.
- * @function unrollMake
- * @throws { Error } If arguments.length is more then one.
- * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
- * @namespace Tools
- */
-
-function unrollMake( src )
-{
-  let result = _.arrayMake( src );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.arrayIs( result ) );
-  result[ _.unroll ] = true;
-  if( !_.unrollIs( src ) )
-  result = _.unrollNormalize( result );
-  return result;
-}
-
+// /**
+//  * The routine unrollMake() returns a new unroll-array maiden from {-src-}.
+//  *
+//  * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array. Making an unroll normalizes its content.
+//  *
+//  * @param { Number|Long|Set|Null|Undefined } src - The number or other instance to make unroll-array. If null is provided,
+//  * then routine returns an empty Unroll.
+//  *
+//  * @example
+//  * let src = _.unroll.make();
+//  * // returns []
+//  * _.unrollIs( src );
+//  * // returns true
+//  *
+//  * @example
+//  * let src = _.unroll.make( null );
+//  * // returns []
+//  * _.unrollIs( src );
+//  * // returns true
+//  *
+//  * @example
+//  * let src = _.unroll.make( null, null );
+//  * // returns []
+//  * _.unrollIs( src );
+//  * // returns true
+//  *
+//  * @example
+//  * let src = _.unroll.make( 3 );
+//  * // returns [ undefined, undefined, undefined ]
+//  * _.unrollIs( src );
+//  * // returns true
+//  *
+//  * @example
+//  * let src = _.unroll.make( [ 1, 2, 'str' ] );
+//  * // returns [ 1, 2, 'str' ]
+//  * _.unrollIs( src );
+//  * // returns true
+//  *
+//  * @returns { Unroll } - Returns a new Unroll maiden from {-src-}.
+//  * Otherwise, it returns the empty Unroll.
+//  * @function unrollMake
+//  * @throws { Error } If arguments.length is more then one.
+//  * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
+//  * @namespace Tools
+//  */
 //
-
-/**
- * The routine unrollMakeUndefined() returns a new Unroll with length equal to {-length-}.
- * If the argument {-length-} is not provided, routine returns new Unroll with the length defined from {-src-}.
- *
- * @param { Long|Number|Null } src - Any Long, Number or null. If {-length-} is not provided, then routine defines length from {-src-}.
- * @param { Number|Long|Null } length - Defines length of new Unroll. If null is provided, then length defines by {-src-}.
- *
- * @example
- * _.unrollMakeUndefined();
- * // returns []
- *
- * @example
- * _.unrollMakeUndefined( null );
- * // returns []
- *
- * @example
- * _.unrollMakeUndefined( null, null );
- * // returns []
- *
- * @example
- * _.unrollMakeUndefined( 3 );
- * // returns [ undefined, undefined, undefined]
- *
- * @example
- * _.unrollMakeUndefined( 3, null );
- * // returns [ undefined, undefined, undefined]
- *
- * @example
- * _.unrollMakeUndefined( [ 1, 2, 3 ] );
- * // returns [ undefined, undefined, undefined ]
- *
- * @example
- * _.unrollMakeUndefined( [ 1, 2, 3 ], null );
- * // returns [ undefined, undefined, undefined ]
- *
- * @example
- * _.unrollMakeUndefined( [ 1, 2, 3 ], 4 );
- * // returns [ undefined, undefined, undefined, undefined ]
- *
- * @example
- * _.unrollMakeUndefined( [ 1, 2, 3, 4 ], [ 1, 2 ] );
- * // returns [ undefined, undefined ]
- *
- * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.unrollMakeUndefined( src, 3 );
- * console.log( got );
- * // log [ undefined, undefined, undefined ]
- *
- * @returns { Unroll } Returns a new Unroll with length equal to {-length-} or defined from {-src-}.
- * If null passed, routine returns the empty Unroll.
- * @function unrollMakeUndefined
- * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If argument {-src-} is not a Long, not null.
- * @throws { Error } If argument {-length-} is not a number, not a Long.
- * @namespace Tools
- */
-
-/* aaa : review */
-/* Dmytro : reviewed. Added condition to handle single argument call. Also, improved handling length argument - null and undefined value */
-
-function unrollMakeUndefined( src, length )
-{
-  if( arguments.length === 0 )
-  return _.unrollMake();
-
-  if( _.longIs( length ) )
-  {
-    length = length.length;
-  }
-  if( length === undefined || length === null )
-  {
-    if( src === null )
-    {
-      length = 0;
-    }
-    else if( _.longLike( src ) )
-    {
-      length = src.length;
-    }
-    else if( _.number.is( src ) )
-    {
-      length = src;
-      src = null;
-    }
-    else _.assert( 0 );
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.number.isFinite( length ) );
-  _.assert( _.longIs( src ) || src === null );
-
-  return _.unrollMake( length );
-}
-
+// function unrollMake( src )
+// {
+//   let result = _.array.make( src );
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   _.assert( _.arrayIs( result ) );
+//   result[ unrollSymbol ] = true;
+//   if( !_.unrollIs( src ) )
+//   result = _.unroll.normalize( result );
+//   return result;
+// }
 //
-
-/**
- * The routine unrollFrom() performs conversion of {-src-} to unroll-array.
- *
- * If {-src-} is not unroll-array, routine unrollFrom() returns new unroll-array.
- * If {-src-} is unroll-array, then routine returns {-src-}.
- *
- * @param { Long|Set|Number|Null|Undefined } src - The number, array-like object or Unroll. If null is provided,
- * then routine returns an empty Unroll.
- *
- * @example
- * let got = _.unrollFrom( null );
- * // returns []
- * _.unrollIs( got );
- * // returns true
- *
- * @example
- * let got = _.unrollFrom( 3 );
- * // returns [ undefined, undefined, undefined ]
- * _.unrollIs( got );
- * // returns true
- *
- * @example
- * let got = _.unrollFrom( [ 1, 2, 'str' ] );
- * // returns [ 1, 2, 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- *
- * @example
- * let got = _.unrollFrom( new F32x( [ 1, 2, 0 ] ) );
- * // returns [ 1, 2, 0 ]
- * console.log( _.unrollIs( got ) );
- * // log true
- *
- * @example
- * let got = _.unrollFrom( new Set( [ 1, 2, 'str' ] ) );
- * // returns [ 1, 2, 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log true
- *
- * @example
- * let src = _.unrollMake( [ 1, 2, 'str' ] );
- * let got = _.unrollFrom( src );
- * // returns [ 1, 2, 'str' ]
- * console.log ( src === got );
- * // log true
- *
- * @returns { Unroll } Returns Unroll converted from {-src-}. If {-src-} is Unroll, then routine returns {-src-}.
- * @function unrollFrom
- * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If argument {-src-} is not Long, not number, not Set, not null, not undefined.
- * @namespace Tools
- */
-
-function unrollFrom( src )
-{
-  _.assert( arguments.length === 1 );
-  if( _.unrollIs( src ) )
-  return src;
-  return _.unrollMake( src );
-}
+// //
+//
+// /**
+//  * The routine unrollMakeUndefined() returns a new Unroll with length equal to {-length-}.
+//  * If the argument {-length-} is not provided, routine returns new Unroll with the length defined from {-src-}.
+//  *
+//  * @param { Long|Number|Null } src - Any Long, Number or null. If {-length-} is not provided, then routine defines length from {-src-}.
+//  * @param { Number|Long|Null } length - Defines length of new Unroll. If null is provided, then length defines by {-src-}.
+//  *
+//  * @example
+//  * _.unroll.makeUndefined();
+//  * // returns []
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( null );
+//  * // returns []
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( null, null );
+//  * // returns []
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( 3 );
+//  * // returns [ undefined, undefined, undefined]
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( 3, null );
+//  * // returns [ undefined, undefined, undefined]
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( [ 1, 2, 3 ] );
+//  * // returns [ undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( [ 1, 2, 3 ], null );
+//  * // returns [ undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( [ 1, 2, 3 ], 4 );
+//  * // returns [ undefined, undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * _.unroll.makeUndefined( [ 1, 2, 3, 4 ], [ 1, 2 ] );
+//  * // returns [ undefined, undefined ]
+//  *
+//  * @example
+//  * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * let got = _.unroll.makeUndefined( src, 3 );
+//  * console.log( got );
+//  * // log [ undefined, undefined, undefined ]
+//  *
+//  * @returns { Unroll } Returns a new Unroll with length equal to {-length-} or defined from {-src-}.
+//  * If null passed, routine returns the empty Unroll.
+//  * @function unrollMakeUndefined
+//  * @throws { Error } If arguments.length is less then one or more then two.
+//  * @throws { Error } If argument {-src-} is not a Long, not null.
+//  * @throws { Error } If argument {-length-} is not a number, not a Long.
+//  * @namespace Tools
+//  */
+//
+// function unrollMakeUndefined( src, length )
+// {
+//   if( arguments.length === 0 )
+//   return _.unroll.make();
+//
+//   if( _.longIs( length ) )
+//   {
+//     length = length.length;
+//   }
+//   if( length === undefined || length === null )
+//   {
+//     if( src === null )
+//     {
+//       length = 0;
+//     }
+//     else if( _.longLike( src ) )
+//     {
+//       length = src.length;
+//     }
+//     else if( _.number.is( src ) )
+//     {
+//       length = src;
+//       src = null;
+//     }
+//     else _.assert( 0 );
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.number.isFinite( length ) );
+//   _.assert( _.longIs( src ) || src === null );
+//
+//   return _.unroll.make( length );
+// }
+//
+// //
+//
+// /**
+//  * The routine unrollFrom() performs conversion of {-src-} to unroll-array.
+//  *
+//  * If {-src-} is not unroll-array, routine unrollFrom() returns new unroll-array.
+//  * If {-src-} is unroll-array, then routine returns {-src-}.
+//  *
+//  * @param { Long|Set|Number|Null|Undefined } src - The number, array-like object or Unroll. If null is provided,
+//  * then routine returns an empty Unroll.
+//  *
+//  * @example
+//  * let got = _.unroll.from( null );
+//  * // returns []
+//  * _.unrollIs( got );
+//  * // returns true
+//  *
+//  * @example
+//  * let got = _.unroll.from( 3 );
+//  * // returns [ undefined, undefined, undefined ]
+//  * _.unrollIs( got );
+//  * // returns true
+//  *
+//  * @example
+//  * let got = _.unroll.from( [ 1, 2, 'str' ] );
+//  * // returns [ 1, 2, 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  *
+//  * @example
+//  * let got = _.unroll.from( new F32x( [ 1, 2, 0 ] ) );
+//  * // returns [ 1, 2, 0 ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  *
+//  * @example
+//  * let got = _.unroll.from( new Set( [ 1, 2, 'str' ] ) );
+//  * // returns [ 1, 2, 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log true
+//  *
+//  * @example
+//  * let src = _.unroll.make( [ 1, 2, 'str' ] );
+//  * let got = _.unroll.from( src );
+//  * // returns [ 1, 2, 'str' ]
+//  * console.log ( src === got );
+//  * // log true
+//  *
+//  * @returns { Unroll } Returns Unroll converted from {-src-}. If {-src-} is Unroll, then routine returns {-src-}.
+//  * @function unrollFrom
+//  * @throws { Error } If arguments.length is less or more then one.
+//  * @throws { Error } If argument {-src-} is not Long, not number, not Set, not null, not undefined.
+//  * @namespace Tools
+//  */
+//
+// function unrollFrom( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.unrollIs( src ) )
+//   return src;
+//   return _.unroll.make( src );
+// }
 
 //
 
@@ -275,18 +271,20 @@ function unrollsFrom( srcs )
 {
   _.assert( arguments.length >= 1 );
 
-  let result = _.unrollMake( null );
+  let result = _.unroll.make( null );
 
   for( let i = 0; i < arguments.length; i++ )
   {
     if( _.unrollIs( arguments[ i ] ) )
     result.push( arguments[ i ] );
     else
-    result.push( _.unrollMake( arguments[ i ] ) );
+    result.push( _.unroll.make( arguments[ i ] ) );
   }
 
   return result;
 }
+
+//
 
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
@@ -298,22 +296,22 @@ function unrollsFrom( srcs )
  * unrollFromMaybe() returns new unroll-array.
  *
  * @example
- * let got = _.unrollFromMaybe( 'str' );
+ * let got = _.unroll.fromMaybe( 'str' );
  * // returns 'str'
  *
  * @example
- * let got = _.unrollFromMaybe( { a : 1 } );
+ * let got = _.unroll.fromMaybe( { a : 1 } );
  * // returns { a : 1 }
  *
  * @example
- * let got = _.unrollFromMaybe( null );
+ * let got = _.unroll.fromMaybe( null );
  * // returns []
  * console.log( _.unrollIs( unroll ) );
  * // log true
  *
  * @example
- * let src = _.unrollMake( [ 1, 2, 'str' ] );
- * let got = _.unrollFromMaybe( src );
+ * let src = _.unroll.make( [ 1, 2, 'str' ] );
+ * let got = _.unroll.fromMaybe( src );
  * console.log ( src === got );
  * // log true
  *
@@ -329,75 +327,75 @@ function unrollFromMaybe( src )
   _.assert( arguments.length === 1 );
   // if( _.unrollIs( src ) || _.strIs( src ) || _.bool.is( src ) || _.mapIs( src ) || src === undefined )
   // return src;
-  // return _.unrollMake( src );
+  // return _.unroll.make( src );
   if( _.unrollIs( src ) ) /* previous implementation is wrong */ /* Condition of routine can be combined by another order */
   return src;
   else if( _.longIs( src ) || _.number.is( src ) || src === null )
-  return _.unrollMake( src );
+  return _.unroll.make( src );
   else
   return src;
 }
 
 //
 
-/**
- * The routine unrollNormalize() performs normalization of {-dstArray-}.
- * Normalization is unrolling of Unrolls, which is elements of {-dstArray-}.
- *
- * If {-dstArray-} is unroll-array, routine unrollNormalize() returns unroll-array
- * with normalized elements.
- * If {-dstArray-} is array, routine unrollNormalize() returns array with unrolled elements.
- *
- * @param { Array|Unroll } dstArray - The Unroll to be unrolled (normalized).
- *
- * @example
- * let unroll = _.unrollFrom( [ 1, 2, _.unrollMake( [ 3, 'str' ] ) ] );
- * let result = _.unrollNormalize( unroll )
- * console.log( result );
- * // log [ 1, 2, 3, 'str' ]
- * console.log( _.unrollIs( result ) );
- * // log true
- *
- * @example
- * let unroll = _.unrollFrom( [ 1,'str' ] );
- * let result = _.unrollNormalize( [ 1, unroll, [ unroll ] ] );
- * console.log( result );
- * // log [ 1, 1, 'str', [ 1, 'str' ] ]
- * console.log( _.unrollIs( result ) );
- * // log false
- *
- * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
- * @returns { Unroll } If {-dstArray-} is Unroll, routine returns an Unroll with normalized elements.
- * @function unrollNormalize
- * @throws { Error } If ( arguments.length ) is not equal to one.
- * @throws { Error } If argument ( dstArray ) is not arrayLike.
- * @namespace Tools
- */
-
-function unrollNormalize( dstArray )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
-
-  for( let a = 0 ; a < dstArray.length ; a++ )
-  {
-    if( _.unrollIs( dstArray[ a ] ) )
-    {
-      let args = [ a, 1 ];
-      args.push.apply( args, dstArray[ a ] );
-      dstArray.splice.apply( dstArray, args );
-      a += args.length - 3;
-      /* no normalization of ready unrolls, them should be normal */
-    }
-    else if( _.arrayIs( dstArray[ a ] ) )
-    {
-      _.unrollNormalize( dstArray[ a ] );
-    }
-  }
-
-  return dstArray;
-}
+// /**
+//  * The routine unrollNormalize() performs normalization of {-dstArray-}.
+//  * Normalization is unrolling of Unrolls, which is elements of {-dstArray-}.
+//  *
+//  * If {-dstArray-} is unroll-array, routine unrollNormalize() returns unroll-array
+//  * with normalized elements.
+//  * If {-dstArray-} is array, routine unrollNormalize() returns array with unrolled elements.
+//  *
+//  * @param { Array|Unroll } dstArray - The Unroll to be unrolled (normalized).
+//  *
+//  * @example
+//  * let unroll = _.unroll.from( [ 1, 2, _.unroll.make( [ 3, 'str' ] ) ] );
+//  * let result = _.unroll.normalize( unroll )
+//  * console.log( result );
+//  * // log [ 1, 2, 3, 'str' ]
+//  * console.log( _.unrollIs( result ) );
+//  * // log true
+//  *
+//  * @example
+//  * let unroll = _.unroll.from( [ 1,'str' ] );
+//  * let result = _.unroll.normalize( [ 1, unroll, [ unroll ] ] );
+//  * console.log( result );
+//  * // log [ 1, 1, 'str', [ 1, 'str' ] ]
+//  * console.log( _.unrollIs( result ) );
+//  * // log false
+//  *
+//  * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
+//  * @returns { Unroll } If {-dstArray-} is Unroll, routine returns an Unroll with normalized elements.
+//  * @function unrollNormalize
+//  * @throws { Error } If ( arguments.length ) is not equal to one.
+//  * @throws { Error } If argument ( dstArray ) is not arrayLike.
+//  * @namespace Tools
+//  */
+//
+// function unrollNormalize( dstArray )
+// {
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+//
+//   for( let a = 0 ; a < dstArray.length ; a++ )
+//   {
+//     if( _.unrollIs( dstArray[ a ] ) )
+//     {
+//       let args = [ a, 1 ];
+//       args.push.apply( args, dstArray[ a ] );
+//       dstArray.splice.apply( dstArray, args );
+//       a += args.length - 3;
+//       /* no normalization of ready unrolls, them should be normal */
+//     }
+//     else if( _.arrayIs( dstArray[ a ] ) )
+//     {
+//       _.unroll.normalize( dstArray[ a ] );
+//     }
+//   }
+//
+//   return dstArray;
+// }
 
 //
 
@@ -470,7 +468,7 @@ function unrollSelect( src, range, val )
   let result;
 
   if( range === undefined )
-  return _.unrollMake( src );
+  return _.unroll.make( src );
 
   if( _.number.is( range ) )
   range = [ range, src.length ];
@@ -492,9 +490,9 @@ function unrollSelect( src, range, val )
   }
 
   if( f === 0 && l === src.length )
-  return _.unrollMake( src );
+  return _.unroll.make( src );
 
-  result = _.unrollMakeUndefined( src, l-f );
+  result = _.unroll.makeUndefined( src, l-f );
 
   /* */
 
@@ -539,28 +537,28 @@ function unrollSelect( src, range, val )
  * // log false
  *
  * @example
- * let result = _.unrollPrepend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
+ * let result = _.unrollPrepend( null, _.unroll.make( [ 1, 2, 'str' ] ) );
  * console.log( result );
  * // log [ 1, 2, 'str' ]
  * console.log( _.unrollIs( result ) );
  * // log false
  *
  * @example
- * let result = _.unrollPrepend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
+ * let result = _.unrollPrepend( _.unroll.from( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
  * // log [ [ 1, 2 ], 1, 'str' ]
  * console.log( _.unrollIs( result ) );
  * // log true
  *
  * @example
- * let result = _.unrollPrepend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
+ * let result = _.unrollPrepend( [ 1, 'str' ],  _.unroll.from( [ 2, 3 ] ) );
  * console.log( result );
  * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
  * // log false
  *
  * @example
- * let result = _.unrollPrepend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
+ * let result = _.unrollPrepend( _.unroll.make( [ 1, 'str' ] ),  _.unroll.from( [ 2, 3 ] ) );
  * console.log( result );
  * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
@@ -600,7 +598,7 @@ function unrollPrepend( dstArray )
       else
       {
         if( _.arrayIs( srcArray[ a ] ) )
-        _.unrollNormalize( srcArray[ a ] )
+        _.unroll.normalize( srcArray[ a ] )
         dstArray.unshift( srcArray[ a ] );
       }
     }
@@ -631,28 +629,28 @@ function unrollPrepend( dstArray )
  * // log false
  *
  * @example
- * let result = _.unrollAppend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
+ * let result = _.unrollAppend( null, _.unroll.make( [ 1, 2, 'str' ] ) );
  * console.log( result );
  * // log [ 1, 2, str ]
  * console.log( _.unrollIs( result ) );
  * // log false
  *
  * @example
- * let result = _.unrollAppend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
+ * let result = _.unrollAppend( _.unroll.from( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
  * // log [ 1, 'str', [ 1, 2 ] ]
  * console.log( _.unrollIs( result ) );
  * // log true
  *
  * @example
- * let result = _.unrollAppend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
+ * let result = _.unrollAppend( [ 1, 'str' ],  _.unroll.from( [ 2, 3 ] ) );
  * console.log( result );
  * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
  * // log false
  *
  * @example
- * let result = _.unrollAppend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
+ * let result = _.unrollAppend( _.unroll.make( [ 1, 'str' ] ),  _.unroll.from( [ 2, 3 ] ) );
  * console.log( result );
  * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
@@ -693,7 +691,7 @@ function unrollAppend( dstArray )
       else
       {
         if( _.arrayIs( srcArray[ a ] ) )
-        _.unrollNormalize( srcArray[ a ] )
+        _.unroll.normalize( srcArray[ a ] )
         dstArray.push( srcArray[ a ] );
       }
     }
@@ -705,12 +703,12 @@ function unrollAppend( dstArray )
 
 /*
 
-let a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
-let a2 = [ 7, _.unrollFrom([ 8, 9 ]) ] ];
+let a1 = _.unroll.from([ 3, 4, _.unroll.from([ 5, 6 ]) ]);
+let a2 = [ 7, _.unroll.from([ 8, 9 ]) ] ];
 _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 
-let a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
-let a2 = [ 7, _.unrollFrom([ 8, 9 ]) ] ];
+let a1 = _.unroll.from([ 3, 4, _.unroll.from([ 5, 6 ]) ]);
+let a2 = [ 7, _.unroll.from([ 8, 9 ]) ] ];
 _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 
 */
@@ -784,7 +782,7 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * // log false
  *
  * @example
- * let result = _.unrollRemove( _.unrollMake( null ), [ 1, 2, 'str' ] );
+ * let result = _.unrollRemove( _.unroll.make( null ), [ 1, 2, 'str' ] );
  * console.log( result );
  * // log []
  * console.log( _.unrollIs( result ) );
@@ -798,22 +796,22 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * // log false
  *
  * @example
- * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], _.unrollFrom( [ 1, 'str', 0, 5 ] ) );
+ * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], _.unroll.from( [ 1, 'str', 0, 5 ] ) );
  * console.log( result );
  * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
  * // log false
  *
  * @example
- * let result = _.unrollRemove( _.unrollFrom( [ 1, 2, 1, 3, 'str' ] ), [ 1, 'str', 0, 5 ] );
+ * let result = _.unrollRemove( _.unroll.from( [ 1, 2, 1, 3, 'str' ] ), [ 1, 'str', 0, 5 ] );
  * console.log( result );
  * // log [ 1, 2, 1, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
  * // log true
  *
  * @example
- * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
- * let ins = _.unrollFrom( [ 1, 'str', 0, 5 ] );
+ * let dstArray = _.unroll.from( [ 1, 2, 1, 3, 'str' ] );
+ * let ins = _.unroll.from( [ 1, 'str', 0, 5 ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
  * // log [ 2, 3 ]
@@ -821,8 +819,8 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * // log false
  *
  * @example
- * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
- * let ins = _.unrollFrom( [ 1, _.unrollMake( [ 'str', 0, 5 ] ) ] );
+ * let dstArray = _.unroll.from( [ 1, 2, 1, 3, 'str' ] );
+ * let ins = _.unroll.from( [ 1, _.unroll.make( [ 'str', 0, 5 ] ) ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
  * // log [ 2, 3 ]
@@ -863,7 +861,7 @@ function unrollRemove( dstArray )
       else
       {
         if( _.arrayIs( srcArray[ a ] ) )
-        _.unrollNormalize( srcArray[ a ] );
+        _.unroll.normalize( srcArray[ a ] );
         while( dstArray.indexOf( srcArray[ a ] ) >= 0 )
         dstArray.splice( dstArray.indexOf( srcArray[ a ] ), 1 );
       }
@@ -875,21 +873,23 @@ function unrollRemove( dstArray )
 }
 
 // --
-// routines
+// implementation
 // --
 
-let Extension =
+let unrollSymbol = Symbol.for( 'unroll' );
+
+let ToolsExtension =
 {
 
   /* qqq : for Yevhen : duplicate namespace unroll */
   /* qqq : for Yevhen : make the list of unduplicated namespaces */
 
-  unrollMake,
-  unrollMakeUndefined,
-  unrollFrom,
+  // unrollMake,
+  // unrollMakeUndefined,
+  // unrollFrom,
   unrollsFrom,
   unrollFromMaybe,
-  unrollNormalize,
+  // unrollNormalize,
 
   unrollSelect,
 
@@ -901,6 +901,6 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( _, ToolsExtension );
 
 })();

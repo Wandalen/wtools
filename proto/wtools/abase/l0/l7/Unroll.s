@@ -1,4 +1,4 @@
-( function _l8_Unroll_s_()
+( function _l7_Unroll_s_()
 {
 
 'use strict';
@@ -21,6 +21,6 @@ let Routines =
 
 //
 
-_.mapSupplement( Self, Routines );
+_.props.supplement( Self, Routines );
 
 })();

@@ -1,4 +1,4 @@
-( function _l8_Number_s_()
+( function _l7_Number_s_()
 {
 
 'use strict';
@@ -120,7 +120,7 @@ function fromStrMaybe( src )
 
 function numbersSlice( src, f, l )
 {
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   _.assert( _.number.s.areAll( src ) )
 
   if( _.number.is( src ) )
@@ -379,18 +379,18 @@ function numbersMake( src, length )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.number.is( src ) || _.arrayLike( src ) );
+  _.assert( _.number.is( src ) || _.argumentsArray.like( src ) );
 
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   {
     _.assert( src.length === length );
-    result = _.longMakeUndefined( length );
+    result = _.long.makeUndefined( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src[ i ];
   }
   else
   {
-    result = _.longMakeUndefined( length );
+    result = _.long.makeUndefined( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src;
   }
@@ -467,16 +467,16 @@ function numbersFromNumber( src, length )
   src = _.vectorAdapter.slice( src );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.number.is( src ) || _.arrayLike( src ) );
+  _.assert( _.number.is( src ) || _.argumentsArray.like( src ) );
 
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   {
     _.assert( src.length === length );
     return src;
   }
 
   // debugger; /* xxx2 : test */
-  let result = _.longMakeUndefined( length );
+  let result = _.long.makeUndefined( length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = src;
 
@@ -588,7 +588,7 @@ function numbersFrom_functor( length )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   numbersTotal,
@@ -651,6 +651,6 @@ let ExtensionS =
 
 Object.assign( Self, Extension );
 Object.assign( _.number.s, ExtensionS );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 })();

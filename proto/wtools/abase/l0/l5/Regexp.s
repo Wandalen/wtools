@@ -36,7 +36,7 @@ function test( regexp, strs )
 
   if( _.strIs( strs ) )
   return _.regexp._test( regexp, strs );
-  else if( _.arrayLike( strs ) )
+  else if( _.argumentsArray.like( strs ) )
   return strs.map( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
@@ -51,7 +51,7 @@ function testAll( regexp, strs )
 
   if( _.strIs( strs ) )
   return _.regexp._test( regexp, strs );
-  else if( _.arrayLike( strs ) )
+  else if( _.argumentsArray.like( strs ) )
   return strs.every( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
@@ -66,7 +66,7 @@ function testAny( regexp, strs )
 
   if( _.strIs( strs ) )
   return _.regexp._test( regexp, strs );
-  else if( _.arrayLike( strs ) )
+  else if( _.argumentsArray.like( strs ) )
   return strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
@@ -81,7 +81,7 @@ function testNone( regexp, strs )
 
   if( _.strIs( strs ) )
   return !_.regexp._test( regexp, strs );
-  else if( _.arrayLike( strs ) )
+  else if( _.argumentsArray.like( strs ) )
   return !strs.some( ( str ) => _.regexp._test( regexp, str ) )
   else _.assert( 0 );
 
@@ -135,7 +135,7 @@ function regexpsTestNone( regexps, strs )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   regexpsEscape : _.vectorize( _.regexpEscape ),
@@ -186,8 +186,8 @@ let ExtensionS =
 
 //
 
-_.mapSupplement( Regexp, Extension );
-_.mapSupplement( Regexps, ExtensionS );
-_.mapSupplement( _, ExtensionTools ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
+_.props.supplement( Regexp, Extension );
+_.props.supplement( Regexps, ExtensionS );
+_.props.supplement( _, ToolsExtension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
 
 })();

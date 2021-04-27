@@ -1,4 +1,4 @@
-( function _l8_Printer_s_()
+( function _l7_Printer_s_()
 {
 
 'use strict';
@@ -15,7 +15,7 @@ const Self = _.printer = _.printer || Object.create( null );
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -28,7 +28,7 @@ let Extension =
 }
 
 Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 /* xxx : investigate */
 

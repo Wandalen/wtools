@@ -1,4 +1,4 @@
-( function _l8_Interval_s_()
+( function _l7_Interval_s_()
 {
 
 'use strict';
@@ -22,6 +22,6 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

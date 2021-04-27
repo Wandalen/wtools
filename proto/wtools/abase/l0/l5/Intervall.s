@@ -7,7 +7,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 // --
-// checker
+// dichotomy
 // --
 
 function isEmpty( linterval )
@@ -64,7 +64,7 @@ function sureIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -76,7 +76,7 @@ function assertIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unrollFrom([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -233,13 +233,13 @@ const Self = new Proxy( Lrange, Handler );
 Self.original = Lrange;
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
 {
 
-  // checker
+  // dichotomy
 
   is : _.intervalIs,
   isValid : _.intervalIsValid,
@@ -269,9 +269,9 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 _.assert( _.linterval !== undefined );
-_.mapSupplement( Self, _.linterval );
+_.props.supplement( Self, _.linterval );
 _.linterval = Self;
 
 })();

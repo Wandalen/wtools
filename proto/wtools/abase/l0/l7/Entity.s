@@ -1,4 +1,4 @@
-( function _l8_Entity_s_()
+( function _l7_Entity_s_()
 {
 
 'use strict';
@@ -151,18 +151,10 @@ function entitySize( src )
 }
 
 // --
-// fields
+// declaration
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ToolsExtension =
 {
 
   uncountableSize,
@@ -173,7 +165,6 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _, ToolsExtension );
 
 })();

@@ -773,7 +773,7 @@ const Self = _.containerAdapter;
 
 //
 
-var Fields =
+var Extension =
 {
 
   Array : ContainerAdapterArray,
@@ -782,14 +782,7 @@ var Fields =
 
 //
 
-var Routines =
-{
-}
-
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _.containerAdapter, Extension );
 _.assert( _.containerAdapter === Self );
 
 // --

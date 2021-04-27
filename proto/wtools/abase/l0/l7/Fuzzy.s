@@ -1,4 +1,4 @@
-( function _l8_Fuzzy_s_()
+( function _l7_Fuzzy_s_()
 {
 
 'use strict';
@@ -15,7 +15,7 @@ const Self = _.fuzzy = _.fuzzy || Object.create( null );
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -27,7 +27,7 @@ let Extension =
 
 }
 
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 
 })();

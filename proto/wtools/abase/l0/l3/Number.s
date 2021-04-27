@@ -1,4 +1,4 @@
-( function _l3_Numbers_s_()
+( function _l1_Numbers_s_()
 {
 
 'use strict';
@@ -12,111 +12,38 @@ _.number.s = _.number.s || Object.create( null );
 // number
 // --
 
-/**
- * @summary Checks if argument( src ) is a Number.
- * @returns Returns true if ( src ) is a Number, otherwise returns false.
- *
- * @example
- * numberIs( 5 );
- * // returns true
- *
- * @example
- * numberIs( 'song' );
- * // returns false
- *
- * @param { * } src.
- * @return {Boolean}.
- * @function numberIs
- * @namespace Tools
- */
-
-function is( src )
-{
-  return typeof src === 'number';
-  return Object.prototype.toString.call( src ) === '[object Number]';
-}
-
-//
-
-function isNotNan( src )
-{
-  return _.number.is( src ) && !isNaN( src );
-}
-
-//
-
-function numberIsFinite( src )
-{
-  if( !_.number.is( src ) )
-  return false;
-  return isFinite( src );
-}
-
-//
-
-function isInfinite( src )
+function _identicalShallow( a, b )
 {
 
-  if( !_.number.is( src ) )
-  return false;
-
-  return src === +Infinity || src === -Infinity;
-}
-
-//
-
-function intIs( src )
-{
-
-  if( !_.number.is( src ) || !_.number.isFinite( src ) )
-  return false;
-
-  return Math.floor( src ) === src;
-}
-
-//
-
-function areAll( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( _.bufferTypedIs( src ) )
-  return true;
-
-  if( _.arrayLike( src ) && !_.arrayIsEmpty( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( !_.number.is( src[ s ] ) )
-    return false;
-
-    return true;
-  }
+  if( _.number.s.areAll( [ a, b ] ) )
+  return Object.is( a, b ) || a === b;
 
   return false;
 }
 
-// //
-//
-// function numbersAreIdentical( src1, src2 )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   return Object.is( src1, src2 );
-// }
-//
-// //
-//
-// function numbersAreEquivalent( src1, src2, accuracy )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-//   if( accuracy === undefined )
-//   accuracy = _.accuracy;
-//   return Math.abs( src1-src2 ) <= accuracy;
-// }
-
 //
 
-function areIdentical( a, b )
+function identicalShallow( src1, src2, o )
 {
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( !this.is( src1 ) )
+  return false;
+  if( !this.is( src2 ) )
+  return false;
+
+  return this._identicalShallow( ... arguments );
+}
+
+//
+
+function _identicalShallowStrictly( a, b )
+{
+  /*
+  it takes into account -0 === +0 case
+  */
+
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.number.s.areAll( [ a, b ] ) )
@@ -127,25 +54,23 @@ function areIdentical( a, b )
 
 //
 
-function areIdenticalNotStrictly( a, b )
+function identicalShallowStrictly( src1, src2, o )
 {
-  /*
-  it takes into account -0 === +0 case
-  */
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.number.s.areAll( [ a, b ] ) )
-  return Object.is( a, b ) || a === b;
-
+  if( !this.is( src1 ) )
   return false;
+  if( !this.is( src2 ) )
+  return false;
+
+  return this._identicalShallowStrictly( ... arguments );
 }
 
 //
 
-function areEquivalent( a, b, accuracy )
+function _equivalentShallow( a, b, accuracy )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
   _.assert( _.number.is( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
@@ -237,121 +162,63 @@ function areEquivalent( a, b, accuracy )
 
 //
 
-function areFinite( src )
+function equivalentShallow( src1, src2, accuracy )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-
-  if( !_.number.s.areAll( src ) )
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( !this.like( src1 ) )
   return false;
-
-  if( _.longIs( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( !_.number.isFinite( src[ s ] ) )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-function arePositive( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-
-  if( !_.number.s.areAll( src ) )
+  if( !this.like( src2 ) )
   return false;
-
-  if( _.longIs( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( src[ s ] < 0 || !_.number.isNotNan( src[ s ] ) )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-function areInt( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-
-  if( !_.number.s.areAll( src ) )
-  return false;
-
-  if( _.longIs( src ) )
-  {
-    for( let s = 0 ; s < src.length ; s++ )
-    if( !_.intIs( src[ s ] ) )
-    return false;
-  }
-
-  return true;
+  return this._equivalentShallow( ... arguments );
 }
 
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
-
-  numberIs : is,
-  numberIsNotNan : isNotNan,
-  numberIsFinite,
-  numberDefined : numberIsFinite,
-  numberIsInfinite : isInfinite,
-
-  intIs,
-
-  numbersAreAll : areAll,
-  numbersAreIdentical : areIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
-  numbersAreIdenticalNotStrictly : areIdenticalNotStrictly,
-  numbersAreEquivalent : areEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
-
-  numbersAreFinite : areFinite,
-  numbersArePositive : arePositive,
-  numbersAreInt : areInt,
-
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-let Extension =
+let NumberExtension =
 {
 
-  is,
-  isNotNan,
-  isFinite : numberIsFinite,
-  defined : numberIsFinite,
-  isInfinite,
-  areEquivalentShallow : areEquivalent,
+  // equaler
 
-  intIs,
+  _identicalShallow,
+  identicalShallow,
+  identical : identicalShallow,
+
+  _identicalShallowStrictly,
+  identicalShallowStrictly,
+  identicalStrictly : identicalShallowStrictly,
+
+  // identicalNotStrictly,
+
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
+
+  // areEquivalentShallow : areEquivalent,
+  // areIdentical,
+  // areIdenticalNotStrictly,
+  // areEquivalent,
 
 }
+
+Object.assign( _.number, NumberExtension );
 
 //
 
-let ExtensionS =
+let NumbersExtension =
 {
-
-  areAll,
-  areIdentical,
-  areIdenticalNotStrictly,
-  areEquivalent,
-
-  areFinite,
-  arePositive,
-  areInt,
-
 }
 
-Object.assign( Self, Extension );
-Object.assign( _.number.s, ExtensionS );
-Object.assign( _, ExtensionTools );
+Object.assign( _.number.s, NumbersExtension );
 
 })();
+

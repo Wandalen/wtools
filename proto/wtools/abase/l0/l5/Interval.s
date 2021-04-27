@@ -12,7 +12,7 @@ const Self = _global_.wTools;
 // --
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =

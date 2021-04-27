@@ -1,4 +1,4 @@
-( function _l8_Long_s_()
+( function _l7_Long_s_()
 {
 
 'use strict';
@@ -73,7 +73,7 @@ function longOnce( dstLong, onEvaluate )
   if( length === dstLong.length )
   return dstLong;
 
-  let result = _.longMakeUndefined( dstLong, length );
+  let result = _.long.makeUndefined( dstLong, length );
   result[ 0 ] = dstLong[ 0 ];
 
   let j = 1;
@@ -95,7 +95,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
   if( dstLong === null )
   {
     if( _.longIs( srcLong ) )
-    dstLong = _.longMakeUndefined( srcLong, 0 );
+    dstLong = _.long.makeUndefined( srcLong, 0 );
     else
     return [];
   }
@@ -135,7 +135,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
     if( length === dstLong.length )
     return dstLong;
 
-    result = _.longMakeUndefined( dstLong, length );
+    result = _.long.makeUndefined( dstLong, length );
     result[ 0 ] = dstLong[ 0 ];
 
     let j = 1;
@@ -166,7 +166,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       if( length === dstLong.length )
       return dstLong;
 
-      result = _.longMakeUndefined( dstLong, length );
+      result = _.long.makeUndefined( dstLong, length );
 
       for( let i = 0; i < dstLong.length; i++ )
       result[ i ] = dstLong[ i ]
@@ -271,9 +271,9 @@ longHasUniques.defaults =
 
 function longAreRepeatedProbe( srcArray, onEvaluate )
 {
-  let isUnique = _.longMakeUndefined( srcArray );
+  let isUnique = _.long.makeUndefined( srcArray );
   let result = Object.create( null );
-  result.array = _.arrayMake( srcArray.length );
+  result.array = _.array.make( srcArray.length );
   result.uniques = srcArray.length;
   result.condensed = srcArray.length;
 
@@ -398,7 +398,7 @@ function longMask( srcArray, mask )
   preserve += 1;
 
   // let dstArray = new srcArray.constructor( length*preserve );
-  let dstArray = _.longMakeUndefined( srcArray, length*preserve );
+  let dstArray = _.long.makeUndefined( srcArray, length*preserve );
 
   if( !preserve )
   return dstArray;
@@ -448,7 +448,7 @@ function longUnmask( o )
     _.entity.exportString({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
   );
 
-  let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );
+  let dstArray = _.long.makeUndefined( o.src, scalarsPerElement*length );
   // let dstArray = new o.src.constructor( scalarsPerElement*length );
 
   let e = [];
@@ -601,7 +601,7 @@ function longRandom( o )
   _.assert( _.intIs( o.length ) );
 
   if( o.dst === null || o.dst.length < o.length )
-  o.dst = _.longMake( o.dst, o.length );
+  o.dst = _.long.make( o.dst, o.length );
 
   for( let i = 0 ; i < o.length ; i++ )
   {
@@ -675,15 +675,15 @@ function longFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( _.routine.is( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
 
   debugger;
 
   if( numberOfSteps === 0 )
-  return new this.longDescriptor.from();
+  return this.tools./*longDescriptor*/defaultLong.from();
 
   if( numberOfSteps === 1 )
-  return new this.longDescriptor.from([ progression[ 0 ] ]);
+  return this.tools./*longDescriptor*/defaultLong.from([ progression[ 0 ] ]);
 
   let range = [ progression[ 0 ], progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ];
   let step = ( range[ 1 ]-range[ 0 ] ) / ( numberOfSteps-1 );
@@ -701,11 +701,11 @@ function longFromRangeWithStep( range, step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( _.routine.is( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
-  return new this.longDescriptor.make();
-  // return new this.longDescriptor.from();
+  return this.tools./*longDescriptor*/defaultLong.make();
+  // return this.tools./*longDescriptor*/defaultLong.from();
 
   if( range[ 0 ] < range[ 1 ] )
   {
@@ -715,7 +715,8 @@ function longFromRangeWithStep( range, step )
 
     _.assert( step > 0 );
 
-    result = new this.longDescriptor.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+    // debugger;
+    result = this.tools./*longDescriptor*/defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
 
     let i = 0;
     while( range[ 0 ] < range[ 1 ] )
@@ -729,15 +730,13 @@ function longFromRangeWithStep( range, step )
   else
   {
 
-    debugger;
-
     if( step === undefined )
     step = -1;
 
     _.assert( step < 0 );
 
-    // result = new this.longDescriptor.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
-    result = new this.longDescriptor.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
+    // result = this.tools./*longDescriptor*/defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
+    result = this.tools./*longDescriptor*/defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )
@@ -761,13 +760,13 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( _.routine.is( this.longDescriptor.from ) );
+  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
 
   if( numberOfSteps === 0 )
-  return new this.longDescriptor.from();
+  return this.tools./*longDescriptor*/defaultLong.from();
 
   if( numberOfSteps === 1 )
-  return new this.longDescriptor.from( range[ 0 ] );
+  return this.tools./*longDescriptor*/defaultLong.from( range[ 0 ] );
 
   let step;
 
@@ -929,7 +928,7 @@ function longOnlyWithIndices( srcArray, indicesArray )
   _.assert( _.longIs( indicesArray ) );
 
   // let result = new srcArray.constructor( indicesArray.length );
-  let result = _.longMakeUndefined( srcArray, indicesArray.length );
+  let result = _.long.makeUndefined( srcArray, indicesArray.length );
 
   if( scalarsPerElement === 1 )
   for( let i = 0, l = indicesArray.length ; i < l ; i += 1 )
@@ -1294,9 +1293,9 @@ function longSort( dstLong, srcLong, onEvaluate )
   _.assert( dstLong === null || _.longIs( dstLong ) );
 
   if( dstLong === null )
-  dstLong = _.arrayMake( srcLong );
+  dstLong = _.array.make( srcLong );
   if( _.argumentsArray.is( dstLong ) ) // Dmytro : missed
-  dstLong = this.longDescriptor.from( dstLong );
+  dstLong = this.tools./*longDescriptor*/defaultLong.from( dstLong );
 
   if( onEvaluate === undefined )
   {
@@ -1411,18 +1410,10 @@ function longSort( dstLong, srcLong, onEvaluate )
 // }
 
 // --
-// fields
+// declaration
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ToolsExtension =
 {
 
   // long repeater
@@ -1480,8 +1471,6 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
-
+Object.assign( _, ToolsExtension );
 
 })();

@@ -22,7 +22,7 @@ var Extension =
 
 //
 
-var ExtensionTools =
+var ToolsExtension =
 {
 
 }
@@ -30,6 +30,6 @@ var ExtensionTools =
 //
 
 Object.assign( _.units, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 })();

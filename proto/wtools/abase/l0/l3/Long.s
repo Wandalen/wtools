@@ -5,500 +5,14 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const _ArrayIndexOf = Array.prototype.indexOf;
-const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
-_.long_ = _.long_ || Object.create( null );
+_.long = _.long || Object.create( null );
 
-// --
-// checker
-// --
-
-/**
- * The routine longIs() determines whether the passed value is an array-like or an Array.
- * Imortant : longIs returns false for Object, even if the object has length field.
- *
- * If {-srcMap-} is an array-like or an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * _.longIs( [ 1, 2 ] );
- * // returns true
- *
- * @example
- * _.longIs( 10 );
- * // returns false
- *
- * @example
- * let isArr = ( function() {
- *   return _.longIs( arguments );
- * } )( 'Hello there!' );
- * // returns true
- *
- * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
- * @function longIs.
- * @namespace Tools
- */
-
-// let notLongSymbol = Symbol.for( 'notLong' );
-/* xxx : optimize! */
-/* qqq : for Yevhen : optimize. ask how to */
-/* qqq : check coverage */
-function is( src )
-{
-
-  if( _.primitive.is( src ) )
-  return false;
-
-  if( _.bufferTypedIs( src ) )
-  return true;
-  if( _.arrayLike( src ) )
-  return true;
-
-  // if( _.routine.is( src ) )
-  // return false;
-  // if( _.object.is( src ) )
-  // return false;
-  // if( _.strIs( src ) )
-  // return false;
-  // if( _.bufferNodeIs( src ) )
-  // return false;
-
-  // if( _.routineIs( src ) )
-  // return false;
-  // if( _.object.is( src ) )
-  // return false;
-  // if( _.strIs( src ) )
-  // return false;
-  // if( _.bufferNodeIs( src ) )
-  // return false;
-
-  // if( notLongSymbol in src )
-  // return false;
-
-  // yyy
-  // if( Object.propertyIsEnumerable.call( src, 'length' ) )
-  // return false;
-
-  // if( !_.number.is( src.length ) )
-  // return false;
-
-  return false;
-}
-
-//
-
-function isEmpty( src )
-{
-  if( !_.longIs( src ) )
-  return false;
-  return src.length === 0;
-}
-
-//
-
-function isPopulated( src )
-{
-  if( !_.longIs( src ) )
-  return false;
-  return src.length > 0;
-}
-
-//
-
-/* xxx : introduce vectorIs. remove check methodIteratorOf from here */
-function like( src ) /* qqq : cover */
-{
-  if( _.primitive.is( src ) )
-  return false;
-  // if( _.class.methodIteratorOf( src ) ) /* yyy */
-  // // if( !_.mapIs( src ) && _.object.is( src ) )
-  // if( !_.mapIs( src ) )
-  // return true;
-  return _.longIs( src );
-}
+_.assert( !!_.array._elementWithKey, 'Expects routine array._elementWithKey' );
 
 // --
-// getter
+//
 // --
-
-function lengthOf( src )
-{
-  _.assert( _.longLike( src ) );
-
-  if( 'length' in src )
-  return src.length;
-
-  return [ ... src ].length;
-}
-
-// --
-// long sequential search
-// --
-
-function leftIndex( /* arr, ins, evaluator1, evaluator2 */ )
-{
-  let arr = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let evaluator1 = arguments[ 2 ];
-  let evaluator2 = arguments[ 3 ];
-
-  let fromIndex = 0;
-
-  if( _.number.is( arguments[ 2 ] ) )
-  {
-    fromIndex = arguments[ 2 ];
-    evaluator1 = arguments[ 3 ];
-    evaluator2 = arguments[ 4 ];
-  }
-
-  _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.longLike( arr ), 'Expect a Long' );
-  _.assert( _.number.is( fromIndex ) );
-  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routine.is( evaluator1 ) );
-  _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routine.is( evaluator2 ) );
-
-  if( !evaluator1 )
-  {
-    _.assert( !evaluator2 );
-    return _ArrayIndexOf.call( arr, ins, fromIndex );
-  }
-  else if( evaluator1.length === 2 ) /* equalizer */
-  {
-    _.assert( !evaluator2 );
-    for( let a = fromIndex ; a < arr.length ; a++ )
-    {
-      if( evaluator1( arr[ a ], ins ) )
-      return a;
-    }
-  }
-  else /* evaluator */
-  {
-
-    if( evaluator2 )
-    ins = evaluator2( ins );
-    else
-    ins = evaluator1( ins );
-
-    if( arr.findIndex && fromIndex === 0 )
-    {
-      return arr.findIndex( ( e ) => evaluator1( e ) === ins );
-    }
-    else
-    {
-      for( let a = fromIndex; a < arr.length ; a++ )
-      {
-        if( evaluator1( arr[ a ] ) === ins )
-        return a;
-      }
-    }
-
-  }
-
-  return -1;
-}
-
-//
-
-function rightIndex( /* arr, ins, evaluator1, evaluator2 */ )
-{
-  let arr = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let evaluator1 = arguments[ 2 ];
-  let evaluator2 = arguments[ 3 ];
-
-  let fromIndex = arr.length-1;
-
-  if( _.number.is( arguments[ 2 ] ) )
-  {
-    fromIndex = arguments[ 2 ];
-    evaluator1 = arguments[ 3 ];
-    evaluator2 = arguments[ 4 ];
-  }
-
-  _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.number.is( fromIndex ) );
-  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routine.is( evaluator1 ) );
-  _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routine.is( evaluator2 ) );
-
-  if( !evaluator1 )
-  {
-    _.assert( !evaluator2 );
-    // if( !_.arrayIs( arr ) )
-    // debugger;
-    return _ArrayLastIndexOf.call( arr, ins, fromIndex );
-  }
-  else if( evaluator1.length === 2 ) /* equalizer */
-  {
-    _.assert( !evaluator2 );
-    for( let a = fromIndex ; a >= 0 ; a-- )
-    {
-      if( evaluator1( arr[ a ], ins ) )
-      return a;
-    }
-  }
-  else /* evaluator */
-  {
-
-    if( evaluator2 )
-    ins = evaluator2( ins );
-    else
-    ins = evaluator1( ins );
-
-    for( let a = fromIndex ; a >= 0 ; a-- )
-    {
-      if( evaluator1( arr[ a ] ) === ins )
-      return a;
-    }
-
-  }
-
-  return -1;
-}
-
-//
-
-/**
- * The routine longLeft() returns a new object containing the properties, (index, element),
- * corresponding to a found value {-ins-} from a Long {-arr-}.
- * If element is not founded, then routine return new object with property (index), which value is -1.
- *
- * @param { Long } arr - A Long to check.
- * @param { * } ins - An element to locate in the {-arr-}.
- * @param { Number } fromIndex - An index from which routine starts search left to right.
- * If {-fromIndex-} not defined, then routine starts search from the first index.
- * @param { Function } evaluator1 - It's a callback. If the routine has two parameters,
- * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
- * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-ins-} to search.
- *
- * @example
- * _.longLeft( [ 1, 2, false, 'str', 2, 5 ], 2 );
- * // returns { index : 1, element : 2 }
- *
- * @example
- * _.longLeft( [ 1, 2, false, 'str', 2, 5 ], [ 2 ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longLeft( [ 1, 2, false, 'str', 2, 5 ], 2, 3 );
- * // returns { index : 4, element : 2 }
- *
- * @example
- * _.longLeft( [ 1, 2, false, 'str', 2, 5 ], [ 2 ], ( e ) => e[ 0 ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longLeft( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], ( e ) => e[ 0 ] );
- * // returns { index : 1, element : [ 2 ] }
- *
- * @example
- * _.longLeft( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], ( e ) => e - 3, ( ins ) => ins[ 0 ] );
- * // returns { index : 5, element : 5 }
- *
- * @example
- * _.longLeft( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], 3, ( e ) => e + 1, ( ins ) => ins[ 0 ] );
- * // returns { index : 5, element : 5 }
- *
- * @example
- * _.longLeft( [ 1, 2, false, 'str', 2, 5 ], 2, ( e, ins ) => e === ins );
- * // returns { index : 1, element : 2 }
- *
- * @returns { Object } Returns a new object containing the properties, (index, element),
- * corresponding to the found value {-ins-} from the array {-arr-}.
- * Otherwise, it returns the object with property (index), which value is -1.
- * @function longLeft
- * @throws { Error } If arguments.length is less then two or more then five.
- * @throws { Error } If {-fromIndex-} is not a number.
- * @throws { Error } If {-onEvaluate1-} is not a routine.
- * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
- * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate2-} is not a routine.
- * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @namespace Tools
- */
-
-function left( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
-{
-  let arr = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let fromIndex = arguments[ 2 ];
-  let evaluator1 = arguments[ 3 ];
-  let evaluator2 = arguments[ 4 ];
-
-  let result = Object.create( null );
-  let i = _.longLeftIndex( arr, ins, fromIndex, evaluator1, evaluator2 );
-
-  _.assert( 2 <= arguments.length && arguments.length <= 5 );
-
-  result.index = i;
-
-  if( i >= 0 )
-  result.element = arr[ i ];
-
-  return result;
-}
-
-//
-
-/**
- * The routine longRight() returns a new object containing the properties, (index, element),
- * corresponding to a found value {-ins-} from a Long {-arr-}.
- * If element is not founded, then routine return new object with property (index), which value is -1.
- *
- * @param { Long } arr - A Long to check.
- * @param { * } ins - An element to locate in the {-arr-}.
- * @param { Number } fromIndex - An index from which routine starts search right to left.
- * If {-fromIndex-} not defined, then routine starts search from the last index.
- * @param { Function } evaluator1 - It's a callback. If the routine has two parameters,
- * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
- * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-ins-} to search.
- *
- * @example
- * _.longRight( [ 1, 2, false, 'str', 2, 5 ], 2 );
- * // returns { index : 4, element : 2 }
- *
- * @example
- * _.longRight( [ 1, 2, false, 'str', 2, 5 ], [ 2 ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longRight( [ 1, 2, false, 'str', 2, 5 ], 2, 3 );
- * // returns { index : 1, element : 2 }
- *
- * @example
- * _.longRight( [ 1, 2, false, 'str', 2, 5 ], [ 2 ], ( e ) => e[ 0 ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longRight( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], ( e ) => e[ 0 ] );
- * // returns { index : 1, element : [ 2 ] }
- *
- * @example
- * _.longRight( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], ( e ) => e - 3, ( ins ) => ins[ 0 ] );
- * // returns { index : 5, element : 5 }
- *
- * @example
- * _.longRight( [ 1, [ 2 ], false, 'str', 2, 5 ], [ 2 ], 4, ( e ) => e - 3, ( ins ) => ins[ 0 ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longRight( [ 1, 2, false, 'str', 2, 5 ], 2, ( e, ins ) => e === ins );
- * // returns { index : 4, element : 2 }
- *
- * @returns { Object } Returns a new object containing the properties, (index, element),
- * corresponding to the found value {-ins-} from the array {-arr-}.
- * Otherwise, it returns the object with property (index), which value is -1.
- * @function longRight
- * @throws { Error } If arguments.length is less then two or more then five.
- * @throws { Error } If {-fromIndex-} is not a number.
- * @throws { Error } If {-onEvaluate1-} is not a routine.
- * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
- * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
- * @throws { Error } If {-onEvaluate2-} is not a routine.
- * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @namespace Tools
- */
-
-function right( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
-{
-  let arr = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let fromIndex = arguments[ 2 ];
-  let evaluator1 = arguments[ 3 ];
-  let evaluator2 = arguments[ 4 ];
-
-  let result = Object.create( null );
-  let i = _.longRightIndex( arr, ins, fromIndex, evaluator1, evaluator2 );
-
-  _.assert( 2 <= arguments.length && arguments.length <= 5 );
-
-  result.index = i;
-
-  if( i >= 0 )
-  result.element = arr[ i ];
-
-  return result;
-}
-
-//
-
-/**
- * The routine longLeftDefined() returns a new object containing the properties, (index, element),
- * of first left element in a Long {-arr-}, which value is not equal to undefined.
- * If element is not founded, then routine return new object with property (index), which value is -1.
- *
- * @param { Long } arr - A Long to check.
- *
- * @example
- * _.longLeftDefined( [ undefined, undefined, undefined, undefined, undefined ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longLeftDefined( [ 1, undefined, 2, false, 'str', 2, undefined, 5 ] );
- * // returns { index : 0, element : 1 }
- *
- * @example
- * _.longLeftDefined( [ undefined, undefined, 2, false, 'str', 2 ] );
- * // returns { index : 2, element : 2 }
- *
- * @returns { Object } Returns a new object containing the properties, (index, element),
- * of first left element in a Long {-arr-}, which value is not equal to undefined.
- * Otherwise, it returns the object with property (index), which value is -1.
- * @function longRight
- * @throws { Error } If arguments.length is less then or more then one.
- * @namespace Tools
- */
-
-function leftDefined( arr )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  return _.longLeft( arr, true, function( e ){ return e !== undefined; } );
-}
-
-//
-
-/**
- * The routine longRightDefined() returns a new object containing the properties, (index, element),
- * of first right element in a Long {-arr-}, which value is not equal to undefined.
- * If element is not founded, then routine return new object with property (index), which value is -1.
- *
- * @param { Long } arr - A Long to check.
- *
- * @example
- * _.longRightDefined( [ undefined, undefined, undefined, undefined, undefined ] );
- * // returns { index : -1 }
- *
- * @example
- * _.longRightDefined( [ 1, 2, false, 'str', 2, undefined, 5 ] );
- * // returns { index : 6, element : 5 }
- *
- * @example
- * _.longRightDefined( [ 1, 2, false, 'str', 2, undefined, undefined ] );
- * // returns { index : 4, element : 2 }
- *
- * @returns { Object } Returns a new object containing the properties, (index, element),
- * of first right element in a Long {-arr-}, which value is not equal to undefined.
- * Otherwise, it returns the object with property (index) which, value is -1.
- * @function longRight
- * @throws { Error } If arguments.length is less then or more then one.
- * @namespace Tools
- */
-
-function rightDefined( arr )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  return _.longRight( arr, true, function( e ){ return e !== undefined; } );
-}
-
-//
 
 function appender( src )
 {
@@ -511,19 +25,19 @@ function appender( src )
   else if( 'add' in src && _.routine.is( src.add ) )
   return appendWithAdd;
 
-  function appendWithAppend( e )
+  function appendWithAppend( val )
   {
-    src.append( e );
+    src.append( val );
   }
 
-  function appendWithPush( e )
+  function appendWithPush( val )
   {
-    src.push( e );
+    src.push( val );
   }
 
-  function appendWithAdd( e )
+  function appendWithAdd( val )
   {
-    src.add( e );
+    src.add( val );
   }
 
 }
@@ -541,19 +55,19 @@ function prepender( src )
   else if( 'add' in src && _.routine.is( src.add ) )
   return prependWithAdd;
 
-  function prependWithAppend( e )
+  function prependWithAppend( val )
   {
-    src.prepend( e );
+    src.prepend( val );
   }
 
-  function prependWithPush( e )
+  function prependWithPush( val )
   {
-    src.unshift( e );
+    src.unshift( val );
   }
 
-  function prependWithAdd( e )
+  function prependWithAdd( val )
   {
-    src.add( e );
+    src.add( val );
   }
 
 }
@@ -575,9 +89,9 @@ function eacher( src )
   function eachOf( onEach )
   {
     let k = 0;
-    for( let e of src )
+    for( let val of src )
     {
-      onEach( e, k, src );
+      onEach( val, k, src );
       k += 1;
     }
     return k;
@@ -590,9 +104,9 @@ function eacher( src )
     let k = 0;
     while( k < src.length )
     {
-      let e = src[ k ];
-      args2[ 0 ] = e;
-      onEach( e, k, src );
+      let val = src[ k ];
+      args2[ 0 ] = val;
+      onEach( val, k, src );
       k += 1;
     }
     return k;
@@ -606,36 +120,8 @@ function eacher( src )
 // declare
 // --
 
-let accuracy = 1e-7;
-let accuracySqrt = 1e-4;
-let accuracySqr = 1e-14;
-
 let ToolsExtension =
 {
-
-  // long
-
-  longIs : is,
-  longIsEmpty : isEmpty,
-  longIsPopulated : isPopulated,
-  longLike : like,
-
-  // long sequential search
-
-  longLeftIndex : leftIndex,
-  longRightIndex : rightIndex,
-
-  longLeft : left,
-  longRight : right,
-
-  longLeftDefined : leftDefined,
-  longRightDefined : rightDefined,
-
-  // fields
-
-  accuracy,
-  accuracySqrt,
-  accuracySqr,
 
 }
 
@@ -646,44 +132,93 @@ Object.assign( _, ToolsExtension );
 let LongExtension =
 {
 
-  // checker
-
-  is,
-  isEmpty,
-  isPopulated,
-  like,
-
-  // getter
-
-  lengthOf,
-
-  // long sequential search
-
-  leftIndex,
-  rightIndex,
-
-  left,
-  right,
-
-  leftDefined,
-  rightDefined,
-
   // er
 
+  /* xxx : evolve? */
   appender, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
   prepender, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
   eacher, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
 
-  // fields
+  // equaler
 
-  accuracy,
-  accuracySqrt,
-  accuracySqr,
+  _identicalShallow : _.array._identicalShallow,
+  identicalShallow : _.array.identicalShallow,
+  identical : _.array.identical,
+  _equivalentShallow : _.array._equivalentShallow,
+  equivalentShallow : _.array.equivalentShallow,
+  equivalent : _.array.equivalent,
+
+  // exporter
+
+  exportString : _.array.exportString,
+  exportStringShallow : _.array.exportStringShallow,
+  exportStringShallowDiagnostic : _.array.exportStringShallowDiagnostic,
+  exportStringShallowCode : _.array.exportStringShallowCode,
+  exportStringDiagnostic : _.array.exportStringDiagnostic,
+  exportStringCode : _.array.exportStringCode,
+
+  // container interface
+
+  _lengthOf : _.array._lengthOf,
+  lengthOf : _.array.lengthOf, /* qqq : cover */
+
+  _hasKey : _.array._hasKey,
+  hasKey : _.array._hasKey, /* qqq : cover */
+  _hasCardinal : _.array._hasKey,
+  hasCardinal : _.array._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.array._hasKey,
+  keyWithCardinal : _.array._hasKey, /* qqq : cover */
+
+  _elementGet : _.array._elementWithKey,
+  elementGet : _.array.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.array._elementWithKey,
+  elementWithKey : _.array.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.array._elementWithImplicit,
+  elementWithImplicit : _.array.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.array._elementWithCardinal,
+  elementWithCardinal : _.array.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.array._elementSet,
+  elementSet : _.array.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.array._elementWithKeySet,
+  elementWithKeySet : _.array.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.array._elementWithCardinalSet,
+  elementWithCardinalSet : _.array.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementDel : _.itself._elementDel,
+  elementDel : _.itself.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.itself._elementWithKeyDel,
+  elementWithKeyDel : _.itself.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.itself._elementWithCardinalDel,
+  elementWithCardinalDel : _.itself.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.itself._empty,
+  empty : _.itself.empty,  /* qqq : cover */
+
+  _each : _.array._each,
+  each : _.array.each, /* qqq : cover */
+  _eachLeft : _.array._eachLeft,
+  eachLeft : _.array.eachLeft, /* qqq : cover */
+  _eachRight : _.array._eachRight,
+  eachRight : _.array.eachRight, /* qqq : cover */
+
+  _while : _.array._while,
+  while : _.array.while, /* qqq : cover */
+  _whileLeft : _.array._whileLeft,
+  whileLeft : _.array.whileLeft, /* qqq : cover */
+  _whileRight : _.array._whileRight,
+  whileRight : _.array.whileRight, /* qqq : cover */
+
+  _aptLeft : _.array._aptLeft,
+  aptLeft : _.array.aptLeft, /* qqq : cover */
+  first : _.array.first,
+  _aptRight : _.array._aptRight, /* qqq : cover */
+  aptRight : _.array.aptRight,
+  last : _.array.last, /* qqq : cover */
 
 }
 
 //
 
-Object.assign( _.long_, LongExtension );
+Object.assign( _.long, LongExtension );
 
 })();

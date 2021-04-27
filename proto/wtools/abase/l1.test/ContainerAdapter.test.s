@@ -53,7 +53,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'src - unroll';
-  var got = _.containerAdapter.is( _.unrollMake( [ 1, 2 ] ) );
+  var got = _.containerAdapter.is( _.unroll.make( [ 1, 2 ] ) );
   test.identical( got, false );
 
   test.case = 'src - argumentsArray';
@@ -127,7 +127,7 @@ function make( test )
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
-  var src = _.unrollMake( [] );
+  var src = _.unroll.make( [] );
   var exp = [];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
@@ -135,7 +135,7 @@ function make( test )
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
-  var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
+  var src = _.unroll.make( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.true( got !== src );
@@ -229,7 +229,7 @@ function makeByConstructor( test )
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
-  var src = _.unrollMake( [] );
+  var src = _.unroll.make( [] );
   var exp = [];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
@@ -237,7 +237,7 @@ function makeByConstructor( test )
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
-  var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
+  var src = _.unroll.make( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = new _.containerAdapter( src );
   test.true( got !== src );
@@ -331,7 +331,7 @@ function from( test )
   test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
-  var src = _.unrollFrom( [] );
+  var src = _.unroll.from( [] );
   var exp = [];
   var got = _.containerAdapter.from( src );
   test.true( got !== src );
@@ -339,7 +339,7 @@ function from( test )
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
-  var src = _.unrollFrom( [ 1, 2, '', {}, [], null, undefined ] );
+  var src = _.unroll.from( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.from( src );
   test.true( got !== src );
@@ -464,8 +464,8 @@ function toOriginal( test )
   test.identical( got, exp );
 
   test.case = 'from unroll';
-  var src = _.unrollMake( [ 1, 2, 'str' ] );
-  var exp = _.unrollMake( [ 1, 2, 'str' ] );
+  var src = _.unroll.make( [ 1, 2, 'str' ] );
+  var exp = _.unroll.make( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginal( src );
   test.true( got === src );
   test.identical( got, exp );
@@ -655,15 +655,15 @@ function toOriginals( test )
   test.identical( got, exp );
 
   test.case = 'from unroll';
-  var src = _.unrollMake( [ 1, 2, 'str' ] );
-  var exp = _.unrollMake( [ 1, 2, 'str' ] );
+  var src = _.unroll.make( [ 1, 2, 'str' ] );
+  var exp = _.unroll.make( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( src );
   test.true( got === src );
   test.identical( got, exp );
 
   test.case = 'dsts - null, from unroll';
-  var src = _.unrollMake( [ 1, 2, 'str' ] );
-  var exp = _.unrollMake( [ 1, 2, 'str' ] );
+  var src = _.unroll.make( [ 1, 2, 'str' ] );
+  var exp = _.unroll.make( [ 1, 2, 'str' ] );
   var got = _.containerAdapter.toOriginals( null, src );
   test.true( got !== src );
   test.identical( got, exp );
@@ -871,7 +871,7 @@ function toOriginals( test )
 
   test.case = 'dsts - primitive, src - unroll';
   var dst = 1;
-  var src = _.unrollMake( [ [ 2, 'str' ], [ 1 ] ] );
+  var src = _.unroll.make( [ [ 2, 'str' ], [ 1 ] ] );
   var exp = [ 1, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.true( got !== dst );
@@ -897,7 +897,7 @@ function toOriginals( test )
   test.identical( got, exp );
 
   test.case = 'dsts - unroll, src - array';
-  var dst = _.unrollMake( [ 1, { a : 0 } ] );
+  var dst = _.unroll.make( [ 1, { a : 0 } ] );
   var src = [ [ 2, 'str' ], [ 1 ] ];
   var exp = [ 1, { a : 0 }, [ 2, 'str' ], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
@@ -1198,7 +1198,7 @@ function isContainer( test )
 
   test.case = 'unroll';
   var src = _.containerAdapter.make( [] );
-  var got = src.IsContainer( _.unrollMake( [ 1, 2 ] ) );
+  var got = src.IsContainer( _.unroll.make( [ 1, 2 ] ) );
   test.identical( got, true );
 
   test.case = 'argumentsArray';
@@ -1276,7 +1276,7 @@ function isContainer( test )
 
   test.case = 'unroll';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.IsContainer( _.unrollMake( [ 1, 2 ] ) );
+  var got = src.IsContainer( _.unroll.make( [ 1, 2 ] ) );
   test.identical( got, true );
 
   test.case = 'argumentsArray';
@@ -1338,7 +1338,7 @@ function from_( test )
 
   test.case = 'from empty unroll';
   var container = _.containerAdapter.from( [] );
-  var src = _.unrollFrom( [] );
+  var src = _.unroll.from( [] );
   var exp = [];
   var got = container.From( src );
   test.true( got !== container );
@@ -1347,7 +1347,7 @@ function from_( test )
 
   test.case = 'from unroll';
   var container = _.containerAdapter.from( [] );
-  var src = _.unrollFrom( [ 1, 2, '', {}, [], null, undefined ] );
+  var src = _.unroll.from( [ 1, 2, '', {}, [], null, undefined ] );
   var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = container.From( src );
   test.true( got !== container );
@@ -1570,14 +1570,14 @@ function same( test )
   test.identical( got, false );
 
   test.case = 'src - unroll, same';
-  var src = _.unrollMake( [ 1, 2 ] );
+  var src = _.unroll.make( [ 1, 2 ] );
   var container = _.containerAdapter.make( src );
   var got = container.same( src );
   test.identical( got, true );
 
   test.case = 'src - unroll, not same';
-  var src = _.unrollMake( [ 1, 2 ] );
-  var container = _.containerAdapter.make( _.unrollMake( [ 1, 2 ] ) );
+  var src = _.unroll.make( [ 1, 2 ] );
+  var container = _.containerAdapter.make( _.unroll.make( [ 1, 2 ] ) );
   var got = container.same( src );
   test.identical( got, false );
 
@@ -1668,8 +1668,8 @@ function same( test )
   test.identical( got, false );
 
   test.case = 'src - unroll, not same';
-  var src = _.unrollMake( [ 1, 2 ] );
-  var container = _.containerAdapter.make( _.unrollMake( new Set( [] ) ) );
+  var src = _.unroll.make( [ 1, 2 ] );
+  var container = _.containerAdapter.make( _.unroll.make( new Set( [] ) ) );
   var got = container.same( src );
   test.identical( got, false );
 
@@ -8679,7 +8679,7 @@ function setAdapterAppend( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.append( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8702,7 +8702,7 @@ function setAdapterAppend( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.append( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8751,7 +8751,7 @@ function setAdapterAppendOnceWithoutCallbacks( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8774,7 +8774,7 @@ function setAdapterAppendOnceWithoutCallbacks( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8823,7 +8823,7 @@ function setAdapterAppendOnceOneEvaluator( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e ) => e );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8846,7 +8846,7 @@ function setAdapterAppendOnceOneEvaluator( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e ) => e );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8911,7 +8911,7 @@ function setAdapterAppendOnceTwoEvaluators( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8934,7 +8934,7 @@ function setAdapterAppendOnceTwoEvaluators( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -8998,7 +8998,7 @@ function setAdapterAppendOnceTwoEvaluators( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ null ] ] ) );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), 1, ( e ) => e[ 0 ] );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), 1, ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ null ], [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -9063,7 +9063,7 @@ function setAdapterAppendOnceEqualizer( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e, ins ) => e === ins );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e, ins ) => e === ins );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -9086,7 +9086,7 @@ function setAdapterAppendOnceEqualizer( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e, ins ) => e === ins );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ), ( e, ins ) => e === ins );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -9151,7 +9151,7 @@ function setAdapterAppendOnceStrictly( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnceStrictly( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -9174,7 +9174,7 @@ function setAdapterAppendOnceStrictly( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnceStrictly( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -9309,7 +9309,7 @@ function setAdapterPush( test )
 
   test.case = 'empty container, push Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.push( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.identical( [ ... dst.original ], exp );
   test.identical( got, 1 );
@@ -9332,7 +9332,7 @@ function setAdapterPush( test )
 
   test.case = 'container, push Long';
   var dst = _.containerAdapter.make( new Set( [ null ] ) );
-  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.push( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.identical( [ ... dst.original ], exp );
   test.identical( got, 2 );
@@ -9421,7 +9421,7 @@ function setAdapterAppendContainer( test )
 
   test.case = 'src - container, append unroll';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -9477,7 +9477,7 @@ function setAdapterAppendContainer( test )
 
   test.case = 'src - container, append unroll';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
+  var src = _.unroll.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
   test.true( got === dst );
@@ -9596,7 +9596,7 @@ function setAdapterAppendContainerOnce( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -9652,7 +9652,7 @@ function setAdapterAppendContainerOnce( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
+  var src = _.unroll.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
   test.true( got === dst );
@@ -9848,7 +9848,7 @@ function setAdapterAppendContainerOnceStrictly( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
-  var src = _.unrollMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -10188,7 +10188,7 @@ function setAdapterRemoved( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removed( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, 0 );
   test.identical( [ ... dst.original ], exp );
@@ -10211,7 +10211,7 @@ function setAdapterRemoved( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removed( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.identical( got, 0 );
   test.identical( [ ... dst.original ], exp );
@@ -10290,7 +10290,7 @@ function setAdapterRemovedOnce( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, -1 );
   test.identical( [ ... dst.original ], exp );
@@ -10320,7 +10320,7 @@ function setAdapterRemovedOnce( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.identical( got, -1 );
   test.identical( [ ... dst.original ], exp );
@@ -10399,7 +10399,7 @@ function setAdapterRemovedOnceRight( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, -1 );
   test.identical( [ ... dst.original ], exp );
@@ -10429,7 +10429,7 @@ function setAdapterRemovedOnceRight( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.identical( got, -1 );
   test.identical( [ ... dst.original ], exp );
@@ -10644,7 +10644,7 @@ function setAdapterRemove( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.remove( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -10667,7 +10667,7 @@ function setAdapterRemove( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.remove( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -10746,7 +10746,7 @@ function setAdapterRemoveOnce( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -10769,7 +10769,7 @@ function setAdapterRemoveOnce( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -10848,7 +10848,7 @@ function setAdapterRemoveOnceRight( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( new Set() );
-  var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -10878,7 +10878,7 @@ function setAdapterRemoveOnceRight( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
-  var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 2, '1' ];
   test.true( got === dst );
   test.identical( [ ... got.original ], exp );
@@ -14261,7 +14261,7 @@ function arrayAdapterMake_( test )
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
-  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var src = _.containerAdapter.make(  _.unroll.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.make();
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
   test.true( got !== src );
@@ -14297,7 +14297,7 @@ function arrayAdapterMakeEmpty( test )
   test.identical( got.original, exp );
 
   test.case = 'from unroll';
-  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var src = _.containerAdapter.make(  _.unroll.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
   var got = src.MakeEmpty();
   var exp = [];
   test.true( got !== src );
@@ -14887,7 +14887,7 @@ function arrayAdapterAppend( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.append( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -14910,7 +14910,7 @@ function arrayAdapterAppend( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
-  var got = dst.append( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.append( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -14961,7 +14961,7 @@ function arrayAdapterAppendOnce( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -14984,7 +14984,7 @@ function arrayAdapterAppendOnce( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
-  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -15095,7 +15095,7 @@ function arrayAdapterAppendOnceStrictly( test )
 
   test.case = 'empty container, append Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnceStrictly( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -15118,7 +15118,7 @@ function arrayAdapterAppendOnceStrictly( test )
 
   test.case = 'container, append Long';
   var dst = _.containerAdapter.make( [ null ] );
-  var got = dst.appendOnceStrictly( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.appendOnceStrictly( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -15253,7 +15253,7 @@ function arrayAdapterPush( test )
 
   test.case = 'empty container, push Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.push( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ [ 1, 2 ] ];
   test.identical( dst.original, exp );
   test.identical( got, 1 );
@@ -15276,7 +15276,7 @@ function arrayAdapterPush( test )
 
   test.case = 'container, push Long';
   var dst = _.containerAdapter.make( [ null ] );
-  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.push( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ null, [ 1, 2 ] ];
   test.identical( dst.original, exp );
   test.identical( got, 2 );
@@ -15365,7 +15365,7 @@ function arrayAdapterAppendContainer( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -15421,7 +15421,7 @@ function arrayAdapterAppendContainer( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
+  var src = _.unroll.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainer( src );
   var exp = [ 1, 2, 3, 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ];
   test.true( got === dst );
@@ -15540,7 +15540,7 @@ function arrayAdapterAppendContainerOnce( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.unrollMake( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 1, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -15596,7 +15596,7 @@ function arrayAdapterAppendContainerOnce( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.unrollMake( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
+  var src = _.unroll.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined, undefined, undefined ] );
   var got = dst.appendContainerOnce( src );
   var exp = [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], undefined ];
   test.true( got === dst );
@@ -15793,7 +15793,7 @@ function arrayAdapterAppendContainerOnceStrictly( test )
 
   test.case = 'append unroll';
   var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
-  var src = _.unrollMake( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
+  var src = _.unroll.make( [ 4, { a : 2 }, [ 3 ], 'str', undefined ] );
   var got = dst.appendContainerOnceStrictly( src );
   var exp = [ 1, 2, 3, 4, { a : 2 }, [ 3 ], 'str', undefined ];
   test.true( got === dst );
@@ -16098,7 +16098,7 @@ function arrayAdapterRemoved( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removed( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, 0 );
   test.identical( dst.original, exp );
@@ -16121,7 +16121,7 @@ function arrayAdapterRemoved( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removed( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.identical( got, 0 );
   test.identical( dst.original, exp );
@@ -16200,7 +16200,7 @@ function arrayAdapterRemovedOnce( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, -1 );
   test.identical( dst.original, exp );
@@ -16223,7 +16223,7 @@ function arrayAdapterRemovedOnce( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.identical( got, -1 );
   test.identical( dst.original, exp );
@@ -16302,7 +16302,7 @@ function arrayAdapterRemovedOnceRight( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.identical( got, -1 );
   test.identical( dst.original, exp );
@@ -16332,7 +16332,7 @@ function arrayAdapterRemovedOnceRight( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removedOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.identical( got, -1 );
   test.identical( dst.original, exp );
@@ -16547,7 +16547,7 @@ function arrayAdapterRemove( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.remove( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -16570,7 +16570,7 @@ function arrayAdapterRemove( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.remove( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.remove( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -16649,7 +16649,7 @@ function arrayAdapterRemoveOnce( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -16672,7 +16672,7 @@ function arrayAdapterRemoveOnce( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.removeOnce( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnce( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -16751,7 +16751,7 @@ function arrayAdapterRemoveOnceRight( test )
 
   test.case = 'empty container, remove Long';
   var dst = _.containerAdapter.make( [] );
-  var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -16781,7 +16781,7 @@ function arrayAdapterRemoveOnceRight( test )
 
   test.case = 'container, remove Long';
   var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
-  var got = dst.removeOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var got = dst.removeOnceRight( _.unroll.make( [ 1, 2 ] ) );
   var exp = [ 1, 1, 2, 2, '1' ];
   test.true( got === dst );
   test.identical( got.original, exp );
@@ -20153,22 +20153,22 @@ function arrayAdapterLength( test )
 function longMakeEmpty( test )
 {
   test.case = 'src - containerAdapter, empty array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( [] ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( [] ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, filled array';
-  var got = _.longMakeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
+  var got = _.long.makeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, empty array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( new Set( [] ) ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( new Set( [] ) ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, new Set( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, new Set( [] ) );
 }

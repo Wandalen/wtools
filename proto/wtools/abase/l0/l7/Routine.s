@@ -1,4 +1,4 @@
-( function _l8_Routine_s_()
+( function _l7_Routine_s_()
 {
 
 'use strict';
@@ -8,6 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools;
 let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
 let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
+/* qqq : for Yevhen : remove similar vars from all files */
 
 // --
 // routine
@@ -188,7 +189,7 @@ function _comparatorFromEvaluator( evaluator )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   routineCallButOnly, /* qqq : cover please */
@@ -227,7 +228,7 @@ let ExtensionS =
 
 }
 
-Object.assign( Self, ExtensionTools );
+Object.assign( Self, ToolsExtension );
 Object.assign( Routine, Extension );
 Object.assign( RoutineS, ExtensionS );
 

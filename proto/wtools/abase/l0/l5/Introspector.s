@@ -19,6 +19,6 @@ let Extension =
 {
 }
 
-_.mapSupplement( _.introspector, Extension );
+_.props.supplement( _.introspector, Extension );
 
 })();

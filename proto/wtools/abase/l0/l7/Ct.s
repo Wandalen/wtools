@@ -1,4 +1,4 @@
-( function _l8_Ct_s_()
+( function _l7_Ct_s_()
 {
 
 'use strict';
@@ -244,7 +244,7 @@ function parse( o )
 {
   if( _.strIs( arguments[ 0 ] ) )
   o = { src : arguments[ 0 ] };
-  _.routineOptions( parse, o );
+  _.routine.options_( parse, o );
   o.inliningDelimeters = 1;
   o.preservingOrdinary = 1;
   o.preservingInlined = 1;
@@ -328,7 +328,7 @@ let Style =
 let Extension =
 {
 
-  // routines
+  // implementation
 
   _formatAffixesBackground,
   formatBackground,

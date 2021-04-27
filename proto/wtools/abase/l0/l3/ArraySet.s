@@ -8,17 +8,19 @@ const _ = _global_.wTools;
 const Self = _.arraySet = _.arraySet || Object.create( null );
 
 // --
-// array set
+// implementation
 // --
 
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
@@ -27,7 +29,6 @@ let Extension =
 
 }
 
-Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _.arraySet, Extension );
 
 })();

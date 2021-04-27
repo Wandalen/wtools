@@ -6,191 +6,127 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
+_.assert( _.symbolIs( _.symbol.prototype ) );
+_.assert( _.symbolIs( _.symbol.constructor ) );
+
 // --
-// implement
+// implementation
 // --
 
-function is( src )
+function isEscapable( src )
 {
-  if( !src )
-  return false;
-  return src instanceof _.Escape;
-}
-
-//
-
-function make( src )
-{
-  if( arguments.length !== 1 )
-  throw new Error( 'Expects exactly one argument' );
-  return new Escape( src );
-}
-
-//
-
-function from( src )
-{
-  if( arguments.length !== 1 )
-  throw new Error( 'Expects exactly one argument' );
+  if( _.escape._EscapeMap.has( src ) )
+  return true;
   if( _.escape.is( src ) )
-  return src;
-  return _.escape.make( src );
+  return true;
+  return false;
 }
 
 //
 
-function cloneShallow()
+function left( src )
 {
-  _.assert( !( this instanceof cloneShallow ) );
-  return this;
-}
-
-//
-
-function cloneDeep()
-{
-  debugger;
-  _.assert( !( this instanceof cloneDeep ) );
-  return this;
-}
-
-//
-
-function equalAre( it )
-{
-  let self = this;
-
   _.assert( arguments.length === 1 );
-
-  if( !it.src )
-  return it.stop( false );
-  if( !it.src2 )
-  return it.stop( false );
-
-  if( !it.src instanceof _.Escape )
-  return it.stop( false );
-  if( !it.src2 instanceof _.Escape )
-  return it.stop( false );
-
-  if( it.src.val === it.src2.val )
-  return it.stop( true );
-
-  if( !( it.src.val instanceof _.Escape ) )
-  return it.stop( false );
-  if( !( it.src2.val instanceof _.Escape ) )
-  return it.stop( false );
-
-  // if( !it.src )
-  // return end( false );
-  // if( !it.src2 )
-  // return end( false );
-  // if( !it.src instanceof _.Escape )
-  // return end( false );
-  // if( !it.src2 instanceof _.Escape )
-  // return end( false );
-  //
-  // if( it.src.val === it.src2.val )
-  // return end( true );
-  //
-  // if( !( it.src.val instanceof _.Escape ) )
-  // return end( false );
-  // if( !( it.src.val instanceof _.Escape ) )
-  // return end( false );
-  //
-  // function end( result )
-  // {
-  //   it.result = result;
-  //   it.continue = false;
-  // }
+  if( _.escape._EscapeMap.has( src ) )
+  return _.escape._EscapeMap.get( src );
+  if( _.escape.is( src ) )
+  return new _.Escape( src );
+  return src;
 }
 
 //
 
-function iterate()
+function rightWithNothing( src )
 {
+  _.assert( arguments.length === 1 );
+  if( _.escape.is( src ) )
+  return src.val;
 
-  let iterator = Object.create( null );
-  iterator.next = next;
-  iterator.index = 0;
-  iterator.instance = this;
-  return iterator;
+  if( src === _.undefined )
+  return undefined;
+  if( src === _.null )
+  return null;
 
-  function next()
-  {
-    let result = Object.create( null );
-    result.done = this.index === 1;
-    if( result.done )
-    return result;
-    result.value = this.instance.val;
-    this.index += 1;
-    return result;
-  }
+  if( src === _.nothing )
+  return undefined;
 
+  return src;
 }
 
-// //
-//
-// function TypeNameGet()
-// {
-//   return 'Escape';
-// }
-
-// //
-//
-// function exportStringIgnoringArgs()
-// {
-//   return this[ exportStringSymbol ]();
-//   // return this.exportString();
-// }
-
 //
 
-function exportString()
+function rightWithoutNothing( src )
 {
-  if( _.symbol.is( this.val ) )
-  return `Escape( Symbol( ${Symbol.keyFor( this.val )} ) )`;
-  else
-  return `Escape( ${String( this.val )} )`;
+  _.assert( arguments.length === 1 );
+  if( _.escape.is( src ) )
+  return src.val;
+
+  if( src === _.undefined )
+  return undefined;
+  if( src === _.null )
+  return null;
+
+  return src;
+}
+
+//
+
+function wrap( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( !_.escape.is( src ) );
+  return new _.Escape( src );
+}
+
+//
+
+function unwrap( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.escape.is( src ) )
+  return src.val;
+  return src;
 }
 
 // --
-// declare
+// class
 // --
 
-function Escape( val )
-{
-  if( arguments.length !== 1 )
-  throw new Error( 'Expects exactly 1 argument' );
-  this.val = val;
-  Object.freeze( this );
-  return this;
-}
+let fo = _.wrap.declare({ name : 'Escape' });
+_.assert( _.Escape === undefined );
+_.assert( _.routineIs( fo.class ) );
+_.assert( fo.class.name === 'Escape' );
+_.Escape = fo.class;
+_.assert( _.mapIs( fo.namespace ) );
+Object.assign( _.escape, fo.namespace );
 
-_.class.declareBasic
-({
-  constructor : Escape,
-  iterate,
-  equalAre,
-  exportString,
-  cloneShallow, /* xxx : implement */
-  cloneDeep, /* xxx : implement */
-});
-
-//
+// --
+// extension
+// --
 
 var Extension =
 {
-  is,
-  make,
-  from,
+  isEscapable,
+  left,
+  rightWithNothing,
+  rightWithoutNothing,
+  right : rightWithNothing,
+  wrap,
+  unwrap,
 }
 
 //
 
-_.assert( _.escape === undefined );
-_.escape = Object.create( null );
-_.assert( _.Escape === undefined );
-_.Escape = Escape;
-Object.assign( _.escape, Extension );
+_.props.supplement( _.escape, Extension );
+_.escape.nothing = _.escape.wrap( _.nothing );
+_.escape.null = _.escape.wrap( _.null );
+_.escape.undefined = _.escape.wrap( _.undefined );
+
+_.escape._EscapeMap = new HashMap();
+_.escape._EscapeMap.set( _.nothing, _.escape.nothing );
+_.escape._EscapeMap.set( _.null, _.escape.null );
+_.escape._EscapeMap.set( _.undefined, _.escape.undefined );
+_.escape._EscapeMap.set( undefined, _.undefined );
+_.escape._EscapeMap.set( null, _.null );
 
 })();

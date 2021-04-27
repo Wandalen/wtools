@@ -46,7 +46,7 @@ function scalarAppend( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -97,7 +97,7 @@ function scalarAppendOnce( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -148,7 +148,7 @@ function scalarPrepend( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -199,7 +199,7 @@ function scalarPrependOnce( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -336,7 +336,7 @@ function dup( ins, times, result )
 function multiple( src, times )
 {
   _.assert( arguments.length === 2 );
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   _.assert( src.length === times, () => 'Vector should have ' + times + ' elements, but have ' + src.length );
   else
   src = _.dup( src, times );
@@ -1680,7 +1680,7 @@ function entityAnd( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1, res2;
@@ -1727,7 +1727,7 @@ function entityAnd( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1 = dst[ k ];
@@ -2143,7 +2143,7 @@ function entityOr( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1, res2;
@@ -2205,7 +2205,7 @@ function entityOr( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1 = dst[ k ];
@@ -2664,7 +2664,7 @@ function entityXor( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = src.length - 1; k >= 0; k-- )
       {
         let res1 = onEach( dst[ k ], k, dst );
@@ -2720,7 +2720,7 @@ function entityXor( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      dst = _.arrayIs( dst ) ? dst : _.array.make( dst );
       for( let k = src.length - 1; k >= 0; k-- )
       {
         let res1 = dst[ k ];
@@ -3261,58 +3261,19 @@ function _filter_functor( condition, levels )
  * @namespace Tools
  */
 
-function entityMap( src, onEach )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routine.is( onEach ) );
-
-  let result;
-
-  if( _.longIs( src ) )
-  {
-    result = _.entity.make( src );
-    for( let s = 0 ; s < src.length ; s++ )
-    {
-      let r = onEach( src[ s ], s, src );
-      if( r !== undefined )
-      result[ s ] = r;
-    }
-  }
-  else if( _.aux.is( src ) )
-  {
-    result = _.entity.make( src );
-    for( let s in src )
-    {
-      let r = onEach( src[ s ], s, src );
-      if( r !== undefined )
-      result[ s ] = r;
-    }
-  }
-  else
-  {
-    result = src;
-    let r = onEach( src, undefined, undefined );
-    if( r !== undefined )
-    result = r;
-
-  }
-
-  return result;
-}
-
 //
 
 function entityMap_( dst, src, onEach )
 {
   if( arguments.length === 2 )
   {
+    _.assert( arguments.length === 3, 'Expects three arguments' );
     onEach = src;
     src = dst;
   }
   else
   {
-    _.assert( arguments.length === 3, 'Expects two or three arguments' );
+    _.assert( arguments.length === 3, 'Expects three arguments' );
   }
   _.assert( _.routine.is( onEach ) );
 
@@ -3394,7 +3355,7 @@ function entityMap_( dst, src, onEach )
       if( _.longIs( dst ) )
       result = _.arrayAppendElement( dst, r );
       else if( _.aux.is( dst ) )
-      result = _.mapExtend( dst, r );
+      result = _.props.extend( dst, r );
       else if( _.primitive.is( dst ) )
       result = r;
       else
@@ -3408,72 +3369,12 @@ function entityMap_( dst, src, onEach )
 
 //
 
-function entityFilter( src, onEach )
-{
-  let result;
-
-  onEach = _._filter_functor( onEach, 1 );
-
-  _.assert( arguments.length === 2 );
-  _.assert( _.routine.is( onEach ) );
-
-  /* */
-
-  if( _.longIs( src ) )
-  {
-
-    result = _.longMake( src, 0 );
-    let s, d;
-    /* qqq for Yevhen : add branch for countable case */
-    for( s = 0, d = 0 ; s < src.length ; s++ )
-    {
-      let r = onEach.call( src, src[ s ], s, src );
-      if( _.unrollIs( r ) )
-      {
-        _.arrayAppendArray( result, r );
-        d += r.length;
-      }
-      else if( r !== undefined )
-      {
-        result[ d ] = r;
-        d += 1;
-      }
-    }
-    if( d < src.length )
-    result = _.arraySlice( result, 0, d );
-
-  }
-  else if( _.aux.is( src ) )
-  {
-
-    result = _.entity.makeUndefined( src );
-    for( let s in src )
-    {
-      let r = onEach.call( src, src[ s ], s, src );
-      if( r !== undefined )
-      result[ s ] = r;
-    }
-
-  }
-  else
-  {
-
-    result = onEach.call( null, src, null, null );
-
-  }
-
-  /* */
-
-  return result;
-}
-
-//
-
 function entityFilter_( dst, src, onEach )
 {
 
   if( arguments.length === 2 )
   {
+    _.assert( arguments.length === 3, 'Expects three arguments' );
     onEach = src;
     src = dst;
   }
@@ -3532,9 +3433,16 @@ function entityFilter_( dst, src, onEach )
     if( _.longIs( src ) )
     {
       if( dst === null )
-      result = _.longMake( src, 0 );
+      {
+        if( _.argumentsArray.is( src ) )
+        result = [];
+        else
+        result = _.long.make( src, 0 );
+      }
       else
-      _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
+      {
+        _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
+      }
 
       let s, d;
       /* qqq for Yevhen : add branch for countable case */
@@ -3576,7 +3484,7 @@ function entityFilter_( dst, src, onEach )
         if( _.longIs( dst ) )
         result = _.arrayAppendElement( dst, r );
         else if( _.aux.is( dst ) )
-        result = _.mapExtend( dst, r );
+        result = _.props.extend( dst, r );
         else if( _.primitive.is( dst ) )
         result = r;
         else
@@ -3689,7 +3597,7 @@ function entityLast( src, onEach )
 //
 
 /**
- * The result of _entityMost routine object.
+ * The result of _most routine object.
  * @typedef {Object} wTools.entityMostResult
  * @property {Number} index - Index of found element.
  * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
@@ -3707,19 +3615,19 @@ function entityLast( src, onEach )
  * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
- * _._entityMost([ 1, 3, 3, 9, 10 ], undefined, 0 );
+ * _._most([ 1, 3, 3, 9, 10 ], undefined, 0 );
  * // returns { index: 0, key: 0, value: 1, element: 1 }
  *
  * @example
- * _._entityMost( [ 1, 3, 3, 9, 10 ], undefined, 1 );
+ * _._most( [ 1, 3, 3, 9, 10 ], undefined, 1 );
  * // returns { index: 4, key: 4, value: 10, element: 10 }
  *
  * @example
- * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
+ * _._most( { a : 1, b : 2, c : 3 }, undefined, 0 );
  * // returns { index: 4, key: 4, value: 10, element: 10 }
  *
  * @private
- * @function _entityMost
+ * @function _most
  * @throws {Exception} If( arguments.length ) is not equal 3.
  * @throws {Exception} If( onEvaluate ) function is not implemented.
  * @namespace Tools
@@ -3727,16 +3635,18 @@ function entityLast( src, onEach )
 
 //
 
-function _entityMost( o )
+function _most( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.mapIs( o ), 'Expect map, but got ' + _.entity.strType( o ) );
-  _.routine.options( _entityMost, o );
+  _.routine.options( _most, o );
+
+  if( !o.onEach )
+  o.onEach = _most.defaults.onEach;
 
   if( !o.onEvaluate )
   {
     _.assert( o.returnMax !== null, 'o.returnMax should has value' );
-
     if( o.returnMax )
     o.onEvaluate = ( a, b ) => a - b > 0;
     else
@@ -3858,7 +3768,7 @@ function _entityMost( o )
 
 }
 
-_entityMost.defaults =
+_most.defaults =
 {
   src : null,
   onEach : ( e ) => e,
@@ -3869,7 +3779,7 @@ _entityMost.defaults =
 //
 
 /**
- * Short-cut for _entityMost() routine. Returns object( wTools.entityMostResult ) with smallest value from( src ).
+ * Short-cut for _most() routine. Returns object( wTools.entityMostResult ) with smallest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
  * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
@@ -3891,10 +3801,10 @@ _entityMost.defaults =
 function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost
+  return _most
   ({
     src,
-    onEach,
+    onEach : onEach || null,
     returnMax : 0
   });
 }
@@ -3902,7 +3812,7 @@ function entityMin( src, onEach )
 //
 
 /**
- * Short-cut for _entityMost() routine. Returns object( wTools.entityMostResult ) with biggest value from( src ).
+ * Short-cut for _most() routine. Returns object( wTools.entityMostResult ) with biggest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
  * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
@@ -3924,10 +3834,10 @@ function entityMin( src, onEach )
 function entityMax( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost
+  return _most
   ({
     src,
-    onEach,
+    onEach : onEach || null,
     returnMax : 1
   });
 }
@@ -3936,7 +3846,62 @@ function entityMax( src, onEach )
 // extension
 // --
 
-let Extension =
+let ContainerExtension =
+{
+
+  // scalar
+
+  scalarAppend,
+  scalarPrepend,
+  scalarAppendOnce,
+  scalarPrependOnce,
+
+  scalarToVector,
+  scalarFrom,
+  scalarFromOrNull,
+
+  // multiplier
+
+  dup,
+  multiple,
+  multipleAll,
+
+  // entity iterator
+
+  each : entityEach,
+  eachOwn : entityEachOwn,
+
+  /* qqq : for Dmytro : implementations with dst-null-convention? */
+  only : entityOnly,
+  but : entityBut,
+  and : entityAnd,
+  or : entityOr,
+  xor : entityXor,
+
+  all : entityAll,
+  any : entityAny,
+  none : entityNone,
+
+  _filter_functor,
+
+  map_ : entityMap_,
+  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
+  first : entityFirst,
+  last : entityLast,
+
+  //
+
+  _most,
+  min : entityMin,
+  max : entityMax,
+
+}
+
+_.props.supplement( _.container, ContainerExtension );
+
+//
+
+let ToolsExtension =
 {
 
   // scalar
@@ -3966,7 +3931,6 @@ let Extension =
   // entityEachKey,
   // eachKey : entityEachKey,
 
-  /* qqq : for Dmytro : implementations with null-convention? */
   entityOnly,
   only : entityOnly,
   entityBut,
@@ -4002,7 +3966,8 @@ let Extension =
 
   //
 
-  _entityMost,
+  _most,
+  _entityMost : _most,
   entityMin,
   min : entityMin,
   entityMax,
@@ -4010,6 +3975,6 @@ let Extension =
 
 }
 
-_.mapSupplement( _, Extension );
+_.props.supplement( _, ToolsExtension );
 
 })();

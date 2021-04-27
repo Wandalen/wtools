@@ -1,4 +1,4 @@
-( function _l8_PropertyTransformer_s_()
+( function _l7_PropertyTransformer_s_()
 {
 
 'use strict';
@@ -19,6 +19,6 @@ let Extension =
 {
 };
 
-_.mapSupplement( _.property, Extension );
+_.props.supplement( _.props, Extension );
 
 })();

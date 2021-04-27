@@ -1209,10 +1209,10 @@ function right( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 }
 
 // --
-// routines
+// implementation
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   // array set
@@ -1308,6 +1308,6 @@ let Extension =
 }
 
 Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 })();

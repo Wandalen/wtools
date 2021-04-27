@@ -1163,7 +1163,7 @@ const Self = _.containerAdapter;
 
 //
 
-var Fields =
+var Extension =
 {
 
   Set : ContainerAdapterSet,
@@ -1172,14 +1172,7 @@ var Fields =
 
 //
 
-var Routines =
-{
-}
-
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _.containerAdapter, Extension );
 _.assert( _.containerAdapter === Self );
 
 // --

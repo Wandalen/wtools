@@ -1,4 +1,4 @@
-( function _l8_Pair_s_()
+( function _l7_Pair_s_()
 {
 
 'use strict';
@@ -29,6 +29,6 @@ var Extension =
 //
 
 _.assert( _.pair !== undefined );
-_.mapSupplement( _.pair, Extension );
+_.props.supplement( _.pair, Extension );
 
 })();

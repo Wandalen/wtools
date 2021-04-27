@@ -1,4 +1,4 @@
-( function _l8_Intervalc_s_()
+( function _l7_Intervalc_s_()
 {
 
 'use strict';
@@ -12,7 +12,7 @@ const Self = _global_.wTools.cinterval = _global_.wTools.cinterval || Object.cre
 // --
 
 // --
-// routines
+// implementation
 // --
 
 let Extension =
@@ -21,6 +21,6 @@ let Extension =
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

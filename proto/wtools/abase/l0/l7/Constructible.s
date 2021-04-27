@@ -1,4 +1,4 @@
-( function _l8_Constructible_s_()
+( function _l7_Constructible_s_()
 {
 
 'use strict';
@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.constructible = _global_.wTools.constructible || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 // --

@@ -5,346 +5,109 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
 
 // --
-// surer
+// implementation
 // --
-
-function _sureDebugger( condition )
-{
-  if( !_.error.breakpointOnAssertEnabled )
-  return;
-  debugger; /* eslint-disable-line no-debugger */
-}
-
 //
 
-function sure( condition )
+function objectMake( o )
 {
+  let result;
 
-  if( !condition || !boolLike( condition ) )
+  _.assert( arguments.length === 1 );
+  countableConstructorPure.prototype = Object.create( null );
+  if( o.withConstructor )
+  countableConstructorPure.prototype.constructor = countableConstructorPure;
+
+  /* xxx : replace countableMake */
+
+  if( o.new )
   {
-    _sureDebugger( condition );
-    if( arguments.length === 1 )
-    throw _._err
-    ({
-      args : [ 'Assertion fails' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _._err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
+    if( o.pure )
+    result = new countableConstructorPure( o );
     else
-    throw _._err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
+    result = new countableConstructorPolluted( o );
+  }
+  else
+  {
+    result = _objectMake( null, o );
   }
 
-  return;
+  if( o.withOwnConstructor )
+  result.constructor = function ownConstructor(){}
 
-  function boolLike( src )
+  return result;
+
+  /* - */
+
+  function _iterate()
   {
-    let type = Object.prototype.toString.call( src );
-    return type === '[object Boolean]' || type === '[object Number]';
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
   }
 
-}
+  /* */
 
-//
-
-function sureBriefly( condition )
-{
-
-  if( !condition || !boolLike( condition ) )
+  function countableConstructorPure( o )
   {
-    _sureDebugger( condition );
-    if( arguments.length === 1 )
-    throw _._err
-    ({
-      args : [ 'Assertion fails' ],
-      level : 2,
-      brief : 1,
-    });
-    else if( arguments.length === 2 )
-    throw _._err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-      brief : 1,
-    });
+    return _objectMake( this, o );
+  }
+
+  /* */
+
+  function countableConstructorPolluted( o )
+  {
+    let result = _objectMake( this, o );
+    if( !o.withConstructor )
+    delete Object.getPrototypeOf( result ).constructor;
+    return result
+  }
+
+  /* */
+
+  function _objectMake( dst, o )
+  {
+    if( dst === null )
+    if( o.pure )
+    dst = Object.create( null );
     else
-    throw _._err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-      brief : 1,
-    });
+    dst = {};
+    _.props.extend( dst, o );
+    if( o.withIterator )
+    dst[ Symbol.iterator ] = _iterate;
+    return dst;
   }
 
-  return;
-
-  function boolLike( src )
-  {
-    let type = Object.prototype.toString.call( src );
-    return type === '[object Boolean]' || type === '[object Number]';
-  }
+  /* */
 
 }
 
-//
-
-function sureWithoutDebugger( condition )
+objectMake.defaults =
 {
-
-  if( !condition || !boolLike( condition ) )
-  {
-    if( arguments.length === 1 )
-    throw _._err
-    ({
-      args : [ 'Assertion fails' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _._err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
-    else
-    throw _._err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
-  }
-
-  return;
-
-  function boolLike( src )
-  {
-    let type = Object.prototype.toString.call( src );
-    return type === '[object Boolean]' || type === '[object Number]';
-  }
-
+  new : 0,
+  pure : 0,
+  withIterator : 0,
+  withOwnConstructor : 0,
+  withConstructor : 0,
+  elements : null,
 }
-
-// --
-//
-// --
-
-/**
- * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2.
- *
- * @see {@link wTools.err err}
- *
- * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion fails'.
- * Also generates error using message(s) or existing error object(s) passed after first argument.
- *
- * @param {*} condition - condition to check.
- * @param {String|Error} [ msgs ] - error messages for generated exception.
- *
- * @example
- * let x = 1;
- * _.assert( _.strIs( x ), 'incorrect variable type->', typeof x, 'Expects string' );
- *
- * // log
- * // caught eval (<anonymous>:2:8)
- * // incorrect variable type-> number expects string
- * // Error
- * //   at _err (file:///.../wTools/staging/Base.s:3707)
- * //   at assert (file://.../wTools/staging/Base.s:4041)
- * //   at add (<anonymous>:2)
- * //   at <anonymous>:1
- *
- * @example
- * function add( x, y )
- * {
- *   _.assert( arguments.length === 2, 'incorrect arguments count' );
- *   return x + y;
- * }
- * add();
- *
- * // log
- * // caught add (<anonymous>:3:14)
- * // incorrect arguments count
- * // Error
- * //   at _err (file:///.../wTools/staging/Base.s:3707)
- * //   at assert (file://.../wTools/staging/Base.s:4035)
- * //   at add (<anonymous>:3:14)
- * //   at <anonymous>:6
- *
- * @example
- *   function divide ( x, y )
- *   {
- *      _.assert( y != 0, 'divide by zero' );
- *      return x / y;
- *   }
- *   divide( 3, 0 );
- *
- * // log
- * // caught     at divide (<anonymous>:2:29)
- * // divide by zero
- * // Error
- * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
- * //   at wTools.errLog (file://.../wTools/staging/Base.s:1462:13)
- * //   at divide (<anonymous>:2:29)
- * //   at <anonymous>:1:1
- * @throws {Error} If passed condition( condition ) fails.
- * @function assert
- * @namespace Tools
- */
-
-//
-
-function assert( condition )
-{
-
-  if( Config.debug === false )
-  return true;
-
-  if( !condition )
-  {
-    _assertDebugger( condition, arguments );
-    if( arguments.length === 1 )
-    throw _._err
-    ({
-      args : [ 'Assertion fails' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _._err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
-    else
-    throw _._err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
-  }
-
-  return true;
-
-  function boolLike( src )
-  {
-    let type = Object.prototype.toString.call( src );
-    return type === '[object Boolean]' || type === '[object Number]';
-  }
-
-  function _assertDebugger( condition, args )
-  {
-    if( !_.error.breakpointOnAssertEnabled )
-    return;
-    debugger; /* eslint-disable-line no-debugger */
-  }
-
-}
-
-//
-
-function assertWithoutBreakpoint( condition )
-{
-
-  if( Config.debug === false )
-  return true;
-
-  if( !condition || !_.bool.like( condition ) )
-  {
-    if( arguments.length === 1 )
-    throw _._err
-    ({
-      args : [ 'Assertion fails' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _._err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
-    else
-    throw _._err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
-  }
-
-  return;
-}
-
-//
-
-function assertNotTested( src )
-{
-
-  // if( _.error.breakpointOnAssertEnabled )
-  // debugger;
-  _.assert( false, 'not tested : ' + stack( 1 ) );
-
-}
-
-//
-
-/**
- * If condition failed, routine prints warning messages passed after condition argument
- * @example
- * function checkAngles( a, b, c )
- * {
- *    _.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
- * };
- * checkAngles( 120, 23, 130 );
- *
- * // log 'triangle with that angles does not exists'
- *
- * @param condition Condition to check.
- * @param messages messages to print.
- * @function assertWarn
- * @namespace Tools
- */
-
-function assertWarn( condition )
-{
-
-  if( Config.debug )
-  return;
-
-  if( !condition || !_.bool.like( condition ) )
-  {
-    console.warn.apply( console, [].slice.call( arguments, 1 ) );
-  }
-
-}
-
-// --
-// declare
-// --
-
-if( Config.debug )
-Object.defineProperty( _, 'debugger',
-{
-  enumerable : false,
-  configurable : false,
-  set : function( val )
-  {
-    _[ Symbol.for( 'debugger' ) ] = val;
-  },
-  get : function()
-  {
-    let val = _[ Symbol.for( 'debugger' ) ];
-    if( val )
-    debugger; /* eslint-disable-line no-debugger */
-    return val;
-  },
-});
 
 // --
 // declare
@@ -353,32 +116,20 @@ Object.defineProperty( _, 'debugger',
 let ToolsExtension =
 {
 
-  // sure
-
-  sure,
-  sureBriefly,
-  sureWithoutDebugger,
-
-  // assert
-
-  assert,
-  assertWithoutBreakpoint,
-  assertNotTested,
-  assertWarn,
-
 }
 
 Object.assign( _, ToolsExtension );
 
 //
 
-let Extension =
+let DiagnosticExtension =
 {
+
+  objectMake,
+  /* qqq : for junior : use _.diagnostic.objectMake() in all tests */
 
 }
 
-//
-
-Object.assign( Self, Extension );
+Object.assign( _.diagnostic, DiagnosticExtension );
 
 })();

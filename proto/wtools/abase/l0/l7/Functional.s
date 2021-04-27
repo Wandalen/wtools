@@ -1,4 +1,4 @@
-( function _l8_Functional_s_()
+( function _l7_Functional_s_()
 {
 
 'use strict';
@@ -46,7 +46,7 @@ function scalarAppend( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -97,7 +97,7 @@ function scalarAppendOnce( dst, src )
   {
 
     if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
+    dst = _.array.from( dst );
 
     if( src === undefined )
     {}
@@ -236,7 +236,7 @@ function dup( ins, times, result )
 function multiple( src, times )
 {
   _.assert( arguments.length === 2 );
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   _.assert( src.length === times, () => 'Vector should have ' + times + ' elements, but have ' + src.length );
   else
   src = _.dup( src, times );
@@ -357,11 +357,16 @@ function multipleAll( dsts )
 function eachSample_( o )
 {
 
-  if( arguments.length === 2 || _.arrayLike( arguments[ 0 ] ) )
+  if( arguments.length === 2 )
   o =
   {
     sets : arguments[ 0 ],
     onEach : arguments[ 1 ],
+  }
+  else if( _.argumentsArray.like( arguments[ 0 ] ) )
+  o =
+  {
+    sets : arguments[ 0 ],
   }
 
   _.routine.options( eachSample_, o );
@@ -380,7 +385,7 @@ function eachSample_( o )
 
   /* */
 
-  let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
+  let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.props.keys( o.sets );
   if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   if( keys.length === 0 )
@@ -452,7 +457,7 @@ function eachSample_( o )
 
     if( o.result )
     if( _.aux.is( o.sample ) )
-    o.result.push( _.mapExtend( null, o.sample ) );
+    o.result.push( _.props.extend( null, o.sample ) );
     else
     o.result.push( o.sample.slice() );
 
@@ -479,7 +484,7 @@ function eachSample_( o )
 
       if( o.result )
       if( _.aux.is( o.sample ) )
-      o.result.push( _.mapExtend( null, o.sample ) );
+      o.result.push( _.props.extend( null, o.sample ) );
       else
       o.result.push( o.sample.slice() );
 
@@ -549,7 +554,7 @@ function eachPermutation_( o )
   if( _.bool.likeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
 
-  const add = ( _.arrayLike( o.result ) || _.routineIs( o.result.push ) ) ? append1 : append0;
+  const add = ( _.argumentsArray.like( o.result ) || _.routineIs( o.result.push ) ) ? append1 : append0;
   const dst = o.result ? o.result : undefined;
   const sets = o.sets;
   const length = o.sets.length;
@@ -947,7 +952,7 @@ function _entityFilterDeep( o )
 
   if( _.longIs( o.src ) )
   {
-    result = _.longMake( o.src, 0 );
+    result = _.long.make( o.src, 0 );
     let s, d;
     for( s = 0, d = 0 ; s < o.src.length ; s++ )
     // for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
@@ -972,7 +977,7 @@ function _entityFilterDeep( o )
 
     }
     if( d < o.src.length )
-    result = _.arraySlice( result, 0, d );
+    result = _.array.slice( result, 0, d );
   }
   else
   {
@@ -1244,7 +1249,7 @@ let entityIndex = _entityIndex_functor({ extendRoutine : null });
  * @namespace Tools
  */
 
-let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSupplement });
+let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.props.supplement });
 
 //
 
@@ -1305,7 +1310,7 @@ let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSuppl
  * @namespace Tools
  */
 
-let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend });
+let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.props.extend });
 
 //
 
@@ -1651,7 +1656,7 @@ let entityRemap = _entityRemap_functor({ extendRoutine : null });
  */
 
 
-let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.mapSupplement });
+let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.props.supplement });
 
 //
 
@@ -1713,7 +1718,7 @@ let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.mapSuppl
  * @namespace Tools
  */
 
-let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.mapExtend });
+let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.props.extend });
 
 //
 
@@ -1840,18 +1845,10 @@ let entityRemapPrepending = _entityRemap_functor({ extendRoutine : _.mapExtendPr
 let entityRemapAppending = _entityRemap_functor({ extendRoutine : _.mapExtendAppending });
 
 // --
-// fields
+// implementation
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let ToolsExtension =
 {
 
   eachSample_, /* xxx : review */
@@ -1892,7 +1889,6 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _, ToolsExtension );
 
 })();

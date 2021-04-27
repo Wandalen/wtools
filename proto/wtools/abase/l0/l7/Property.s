@@ -1,4 +1,4 @@
-( function _l8_Property_s_()
+( function _l7_Property_s_()
 {
 
 'use strict';
@@ -21,6 +21,6 @@ let Extension =
 
 //
 
-Object.assign( _.property, Extension );
+Object.assign( _.props, Extension );
 
 })();

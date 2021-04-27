@@ -5,113 +5,88 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
+
+_.assert( !!_.props._elementWithKey, 'Expects routine _.props._elementWithKey' );
+_.assert( !!_.props.keys, 'Expects routine _.props.keys' );
 
 // --
-// typing
+// equaler
 // --
 
-/**
- * Function is checks incoming param whether it is object.
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example
- * let obj = { x : 100 };
- * _.object.is(obj);
- * // returns true
- *
- * @example
- * _.object.is( 10 );
- * // returns false
- *
- * @param { * } src.
- * @return { Boolean }.
- * @function is
- * @namespace Tools
- */
-
-function is( src )
+function _identicalShallow( src1, src2 )
 {
-  return Object.prototype.toString.call( src ) === '[object Object]';
+
+  if( _.aux.is( src1 ) && _.aux.is( src2 ) )
+  return _.aux._identicalShallow( src1, src2 );
+
+  let equal = _.class.methodEqualOf( src1 ) || _.class.methodEqualOf( src2 );
+
+  if( equal )
+  return equal( src1, src2, {} );
+
+  return src1 === src2;
 }
 
 //
 
-function like( src ) /* xxx : qqq : for Yevhen : optimize */
+function identicalShallow( src1, src2, o )
 {
 
-  if( _.object.is( src ) )
-  return true;
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.primitive.is( src ) )
+
+  if( !this.is( src1 ) )
+  return false;
+  if( !this.is( src2 ) )
   return false;
 
-  // if( _.longIs( src ) ) /* yyy */
-  // return false;
-  if( _.vector.is( src ) )
-  return false;
-
-  if( _.routine.isTrivial( src ) )
-  return false;
-
-  if( _.set.is( src ) )
-  return false;
-
-  if( _.hashMap.is( src ) )
-  return false;
-
-  // yyy
-  // for( let k in src )
-  // return true;
-  // return false;
-
-  return true;
+  return this._identicalShallow( src1, src2 );
 }
 
 //
 
-function likeStandard( src ) /* xxx : qqq : for Yevhen : optimize */
+function _equivalentShallow( src1, src2 )
 {
+  let equal = _.class.methodEqualOf( src1 ) || _.class.methodEqualOf( src2 );
 
-  // if( _.object.is( src ) )
-  // return true;
+  if( equal )
+  return equal( src1, src2, {} );
 
-  if( _.primitive.is( src ) )
-  return false;
-  if( _.vector.is( src ) )
-  return false;
-  if( _.routine.isTrivial( src ) )
-  return false;
-  if( _.set.is( src ) )
-  return false;
-  if( _.hashMap.is( src ) )
-  return false;
-
-  if( _.date.is( src ) )
-  return true
-  if( _.regexpIs( src ) )
-  return true
-  if( _.bufferAnyIs( src ) )
-  return true
-
-  return false;
+  return src1 === src2;
 }
 
 //
+
+function equivalentShallow( src1, src2 )
+{
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( !this.is( src1 ) )
+  return false;
+  if( !this.is( src2 ) )
+  return false;
+
+  return this._equivalentShallow( src1, src2 );
+}
+
+// --
+// exporter
+// --
 
 function exportStringShallowDiagnostic( src )
 {
+
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.object.like( src ) );
+  _.assert( this.like( src ) );
 
   let result = '';
   let method = _.class.methodExportStringOf( src );
 
-  // if( _.routineIs( src.exportString ) )
   if( method )
   {
     result = method.call( src, { verbosity : 1 } );
-    result = _.strShort( result );
+    result = _.strShort_( result ).result;
   }
   else
   {
@@ -124,135 +99,31 @@ function exportStringShallowDiagnostic( src )
   return result;
 }
 
-//
-
-function objectForTesting( o )
-{
-  let result;
-
-  _.assert( arguments.length === 1 );
-  countableConstructorPure.prototype = Object.create( null );
-  if( o.withConstructor )
-  countableConstructorPure.prototype.constructor = countableConstructorPure;
-
-  /* xxx : replace countableMake */
-
-  if( o.new )
-  {
-    if( o.pure )
-    result = new countableConstructorPure( o );
-    else
-    result = new countableConstructorPolluted( o );
-  }
-  else
-  {
-    result = _objectMake( null, o );
-  }
-
-  if( o.withOwnConstructor )
-  result.constructor = function ownConstructor(){}
-
-  return result;
-
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructorPure( o )
-  {
-    return _objectMake( this, o );
-  }
-
-  /* */
-
-  function countableConstructorPolluted( o )
-  {
-    let result = _objectMake( this, o );
-    if( !o.withConstructor )
-    delete Object.getPrototypeOf( result ).constructor;
-    return result
-  }
-
-  /* */
-
-  function _objectMake( dst, o )
-  {
-    if( dst === null )
-    if( o.pure )
-    dst = Object.create( null );
-    else
-    dst = {};
-    _.mapExtend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
-
-  /* */
-
-}
-
-objectForTesting.defaults =
-{
-  new : 0,
-  pure : 0,
-  withIterator : 0,
-  withOwnConstructor : 0,
-  withConstructor : 0,
-  elements : null,
-}
-
 // --
 // extension
 // --
 
 let ToolsExtension =
 {
-
-  // typing
-
-  objectIs : is, /* qqq : optimize */
-  objectLike : like, /* qqq : optimize */
-  objectLikeStandard : likeStandard, /* qqq : optimize */
-
-  //
-
-  objectForTesting,
-
 }
 
-let Extension =
+Object.assign( _, ToolsExtension );
+
+//
+
+let ObjectExtension =
 {
 
-  // typing
+  // equaler
 
-  is,
-  like,
-  likeStandard,
+  _identicalShallow,
+  identicalShallow,
+  identical : identicalShallow,
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
 
-  // export string
+  // exporter
 
   exportString : exportStringShallowDiagnostic,
   exportStringShallow : exportStringShallowDiagnostic,
@@ -261,15 +132,86 @@ let Extension =
   exportStringDiagnostic : exportStringShallowDiagnostic,
   exportStringCode : exportStringShallowDiagnostic,
 
-  //
+  // container interface
 
-  forTesting : objectForTesting,
+  _lengthOf : _.blank._lengthOf,
+  lengthOf : _.blank.lengthOf, /* qqq : cover */
+
+  _hasKey : _.blank._hasKey,
+  hasKey : _.blank._hasKey, /* qqq : cover */
+  _hasCardinal : _.blank._hasKey,
+  hasCardinal : _.blank._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.blank._hasKey,
+  keyWithCardinal : _.blank._hasKey, /* qqq : cover */
+
+  _elementGet : _.blank._elementWithKey,
+  elementGet : _.blank.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.blank._elementWithKey,
+  elementWithKey : _.blank.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.blank._elementWithImplicit,
+  elementWithImplicit : _.blank.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.blank._elementWithCardinal,
+  elementWithCardinal : _.blank.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.blank._elementSet,
+  elementSet : _.blank.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.blank._elementWithKeySet,
+  elementWithKeySet : _.blank.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.blank._elementWithCardinalSet,
+  elementWithCardinalSet : _.blank.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementDel : _.blank._elementDel,
+  elementDel : _.blank.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.blank._elementWithKeyDel,
+  elementWithKeyDel : _.blank.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.blank._elementWithCardinalDel,
+  elementWithCardinalDel : _.blank.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.props._empty,
+  empty : _.props.empty, /* qqq : for Yevhen : cover */
+
+  _each : _.blank._each,
+  each : _.blank.each, /* qqq : cover */
+  _eachLeft : _.blank._eachLeft,
+  eachLeft : _.blank.eachLeft, /* qqq : cover */
+  _eachRight : _.blank._eachRight,
+  eachRight : _.blank.eachRight, /* qqq : cover */
+
+  _while : _.blank._while,
+  while : _.blank.while, /* qqq : cover */
+  _whileLeft : _.blank._whileLeft,
+  whileLeft : _.blank.whileLeft, /* qqq : cover */
+  _whileRight : _.blank._whileRight,
+  whileRight : _.blank.whileRight, /* qqq : cover */
+
+  _aptLeft : _.blank._aptLeft,
+  aptLeft : _.blank.aptLeft, /* qqq : cover */
+  first : _.blank.first,
+  _aptRight : _.blank._aptRight, /* qqq : cover */
+  aptRight : _.blank.aptRight,
+  last : _.blank.last, /* qqq : cover */
+
+  _filter : _.blank._filter,
+  filterWithoutEscapeLeft : _.blank.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.blank.filterWithoutEscapeRight,
+  filterWithoutEscape : _.blank.filterWithoutEscape,
+  filterWithEscapeLeft : _.blank.filterWithEscapeLeft,
+  filterWithEscapeRight : _.blank.filterWithEscapeRight,
+  filterWithEscape : _.blank.filterWithEscape,
+  filter : _.blank.filter,
+
+  _map : _.blank._map,
+  mapWithoutEscapeLeft : _.blank.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.blank.mapWithoutEscapeRight,
+  mapWithoutEscape : _.blank.mapWithoutEscape,
+  mapWithEscapeLeft : _.blank.mapWithEscapeLeft,
+  mapWithEscapeRight : _.blank.mapWithEscapeRight,
+  mapWithEscape : _.blank.mapWithEscape,
+  map : _.blank.map,
 
 }
 
 //
 
-Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.object, ObjectExtension );
 
 })();

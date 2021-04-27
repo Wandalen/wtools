@@ -48,23 +48,26 @@ function mix( ins1, ins2, progress )
 zzz : review and merge with similar routines _.range.*
 */
 
-let ExtensionTools =
+let ToolsExtension =
 {
+
   numberClamp : clamp, /* teach it to accept cintervals */
   numberMix : mix,
 
 }
 
+Object.assign( _, ToolsExtension );
+
 //
 
-let Extension =
+let NumberExtension =
 {
+
   clamp,
   mix,
 
 }
 
-Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _.number, NumberExtension );
 
 })();

@@ -1,4 +1,4 @@
-( function _l8_String_s_()
+( function _l7_String_s_()
 {
 
 'use strict';
@@ -21,7 +21,12 @@ function strIsolate_head( routine, args )
 
   if( args.length > 1 )
   {
+    if( args.length === 3 )
     o = { src : args[ 0 ], delimeter : args[ 1 ], times : args[ 2 ] };
+    else if( args.length === 2 )
+    o = { src : args[ 0 ], delimeter : args[ 1 ] };
+    else
+    o = { src : args[ 0 ] };
   }
   else
   {
@@ -563,7 +568,7 @@ strIsolateRightOrAll_body.defaults =
 //
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //
-//   if( _.arrayLike( src ) )
+//   if( _.argumentsArray.like( src ) )
 //   {
 //     let result = [];
 //     for( let s = 0 ; s < src.length ; s++ )
@@ -793,7 +798,7 @@ function strIsolateInside( src, begin, end )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.arrayLike( src ) )
+  if( _.argumentsArray.like( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )

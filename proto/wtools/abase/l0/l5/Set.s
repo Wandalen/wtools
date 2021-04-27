@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.set = _.set || Object.create( null );
 _.set.s = _.set.s || Object.create( null );
 
 // --
@@ -158,14 +157,16 @@ function diff( dst, src1, src2 )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
 
+Object.assign( _, ToolsExtension );
+
 //
 
-let Extension =
+let SetExtension =
 {
 
   but,
@@ -175,17 +176,17 @@ let Extension =
 
 }
 
+Object.assign( _.set, SetExtension );
+
 //
 
-let ExtensionS =
+let SetsExtension =
 {
 
 }
 
 //
 
-Object.assign( _, ExtensionTools );
-Object.assign( Self, Extension );
-Object.assign( _.set.s, ExtensionS );
+Object.assign( _.set.s, SetsExtension );
 
 })();

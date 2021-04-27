@@ -26,6 +26,7 @@ throw Error( 'Current global does not have name. Something wrong!' );
 const Self = _global.wTools;
 let _ = Self;
 Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
+Self.tools = Self;
 
 // name conflict
 
@@ -47,7 +48,7 @@ Self.anything = Symbol.for( 'anything' );
 Self.maybe = Symbol.for( 'maybe' );
 Self.unknown = Symbol.for( 'unknown' );
 Self.dont = Symbol.for( 'dont' );
-Self.unroll = Symbol.for( 'unroll' );
+// Self.unroll = Symbol.for( 'unroll' ); /* xxx : qqq : ask */
 Self.self = Symbol.for( 'self' );
 Self.optional = Symbol.for( 'optional' );
 

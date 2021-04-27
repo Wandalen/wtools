@@ -1,4 +1,4 @@
-( function _l8_Err_s_()
+( function _l7_Err_s_()
 {
 
 'use strict';
@@ -8,7 +8,7 @@ const _ = _global.wTools;
 const _err = _._err;
 
 // --
-// checker
+// dichotomy
 // --
 
 function _isInstanceOrClass( _constructor, _this )
@@ -99,7 +99,7 @@ let ErrorExtension =
 let ToolsExtension =
 {
 
-  // checker
+  // dichotomy
 
   _isInstanceOrClass,
   // _ownNoConstructor,

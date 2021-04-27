@@ -24,7 +24,7 @@ var Extension =
 
 //
 
-_.mapSupplement( _.global, Extension );
-_.mapSupplement( __.global, Extension );
+_.props.supplement( _.global, Extension );
+_.props.supplement( __.global, Extension );
 
 })();

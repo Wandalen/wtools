@@ -10,7 +10,6 @@ _ArrayIncludes = function( e ){ _ArrayIndexOf.call( this, e ) }
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 /*
                |  can grow   |  can shrink  |   range
@@ -65,257 +64,210 @@ function constructorLikeArray( src )
   return true;
 }
 
-//
-
-/**
- * The hasLength() routine determines whether the passed value has the property (length).
- *
- * If {-srcMap-} is equal to the (undefined) or (null) false is returned.
- * If {-srcMap-} has the property (length) true is returned.
- * Otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * _.hasLength( [ 1, 2 ] );
- * // returns true
- *
- * @example
- * _.hasLength( 'Hello there!' );
- * // returns true
- *
- * @example
- * let isLength = ( function() {
- *   return _.hasLength( arguments );
- * } )( 'Hello there!' );
- * // returns true
- *
- * @example
- * _.hasLength( 10 );
- * // returns false
- *
- * @example
- * _.hasLength( {} );
- * // returns false
- *
- * @returns { boolean } Returns true if {-srcMap-} has the property (length).
- * @function hasLength
- * @namespace Tools
- */
-
-function hasLength( src )
-{
-  if( src === undefined || src === null )
-  return false;
-  if( _.number.is( src.length ) )
-  return true;
-  return false;
-}
-
 // --
 // array producer
 // --
 
-/**
- * The routine arrayMake() returns a new Array maiden from argument {-src-}.
- *
- * @param { Number|Long|Set|Null|Undefined } src - The number or any Long to make new Array. If {-src-} is null
- * or undefined, then routine returns an empty Array.
- *
- * @example
- * _.arrayMake();
- * // returns []
- *
- * @example
- * _.arrayMake( null );
- * // returns []
- *
- * @example
- * _.arrayMake( undefined );
- * // returns []
- *
- * @example
- * _.arrayMake( 3 );
- * // returns [ undefined, undefined, undefined ]
- *
- * @example
- * let src = [ 1, 2, 3, 4, '5' ]
- * let got = _.arrayMake( src );
- * console.log( got );
- * // log [ 1, 2, 3, 4, '5' ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * let src = _.unrollMake( [ 1, 2, 'str' ] );
- * let got = _.arrayMake( src );
- * console.log( got );
- * // log [ 1, 2, 'str' ]
- * console.log( _.unrollIs( got ) );
- * // log false
- *
- * @example
- * let src = new U32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.arrayMake( src );
- * console.log( got );
- * // log [ 1, 2, 3, 4, 5 ]
- * console.log( _.arrayIs( got ) );
- * // log true
- *
- * @returns { Array } - Returns a new Array maiden from {-src-}. If {-src-} is null or undefined, then routine returns
- * empty array. Otherwise, it returns the Array filled by {-src-} elements.
- * @function arrayMake
- * @throws { Error } If arguments.length is more then one.
- * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
- * @namespace Tools
- */
-
-function arrayMake( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-
-  if( src === null || src === undefined )
-  return new Array();
-
-  if( _.number.is( src ) )
-  return Array( src );
-
-  if( _.set.is( src ) )
-  return [ ... src ];
-
-  _.assert( _.longLike( src ) );
-
-  if( src.length === 1 )
-  return [ src[ 0 ] ];
-  else
-  return Array.apply( Array, src );
-}
-
+// /**
+//  * The routine arrayMake() returns a new Array maiden from argument {-src-}.
+//  *
+//  * @param { Number|Long|Set|Null|Undefined } src - The number or any Long to make new Array. If {-src-} is null
+//  * or undefined, then routine returns an empty Array.
+//  *
+//  * @example
+//  * _.array.make();
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.make( null );
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.make( undefined );
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.make( 3 );
+//  * // returns [ undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * let src = [ 1, 2, 3, 4, '5' ]
+//  * let got = _.array.make( src );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, '5' ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * let src = _.unroll.make( [ 1, 2, 'str' ] );
+//  * let got = _.array.make( src );
+//  * console.log( got );
+//  * // log [ 1, 2, 'str' ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log false
+//  *
+//  * @example
+//  * let src = new U32x( [ 1, 2, 3, 4, 5 ] );
+//  * let got = _.array.make( src );
+//  * console.log( got );
+//  * // log [ 1, 2, 3, 4, 5 ]
+//  * console.log( _.arrayIs( got ) );
+//  * // log true
+//  *
+//  * @returns { Array } - Returns a new Array maiden from {-src-}. If {-src-} is null or undefined, then routine returns
+//  * empty array. Otherwise, it returns the Array filled by {-src-} elements.
+//  * @function arrayMake
+//  * @throws { Error } If arguments.length is more then one.
+//  * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
+//  * @namespace Tools
+//  */
 //
-
-/**
- * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
- * If {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
- *
- * @param { Number|Long|Set|Null } src - The number or any Long. If {-length-} parameter is not provided,
- * then it defines length of new Array.
- * @param { Number|Long|Null } length - Defines length of new Array. If null is provided, then length defines by {-src-}.
- *
- * @example
- * _.arrayMakeUndefined();
- * // returns []
- *
- * @example
- * _.arrayMakeUndefined( null );
- * // returns []
- *
- * @example
- * _.arrayMakeUndefined( null, null );
- * // returns []
- *
- * @example
- * _.arrayMakeUndefined( 3 );
- * // returns [ undefined, undefined, undefined ]
- *
- * @example
- * _.arrayMakeUndefined( 3, null );
- * // returns [ undefined, undefined, undefined ]
- *
- * @example
- * _.arrayMakeUndefined( 5, 2 );
- * // returns [ undefined, undefined ]
- *
- * @example
- * let src = [ 1, 2, 3, 4, '5' ]
- * let got = _.arrayMakeUndefined( src );
- * console.log( got );
- * // log [ undefined, undefined, undefined, undefined, undefined ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * let src = [ 1, 2, 3, 4, '5' ]
- * let got = _.arrayMakeUndefined( src, null );
- * console.log( got );
- * // log [ undefined, undefined, undefined, undefined, undefined ]
- * console.log( got === src );
- * // log false
- *
- * @example
- * let src = [ 1, 2, 3, 4, '5' ]
- * let got = _.arrayMakeUndefined( src, 2 );
- * console.log( got );
- * // log [ undefined, undefined ]
- *
- * @example
- * let src = _.unrollMake( [ 1, 2, 'str' ] );
- * let got = _.arrayMakeUndefined( src );
- * console.log( got );
- * // log [ undefined, undefined, undefined ]
- * console.log( _.unrollIs( got ) );
- * // log false
- *
- * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.arrayMakeUndefined( src, 3 );
- * console.log( got );
- * // log [ undefined, undefined, undefined ]
- * console.log( _.arrayIs( got ) );
- * // log true
- *
- * @returns { Array } - Returns a new Array with length equal to {-length-} or defined from {-src-}.
- * If null passed, routine returns the empty Array.
- * @function arrayMakeUndefined
- * @throws { Error } If arguments.length is more then two.
- * @throws { Error } If argument {-src-} is not a number, not a Long, not a Set, not null.
- * @throws { Error } If argument {-length-} is not a number, not Long, not null.
- * @namespace Tools
- */
-
-function arrayMakeUndefined( src, length )
-{
-  if( arguments.length === 0 )
-  return Array( 0 );
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.number.is( src ) || _.longLike( src ) || _.set.like( src ) || src === null );
-
-  if( _.longIs( length ) )
-  {
-    length = length.length;
-  }
-  else if( length === undefined || length === null )
-  {
-    if( src === null )
-    length = 0;
-    else if( _.number.is( src ) )
-    length = src;
-    else if( _.set.like( src ) )
-    length = src.size;
-    else if( _.longIs( src ) )
-    length = src.length;
-    else
-    _.assert( 0 );
-  }
-  else if( !_.number.is( length ) )
-  {
-    _.assert( 0, 'Unknown length' )
-  }
-
-  _.assert( _.number.isFinite( length ) );
-
-  return Array( length );
-}
-
+// function arrayMake( src )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
 //
-
-function arrayFrom( src )
-{
-  _.assert( arguments.length === 1 );
-  if( _.arrayIs( src ) && !_.unrollIs( src ) )
-  return src;
-  return _.arrayMake.call( _, src );
-}
+//   if( src === null || src === undefined )
+//   return new Array();
+//
+//   if( _.number.is( src ) )
+//   return Array( src );
+//
+//   if( _.set.is( src ) )
+//   return [ ... src ];
+//
+//   _.assert( _.longLike( src ) );
+//
+//   if( src.length === 1 )
+//   return [ src[ 0 ] ];
+//   else
+//   return Array.apply( Array, src );
+// }
+//
+// //
+//
+// /**
+//  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
+//  * If {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
+//  *
+//  * @param { Number|Long|Set|Null } src - The number or any Long. If {-length-} parameter is not provided,
+//  * then it defines length of new Array.
+//  * @param { Number|Long|Null } length - Defines length of new Array. If null is provided, then length defines by {-src-}.
+//  *
+//  * @example
+//  * _.array.makeUndefined();
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.makeUndefined( null );
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.makeUndefined( null, null );
+//  * // returns []
+//  *
+//  * @example
+//  * _.array.makeUndefined( 3 );
+//  * // returns [ undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * _.array.makeUndefined( 3, null );
+//  * // returns [ undefined, undefined, undefined ]
+//  *
+//  * @example
+//  * _.array.makeUndefined( 5, 2 );
+//  * // returns [ undefined, undefined ]
+//  *
+//  * @example
+//  * let src = [ 1, 2, 3, 4, '5' ]
+//  * let got = _.array.makeUndefined( src );
+//  * console.log( got );
+//  * // log [ undefined, undefined, undefined, undefined, undefined ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * let src = [ 1, 2, 3, 4, '5' ]
+//  * let got = _.array.makeUndefined( src, null );
+//  * console.log( got );
+//  * // log [ undefined, undefined, undefined, undefined, undefined ]
+//  * console.log( got === src );
+//  * // log false
+//  *
+//  * @example
+//  * let src = [ 1, 2, 3, 4, '5' ]
+//  * let got = _.array.makeUndefined( src, 2 );
+//  * console.log( got );
+//  * // log [ undefined, undefined ]
+//  *
+//  * @example
+//  * let src = _.unroll.make( [ 1, 2, 'str' ] );
+//  * let got = _.array.makeUndefined( src );
+//  * console.log( got );
+//  * // log [ undefined, undefined, undefined ]
+//  * console.log( _.unrollIs( got ) );
+//  * // log false
+//  *
+//  * @example
+//  * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+//  * let got = _.array.makeUndefined( src, 3 );
+//  * console.log( got );
+//  * // log [ undefined, undefined, undefined ]
+//  * console.log( _.arrayIs( got ) );
+//  * // log true
+//  *
+//  * @returns { Array } - Returns a new Array with length equal to {-length-} or defined from {-src-}.
+//  * If null passed, routine returns the empty Array.
+//  * @function arrayMakeUndefined
+//  * @throws { Error } If arguments.length is more then two.
+//  * @throws { Error } If argument {-src-} is not a number, not a Long, not a Set, not null.
+//  * @throws { Error } If argument {-length-} is not a number, not Long, not null.
+//  * @namespace Tools
+//  */
+//
+// function arrayMakeUndefined( src, length )
+// {
+//   if( arguments.length === 0 )
+//   return Array( 0 );
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.number.is( src ) || _.longLike( src ) || _.set.like( src ) || src === null );
+//
+//   if( _.longIs( length ) )
+//   {
+//     length = length.length;
+//   }
+//   else if( length === undefined || length === null )
+//   {
+//     if( src === null )
+//     length = 0;
+//     else if( _.number.is( src ) )
+//     length = src;
+//     else if( _.set.like( src ) )
+//     length = src.size;
+//     else if( _.longIs( src ) )
+//     length = src.length;
+//     else
+//     _.assert( 0 );
+//   }
+//   else if( !_.number.is( length ) )
+//   {
+//     _.assert( 0, 'Unknown length' )
+//   }
+//
+//   _.assert( _.number.isFinite( length ) );
+//
+//   return Array( length );
+// }
+//
+// //
+//
+// function arrayFrom( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.arrayIs( src ) && !_.unrollIs( src ) )
+//   return src;
+//   return _.array.make.call( _, src );
+// }
 
 //
 
@@ -364,14 +316,14 @@ function arrayFromCoercing( src )
   if( _.arrayIs( src ) && !_.unrollIs( src ) )
   return src;
 
-  if( _.object.is( src ) )
-  return _.mapToArray( src );
-
   if( _.longIs( src ) )
   return Array.prototype.slice.call( src );
 
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
+
+  if( _.object.is( src ) )
+  return _.props.pairs( src );
 
   _.assert( 0, 'Unknown data type : ' + _.entity.strType( src ) );
 }
@@ -430,7 +382,7 @@ function arrayAsShallowing( src )
   if( src === null )
   return [];
   else if( _.longLike( src ) )
-  return _.arraySlice( src );
+  return _.array.slice( src );
   else
   return [ src ];
 
@@ -439,65 +391,6 @@ function arrayAsShallowing( src )
 // --
 // array transformer
 // --
-
-/**
- * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object.
- * The copy makes from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
- *
- * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
- * @param { Number } f - Defines the start index of copying.
- * Negative value of argument {-f-} indicates an offset from the end of the sequence.
- * If {-f-} is undefined, slice begins from index 0.
- * If {-f-} is greater than the length of the sequence, an empty array is returned.
- * @param { Number } l - Defines last index of copying. An element with this index not included.
- * Negative value of {-l-} indicates an offset from the end of the sequence.
- * If {-l-} is omitted, slice extracts through the end of the sequence ( srcArray.length ).
- * If {-l-} is greater than the length of the sequence, slice extracts through to the end of the sequence (arr.length).
- *
- * @example
- * _.arraySlice( [ 1, 2, 3, 4, '5' ] );
- * // returns [ 1, 2, 3, 4, '5' ]
- *
- * @example
- * _.arraySlice( [ 1, 2, 3, 4, '5' ], 1, 4 );
- * // returns [ 2, 3, 4 ]
- *
- * @example
- * _.arraySlice( [ 1, 2, 3, 4, '5' ], -2, 5 );
- * // returns [ 4, '5' ]
- *
- * @example
- * _.arraySlice( [ 1, 2, 3, 4, '5' ], 2, -1 );
- * // returns [ 3, 4 ]
- *
- * @example
- * _.arraySlice( [ 1, 2, 3, 4, '5' ], 6, 9 );
- * // returns []
- *
- * @returns { Array } Returns a new Array containing the extracted elements.
- * @function arraySlice
- * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-srcArray-} is not an array or unroll.
- * @namespace Tools
- */
-
-function arraySlice( srcArray, f, l )
-{
-  _.assert( _.arrayLikeResizable( srcArray ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  return srcArray.slice( f, l );
-}
-
-//
-
-function arrayEmpty( dstArray )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  dstArray.splice( 0, dstArray.length );
-  return dstArray;
-}
-
-//
 
 function arrayExtendAppending( dst, src )
 {
@@ -644,7 +537,7 @@ function arrayBut( src, range, ins )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.arrayMake( src );
+  return _.array.make( src );
 
   if( _.number.is( range ) )
   range = [ range, range + 1 ];
@@ -827,7 +720,7 @@ function arrayBut_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.arrayMakeUndefined( resultLength );
+    result = _.array.makeUndefined( resultLength );
   }
   else if( dst === src )
   {
@@ -943,7 +836,7 @@ function arrayShrink( src, range, ins )
   if( range[ 0 ] === 0 && range[ 1 ] === src.length )
   return src.slice( src );
 
-  result = _.arrayMakeUndefined( src, range[ 1 ]-range[ 0 ] );
+  result = _.array.makeUndefined( src, range[ 1 ]-range[ 0 ] );
 
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( src.length, range[ 1 ] );
@@ -1089,7 +982,7 @@ function arrayShrink_( dst, src, cinterval )
   let result = dst;
   if( dst === null )
   {
-    result = _.arrayMakeUndefined( resultLength );
+    result = _.array.makeUndefined( resultLength );
   }
   else if( dst === src )
   {
@@ -1212,7 +1105,7 @@ function arrayGrow( src, range, ins )
   if( l === src.length )
   return src.slice();
 
-  result = _.arrayMakeUndefined( src, l-f );
+  result = _.array.makeUndefined( src, l-f );
 
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
@@ -1397,7 +1290,7 @@ function arrayGrow_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.arrayMake( resultLength );
+    result = _.array.make( resultLength );
   }
   else if( dst === src )
   {
@@ -1602,7 +1495,7 @@ function arrayRelength( src, range, ins )
   if( f === 0 && l === src.length )
   return src.slice( src );
 
-  result = _.arrayMakeUndefined( src, l-f );
+  result = _.array.makeUndefined( src, l-f );
 
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
@@ -1776,7 +1669,7 @@ function arrayRelength_( /* dst, src, cinterval, ins */ )
   let result = dst;
   if( dst === null )
   {
-    result = _.arrayMakeUndefined( src, resultLength );
+    result = _.array.makeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
@@ -1786,7 +1679,7 @@ function arrayRelength_( /* dst, src, cinterval, ins */ )
     }
     if( resultLength === 0 )
     {
-      return _.arrayEmpty( dst );
+      return _.array.empty( dst );
     }
 
     if( dst.length < resultLength )
@@ -1812,7 +1705,7 @@ function arrayRelength_( /* dst, src, cinterval, ins */ )
 
   if( resultLength === 0 )
   {
-    return _.arrayEmpty( result );
+    return _.array.empty( result );
   }
   if( cinterval[ 0 ] < 0 )
   {
@@ -4844,20 +4737,20 @@ function arrayUpdate( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 // extension
 // --
 
-let Extension =
+let ToolsExtension =
 {
 
   // array checker
 
   constructorLikeArray,
-  hasLength,
+  // hasLength,
 
   // array producer
 
-  arrayMake, /* aaa : test coverage is outdated */ /* Dmytro : coverage is updated */
-  arrayMakeUndefined,
+  // arrayMake, /* aaa : test coverage is outdated */ /* Dmytro : coverage is updated */
+  // arrayMakeUndefined,
 
-  arrayFrom,
+  // arrayFrom,
   arrayFromCoercing, /* aaa : check coverage */ /* Dmytro : coverage extended */
   arrayFromStr,
 
@@ -4866,8 +4759,8 @@ let Extension =
 
   // array transformer
 
-  arraySlice,
-  arrayEmpty,
+  // arraySlice,
+  // arrayEmpty,
   arrayExtendAppending,
   arrayExtendPrepending,
 
@@ -5004,6 +4897,6 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( _, ToolsExtension );
 
 })();

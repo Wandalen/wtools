@@ -57,13 +57,13 @@ function CloneExtending( o )
 {
   _.assert( arguments.length === 1 );
   let result = Object.create( this )
-  _.mapExtend( result, Parameters, o );
+  _.props.extend( result, Parameters, o );
   result.Init();
   return result;
 }
 
 // --
-// checker
+// dichotomy
 // --
 
 function is( path )
@@ -904,8 +904,14 @@ function detrail( path )
 function dir_head( routine, args )
 {
   let o = args[ 0 ];
+
   if( _.strIs( o ) )
-  o = { filePath : args[ 0 ], depth : args[ 1 ] };
+  {
+    if( args.length === 2 )
+    o = { filePath : args[ 0 ], depth : args[ 1 ] };
+    else
+    o = { filePath : args[ 0 ] };
+  }
 
   _.routine.options( routine, o );
   _.assert( args.length === 1 || args.length === 2 );
@@ -1068,7 +1074,7 @@ function name_head( routine, args )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( routine, o );
+  _.routine.options_( routine, o );
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( o.path ), 'Expects string {-o.path-}' );
@@ -1082,7 +1088,7 @@ function name_body( o )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.assertRoutineOptions( name, arguments );
+  _.routine.assertOptions( name, arguments );
 
   o.path = this.canonize( o.path );
 
@@ -1141,7 +1147,7 @@ let Extension =
   Init,
   CloneExtending,
 
-  // checker
+  // dichotomy
 
   is,
 
@@ -1210,8 +1216,8 @@ let Extension =
 
 }
 
-_.mapSupplement( Self, Parameters );
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Parameters );
+_.props.supplement( Self, Extension );
 
 Self.Init();
 

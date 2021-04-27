@@ -18,22 +18,22 @@ const _ = _global_.wTools;
 function longMakeEmpty( test )
 {
   test.case = 'src - containerAdapter, empty array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( [] ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( [] ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, filled array';
-  var got = _.longMakeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
+  var got = _.long.makeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, [] );
 
   test.case = 'src - containerAdapter, empty array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( new Set( [] ) ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( new Set( [] ) ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, new Set( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
-  var got = _.longMakeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
+  var got = _.long.makeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
   test.true( _.containerAdapter.is( got ) );
   test.identical( got.original, new Set( [] ) );
 }

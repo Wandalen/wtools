@@ -5,145 +5,42 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+
+_.assert( !!_.props.exportString, 'Expects routine _.props.exportString' );
 
 // --
-// typing
+// equaler
 // --
 
-function is( src )
+function _identicalShallow( src1, src2 )
 {
 
-  if( !src )
+  if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
+  for( let s in src1 )
+  {
+    if( src1[ s ] !== src2[ s ] )
+    return false;
+  }
 
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
   return true;
-
-  if( proto === Object.prototype )
-  return true;
-
-  if( !_.primitive.is( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
 }
 
 //
 
-function like( src )
-{
-  return _.aux.is( src );
-}
-
-//
-
-function isPrototyped( src )
+function identicalShallow( src1, src2, o )
 {
 
-  if( !src )
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+
+  if( !this.is( src1 ) )
+  return false;
+  if( !this.is( src2 ) )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto === Object.prototype )
-  return false;
-
-  if( !_.primitive.is( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
-  return true;
-
-  return false;
-}
-
-//
-
-function isPure( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( proto.constructor === Object )
-  return false;
-
-  if( !_.primitive.is( proto ) )
-  if( !Reflect.has( proto, 'constructor' ) )
-  return true;
-
-  return false;
-}
-
-//
-
-function isPolluted( src )
-{
-
-  if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
-  return false;
-
-  let proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return false;
-
-  if( proto.constructor === Object )
-  return true;
-
-  return false;
-}
-
-// --
-// checking
-// --
-
-function isEmpty( src )
-{
-  if( !_.aux.is( src ) )
-  return false;
-  return Object.keys( src ).length === 0;
-}
-
-//
-
-function isPopulated( src )
-{
-  if( !_.aux.is( src ) )
-  return false;
-  return Object.keys( src ).length > 0;
-}
-
-//
-
-function exportStringShallowDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.aux.is( src ) );
-
-  return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
+  return this._identicalShallow( src1, src2 );
 }
 
 // --
@@ -152,22 +49,6 @@ function exportStringShallowDiagnostic( src )
 
 let ToolsExtension =
 {
-
-  // typing
-
-  auxIs : is,
-  auxLike : like,
-
-  // mapLike : is,
-  // mapLikePrototyped : isPrototyped,
-  // mapLikePure : isPure,
-  // mapLikePolluted : isPolluted,
-
-  // checking
-
-  // mapLikeEmpty : isEmpty,
-  // mapLikePopulated : isPopulated,
-
 }
 
 Object.assign( _, ToolsExtension );
@@ -177,29 +58,99 @@ Object.assign( _, ToolsExtension );
 var AuxiliaryExtension =
 {
 
-  // typing
+  // equaler
 
-  is, /* qqq : cover */
-  like, /* qqq : cover */
-  isPrototyped, /* qqq : cover */
-  isPure, /* qqq : cover */
-  isPolluted, /* qqq : cover */
+  _identicalShallow,
+  identicalShallow,
+  identical : identicalShallow,
+  _equivalentShallow : _identicalShallow,
+  equivalentShallow : identicalShallow,
+  equivalent : identicalShallow,
 
-  // checking
+  // exporter
 
-  isEmpty, /* qqq : cover */
-  isPopulated, /* qqq : cover */
+  exportString : _.props.exportString,
+  exportStringShallow : _.props.exportStringShallow,
+  exportStringShallowDiagnostic : _.props.exportStringShallowDiagnostic,
+  exportStringShallowCode : _.props.exportStringShallowCode,
+  exportStringDiagnostic : _.props.exportStringDiagnostic,
+  exportStringCode : _.props.exportStringCode,
 
-  /* qqq : move here related routines */
-  /* qqq : make a test suite and move there related test routines */
+  // container interface
 
-  // export string
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic
+  _lengthOf : _.props._lengthOf,
+  lengthOf : _.props.lengthOf, /* qqq : cover */
+
+  _hasKey : _.props._hasKey,
+  hasKey : _.props._hasKey, /* qqq : cover */
+  _hasCardinal : _.props._hasKey,
+  hasCardinal : _.props._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.props._hasKey,
+  keyWithCardinal : _.props._hasKey, /* qqq : cover */
+
+  _elementGet : _.props._elementWithKey,
+  elementGet : _.props.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.props._elementWithKey,
+  elementWithKey : _.props.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.props._elementWithImplicit,
+  elementWithImplicit : _.props.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.props._elementWithCardinal,
+  elementWithCardinal : _.props.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.props._elementSet,
+  elementSet : _.props.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.props._elementWithKeySet,
+  elementWithKeySet : _.props.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.props._elementWithCardinalSet,
+  elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
+  _empty : _.props._empty,
+  empty : _.props.empty, /* qqq : for Yevhen : cover */
+
+  _elementDel : _.props._elementDel,
+  elementDel : _.props.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.props._elementWithKeyDel,
+  elementWithKeyDel : _.props.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.props._elementWithCardinalDel,
+  elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
+
+  _each : _.props._each,
+  each : _.props.each, /* qqq : cover */
+  _eachLeft : _.props._eachLeft,
+  eachLeft : _.props.eachLeft, /* qqq : cover */
+  _eachRight : _.props._eachRight,
+  eachRight : _.props.eachRight, /* qqq : cover */
+
+  _while : _.props._while,
+  while : _.props.while, /* qqq : cover */
+  _whileLeft : _.props._whileLeft,
+  whileLeft : _.props.whileLeft, /* qqq : cover */
+  _whileRight : _.props._whileRight,
+  whileRight : _.props.whileRight, /* qqq : cover */
+
+  _aptLeft : _.props._aptLeft,
+  aptLeft : _.props.aptLeft, /* qqq : cover */
+  first : _.props.first,
+  _aptRight : _.props._aptRight, /* qqq : cover */
+  aptRight : _.props.aptRight,
+  last : _.props.last, /* qqq : cover */
+
+  _filter : _.props._filter,
+  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  filterWithoutEscape : _.props.filterWithoutEscape,
+  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  filterWithEscapeRight : _.props.filterWithEscapeRight,
+  filterWithEscape : _.props.filterWithEscape,
+  filter : _.props.filter,
+
+  _map : _.props._map,
+  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  mapWithoutEscape : _.props.mapWithoutEscape,
+  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  mapWithEscapeRight : _.props.mapWithEscapeRight,
+  mapWithEscape : _.props.mapWithEscape,
+  map : _.props.map,
 
 }
 

@@ -8,7 +8,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 // --
-// routines
+// implementation
 // --
 
 function mapperFromFilter( routine )
@@ -49,7 +49,7 @@ function mapperFromFilter( routine )
   function functor()
   {
     let routine2 = routine( ... arguments );
-    _.assert( _.property.filterIs( routine2 ) && !routine2.identity.functor );
+    _.assert( _.props.filterIs( routine2 ) && !routine2.identity.functor );
     mapper.identity = { propertyMapper : true, propertyTransformer : true };
     return mapper;
     function mapper( dstContainer, srcContainer, key )
@@ -81,7 +81,7 @@ function mapperFrom( routine )
     }
     else
     {
-      return _.property.mapperFromFilter( routine );
+      return _.props.mapperFromFilter( routine );
     }
   }
 
@@ -126,16 +126,16 @@ function transformerRegister( fi, name )
 
   if( fi.identity.propertyMapper )
   {
-    _.assert( _.property.mapper[ name ] === undefined );
-    _.property.mapper[ name ] = mapperFrom( fi );
+    _.assert( _.props.mapper[ name ] === undefined );
+    _.props.mapper[ name ] = mapperFrom( fi );
     return;
   }
   else if( fi.identity.propertyFilter )
   {
-    _.assert( _.property.filter[ name ] === undefined );
-    _.assert( _.property.mapper[ name ] === undefined );
-    _.property.mapper[ name ] = _.property.mapperFromFilter( fi );
-    _.property.filter[ name ] = fi;
+    _.assert( _.props.filter[ name ] === undefined );
+    _.assert( _.props.mapper[ name ] === undefined );
+    _.props.mapper[ name ] = _.props.mapperFromFilter( fi );
+    _.props.filter[ name ] = fi;
     return;
   }
   else _.assert( 0, 'unexpected' );
@@ -160,7 +160,7 @@ function transformersRegister( transformers )
     // fi = fi();
 
     _.assert( !!fi.identity && !!fi.identity.functor, `Routine::${f} is not functor` );
-    _.property.transformerRegister( fi, f );
+    _.props.transformerRegister( fi, f );
   }
 
 }
@@ -173,9 +173,9 @@ function transformerUnregister( transformerName, transformerType )
 
   _.assert( _.strIs( transformerName ) );
   _.assert( _.strIs( transformerType ) );
-  _.assert( _.property[ transformerType ][ transformerName ] !== undefined, 'Transformer must be registered' );
+  _.assert( _.props[ transformerType ][ transformerName ] !== undefined, 'Transformer must be registered' );
 
-  delete _.property[ transformerType ][ transformerName ];
+  delete _.props[ transformerType ][ transformerName ];
   return;
 }
 
@@ -186,7 +186,7 @@ function transformersUnregister( transformerNames, transformerType )
   _.assert( _.arrayIs( transformerNames ) );
   _.assert( _.strIs( transformerType ) );
 
-  transformerNames.forEach( ( transformerName ) => _.property.transformerUnregister( transformerName, transformerType ) )
+  transformerNames.forEach( ( transformerName ) => _.props.transformerUnregister( transformerName, transformerType ) )
   return;
 }
 
@@ -254,6 +254,6 @@ let Extension =
 
 }
 
-Object.assign( _.property, Extension );
+Object.assign( _.props, Extension );
 
 })();

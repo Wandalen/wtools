@@ -1,11 +1,11 @@
-( function _l8_Diagnostic_s_()
+( function _l7_Diagnostic_s_()
 {
 
 'use strict';
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
+_global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
 
 // --
 // diagnostic
@@ -140,7 +140,7 @@ watchFields.defaults =
 
 _.diagnostic.proxyFields
 ({
-  target : _.property,
+  target : _.props,
 });
 
 _.diagnostic.watchFields
@@ -241,9 +241,9 @@ function eachElementComparator( o )
   let result = [];
 
   if( arguments[ 1 ] !== undefined )
-  o = { onMake : arguments[ 0 ], onEach : arguments[ 1 ] }
+  o = { onMake : arguments[ 0 ], onEach : arguments[ 1 ] || null }
   else if( _.routine.is( arguments[ 0 ] ) )
-  o = { onEach : arguments[ 1 ] }
+  o = { onEach : arguments[ 1 ] || null }
 
   o = _.routine.options( eachElementComparator, o );
 
@@ -556,9 +556,9 @@ function diagnosticStructureGenerate_body( o )
 
     if( o.hashMapComplexity >= 4 )
     {
-      struct[ 'hashmap' ] = new HashMap;
+      struct[ 'hashMap' ] = new HashMap;
       for( let m = 0 ; m < o.hashMapLength ; m++ )
-      struct[ 'hashmap' ].set( 'element' + m, structureMake( level+1 ) );
+      struct[ 'hashMap' ].set( 'element' + m, structureMake( level+1 ) );
     }
 
     /*  */
@@ -818,6 +818,106 @@ diagnosticStructureGenerate_body.defaults =
 
 let structureGenerate = _.routine.unite( diagnosticStructureGenerate_head, diagnosticStructureGenerate_body );
 
+// //
+//
+// function objectMake( o )
+// {
+//   let result;
+//
+//   _.assert( arguments.length === 1 );
+//   countableConstructorPure.prototype = Object.create( null );
+//   if( o.withConstructor )
+//   countableConstructorPure.prototype.constructor = countableConstructorPure;
+//
+//   /* xxx : replace countableMake */
+//
+//   if( o.new )
+//   {
+//     if( o.pure )
+//     result = new countableConstructorPure( o );
+//     else
+//     result = new countableConstructorPolluted( o );
+//   }
+//   else
+//   {
+//     result = _objectMake( null, o );
+//   }
+//
+//   if( o.withOwnConstructor )
+//   result.constructor = function ownConstructor(){}
+//
+//   return result;
+//
+//   /* - */
+//
+//   function _iterate()
+//   {
+//
+//     let iterator = Object.create( null );
+//     iterator.next = next;
+//     iterator.index = 0;
+//     iterator.instance = this;
+//     return iterator;
+//
+//     function next()
+//     {
+//       let result = Object.create( null );
+//       result.done = this.index === this.instance.elements.length;
+//       if( result.done )
+//       return result;
+//       result.value = this.instance.elements[ this.index ];
+//       this.index += 1;
+//       return result;
+//     }
+//
+//   }
+//
+//   /* */
+//
+//   function countableConstructorPure( o )
+//   {
+//     return _objectMake( this, o );
+//   }
+//
+//   /* */
+//
+//   function countableConstructorPolluted( o )
+//   {
+//     let result = _objectMake( this, o );
+//     if( !o.withConstructor )
+//     delete Object.getPrototypeOf( result ).constructor;
+//     return result
+//   }
+//
+//   /* */
+//
+//   function _objectMake( dst, o )
+//   {
+//     if( dst === null )
+//     if( o.pure )
+//     dst = Object.create( null );
+//     else
+//     dst = {};
+//     _.props.extend( dst, o );
+//     if( o.withIterator )
+//     dst[ Symbol.iterator ] = _iterate;
+//     return dst;
+//   }
+//
+//   /* */
+//
+// }
+//
+// objectMake.defaults =
+// {
+//   new : 0,
+//   pure : 0,
+//   withIterator : 0,
+//   withOwnConstructor : 0,
+//   withConstructor : 0,
+//   elements : null,
+// }
+
 // --
 // extension
 // --
@@ -833,11 +933,15 @@ let ToolsExtension =
   diagnosticEachElementComparator : eachElementComparator,
 
   diagnosticStructureGenerate : structureGenerate, /* xxx : move */
+  // diagnosticObjectMake,
+
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-let Extension =
+let DiagnosticExtension =
 {
 
   // diagnosticCode,
@@ -848,13 +952,12 @@ let Extension =
   eachLongType,
   eachElementComparator,
 
-  structureGenerate, /* xxx : move */
+  structureGenerate,
 
 }
 
 //
 
-Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.diagnostic, DiagnosticExtension );
 
 })();

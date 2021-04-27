@@ -5,43 +5,80 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.primitive = _.primitive || Object.create( null );
 
 // --
 // primitive
 // --
 
-function is( src )
+function _identicalShallow( src1, src2 )
 {
-  if( !src )
-  return true;
-  let t = Object.prototype.toString.call( src );
-  return _._primitiveIs( src, t );
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.primitive.is( src1 ) );
+  // _.assert( _.primitive.is( src2 ) );
+
+  if( !_.primitive.is( src1 ) )
+  return false;
+  if( !_.primitive.is( src2 ) )
+  return false;
+
+  return Object.is( src1, src2 );
 }
 
 //
 
-function _primitiveIs_functor()
+function identicalShallow( src1, src2, o )
 {
-  const is = new Set();
-  is.add( '[object Symbol]' );
-  is.add( '[object Number]' );
-  is.add( '[object BigInt]' );
-  is.add( '[object Boolean]' );
-  is.add( '[object String]' );
-  return _primitiveIs;
 
-  function _primitiveIs( src, typeStr )
-  {
-    return is.has( typeStr );
-  }
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+
+  return this._identicalShallow( ... arguments );
 }
 
-let _is = _primitiveIs_functor();
-_is.functor = _primitiveIs_functor;
+//
+
+function _equivalentShallow( src1, src2, accuracy )
+{
+
+  // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  // _.assert( _.primitive.is( src1 ) );
+  // _.assert( _.primitive.is( src2 ) );
+
+  if( _.strsAreAll([ src1, src2 ]) )
+  return _.str.equivalentShallow( src1, src2 );
+
+  if( _.bool.like( src1 ) && _.bool.like( src2 ) )
+  return _.bool.equivalentShallow( src1, src2 );
+
+  if
+  (
+    ( _.number.is( src1 ) || _.bigInt.is( src1 ) )
+    && ( _.number.is( src2 ) || _.bigInt.is( src2 ) )
+  )
+  return _.number.equivalentShallow( src1, src2, accuracy );
+
+  return Object.is( src1, src2 );
+}
 
 //
+
+function equivalentShallow( src1, src2, accuracy )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+  return this._equivalentShallow( ... arguments );
+}
+
+// --
+//
+// --
 
 function exportStringShallowCode( src )
 {
@@ -76,24 +113,53 @@ function exportStringShallowDiagnostic( src )
   return String( src );
 }
 
+// // --
+// // editor
+// // --
+//
+// function _empty( dst )
+// {
+//   return dst;
+// }
+//
+// //
+//
+// function empty( dst )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.assert( this.like( dst ) );
+//   return this._empty( dst );
+// }
+
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
-  primitiveIs : is,
-  _primitiveIs : _is,
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-let Extension =
+let PrimitiveExtension =
 {
-  is,
-  _is,
 
-  // export string
+  //
+
+  NamespaceName : 'primitive',
+
+  // equaler
+
+  _identicalShallow,
+  identicalShallow,
+  identical : identicalShallow,
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
+
+  // exporter
 
   exportString : exportStringShallowDiagnostic,
   exportStringShallow : exportStringShallowDiagnostic,
@@ -101,9 +167,9 @@ let Extension =
   exportStringShallowDiagnostic,
   exportStringDiagnostic : exportStringShallowDiagnostic,
   exportStringCode : exportStringShallowCode,
+
 }
 
-Object.assign( _, ExtensionTools );
-Object.assign( Self, Extension );
+Object.assign( _.primitive, PrimitiveExtension );
 
 })();

@@ -5,97 +5,118 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
+
+_.assert( !!_.array._elementWithKey, 'Expects routine array._elementWithKey' );
 
 // --
-// unroll
+// declaration
 // --
 
-/**
- * The routine unrollIs() determines whether the passed value is an instance of type Unroll ( unroll-array ).
- *
- * If {-src-} is an Unroll, then returns true, otherwise returns false.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
- * // returns true
- *
- * @example
- * _.unrollIs( [] );
- * // returns false
- *
- * @example
- * _.unrollIs( 1 );
- * // returns false
- *
- * @returns { boolean } Returns true if {-src-} is an Unroll.
- * @function unrollIs
- * @namespace Tools
- */
+let unrollSymbol = Symbol.for( 'unroll' );
 
-function unrollIs( src )
+// --
+// declaration
+// --
+
+let ToolsExtension =
 {
-  if( !_.arrayIs( src ) )
-  return false;
-  return !!src[ _.unroll ];
 }
 
 //
 
-/**
- * The routine unrollIsPopulated() determines whether the unroll-array has elements (length).
- *
- * If {-src-} is an unroll-array and has one or more elements, then returns true, otherwise returns false.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * let src = _.unrollFrom( [ 1, 'str' ] );
- * _.unrollIsPopulated( src );
- * // returns true
- *
- * @example
- * let src = _.unrollMake( [] )
- * _.unrollIsPopulated( src );
- * // returns false
- *
- * @returns { boolean } Returns true if argument ( src ) is an Unroll and has one or more elements ( length ).
- * @function unrollIsPopulated
- * @namespace Tools
- */
+Object.assign( _, ToolsExtension );
 
-function unrollIsPopulated( src )
-{
-  if( !_.unrollIs( src ) )
-  return false;
-  return src.length > 0;
-}
+//
 
-// --
-// fields
-// --
+/* qqq : for Yevhen : make replacements */
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let UnrollExtension =
 {
 
-  unrollIs,
-  unrollIsPopulated,
+  //
+
+  NamespaceName : 'unroll',
+
+  // equaler
+
+  _identicalShallow : _.array._identicalShallow,
+  identicalShallow : _.array.identicalShallow,
+  identical : _.array.identical,
+  _equivalentShallow : _.array._equivalentShallow,
+  equivalentShallow : _.array.equivalentShallow,
+  equivalent : _.array.equivalent,
+
+  // exporter
+
+  exportString : _.array.exportString,
+  exportStringShallow : _.array.exportStringShallow,
+  exportStringShallowDiagnostic : _.array.exportStringShallowDiagnostic,
+  exportStringShallowCode : _.array.exportStringShallowCode,
+  exportStringDiagnostic : _.array.exportStringDiagnostic,
+  exportStringCode : _.array.exportStringCode,
+
+  // container interface
+
+  _lengthOf : _.array._lengthOf,
+  lengthOf : _.array.lengthOf, /* qqq : cover */
+
+  _hasKey : _.array._hasKey,
+  hasKey : _.array._hasKey, /* qqq : cover */
+  _hasCardinal : _.array._hasKey,
+  hasCardinal : _.array._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.array._hasKey,
+  keyWithCardinal : _.array._hasKey, /* qqq : cover */
+
+  _elementGet : _.array._elementWithKey,
+  elementGet : _.array.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.array._elementWithKey,
+  elementWithKey : _.array.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.array._elementWithImplicit,
+  elementWithImplicit : _.array.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.array._elementWithCardinal,
+  elementWithCardinal : _.array.elementWithCardinal,  /* qqq : cover */
+
+  _elementSet : _.array._elementSet,
+  elementSet : _.array.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.array._elementWithKeySet,
+  elementWithKeySet : _.array.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.array._elementWithCardinalSet,
+  elementWithCardinalSet : _.array.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementDel : _.array._elementDel,
+  elementDel : _.array.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.array._elementWithKeyDel,
+  elementWithKeyDel : _.array.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.array._elementWithCardinalDel,
+  elementWithCardinalDel : _.array.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.array._empty,
+  empty : _.array.empty, /* qqq : for Yevhen : cover */
+
+  _each : _.argumentsArray._each,
+  each : _.argumentsArray.each, /* qqq : cover */
+  _eachLeft : _.argumentsArray._eachLeft,
+  eachLeft : _.argumentsArray.eachLeft, /* qqq : cover */
+  _eachRight : _.argumentsArray._eachRight,
+  eachRight : _.argumentsArray.eachRight, /* qqq : cover */
+
+  _while : _.argumentsArray._while,
+  while : _.argumentsArray.while, /* qqq : cover */
+  _whileLeft : _.argumentsArray._whileLeft,
+  whileLeft : _.argumentsArray.whileLeft, /* qqq : cover */
+  _whileRight : _.argumentsArray._whileRight,
+  whileRight : _.argumentsArray.whileRight, /* qqq : cover */
+
+  _aptLeft : _.argumentsArray._aptLeft,
+  aptLeft : _.argumentsArray.aptLeft, /* qqq : cover */
+  first : _.argumentsArray.first,
+  _aptRight : _.argumentsArray._aptRight, /* qqq : cover */
+  aptRight : _.argumentsArray.aptRight,
+  last : _.argumentsArray.last, /* qqq : cover */
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( _.unroll, UnrollExtension );
 
 })();

@@ -1,4 +1,4 @@
-( function _l8_Process_s_()
+( function _l7_Process_s_()
 {
 
 'use strict';
@@ -124,6 +124,6 @@ let Extension =
   ready,
 }
 
-_.mapExtend( Self, Extension );
+_.props.extend( Self, Extension );
 
 })();

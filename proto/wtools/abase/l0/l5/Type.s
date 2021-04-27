@@ -21,6 +21,6 @@ let Routines =
 
 //
 
-_.mapSupplement( Self, Routines );
+_.props.supplement( Self, Routines );
 
 })();

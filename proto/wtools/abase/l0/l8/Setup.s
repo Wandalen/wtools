@@ -167,6 +167,12 @@ function _validate()
   if( !Config.debug )
   return;
 
+  _.assert( _.routine.is( _.array._elementWithKey ) );
+  _.assert( _.routine.is( _.argumentsArray._elementWithKey ) );
+  _.assert( _.routine.is( _.long._elementWithKey ) );
+  _.assert( _.routine.is( _.map._elementWithKey ) );
+  _.assert( _.routine.is( _.object._elementWithKey ) );
+
   if( !Object.hasOwnProperty.call( _global_, 'wTools' ) || !_global_.wTools.maybe )
   {
     debugger;
@@ -196,7 +202,7 @@ function _Setup9()
 }
 
 // --
-// routines
+// implementation
 // --
 
 let SetupExtension =

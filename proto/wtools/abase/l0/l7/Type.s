@@ -1,4 +1,4 @@
-( function _l8_Type_s_()
+( function _l7_Type_s_()
 {
 
 'use strict';
@@ -21,6 +21,6 @@ let Routines =
 
 //
 
-_.mapSupplement( Self, Routines );
+_.props.supplement( Self, Routines );
 
 })();

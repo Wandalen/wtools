@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.collection = _global_.wTools.collection || Object.create( null );
 
 // --
-// routines
+// implementation
 // --
 
 function _commandPreform( command, commandRoutine, commandPhrase )
@@ -36,7 +36,7 @@ function _commandPreform( command, commandRoutine, commandPhrase )
     {
       _.assert
       (
-        !_.property.has( command, k ) || command[ k ] === commandRoutine.command[ k ]
+        !_.props.has( command, k ) || command[ k ] === commandRoutine.command[ k ]
         , () => `Inconsistent field "${k}" of command "${commandPhrase}"`
       );
       command[ k ] = commandRoutine.command[ k ];
@@ -53,14 +53,14 @@ function _commandPreform( command, commandRoutine, commandPhrase )
   );
   _.assert( _.routine.is( commandRoutine ), `Command "${commandPhrase}" does not have defined routine.` );
   _.assert( _.aux.is( command ) );
-  _.assert( !_.property.has( command, 'ro' ) || commandRoutine === command.ro ); /* xxx : rename e to ro? */
-  _.assert( !_.property.has( command, 'routine' ) || commandRoutine === command.routine );
+  _.assert( !_.props.has( command, 'ro' ) || commandRoutine === command.ro ); /* xxx : rename e to ro? */
+  _.assert( !_.props.has( command, 'routine' ) || commandRoutine === command.routine );
   _.assert
   (
-    !_.property.has( command, 'phrase' ) || commandPhrase === command.phrase,
+    !_.props.has( command, 'phrase' ) || commandPhrase === command.phrase,
     () => `Command ${commandPhrase} has phrases mismatch ${commandPhrase} <> ${command.phrase}`
   );
-  _.assert( !_.property.own( commandRoutine, 'command' ) || commandRoutine.command === command );
+  _.assert( !_.props.own( commandRoutine, 'command' ) || commandRoutine.command === command );
   _.map.assertHasOnly( command, aggregator.CommandAllFields );
 
   if( commandPhrase )
@@ -79,14 +79,14 @@ function _commandPreform( command, commandRoutine, commandPhrase )
     let filter = Self.CommandShortToLongFields;
     for( let k in fields )
     {
-      if( _.property.has( filter, k ) )
+      if( _.props.has( filter, k ) )
       {
         _.assert
         (
-          !_.property.has( dst, filter[ k ] ) || dst[ filter[ k ] ] === fields[ k ]
+          !_.props.has( dst, filter[ k ] ) || dst[ filter[ k ] ] === fields[ k ]
           , () => `Inconsistent field "${k}" of command "${commandPhraseGet()}"`
         );
-        _.assert( !_.property.has( dst, filter[ k ] ) || dst[ filter[ k ] ] === fields[ k ] );
+        _.assert( !_.props.has( dst, filter[ k ] ) || dst[ filter[ k ] ] === fields[ k ] );
         dst[ filter[ k ] ] = fields[ k ];
         delete fields[ k ];
       }
@@ -215,7 +215,7 @@ function toMapOfHandles( commandMap )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -229,7 +229,7 @@ let ExtensionMap =
 
 }
 
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 Object.assign( _.collection, ExtensionMap );
 _.assert( _.aux.is( _.collection ) );
 

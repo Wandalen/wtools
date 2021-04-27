@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 /**

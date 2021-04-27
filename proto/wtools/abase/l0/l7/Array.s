@@ -1,4 +1,4 @@
-( function _l8_Array_s_()
+( function _l7_Array_s_()
 {
 
 'use strict';
@@ -12,16 +12,16 @@ const Self = _global_.wTools;
 // --
 
 // --
-// routines
+// declaration
 // --
 
-let Routines =
+let ToolsExtension =
 {
 
 }
 
 //
 
-Object.assign( Self, Routines );
+Object.assign( _, ToolsExtension );
 
 })();

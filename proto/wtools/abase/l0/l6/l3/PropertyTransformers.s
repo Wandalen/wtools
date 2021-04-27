@@ -1114,6 +1114,6 @@ let _Transformers =
 // extend
 // --
 
-_.property.transformersRegister( _Transformers );
+_.props.transformersRegister( _Transformers );
 
 })();

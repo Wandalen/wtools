@@ -1,4 +1,4 @@
-( function _l8_Buffer_s_()
+( function _l7_Buffer_s_()
 {
 
 'use strict';
@@ -252,10 +252,10 @@ function _bufferMake_functor( onMake )
     /* */
 
     if( _.argumentsArray.is( src ) )
-    src = this.longDescriptor.make;
+    src = this.tools./*longDescriptor*/defaultLong.make;
 
     if( src === null )
-    src = this.longDescriptor.make;
+    src = this.tools./*longDescriptor*/defaultLong.make;
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
@@ -361,7 +361,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
   else if( _.bufferViewIs( src ) )
   resultTyped = new BufferView( new BufferRaw( length ) );
   else if( _.unrollIs( src ) )
-  resultTyped = _.unrollMake( length );
+  resultTyped = _.unroll.make( length );
   else
   resultTyped = new src.constructor( length );
 
@@ -384,7 +384,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //   let result, length;
 //
 //   if( _.argumentsArray.is( src ) )
-//   src = _.arrayMake( src );
+//   src = _.array.make( src );
 //
 //   if( _.routine.is( src ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -421,7 +421,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     }
 //     else if( src.constructor === Array )
 //     {
-//       result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+//       result = _.unrollIs( src ) ? _.unroll.make( ins ) : new( _.constructorJoin( src.constructor, ins ) );
 //     }
 //     else if( _.bufferRawIs( src ) )
 //     result = new U8x( ins ).buffer;
@@ -451,7 +451,7 @@ let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength *
 //     else if ( _.bufferViewIs( src ) )
 //     resultTyped = new BufferView( new BufferRaw( length ) );
 //     else if( _.unrollIs( src ) )
-//     resultTyped = _.unrollMake( length );
+//     resultTyped = _.unroll.make( length );
 //     else
 //     resultTyped = new src.constructor( length );
 //
@@ -618,7 +618,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
   else if( _.bufferViewIs( src ) )
   result = new BufferView( new BufferRaw( length ) );
   else if( _.unrollIs( src ) )
-  result = _.unrollMake( length );
+  result = _.unroll.make( length );
   else
   result = new src.constructor( length );
 
@@ -661,7 +661,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, mi
 //   else if( _.bufferViewIs( ins ) )
 //   result = new BufferView( new BufferRaw( length ) );
 //   else if( _.unrollIs( ins ) )
-//   result = _.unrollMake( length );
+//   result = _.unroll.make( length );
 //   else
 //   result = new ins.constructor( length );
 //
@@ -1237,7 +1237,7 @@ function bufferRelen( src, len )
 
   if( len > src.length )
   {
-    result = _.longMakeUndefined( src, len );
+    result = _.long.makeUndefined( src, len );
     result.set( src );
   }
   else if( len < src.length )
@@ -2192,6 +2192,7 @@ function bufferReusing4Arguments_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( args.length, 'Expects arguments' );
 
+  /* qqq : for Dmytro : use switch here and in similar code */
   let o = Object.create( null );
   if( args.length === 1 )
   {
@@ -2232,7 +2233,7 @@ function bufferReusing4Arguments_head( routine, args )
 
   /* */
 
-  _.routine.options( routine, o );
+  _.routine.optionsWithoutUndefined( routine, o ); /* qqq : for Dmytro : use _.routine.options() */
   _.assert( _.bufferAnyIs( o.src ) || _.longIs( o.src ) );
   _.assert( _.intervalIs( o.cinterval ) || _.numberIs( o.cinterval ) || o.cinterval === null );
   _.assert( _.intIs( o.minSize ) && o.minSize >= 0 );
@@ -2507,7 +2508,7 @@ function bufferReusingBut_body( o )
   let _cinterval;
   o.cinterval = cintervalClamp();
 
-  if( o.ins === null )
+  if( o.ins === null || o.ins === undefined )
   o.ins = [];
 
   _.assert( _.longIs( o.ins ) || _.bufferAnyIs( o.ins ) );
@@ -4242,7 +4243,12 @@ function bufferIsolate_head( routine, args )
 
   if( args.length > 1 )
   {
+    if( args.length === 3 )
     o = { src : args[ 0 ], delimeter : args[ 1 ], times : args[ 2 ] };
+    else if( args.length === 2 )
+    o = { src : args[ 0 ], delimeter : args[ 1 ] };
+    else
+    o = { src : args[ 0 ] };
   }
   else
   {
@@ -4498,10 +4504,10 @@ bufferIsolateRightOrAll_body.defaults =
 let bufferIsolateRightOrAll = _.routine.unite( bufferIsolate_head, bufferIsolateRightOrAll_body );
 
 // --
-// routines
+// declaration
 // --
 
-let Routines =
+let ToolsExtension =
 {
 
   buffersTypedAreEquivalent, /* qqq : cover pelase */
@@ -4621,6 +4627,6 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
+Object.assign( _, ToolsExtension );
 
 })();

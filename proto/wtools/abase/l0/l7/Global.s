@@ -1,4 +1,4 @@
-( function _l8_Global_s_()
+( function _l7_Global_s_()
 {
 
 'use strict';

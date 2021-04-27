@@ -50,7 +50,7 @@ function bigIntsFrom( src )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
   bigIntFrom : from,
   bigIntsFrom,
@@ -72,6 +72,6 @@ let ExtensionS =
 
 Object.assign( Self, Extension );
 Object.assign( _.bigInt.s, ExtensionS );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 })();

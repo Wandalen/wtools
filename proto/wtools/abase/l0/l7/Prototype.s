@@ -1,4 +1,4 @@
-( function _l8_Prototype_s_()
+( function _l7_Prototype_s_()
 {
 
 'use strict';

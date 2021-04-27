@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.argumentsArray = _global_.wTools.argumentsArray || Object.create( null );
 
 // --
 // implementation
@@ -15,13 +14,18 @@ const Self = _global_.wTools.argumentsArray = _global_.wTools.argumentsArray || 
 // extension
 // --
 
-var Extension =
+let ToolsExtension =
 {
-
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-Object.assign( Self, Extension );
+let ArgumentsArrayExtension =
+{
+}
+
+Object.assign( _.argumentsArray, ArgumentsArrayExtension );
 
 })();

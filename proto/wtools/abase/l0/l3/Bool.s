@@ -5,188 +5,201 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.bool = _.bool || Object.create( null );
+_.bool = _.bool || Object.create( null );
+_.bool.s = _.bool.s || Object.create( null );
 
 // --
 // bool
 // --
 
 /**
- * Returns true if entity ( src ) is a Boolean values - true and false.
- * @function is
- * @param { * } src - An entity to check.
+ * @summary Returns copy of array( src ) with only boolean elements.
+ * @description
+ * Returns false if ( src ) is not ArrayLike object.
+ * @function boolsAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
  * @namespace Tools
- *
- * @example
- * var got = _.bool.is( '' );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.is( 1 );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.is( true );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.is( false );
- * console.log( got )
- * // log true
- *
  */
 
-function is( src )
+function are( src )
 {
-  return src === true || src === false;
-}
-
-//
-
-/**
- * Routine like() returns true if entity ( src ) is a Boolean values - true and false or Numbers 1 and 0.
- * @function like
- * @param { * } src - An entity to check.
- * @namespace Tools
- *
- * @example
- * var got = _.bool.like( false );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.like( true );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.like( 1 );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.like( 0 );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.like( '0' );
- * console.log( got )
- * // log false
- *
- */
-
-function like( src )
-{
-  return src === true || src === false || src === 0 || src === 1;
-  // let type = Object.prototype.toString.call( src );
-  // return type === '[object Boolean]' || src === 0 || src === 1;
-}
-
-//
-
-/**
- * Returns true if entity ( src ) is Boolean value - false or Number - 0.
- * @function likeFalse
- * @param { * } src - An entity to check.
- * @namespace Tools
- *
- * @example
- * var got = _.bool.likeFalse( 0 );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.likeFalse( 1 );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.likeFalse( false );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.likeFalse( true );
- * console.log( got )
- * // log false
- *
- */
-
-function likeFalse( src )
-{
-  if( !_.bool.like( src ) )
+  _.assert( arguments.length === 1 );
+  if( !_.argumentsArray.like( src ) )
   return false;
-  return !src;
+  return src.filter( ( e ) => _.bool.is( e ) );
 }
 
 //
 
 /**
- * Returns true if entity ( src ) is Boolean value - true or Number - 1.
- * @function likeTrue
- * @param { * } src - An entity to check.
+ * @summary Checks if all elements of array( src ) are booleans.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is a boolean.
+ * @function boolsAllAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
  * @namespace Tools
- *
- * @example
- * var got = _.bool.likeTrue( 0 );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.likeTrue( 1 );
- * console.log( got )
- * // log true
- *
- * @example
- * var got = _.bool.likeTrue( false );
- * console.log( got )
- * // log false
- *
- * @example
- * var got = _.bool.likeTrue( true );
- * console.log( got )
- * // log true
- *
  */
 
-function likeTrue( src )
+function allAre( src )
 {
-  if( !_.bool.like( src ) )
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.bool.is( src );
+  return _.all( src.filter( ( e ) => _.bool.is( e ) ) );
+}
+
+//
+
+/**
+ * @summary Checks if at least one element from array( src ) is a boolean.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is a boolean.
+ * @function boolsAnyAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @namespace Tools
+ */
+
+function anyAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.bool.is( src );
+  return !!_.any( src.filter( ( e ) => _.bool.is( e ) ) );
+}
+
+//
+
+/**
+ * @summary Checks if array( src ) doesn't have booleans.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is not a boolean.
+ * @function boolsAnyAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @namespace Tools
+ */
+
+function noneAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.bool.is( src );
+  return _.none( src.filter( ( e ) => _.bool.is( e ) ) );
+}
+
+// //
+//
+// function areEquivalentShallow( src1, src2 )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.bool.like( src1 ) );
+//   _.assert( _.bool.like( src2 ) );
+//
+//   if
+//   (
+//     ( _.bool.likeTrue( src1 ) && _.bool.likeTrue( src2 ) )
+//     || ( ( _.bool.likeFalse( src1 ) && _.bool.likeFalse( src2 ) ) )
+//   )
+//   return true;
+//
+//   return false;
+// }
+
+//
+
+function _identicalShallow( src1, src2 )
+{
+  if( src1 === src2 )
+  return true;
   return false;
-  return !!src;
+}
+
+//
+
+function identicalShallow( src1, src2, o )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+  return this._identicalShallow( src1, src2 );
+}
+
+//
+
+function _equivalentShallow( src1, src2 )
+{
+  if
+  (
+    ( _.bool.likeTrue( src1 ) && _.bool.likeTrue( src2 ) )
+    || ( ( _.bool.likeFalse( src1 ) && _.bool.likeFalse( src2 ) ) )
+  )
+  return true;
+  return false;
+}
+
+//
+
+function equivalentShallow( src1, src2, o )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+  return this._equivalentShallow( src1, src2 );
 }
 
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
-  boolIs : is,
-  boolLike : like,
-  boolLikeFalse : likeFalse,
-  boolLikeTrue : likeTrue,
+  boolsAre : are,
+  boolsAllAre : allAre,
+  boolsAnyAre : anyAre,
+  boolsNoneAre : noneAre,
 
 }
+
+Object.assign( _, ToolsExtension );
 
 //
 
-let Extension =
+let BoolExtension =
 {
 
-  is,
-  like,
-  likeFalse,
-  likeTrue,
+  // equaler
+
+  _identicalShallow,
+  identicalShallow,
+  identical : identicalShallow,
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
 
 }
 
-Object.assign( _, ExtensionTools );
-Object.assign( Self, Extension );
+Object.assign( _.bool, BoolExtension );
+
+//
+
+let BoolsExtension =
+{
+
+  are,
+  allAre,
+  anyAre,
+  noneAre,
+
+}
+
+Object.assign( _.bool.s, BoolsExtension );
 
 })();

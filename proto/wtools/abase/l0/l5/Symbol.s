@@ -15,7 +15,7 @@ const Self = _.symbol = _.symbol || Object.create( null );
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -27,7 +27,7 @@ let Extension =
 
 }
 
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 
 })();

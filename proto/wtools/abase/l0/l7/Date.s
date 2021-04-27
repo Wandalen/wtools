@@ -1,4 +1,4 @@
-( function _l8_Date_s_()
+( function _l7_Date_s_()
 {
 
 'use strict';
@@ -8,7 +8,7 @@ const _ = _global_.wTools;
 const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
 
 // --
-// typing
+// dichotomy
 // --
 
 // --

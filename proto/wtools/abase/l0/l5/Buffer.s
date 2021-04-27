@@ -32,6 +32,6 @@ let Extension =
   constructorIsBuffer
 }
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

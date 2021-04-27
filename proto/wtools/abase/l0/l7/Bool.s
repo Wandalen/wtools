@@ -1,4 +1,4 @@
-( function _l8_Bool_s_()
+( function _l7_Bool_s_()
 {
 
 'use strict';
@@ -98,10 +98,10 @@ function fromForce( src )
 }
 
 // --
-// routines
+// implementation
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   boolFrom : from, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
@@ -123,7 +123,7 @@ let Extension =
 
 //
 
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 Object.assign( Self, Extension );
 
 })();

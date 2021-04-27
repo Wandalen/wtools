@@ -1,4 +1,4 @@
-( function _l8_Time_s_()
+( function _l7_Time_s_()
 {
 
 'use strict';
@@ -113,7 +113,7 @@ function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? 
     {
       routine : arguments[ 0 ],
       delay : arguments[ 1 ],
-      immediate : arguments[ 2 ],
+      immediate : ( arguments.length > 2 ? arguments[ 2 ] : null ),
     }
   }
 
@@ -174,7 +174,7 @@ let Fields =
 }
 
 // --
-// routines
+// implementation
 // --
 
 let Routines =
@@ -189,7 +189,7 @@ let Routines =
 
 //
 
-_.mapSupplement( Self, Fields );
-_.mapSupplement( Self, Routines );
+_.props.supplement( Self, Fields );
+_.props.supplement( Self, Routines );
 
 })();

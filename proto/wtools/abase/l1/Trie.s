@@ -17,7 +17,7 @@ const _ = _global_.wTools;
 const Self = _.trie = _.trie || Object.create( null );
 
 // --
-// bisector
+// dichotomy
 // --
 
 function is( node )
@@ -57,7 +57,7 @@ function makeWithPath_head( routine, args )
     o = { root : args[ 0 ], path : args[ 1 ] }
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.longIs( o.path ) );
   _.assert( o.root === null || self.is( o.root ), () => `Expects node of trie or null, but got ${_.strType( o.root )}` );
 
@@ -117,10 +117,13 @@ function addSingle_head( routine, args )
   let o = args[ 0 ]
   if( args.length === 3 )
   {
+    if( args.length === 3 )
     o = { root : args[ 0 ], path : args[ 1 ], val : args[ 2 ] }
+    else
+    o = { root : args[ 0 ] };
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.longIs( o.path ) );
   _.assert( o.root === null || self.is( o.root ), () => `Expects node of trie or null, but got ${_.strType( o.root )}` );
 
@@ -158,10 +161,13 @@ function addMultiple_head( routine, args )
   let o = args[ 0 ]
   if( args.length === 3 )
   {
+    if( args.length === 3 )
     o = { root : args[ 0 ], path : args[ 1 ], vals : args[ 2 ] }
+    else
+    o = { root : args[ 0 ] };
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.longIs( o.path ) );
   _.assert( o.root === null || self.is( o.root ), () => `Expects node of trie or null, but got ${_.strType( o.root )}` );
   _.assert( _.countable.is( o.vals ) );
@@ -234,7 +240,7 @@ function delete_head( routine, args )
 
   let o = args[ 0 ];
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
   _.assert( self.is( o.node ), () => `Expects node of trie, but got ${_.strType( o.node )}` );
   _.assert
@@ -289,10 +295,13 @@ function deleteWithPath_head( routine, args )
   }
   else if( args.length == 3 )
   {
+    if( args.length === 3 )
     o = { root : args[ 0 ], path : args[ 1 ], vals : args[ 2 ] }
+    else
+    o = { root : args[ 0 ] };
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
   _.assert( _.longIs( o.path ) );
   _.assert
@@ -348,10 +357,13 @@ function shrinkWithPath_head( routine, args )
   }
   else if( args.length == 3 )
   {
+    if( args.length === 3 )
     o = { root : args[ 0 ], path : args[ 1 ], vals : args[ 2 ] }
+    else
+    o = { root : args[ 0 ] };
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
   _.assert( o.path === null || _.longIs( o.path ) );
   _.assert( o.trace === null || _.longIs( o.trace ) );
@@ -419,7 +431,7 @@ function shrink_head( routine, args )
   if( self.is( o ) )
   o = { root : o }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
 
   return o;
@@ -496,7 +508,7 @@ function withPath_head( routine, args )
     o = { root : args[ 0 ], path : args[ 1 ] }
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( _.longIs( o.path ) );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
 
@@ -555,7 +567,7 @@ function valEach_head( routine, args )
     o = { root : args[ 0 ] }
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
 
   return o;
@@ -636,7 +648,7 @@ function valEachAbove_head( routine, args )
     o = { root : args[ 0 ], path : args[ 1 ] }
   }
 
-  _.routine.optionsPreservingUndefines( routine, o );
+  _.routine.options( routine, o );
   _.assert( self.is( o.root ), () => `Expects node of trie, but got ${_.strType( o.root )}` );
 
   return o;
@@ -676,7 +688,7 @@ let valEachAbove = _.routine.unite( withPath_head, valEachAbove_body );
 let Proto =
 {
 
-  // bissector
+  // dichotomy
 
   is,
   make,
@@ -703,7 +715,7 @@ let Proto =
 
 //
 
-_.mapExtend( Self, Proto );
+_.props.extend( Self, Proto );
 
 // --
 // export

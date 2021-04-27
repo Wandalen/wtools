@@ -5,158 +5,94 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.container;
 
 // --
-//
+// meta
 // --
 
-function make()
+function namespaceFor( container ) /* qqq for Yevhen : cover please */
 {
-  return _.entity.cloneShallow( ... arguments );
+  _.assert( arguments.length === 1 );
+  if( _.primitive.is( container ) )
+  return _.blank;
+  else if( _.hashMap.like( container ) )
+  return _.hashMap;
+  else if( _.set.like( container ) )
+  return _.set;
+  else if( _.longIs( container ) )
+  return _.long;
+  else if( _.countableIs( container ) )
+  return _.countable;
+  else if( _.mapIs( container ) )
+  return _.map;
+  else if( _.auxIs( container ) )
+  return _.aux;
+  // else if( _.object.like( container ) )
+  // return _.object;
+  else
+  return _.blank;
 }
 
 //
 
-function extendReplacing( dst, src )
+function _functor_functor( methodName )
 {
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( dst === null || dst === undefined )
+  _.assert( _.strDefined( methodName ) );
+  return function _functor( container )
   {
-
-    if( _.aux.is( src ) )
-    dst = _.mapExtend( null, src );
-    else if( _.longLike( src ) )
-    dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMap.like( src ) )
-    dst = _.hashMap.extend( null, src );
-    else if( _.set.like( src ) )
-    dst = _.arraySet.union_( null, src );
-    else
-    dst = src;
-
+    _.assert( arguments.length === 1 );
+    _.assert( _.routine.is( this.namespaceFor ), `No routine::namespaceFor in the namesapce` );
+    let namespace = this.namespaceFor( container );
+    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
+    return namespace[ methodName ].bind( namespace, container );
   }
-  else if( _.aux.is( src ) )
-  {
-
-    if( _.aux.is( dst ) )
-    dst = _.mapExtend( dst, src );
-    else if( _.hashMap.like( dst ) )
-    dst = _.hashMap.extend( dst, src );
-    else
-    dst = _.container.extendReplacing( null, src );
-
-  }
-  else if( _.longLike( src ) )
-  {
-
-    if( _.longIs( dst ) )
-    {
-      for( let i = src.length - 1 ; i >= 0 ; i-- )
-      dst[ i ] = src[ i ];
-    }
-    else
-    {
-      dst = _.container.extendReplacing( null, src );
-    }
-
-  }
-  else if( _.hashMap.like( src ) )
-  {
-
-    if( _.hashMap.like( dst ) || _.aux.is( dst ) )
-    dst = _.hashMap.extend( dst, src );
-    else
-    dst = _.container.extendReplacing( null, src );
-
-  }
-  else if( _.set.like( src ) )
-  {
-
-    if( _.set.like( dst ) || _.longLike( dst ) )
-    dst = _.arraySet.union_( dst, src );
-    else
-    dst = _.container.extendReplacing( null, src );
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
 }
+
+// --
+// container interface
+// --
+
+function cloneShallow( container ) /* qqq for Yevhen : cover please */
+{
+  _.assert( arguments.length === 1 );
+  return cloneShallow.functor.call( this, container )();
+}
+
+cloneShallow.functor = _functor_functor( 'cloneShallow' );
+// cloneShallow.functor = _functor_functor( 'cloneShallow' );
 
 //
 
-function extendAppending( dst, src )
+function make( container, ... args ) /* qqq for Yevhen : cover please */
 {
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( dst === null || dst === undefined )
-  {
-
-    if( _.aux.is( src ) )
-    dst = _.mapExtend( null, src );
-    else if( _.longLike( src ) )
-    dst = _.arrayExtendAppending( null, src );
-    else if( _.hashMap.like( src ) )
-    dst = _.hashMap.extend( null, src );
-    else if( _.set.like( src ) )
-    dst = _.arraySet.union_( null, src );
-    else
-    dst = src;
-
-  }
-  else if( _.aux.is( dst ) )
-  {
-
-    if( _.aux.is( src ) )
-    dst = _.mapExtend( dst, src );
-    else if( _.hashMap.like( src ) )
-    dst = _.hashMap.extend( dst, src );
-    else
-    dst = _.arrayExtendAppending( dst, src );
-
-  }
-  else if( _.longLike( dst ) )
-  {
-
-    dst = _.arrayExtendAppending( dst, src );
-
-  }
-  else if( _.hashMap.like( dst ) )
-  {
-
-    if( _.hashMap.like( src ) || _.aux.is( src ) )
-    dst = _.hashMap.extend( dst, src );
-    else
-    dst = _.arrayExtendAppending( dst, src );
-
-  }
-  else if( _.set.like( dst ) )
-  {
-
-    if( _.set.like( src ) || _.longLike( src ) )
-    dst = _.arraySet.union_( dst, src );
-    else
-    dst = _.arrayExtendAppending( dst, src );
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return make.functor.call( this, container )( ... args );
 }
+
+make.functor = _functor_functor( 'make' );
+// make.functor = _functor_functor( 'make' );
+
+//
+
+function makeEmpty( container ) /* qqq for Yevhen : cover please */
+{
+  _.assert( arguments.length === 1 );
+  return makeEmpty.functor.call( this, container )();
+}
+
+makeEmpty.functor = _functor_functor( 'makeEmpty' );
+// makeEmpty.functor = _functor_functor( 'makeEmpty' );
+
+//
+
+function makeUndefined( container, ... args ) /* qqq for Yevhen : cover please */
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return makeUndefined.functor.call( this, container )( ... args );
+}
+
+makeUndefined.functor = _functor_functor( 'makeUndefined' );
+// makeUndefined.functor = _functor_functor( 'makeUndefined' );
 
 //
 
@@ -182,7 +118,7 @@ function extendAppending( dst, src )
  * // log true
  *
  * @example
- * let dst = _.unrollMake( [ 1, 'str', { a : 2 } ] );
+ * let dst = _.unroll.make( [ 1, 'str', { a : 2 } ] );
  * let got = _.container.empty( dst );
  * console.log( got );
  * // log []
@@ -213,25 +149,42 @@ function extendAppending( dst, src )
  * @namespace Tools
  */
 
-function empty( dstContainer )
+function empty( container ) /* qqq for Yevhen : cover please */
 {
-  if( _.longLike( dstContainer ) )
-  _.longEmpty( dstContainer );
-  else if( _.set.like( dstContainer ) )
-  dstContainer.clear();
-  else if( _.hashMap.like( dstContainer ) )
-  dstContainer.clear();
-  else if( _.aux.is( dstContainer ) )
-  _.mapEmpty( dstContainer );
-  else
-  _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
-  return dstContainer;
+  _.assert( arguments.length === 1 );
+  return empty.functor.call( this, container )();
 }
+
+empty.functor = _functor_functor( 'empty' );
+// empty.functor = _functor_functor( 'empty' );
+
+// //
+//
+// function make()
+// {
+//   _.assert( arguments.length === 1 );
+//   return _.entity.cloneShallow( ... arguments );
+// }
+
+// function empty( dstContainer )
+// {
+//   if( _.longLike( dstContainer ) )
+//   _.longEmpty( dstContainer );
+//   else if( _.set.like( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.hashMap.like( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.aux.is( dstContainer ) )
+//   _.mapEmpty( dstContainer );
+//   else
+//   _.assert( 0, `Not clear how to empty non-container ${_.entity.strType( dstContainer )}` );
+//   return dstContainer;
+// }
 
 //
 
 /**
- * The routine elementThGet() searches for value under a certain index {-key-} in a container {-container-}
+ * The routine elementWithCardinal() searches for value under a certain index {-key-} in a container {-container-}
  * and returns array with value, key, booLike.
  *
  * @param { Long|Set|HashMap|Aux } container - input container.
@@ -239,80 +192,61 @@ function empty( dstContainer )
  *
  * @example
  * var src = { a : 1, b : 2 };
- * var got = _.container.elementThGet( src, 0 );
+ * var got = _.container.elementWithCardinal( src, 0 );
  * console.log( got );
  * // log : [ 1, 'a', true ]
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementThGet( src, 2 );
+ * var got = _.container.elementWithCardinal( src, 2 );
  * console.log( got );
  * // log : [ 3, 2, true ]
  *
  * @example
  * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
- * var got = _.container.elementThGet( src, 1 );
+ * var got = _.container.elementWithCardinal( src, 1 );
  * console.log( got )
  * // log : [ false, true, true ] );
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementThGet( src, 5 );
+ * var got = _.container.elementWithCardinal( src, 5 );
  * console.log( got );
  * // log : [ undefined, 5, false ]
  *
  * @returns { Long } - with 3 elements : value ( undefined if index {-key-} is more or less than container's length ), key, boolLike ( true if index {-key-} is within container's length, false otherwise ).
- * @function elementThGet
+ * @function elementWithCardinal
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-key-} is not Number.
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : bad : jsdoc? | added . */
-function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
-{
+// function elementWithCardinal_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementWithCardinal ) );
+//   return namespace._elementWithCardinal.bind( namespace, container );
+// }
 
+//
+
+function elementWithCardinal( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
+{
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
-  if( key < 0 )
+  if( !_.numberIs( key ) || key < 0 )
   return [ undefined, key, false ];
-
-  if( _.mapIs( container ) )
-  {
-    let keys = Object.keys( container );
-    let key2 = keys[ key ];
-    if( keys.length <= key )
-    return [ undefined, undefined, false ];
-    return [ container[ key2 ], key2, true ];
-  }
-  else if( _.hashMap.is( container ) )
-  {
-    if( container.size <= key )
-    return [ undefined, undefined, false ];
-    let entry = [ ... container ][ key ];
-    return [ entry[ 1 ], entry[ 0 ], true ];
-  }
-  else if( _.set.like( container ) )
-  {
-    if( container.size <= key )
-    return [ undefined, key, false ];
-    return [ [ ... container ][ key ], key, true ];
-  }
-  else if( _.class.methodIteratorOf( container ) && !_.primitive.is( container ) )
-  {
-    let elements = [ ... container ];
-    if( key < elements.length )
-    return [ elements[ key ], key, true ];
-    return [ undefined, key, false ];
-  }
-  else _.assert( 0, 'Not container' );
-
+  return elementWithCardinal.functor.call( this, container )( key );
 }
+
+elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
+// elementWithCardinal.functor = elementWithCardinal_functor;
 
 //
 
 /**
- * The routine elementGet() searches for value under a certain {-key-} in a container {-container-}
+ * The routine elementWithKey() searches for value under a certain {-key-} in a container {-container-}
  * and returns array with value, key, booLike.
  *
  * @param { Long|Set|HashMap|Aux } container - input container.
@@ -320,156 +254,311 @@ function elementThGet( container, key ) /* qqq for Yevhen : cover please | aaa :
  *
  * @example
  * var src = { a : 1, b : 2 };
- * var got = _.container.elementGet( src, 'a' );
+ * var got = _.container.elementWithKey( src, 'a' );
  * console.log( got );
  * // log : [ 1, 'a', true ]
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementGet( src, 2 );
+ * var got = _.container.elementWithKey( src, 2 );
  * console.log( got );
  * // log : [ 3, 2, true ]
  *
  * @example
  * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
- * var got = _.container.elementGet( src, true );
+ * var got = _.container.elementWithKey( src, true );
  * console.log( got )
  * // log : [ false, true, true ] );
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementGet( src, 5 );
+ * var got = _.container.elementWithKey( src, 5 );
  * console.log( got );
  * // log : [ undefined, 5, false ]
  *
  * @returns { Long } - with 3 elements : value ( undefined if key is absent ), key, boolLike ( true if key exists, false otherwise ).
- * @function elementGet
+ * @function elementWithKey
  * @throws { Error } If arguments.length is not equal to 2.
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : bad : jsdoc? | aaa : Added */
-function elementGet( container, key ) /* qqq for Yevhen : cover please | aaa : Done. */
+// function elementWithKey_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementWithKey ) );
+//   return namespace._elementWithKey.bind( namespace, container );
+// }
+
+//
+
+function elementWithKey( container, key )
 {
-
   _.assert( arguments.length === 2 );
+  return elementWithKey.functor.call( this, container )( key );
+}
 
-  if( !container )
-  {
-    return [ undefined, key, false ];
-  }
-  else if( _.hashMap.like( container ) )
-  {
-    if( container.has( key ) )
-    return [ container.get( key ), key, true ];
-    else
-    return [ undefined, key, false ];
-  }
-  else if( _.set.like( container ) ) /* xxx : change */
-  {
-    if( container.size <= key || !_.number.is( key ) )
-    return [ undefined, key, false ];
-    return [ [ ... container ][ key ], key, true ];
-  }
-  else if( _.number.is( key ) && _.class.methodIteratorOf( container ) )
-  {
-    const container2 = [ ... container ];
-    if( container2.length > key )
-    return [ container2[ key ], key, true ];
-    else
-    return [ undefined, key, false ];
-  }
-  else if( _.escape.is( key ) )
-  {
-    if( key.val === prototypeSymbol )
-    {
-      let r = _.prototype.of( container );
-      return [ r, prototypeSymbol, !!r ];
-    }
-    else _.assert( 0, 'Unknown implicit field' );
-  }
-  else
-  {
-    if( _.arrayLike( container ) && !_.number.is( key ) )
-    return [ undefined, key, false ];
+elementWithKey.functor = _functor_functor( 'elementWithKey' );
+// elementWithKey.functor = elementWithKey_functor;
 
-    if( _.property.has( container, key ) )
-    return [ container[ key ], key, true ];
-    else
-    return [ undefined, key, false ];
-  }
+//
 
+// function elementWithImplicit_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementWithImplicit ) );
+//   return namespace._elementWithImplicit.bind( namespace, container );
+// }
+
+//
+
+function elementWithImplicit( container, key )
+{
+  _.assert( arguments.length === 2 );
+  return elementWithImplicit.functor.call( this, container )( key );
+}
+
+elementWithImplicit.functor = _functor_functor( 'elementWithImplicit' );
+// elementWithImplicit.functor = elementWithImplicit_functor;
+
+//
+
+// function elementWithCardinalSet_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementWithCardinalSet ) );
+//   return namespace._elementWithCardinalSet.bind( namespace, container );
+// }
+
+//
+
+function elementWithCardinalSet( container, key, val ) /* qqq for Yevhen : cover please | aaa : Done. */
+{
+  _.assert( arguments.length === 3 );
+  _.assert( _.numberIs( key ) );
+  return elementWithCardinalSet.functor.call( this, container )( key, val );
+}
+
+elementWithCardinalSet.functor = _functor_functor( 'elementWithCardinalSet' );
+// elementWithCardinalSet.functor = elementWithCardinalSet_functor;
+
+//
+
+// function elementSet_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace._elementSet.bind( namespace, container );
+// }
+
+//
+
+function elementSet( container, key, val )
+{
+  _.assert( arguments.length === 3 );
+  _.assert( _.numberIs( key ) );
+  return elementSet.functor.call( this, container )( key, val );
+}
+
+elementSet.functor = _functor_functor( 'elementSet' );
+// elementSet.functor = elementSet_functor;
+
+// --
+// iterator
+// --
+
+// function eachLeft_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.eachLeft.bind( namespace, container );
+// }
+
+//
+
+function eachLeft( container, onEach )
+{
+  _.assert( arguments.length === 2 );
+  return eachLeft.functor.call( this, container )( onEach );
+}
+
+eachLeft.functor = _functor_functor( 'eachLeft' );
+// eachLeft.functor = eachLeft_functor;
+
+//
+
+// function eachRight_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.eachRight.bind( namespace, container );
+// }
+
+//
+
+function eachRight( container, onEach )
+{
+  _.assert( arguments.length === 2 );
+  return eachRight.functor.call( this, container )( onEach );
+}
+
+eachRight.functor = _functor_functor( 'eachRight' );
+// eachRight.functor = eachRight_functor;
+
+//
+
+// function whileLeft_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.whileLeft.bind( namespace, container );
+// }
+
+//
+
+function whileLeft( container, onEach )
+{
+  _.assert( arguments.length === 2 );
+  return whileLeft.functor.call( this, container )( onEach );
+}
+
+whileLeft.functor = _functor_functor( 'whileLeft' );
+// whileLeft.functor = whileLeft_functor;
+
+//
+
+// function whileRight_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.whileRight.bind( namespace, container );
+// }
+
+//
+
+function whileRight( container, onEach )
+{
+  _.assert( arguments.length === 2 );
+  return whileRight.functor.call( this, container )( onEach );
+}
+
+whileRight.functor = _functor_functor( 'whileRight' );
+// whileRight.functor = whileRight_functor;
+
+//
+
+// function aptLeft_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.aptLeft.bind( namespace, container );
+// }
+
+//
+
+function aptLeft( container, onEach )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return aptLeft.functor.call( this, container )( onEach );
+}
+
+aptLeft.functor = _functor_functor( 'aptLeft' );
+// aptLeft.functor = aptLeft_functor;
+
+//
+
+function first( container )
+{
+  _.assert( arguments.length === 1 );
+  return _.container.aptLeft( container );
 }
 
 //
 
-/* qqq : for Yevhen : cover, please. dont forget jsdoc. */
-function elementSet( container, key, value )
+// function aptRight_functor( container )
+// {
+//   _.assert( arguments.length === 1 );
+//   let namespace = this.namespaceFor( container );
+//   _.assert( _.routine.is( namespace._elementSet ) );
+//   return namespace.aptRight.bind( namespace, container );
+// }
+
+//
+
+function aptRight( container, onEach )
 {
-
-  _.assert( arguments.length === 3 ); debugger;
-
-  if( container )
-  {
-    if( _.hashMap.like( container ) )
-    {
-      container.set( key, value );
-      return value;
-    }
-    else
-    {
-      _.assert( !_.set.like( container ), 'not implemented' );
-      container[ key ] = value;
-      return container[ key ];
-    }
-  }
-  else
-  {
-    return undefined;
-  }
-
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return aptRight.functor.call( this, container )( onEach );
 }
 
-// --
-// structure
-// --
+aptRight.functor = _functor_functor( 'aptRight' );
+// aptRight.functor = aptRight_functor;
 
-// let knownTypeFields =
-// {
-//   name : null,
-//   _elementSet : null,
-//   _elementGet : null,
-//   _lengthGet : null,
-//   _is : null,
-//   _identicalTypes : null, /* qqq : cover please. ask how */
-//   _while : null,
-//   _coerce : null, /* qqq : cover this callback */
-// }
+//
+
+function last( container )
+{
+  _.assert( arguments.length === 1 );
+  return _.container.aptRight( container );
+}
 
 // --
 // extension
 // --
 
-const prototypeSymbol = Symbol.for( 'prototype' );
-
-let Extension =
+let ContainerExtension =
 {
 
-  extendReplacing,
-  extendAppending,
+  // meta
 
-  empty,
+  namespaceFor,
+  _functor_functor,
 
-  elementThGet,
-  elementGet, /* qqq : cover please */
-  elementSet,
+  // container interface
 
-  // fields
+  cloneShallow, /* qqq : cover */
+  make, /* qqq : cover */
+  makeEmpty, /* qqq : cover */
+  makeUndefined, /* qqq : cover */
+  empty, /* qqq : cover */
 
-  // knownTypeFields,
+  elementWithCardinal, /* qqq : cover */
+  elementWithKey, /* qqq : cover */
+  elementWithImplicit, /* qqq : cover */
+  elementWithCardinalSet, /* qqq : cover */
+  elementSet, /* qqq : cover */
+
+  each : eachLeft, /* qqq : cover */
+  eachLeft, /* qqq : cover */
+  eachRight, /* qqq : cover */
+
+  while : whileLeft, /* qqq : cover */
+  whileLeft, /* qqq : cover */
+  whileRight, /* qqq : cover */
+
+  aptLeft, /* qqq : cover */
+  first, /* qqq : cover */
+  aptRight, /* qqq : cover */
+  last, /* qqq : cover */
 
 }
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( _.container, ContainerExtension );
+
+//
+
+let ToolsExtension =
+{
+}
+
+Object.assign( _, ToolsExtension );
 
 })();

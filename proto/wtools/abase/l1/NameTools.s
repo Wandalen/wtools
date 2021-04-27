@@ -301,7 +301,7 @@ const Proto =
 
 }
 
-_.mapExtend( Self, Proto );
+_.props.extend( Self, Proto );
 
 // --
 // export

@@ -1,4 +1,4 @@
-( function _l8_BigInt_s_()
+( function _l7_BigInt_s_()
 {
 
 'use strict';
@@ -15,7 +15,7 @@ const Self = _.bigInt = _.bigInt || Object.create( null );
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
 }
@@ -28,6 +28,6 @@ let Extension =
 }
 
 Object.assign( Self, Extension );
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 
 })();

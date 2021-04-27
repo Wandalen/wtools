@@ -24,7 +24,7 @@ const _longSlice = _.longSlice;
 const strType = _.entity.strType;
 
 // --
-// checker
+// dichotomy
 // --
 
 function strIsHex( src )
@@ -224,7 +224,7 @@ function strStripCount( src, ins )
 function strsShortest( src )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  _.assert( _.strIs( src ) || _.argumentsArray.like( src ) );
   if( _.strIs( src ) )
   return src;
   return src.sort( ( a, b ) => a.length - b.length )[ 0 ];
@@ -235,7 +235,7 @@ function strsShortest( src )
 function strsLongest()
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  _.assert( _.strIs( src ) || _.argumentsArray.like( src ) );
   if( _.strIs( src ) )
   return src;
   return src.sort( ( a, b ) => b.length - a.length )[ 0 ];
@@ -1511,7 +1511,7 @@ function _strOnly( srcStr, cinterval )
   }
   else
   {
-    cinterval = _.longMake( cinterval ); /* Dmytro : vectorized routine should not change original range */
+    cinterval = _.long.make( cinterval ); /* Dmytro : vectorized routine should not change original range */
 
     if( cinterval[ 1 ] < -1 )
     cinterval[ 1 ] = srcStr.length + cinterval[ 1 ];
@@ -1661,7 +1661,7 @@ function _strBut( srcStr, cinterval, ins )
   }
   else
   {
-    cinterval = _.longMake( cinterval ); /* Dmytro : vectorized routine should not change original range */
+    cinterval = _.long.make( cinterval ); /* Dmytro : vectorized routine should not change original range */
 
     if( cinterval[ 1 ] < -1 )
     cinterval[ 1 ] = srcStr.length + cinterval[ 1 ];
@@ -1687,7 +1687,7 @@ function _strBut( srcStr, cinterval, ins )
   let result;
   if( _.longIs( ins ) )
   {
-    result = _.arrayMake( ins.length );
+    result = _.array.make( ins.length );
     for( let i = 0 ; i < ins.length ; i++ )
     result[ i ] = _strConcat( srcStr, cinterval, ins[ i ] );
   }
@@ -1993,20 +1993,22 @@ function strJoin_head( routine, args )
 {
 
   let o = args[ 0 ];
-  if( args[ 1 ] !== undefined || _.arrayLike( args[ 0 ] ) )
-  o = { srcs : args[ 0 ], join : args[ 1 ] };
+  if( args[ 1 ] !== undefined || _.argumentsArray.like( args[ 0 ] ) )
+  o = { srcs : args[ 0 ], join : ( args.length > 1 ? args[ 1 ] : null ) };
 
   _.routine.options( routine, o );
+
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2, () => 'Expects an array of string and optional join, but got ' + args.length + ' arguments' );
-  _.assert( _.arrayLike( o.srcs ), () => 'Expects an array of strings, but got ' + _.entity.strType( o.srcs ) );
-  _.assert( o.join === null || _.strIs( o.join ), () => 'Expects optional join, but got ' + _.entity.strType( o.join ) );
+  _.assert( _.argumentsArray.like( o.srcs ), () => 'Expects an array of strings, but got ' + _.entity.strType( o.srcs ) );
+  _.assert( o.join === undefined || o.join === null || _.strIs( o.join ), () => 'Expects optional join, but got ' + _.entity.strType( o.join ) );
 
   return o;
 }
 
 //
 
+/* xxx : review */
 // function strJoin_body( srcs, delimeter )
 function strJoin_body( o )
 {
@@ -2017,7 +2019,7 @@ function strJoin_body( o )
   _.routine.assertOptions( strJoin_body, arguments );
 
   let delimeter = o.join || '';
-  if( o.join === null || _.strIs( o.join ) )
+  if( o.join === null || o.join === undefined || _.strIs( o.join ) )
   o.join = join;
 
   // debugger;
@@ -2182,7 +2184,7 @@ function strJoinPath( srcs, joiner )
   let arrayLength;
 
   _.assert( arguments.length === 2, () => 'Expects an array of string and joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.entity.strType( srcs ) );
+  _.assert( _.argumentsArray.like( srcs ), () => 'Expects an array of strings, but got ' + _.entity.strType( srcs ) );
   _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.entity.strType( joiner ) );
 
   /* xxx : investigate */
@@ -2573,85 +2575,85 @@ function strLinesOnly( src, range )
   return result.join( '\n' );
 
 }
-
 //
-
-function strLinesSplit( src )
-{
-  _.assert( _.strIs( src ) || _.arrayIs( src ) );
-  _.assert( arguments.length === 1 );
-  if( _.arrayIs( src ) )
-  return src;
-  return src.split( '\n' );
-}
-
+// //
 //
-
-function strLinesJoin( src )
-{
-  _.assert( _.strIs( src ) || _.arrayIs( src ) );
-  _.assert( arguments.length === 1 );
-  let result = src;
-  if( _.arrayIs( src ) )
-  result = src.join( '\n' );
-  return result;
-}
-
+// function strLinesSplit( src )
+// {
+//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
+//   _.assert( arguments.length === 1 );
+//   if( _.arrayIs( src ) )
+//   return src;
+//   return src.split( '\n' );
+// }
 //
-
-/**
- * Remove espace characters and white spaces at the begin or at the end of each line.
- * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
- * removes the white/escape characters from the beggining and the end of each line. If input is an array,
- * it treats it as a single string split into lines, where each entry corresponds to a line. Therefore,
- * it removes the white/escape characters only from the beggining and the end of the strings in the array.
- *
- * @param { String/Array } [ src ] - Source string or array of strings.
- * @returns { String/Array } Returns string/array with empty lines and spaces removed.
- *
- * @example input string
- * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
- * // returns 'Hello\nWorld'
- *
- * @example input array
- * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
- * // returns  [ 'Hello \r\n\t world', '!' ]
- *
- * @example input strings
- * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
- * // returns [ 'Hello', 'World\n!', '' ]
- *
- * @example input arrays
- * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
- * // returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
- *
- * @method strLinesStrip
- * @throws { Exception } Throw an exception if( src ) is not a String or Array.
- * @namespace Tools
- */
-
-/* qqq : for Dmytro : measure time and optimize. ask */
-function strLinesStrip( src )
-{
-
-  if( arguments.length > 1 )
-  {
-    let result = _.unrollMake( null );
-    for( let a = 0 ; a < arguments.length ; a++ )
-    result[ a ] = strLinesStrip( arguments[ a ] );
-    return result;
-  }
-
-  _.assert( _.strIs( src ) || _.arrayIs( src ) );
-  _.assert( arguments.length === 1 );
-
-  let lines = _.strLinesSplit( src );
-  lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
-
-  if( _.strIs( src ) )
-  lines = _.strLinesJoin( lines );
-  return lines;
-}
+// //
+//
+// function strLinesJoin( src )
+// {
+//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
+//   _.assert( arguments.length === 1 );
+//   let result = src;
+//   if( _.arrayIs( src ) )
+//   result = src.join( '\n' );
+//   return result;
+// }
+//
+// //
+//
+// /**
+//  * Remove espace characters and white spaces at the begin or at the end of each line.
+//  * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
+//  * removes the white/escape characters from the beggining and the end of each line. If input is an array,
+//  * it treats it as a single string split into lines, where each entry corresponds to a line. Therefore,
+//  * it removes the white/escape characters only from the beggining and the end of the strings in the array.
+//  *
+//  * @param { String/Array } [ src ] - Source string or array of strings.
+//  * @returns { String/Array } Returns string/array with empty lines and spaces removed.
+//  *
+//  * @example input string
+//  * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
+//  * // returns 'Hello\nWorld'
+//  *
+//  * @example input array
+//  * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
+//  * // returns  [ 'Hello \r\n\t world', '!' ]
+//  *
+//  * @example input strings
+//  * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
+//  * // returns [ 'Hello', 'World\n!', '' ]
+//  *
+//  * @example input arrays
+//  * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
+//  * // returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
+//  *
+//  * @method strLinesStrip
+//  * @throws { Exception } Throw an exception if( src ) is not a String or Array.
+//  * @namespace Tools
+//  */
+//
+// /* qqq : for Dmytro : measure time and optimize. ask */
+// function strLinesStrip( src )
+// {
+//
+//   if( arguments.length > 1 )
+//   {
+//     let result = _.unroll.make( null );
+//     for( let a = 0 ; a < arguments.length ; a++ )
+//     result[ a ] = _.strLinesStrip( arguments[ a ] );
+//     return result;
+//   }
+//
+//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
+//   _.assert( arguments.length === 1 );
+//
+//   let lines = _.strLinesSplit( src );
+//   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
+//
+//   if( _.strIs( src ) )
+//   lines = _.strLinesJoin( lines );
+//   return lines;
+// }
 
 //
 
@@ -2706,7 +2708,7 @@ function strLinesNumber( o )
 {
 
   if( !_.object.is( o ) )
-  o = { src : arguments[ 0 ], zeroLine : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], zeroLine : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
 
   _.routine.options( strLinesNumber, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -3152,6 +3154,7 @@ function strLinesNearest_head( routine, args )
   o.charsRangeLeft = [ o.charsRangeLeft, o.charsRangeLeft+1 ];
 
   _.assert( _.intervalIs( o.charsRangeLeft ) );
+  _.assert( _.numberIs( o.nearestLines ) );
 
   return o;
 }
@@ -3413,7 +3416,7 @@ function strLinesSize( o )
   o = { src : arguments[ 0 ] }
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( o.src ) || _.arrayLike( o.src ) );
+  _.assert( _.strIs( o.src ) || _.argumentsArray.like( o.src ) );
   _.routine.options( strLinesSize, o );
   if( o.onLength === null )
   o.onLength = ( src ) => src.length;
@@ -3494,7 +3497,7 @@ let strLinesRangeWithCharRange = _.routine.unite( strLinesRangeWithCharRange_hea
 let Proto =
 {
 
-  // checker
+  // dichotomy
 
   strIsHex,
   strIsMultilined,
@@ -3578,9 +3581,11 @@ let Proto =
   strLinesIndentation,
   strLinesBut,
   strLinesOnly,
-  strLinesSplit,
-  strLinesJoin,
-  strLinesStrip,
+
+  // strLinesSplit,
+  // strLinesJoin,
+  // strLinesStrip,
+
   strLinesNumber,
   strLinesSelect,
   strLinesNearest,
@@ -3591,7 +3596,7 @@ let Proto =
 
 }
 
-_.mapExtend( Self, Proto );
+_.props.extend( Self, Proto );
 
 // --
 // export

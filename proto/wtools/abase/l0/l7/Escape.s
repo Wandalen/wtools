@@ -1,4 +1,4 @@
-( function _l8_Escape_s_()
+( function _l7_Escape_s_()
 {
 
 'use strict';
@@ -17,10 +17,10 @@ const Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( n
 
 var Extension =
 {
-};
+}
 
 //
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

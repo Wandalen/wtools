@@ -1,4 +1,4 @@
-( function _l8_Event_s_()
+( function _l7_Event_s_()
 {
 
 'use strict';
@@ -20,6 +20,6 @@ let Extension =
 {
 };
 
-_.mapSupplement( Self, Extension );
+_.props.supplement( Self, Extension );
 
 })();

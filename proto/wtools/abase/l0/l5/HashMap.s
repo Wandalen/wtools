@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
 
 // --
 // implementation
@@ -60,30 +59,30 @@ function extend( dst, src )
   return dst;
 }
 
+// //
 //
-
-function fromMap( dstMap, srcMap )
-{
-  if( arguments.length === 1 )
-  {
-    srcMap = arguments[ 0 ];
-    dstMap = null;
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( !_.primitive.is( srcMap ) );
-  _.assert( dstMap === null || _.hashMapIs( dstMap ) );
-
-  if( dstMap === null )
-  dstMap = new HashMap;
-
-  for( let k in srcMap )
-  {
-    dstMap.set( k, srcMap[ k ] );
-  }
-
-  return dstMap;
-}
+// function fromMap( dstMap, srcMap )
+// {
+//   if( arguments.length === 1 )
+//   {
+//     srcMap = arguments[ 0 ];
+//     dstMap = null;
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( !_.primitive.is( srcMap ) );
+//   _.assert( dstMap === null || _.hashMapIs( dstMap ) );
+//
+//   if( dstMap === null )
+//   dstMap = new HashMap;
+//
+//   for( let k in srcMap )
+//   {
+//     dstMap.set( k, srcMap[ k ] );
+//   }
+//
+//   return dstMap;
+// }
 
 // --
 // extension
@@ -100,7 +99,7 @@ let Extension =
 {
 
   extend, /* qqq : cover */
-  fromMap, /* qqq : cover */
+  // fromMap, /* qqq : cover */
 
 }
 

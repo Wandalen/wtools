@@ -7,13 +7,15 @@ const _global = _global_;
 const _ = _global_.wTools;
 const Self = _.entity = _.entity || Object.create( null );
 
+_.assert( !!_.container.cloneShallow, 'Expects routine _.container.cloneShallow' );
+
 // --
 //
 // --
 
-function identicalShallow( src1, src2 )
+function identicalShallow( src1, src2, o )
 {
-  _.assert( arguments.length === 2, 'Expects 2 arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
@@ -24,7 +26,7 @@ function identicalShallow( src1, src2 )
   if( _.hashMap.like( src1 ) )
   {
     /*
-      - hashmap
+      - hashMap
     */
     return _.hashMap.identicalShallow( src1, src2 )
   }
@@ -155,7 +157,7 @@ function equivalentShallow( src1, src2, options )
   else if( _.hashMap.like( src1 ) && _.hashMap.like( src1 ) )
   {
     /*
-      - hashmap
+      - hashMap
     */
     return _.hashMap.equivalentShallow( src1, src2 )
   }
@@ -216,122 +218,165 @@ function equivalentShallow( src1, src2, options )
   }
 }
 
-//
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return new Array();
-  }
-  else if( _.longIs( src ) )
-  {
-    // return this.tools.longMakeEmpty( src );
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMakeEmpty( src );
-  }
-  else if( _.set.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.hashMap.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.aux.is( src ) )
-  {
-    return Object.create( null );
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor();
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
-
-}
-
-//
-
-function makeUndefined( src, length )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return new Array( length !== undefined ? length : src.length );
-  }
-  else if( _.longIs( src ) )
-  {
-    // return this.tools.longMakeUndefined( src, length );
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMakeUndefined( src, length );
-  }
-  else if( _.set.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.hashMap.is( src ) )
-  {
-    return new src.constructor();
-  }
-  else if( _.aux.is( src ) )
-  {
-    return Object.create( null );
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor();
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
-}
-
 // //
 //
-// function makeNonConstructing( src )
+// function makeEmpty( src )
+// {
+//   _.assert( arguments.length === 1 );
+//
+//   if( !src || _.primitive.is( src ) )
+//   {
+//     return src;
+//   }
+//   else if( _.arrayIs( src ) )
+//   {
+//     return new Array();
+//   }
+//   else if( _.longIs( src ) )
+//   {
+//     // return this.tools.long.makeEmpty( src );
+//     let toolsNamespace = this.Tools ? this.Tools : this;
+//     return toolsNamespace.long.makeEmpty( src );
+//   }
+//   else if( _.set.is( src ) )
+//   {
+//     return new src.constructor();
+//   }
+//   else if( _.hashMap.is( src ) )
+//   {
+//     return new src.constructor();
+//   }
+//   else if( _.aux.is( src ) )
+//   {
+//     return Object.create( null );
+//   }
+//   // else if( src === _.null )
+//   // {
+//   //   return null;
+//   // }
+//   // else if( src === _.undefined )
+//   // {
+//   //   return undefined;
+//   // }
+//   // else if( !src || _.primitive.is( src ) )
+//   // {
+//   //   return src;
+//   // }
+//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+//   {
+//     return new src.constructor();
+//   }
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeEmpty()\`` );
+//
+// }
+//
+// //
+//
+// function makeUndefined( src, length )
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   if( !src || _.primitive.is( src ) )
+//   {
+//     return src;
+//   }
+//   else if( _.arrayIs( src ) )
+//   {
+//     return new Array( length !== undefined ? length : src.length );
+//   }
+//   else if( _.longIs( src ) )
+//   {
+//     // return this.tools.long.makeUndefined( src, length );
+//     let toolsNamespace = this.Tools ? this.Tools : this;
+//     return toolsNamespace.long.makeUndefined( src, length );
+//   }
+//   else if( _.set.is( src ) )
+//   {
+//     return new src.constructor();
+//   }
+//   else if( _.hashMap.is( src ) )
+//   {
+//     return new src.constructor();
+//   }
+//   else if( _.aux.is( src ) )
+//   {
+//     return Object.create( null );
+//   }
+//   // else if( src === _.null )
+//   // {
+//   //   return null;
+//   // }
+//   // else if( src === _.undefined )
+//   // {
+//   //   return undefined;
+//   // }
+//   // else if( !src || _.primitive.is( src ) )
+//   // {
+//   //   return src;
+//   // }
+//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
+//   {
+//     return new src.constructor();
+//   }
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.makeUndefined()\`` );
+// }
+//
+// // //
+// //
+// // function makeNonConstructing( src )
+// // {
+// //   _.assert( arguments.length === 1, 'Expects single argument' );
+// //
+// //   if( _.arrayIs( src ) )
+// //   {
+// //     return Array.from( src );
+// //   }
+// //   else if( _.longLike( src ) )
+// //   {
+// //     return this.tools.long.make( src );
+// //   }
+// //   else if( _.hashMap.like( src ) || _.set.like( src ) )
+// //   {
+// //     return new src.constructor( src );
+// //   }
+// //   else if( _.aux.is( src ) )
+// //   {
+// //     return _.mapCloneShallow( src )
+// //   }
+// //   else if( src === _.null )
+// //   {
+// //     return null;
+// //   }
+// //   else if( src === _.undefined )
+// //   {
+// //     return undefined;
+// //   }
+// //   else if( !src || _.primitive.is( src ) )
+// //   {
+// //     return src;
+// //   }
+// //   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
+// //
+// // }
+//
+// //
+//
+// function cloneShallow( src )
 // {
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //
-//   if( _.arrayIs( src ) )
+//   if( !src || _.primitive.is( src ) )
+//   {
+//     return src;
+//   }
+//   else if( _.arrayIs( src ) )
 //   {
 //     return Array.from( src );
 //   }
 //   else if( _.longLike( src ) )
 //   {
-//     return this.tools.longMake( src );
+//     let toolsNamespace = this.Tools ? this.Tools : this;
+//     return toolsNamespace.long.make( src );
 //   }
 //   else if( _.hashMap.like( src ) || _.set.like( src ) )
 //   {
@@ -341,76 +386,33 @@ function makeUndefined( src, length )
 //   {
 //     return _.mapCloneShallow( src )
 //   }
-//   else if( src === _.null )
+//   // else if( src === _.null )
+//   // {
+//   //   return null;
+//   // }
+//   // else if( src === _.undefined )
+//   // {
+//   //   return undefined;
+//   // }
+//   // else if( !src || _.primitive.is( src ) )
+//   // {
+//   //   return src;
+//   // }
+//   else if( _.routine.is( src[ _.class.cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
 //   {
-//     return null;
+//     return src[ _.class.cloneShallowSymbol ]();
 //   }
-//   else if( src === _.undefined )
+//   else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
 //   {
-//     return undefined;
+//     return src.cloneShallow();
 //   }
-//   else if( !src || _.primitive.is( src ) )
+//   else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
 //   {
-//     return src;
+//     return new src.constructor( src );
 //   }
-//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.make()\`` );
+//   else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
 //
 // }
-
-//
-
-function cloneShallow( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( !src || _.primitive.is( src ) )
-  {
-    return src;
-  }
-  else if( _.arrayIs( src ) )
-  {
-    return Array.from( src );
-  }
-  else if( _.longLike( src ) )
-  {
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMake( src );
-  }
-  else if( _.hashMap.like( src ) || _.set.like( src ) )
-  {
-    return new src.constructor( src );
-  }
-  else if( _.aux.is( src ) )
-  {
-    return _.mapCloneShallow( src )
-  }
-  // else if( src === _.null )
-  // {
-  //   return null;
-  // }
-  // else if( src === _.undefined )
-  // {
-  //   return undefined;
-  // }
-  // else if( !src || _.primitive.is( src ) )
-  // {
-  //   return src;
-  // }
-  else if( _.routine.is( src[ _.class.cloneShallowSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
-  {
-    return src[ _.class.cloneShallowSymbol ]();
-  }
-  else if( _.routine.is( src.cloneShallow ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method cloneShallow */
-  {
-    return src.cloneShallow();
-  }
-  else if( _.routine.is( src.constructor ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for entities with constructor */
-  {
-    return new src.constructor( src );
-  }
-  else _.assert( 0, `Not clear how to make a new element of \`${_.entity.strType( src )}\` with \`_.entity.cloneShallow()\`` );
-
-}
 
 //
 
@@ -440,8 +442,8 @@ function cloneDeep( src )
   }
   else if( _.longLike( src ) )
   {
-    let toolsNamespace = this.tools ? this.tools : this;
-    return toolsNamespace.longMake( src );
+    let toolsNamespace = this.Tools ? this.Tools : this;
+    return toolsNamespace.long.make( src );
   }
   else if( _.hashMap.like( src ) || _.set.like( src ) )
   {
@@ -449,7 +451,7 @@ function cloneDeep( src )
   }
   else if( _.aux.is( src ) )
   {
-    return _.mapCloneShallow( src );
+    return _.aux.cloneShallow( src );
   }
   // else if( src === _.null )
   // {
@@ -713,7 +715,6 @@ function assign2FieldFromContainer( /* dstContainer, srcContainer, name, onRecur
   let srcContainer = arguments[ 1 ];
   let name = arguments[ 2 ];
   let onRecursive = arguments[ 3 ];
-
   let result;
 
   _.assert( _.strIs( name ) || _.symbol.is( name ) );
@@ -790,28 +791,55 @@ function assign2Field( /* dstContainer, srcValue, name, onRecursive */ )
 }
 
 // --
+// meta
+// --
+
+function namespaceFor( container ) /* qqq for Yevhen : cover please */
+{
+  _.assert( arguments.length === 1 );
+  if( _.primitive.is( container ) )
+  return _.itself;
+  else if( _.hashMap.like( container ) )
+  return _.hashMap;
+  else if( _.set.like( container ) )
+  return _.set;
+  else if( _.longIs( container ) )
+  return _.long;
+  else if( _.countableIs( container ) )
+  return _.countable;
+  else if( _.mapIs( container ) )
+  return _.map;
+  else if( _.auxIs( container ) )
+  return _.aux;
+  else
+  return _.props;
+}
+
+// --
 // tools extension
 // --
 
 let ToolsExtension =
 {
-  entityIdenticalShallow : identicalShallow,
 
-  makeEmpty,
-  entityMakeEmpty : makeEmpty,
-  makeUndefined,
-  entityMakeUndefined : makeUndefined,
-
-  make : cloneShallow,
-  entityMake : cloneShallow, /* xxx : remove the alias */
-  cloneShallow, /* xxx */
-  cloneDeep,
+  // entityIdenticalShallow : identicalShallow,
+  //
+  // makeEmpty,
+  // entityMakeEmpty : makeEmpty,
+  // makeUndefined,
+  // entityMakeUndefined : makeUndefined,
+  //
+  // make : cloneShallow,
+  // entityMake : cloneShallow, /* xxx : remove the alias */
+  // cloneShallow, /* xxx */
+  //
+  // cloneDeep,
 
 }
 
 //
 
-_.mapSupplement( _, ToolsExtension );
+_.props.supplement( _, ToolsExtension );
 
 // --
 // entity extension
@@ -819,14 +847,16 @@ _.mapSupplement( _, ToolsExtension );
 
 let EntityExtension =
 {
+
   identicalShallow,
   equivalentShallow,
 
-  makeEmpty,
-  makeUndefined,
-  cloneShallow,
+  // makeEmpty,
+  // makeUndefined,
+  // make : cloneShallow, /* xxx */
+  // cloneShallow,
+
   cloneDeep,
-  make : cloneShallow, /* xxx */
 
   equalize,
 
@@ -834,10 +864,41 @@ let EntityExtension =
   assign2FieldFromContainer, /* dubious */
   assign2Field, /* dubious */
 
+  // meta
+
+  namespaceFor,
+
+  // container interface
+
+  cloneShallow : _.container.cloneShallow, /* qqq : cover */
+  make : _.container.make, /* qqq : cover */
+  makeEmpty : _.container.makeEmpty, /* qqq : cover */
+  makeUndefined : _.container.makeUndefined, /* qqq : cover */
+  empty : _.container.empty, /* qqq : cover */
+
+  elementWithCardinal : _.container.elementWithCardinal, /* qqq : cover */
+  elementWithKey : _.container.elementWithKey, /* qqq : cover */
+  elementWithImplicit : _.container.elementWithImplicit, /* qqq : cover */
+  elementWithCardinalSet : _.container.elementWithCardinalSet, /* qqq : cover */
+  elementSet : _.container.elementSet, /* qqq : cover */
+
+  each : _.container.each, /* qqq : cover */
+  eachLeft : _.container.eachLeft, /* qqq : cover */
+  eachRight : _.container.eachRight, /* qqq : cover */
+
+  while : _.container.while, /* qqq : cover */
+  whileLeft : _.container.whileLeft, /* qqq : cover */
+  whileRight : _.container.whileRight, /* qqq : cover */
+
+  aptLeft : _.container.aptLeft, /* qqq : cover */
+  first : _.container.first, /* qqq : cover */
+  aptRight : _.container.aptRight, /* qqq : cover */
+  last : _.container.last, /* qqq : cover */
+
 }
 
 //
 
-_.mapSupplement( _.entity, EntityExtension );
+_.props.supplement( _.entity, EntityExtension );
 
 })();

@@ -1,4 +1,4 @@
-( function _l8_Regexp_s_()
+( function _l7_Regexp_s_()
 {
 
 'use strict';
@@ -452,7 +452,7 @@ regexpsAll.defaults =
  * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
  *
  * @example
- * _.regexp.arrayMake( ['red', 'white', /[a-z]/] );
+ * _.regexp.array.make( ['red', 'white', /[a-z]/] );
  * // returns [ /red/, /white/, /[a-z]/ ]
  *
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
@@ -465,7 +465,7 @@ regexpsAll.defaults =
 function arrayMake( src )
 {
 
-  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
+  _.assert( _.regexpLike( src ) || _.argumentsArray.like( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 
@@ -635,7 +635,7 @@ function arrayNone( arr, ins, ifEmpty )
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
 {
 
   regexpFrom : from,
@@ -701,7 +701,7 @@ let ExtensionS =
 
 }
 
-Object.assign( _, ExtensionTools );
+Object.assign( _, ToolsExtension );
 Object.assign( Regexp, Extension );
 Object.assign( Regexps, ExtensionS );
 

@@ -1,44 +1,61 @@
-( function _l8_Set_s_()
+( function _l7_Set_s_()
 {
 
 'use strict';
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.set = _.set || Object.create( null );
-_.set.s = _.set.s || Object.create( null );
 
 // --
 // implementation
 // --
 
+function adapterLike( src )
+{
+  if( !src )
+  return false;
+  if( _.set.like( src ) )
+  return true;
+  if( !_.containerAdapter || _.containerAdapter.Set )
+  return false;
+  if( src instanceof _.containerAdapter.Set )
+  return true;
+  return false;
+}
+
 // --
 // extension
 // --
 
-let ExtensionTools =
+let ToolsExtension =
+{
+
+  setAdapterLike : adapterLike,
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
+
+let SetExtension =
+{
+
+  adapterLike,
+
+}
+
+Object.assign( _.set, SetExtension );
+
+//
+
+let SetsExtension =
 {
 
 }
 
 //
 
-let Extension =
-{
-
-}
-
-//
-
-let ExtensionS =
-{
-
-}
-
-//
-
-Object.assign( _, ExtensionTools );
-Object.assign( Self, Extension );
-Object.assign( _.set.s, ExtensionS );
+Object.assign( _.set.s, SetsExtension );
 
 })();

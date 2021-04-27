@@ -10,7 +10,6 @@ function decrement( i )
   }
   catch( err )
   {
-    debugger;
     console.log( err );
   }
 }
@@ -21,3 +20,4 @@ decrement( 0 );
   Brief error report for end user.
   Brief error report does not have stacks and other diagnostic information.
 */
+

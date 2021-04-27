@@ -1,4 +1,4 @@
-( function _l8_Module_s_()
+( function _l7_Module_s_()
 {
 
 'use strict';
@@ -125,7 +125,7 @@ function predeclare_head( routine, args )
 
   let o = args[ 0 ]
   if( _.strIs( args[ 0 ] ) )
-  o = { name : args[ 0 ], entryPath : args[ 1 ] }
+  o = { name : args[ 0 ], entryPath : ( args.length > 1 ? args[ 1 ] : null ) }
 
   _.routine.options( routine, o );
 
@@ -325,7 +325,7 @@ function fileExportString( file, o )
 {
 
   _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
-  o = _.routineOptions( fileExportString, o );
+  o = _.routine.options_( fileExportString, o || null );
 
   if( !o.verbosity )
   return '';
@@ -1061,7 +1061,7 @@ function path_head( routine, args )
 
 function pathAmend_body( o )
 {
-  const ModuleFileNative = require( 'module' ); debugger;
+  const ModuleFileNative = require( 'module' );
 
   if( o.moduleFile )
   if( typeof _ !== 'undefined' )
@@ -1394,7 +1394,7 @@ function _resolve( o )
 
   _.map.assertHasAll( o, _resolve.defaults );
 
-  if( _.arrayLike( o.moduleName ) )
+  if( _.argumentsArray.like( o.moduleName ) )
   {
     let result = [];
     for( let a = 0 ; a < o.moduleName.length ; a++ )
@@ -2201,8 +2201,8 @@ var ModuleExtension =
 /* xxx : move to l3/l5 */
 /* xxx : test of include file which deos not exist and reinclude file wich was trying include file which does not exist */
 
-_.mapSupplement( _.module, ModuleExtension );
-_.mapSupplement( _, ToolsExtension );
+_.props.supplement( _.module, ModuleExtension );
+_.props.supplement( _, ToolsExtension );
 _.module._Setup();
 
 })();

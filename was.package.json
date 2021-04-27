@@ -1,6 +1,6 @@
 {
   "name" : "wTools",
-  "version" : "0.8.1042",
+  "version" : "0.8.1048",
   "engine" : "node >= 10.0.0",
   "enabled" : 1,
   "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
@@ -15,7 +15,26 @@
     "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
   ],
   "main" : "proto/node_modules/wTools",
-  "files" : [ "proto/wtools/abase/l0", "proto/wtools/abase/l1", "proto/wtools/abase/l2", "proto/wtools/abase/Layer0.s", "proto/wtools/abase/Layer1.s", "out", "proto/node_modules" ],
+  "files" :
+  [
+    "proto/wtools/abase/l0/l0",
+    "proto/wtools/abase/l0/l1",
+    "proto/wtools/abase/l0/l3",
+    "proto/wtools/abase/l0/l5",
+    "proto/wtools/abase/l0/l6",
+    "proto/wtools/abase/l0/l7",
+    "proto/wtools/abase/l0/l8",
+    "proto/wtools/abase/l0/Include.s",
+    "proto/wtools/abase/l0/Include1.s",
+    "proto/wtools/abase/l0/Include3.s",
+    "proto/wtools/abase/l0/Include5.s",
+    "proto/wtools/abase/l0/Include9.s",
+    "proto/wtools/abase/l1",
+    "proto/wtools/abase/Layer0.s",
+    "proto/wtools/abase/Layer1.s",
+    "proto/node_modules",
+    "out"
+  ],
   "scripts" : { "test" : "wtest .run \"proto/**\" rapidity:-1", "docgen" : "wdocgen proto" },
   "repository" : { "type" : "git", "url" : "https://github.com/Wandalen/wTools.git" },
   "bugs" :

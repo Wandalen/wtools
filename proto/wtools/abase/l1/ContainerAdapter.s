@@ -99,7 +99,7 @@ function toOriginals( dsts, srcs )
   if( srcs === dsts )
   {
     if( _.longIs( dsts ) ) /* Dmytro : in this context needs to check instance of some long */
-    // if( _.arrayLike( dsts ) )
+    // if( _.argumentsArray.like( dsts ) )
     {
       for( let s = 0 ; s < dsts.length ; s++ )
       dsts[ s ] = this.toOriginal( dsts[ s ] );
@@ -115,7 +115,7 @@ function toOriginals( dsts, srcs )
     if( _.arrayIs( dsts ) )
     {
       if( _.longIs( srcs ) ) /* Dmytro : in this context needs to check instance of some long */
-      // if( _.arrayLike( srcs ) )
+      // if( _.argumentsArray.like( srcs ) )
       {
         for( let s = 0 ; s < srcs.length ; s++ )
         // for( let e of srcs ) /* Dmytro : not optimal for longs */
@@ -129,7 +129,7 @@ function toOriginals( dsts, srcs )
     else
     {
       if( _.longIs( srcs ) ) /* Dmytro : in this context needs to check instance of some long */
-      // if( _.arrayLike( srcs ) )
+      // if( _.argumentsArray.like( srcs ) )
       {
         let result = [];
         result.push( this.toOriginal( dsts ) );
@@ -492,18 +492,7 @@ Self.original = ContainerAdapterNamespace;
 
 //
 
-var Fields =
-{
-
-  Abstract : ContainerAdapterAbstract,
-  // Set : ContainerAdapterSet,
-  // Array : ContainerAdapterArray,
-
-}
-
-//
-
-var Routines =
+var Extension =
 {
 
   is,
@@ -514,12 +503,13 @@ var Routines =
   toOriginal,
   toOriginals,
 
+  Abstract : ContainerAdapterAbstract,
+
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 _.assert( _.containerAdapter === undefined );
 _.containerAdapter = Self;
 
