@@ -1911,24 +1911,24 @@ function strLine( src, index )
   _.assert( _.strIs( src ), 'Expects string as first argument' );
   _.assert( _.numberIs( index ), 'Expects number as second argument' );
 
-  let srcArray = src.split( '\n' );
+  // let srcArray = src.split( '\n' );
 
-  if( index >= srcArray.length )
-  return '';
+  // if( index >= srcArray.length )
+  // return '';
 
-  return srcArray[ index ];
+  // return srcArray[ index ];
 
-  // if( index === 0 )
-  // {
-  //   let i = src.indexOf( '\n' );
-  //   if( i === -1 )
-  //   return src;
-  //   return src.slice( 0, i );
-  // }
+  if( index === 0 )
+  {
+    let i = src.indexOf( '\n' );
+    if( i === -1 )
+    return src;
+    return src.slice( 0, i );
+  }
 
-  // let matches = src.match( /\n(.)+/g );
+  let matches = src.match( /\n(.)+/g );
 
-  // return matches[ i+1 ]; /* first line was skipped */
+  return matches[ index+1 ]; /* first line was skipped */
 
 }
 
