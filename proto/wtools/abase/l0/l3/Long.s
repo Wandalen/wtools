@@ -117,6 +117,68 @@ function eacher( src )
 }
 
 // --
+// container interface
+// --
+
+function _elementWithKeyDel( src, key )
+{
+  if( !this._hasKey( src, key ) )
+  return false;
+  // if( !src.splice )
+  // return false;
+  src.splice( key, 1 );
+  return true;
+}
+
+//
+
+function elementWithKeyDel( src, key )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( src ) );
+  return this._elementWithKeyDel( src, key );
+}
+
+//
+
+function _elementWithCardinalDel( src, cardinal )
+{
+  if( !this._hasKey( src, cardinal ) )
+  return false;
+  // if( !src.splice )
+  // return false;
+  src.splice( cardinal, 1 );
+  return true;
+}
+
+//
+
+function elementWithCardinalDel( src, cardinal )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( src ) );
+  return this._elementWithCardinalDel( src, cardinal, val );
+}
+
+//
+
+function _empty( dst )
+{
+  // if( dst.splice )
+  dst.splice( 0, dst.length );
+  return dst;
+}
+
+//
+
+function empty( dst )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( this.like( dst ) );
+  return this._empty( dst );
+}
+
+// --
 // declare
 // --
 
@@ -161,7 +223,6 @@ let LongExtension =
 
   _lengthOf : _.array._lengthOf,
   lengthOf : _.array.lengthOf, /* qqq : cover */
-
   _hasKey : _.array._hasKey,
   hasKey : _.array._hasKey, /* qqq : cover */
   _hasCardinal : _.array._hasKey,
@@ -185,14 +246,14 @@ let LongExtension =
   _elementWithCardinalSet : _.array._elementWithCardinalSet,
   elementWithCardinalSet : _.array.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementDel : _.itself._elementDel,
-  elementDel : _.itself.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.itself._elementWithKeyDel,
-  elementWithKeyDel : _.itself.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.itself._elementWithCardinalDel,
-  elementWithCardinalDel : _.itself.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.itself._empty,
-  empty : _.itself.empty,  /* qqq : cover */
+  _elementWithKeyDel,
+  elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel,
+  elementWithCardinalDel,  /* qqq : cover */
+  _elementDel : _elementWithKeyDel,
+  elementDel : _elementWithKeyDel, /* qqq : cover */
+  _empty,
+  empty,  /* qqq : cover */
 
   _each : _.array._each,
   each : _.array.each, /* qqq : cover */

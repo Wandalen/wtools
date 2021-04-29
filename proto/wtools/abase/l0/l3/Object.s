@@ -74,12 +74,8 @@ function equivalentShallow( src1, src2 )
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src )
+function _exportStringShallowDiagnostic( src )
 {
-
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( this.like( src ) );
-
   let result = '';
   let method = _.class.methodExportStringOf( src );
 
@@ -97,6 +93,15 @@ function exportStringShallowDiagnostic( src )
   }
 
   return result;
+}
+
+//
+
+function exportStringShallowDiagnostic( src )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( this.like( src ) );
+  return this._exportStringShallowDiagnostic( ... arguments );
 }
 
 // --
@@ -125,14 +130,18 @@ let ObjectExtension =
 
   // exporter
 
+  _exportStringShallowDiagnostic,
+  exportStringShallowDiagnostic,
+  exportStringDiagnostic : exportStringShallowDiagnostic,
   exportString : exportStringShallowDiagnostic,
   exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
+  _exportStringShallowCode : _exportStringShallowDiagnostic,
   exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
   exportStringCode : exportStringShallowDiagnostic,
 
   // container interface
+
+  /* xxx : qqq : implement routines. should be if countable else blank */
 
   _lengthOf : _.blank._lengthOf,
   lengthOf : _.blank.lengthOf, /* qqq : cover */

@@ -312,7 +312,7 @@ function likeTrue( test )
 const Proto =
 {
 
-  name : 'Tools.Fuzzy',
+  name : 'Tools.Fuzzy.l0.l9',
   silencing : 1,
   enabled : 1,
 

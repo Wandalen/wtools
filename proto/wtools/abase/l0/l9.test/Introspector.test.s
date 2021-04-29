@@ -4217,7 +4217,7 @@ function stackFilter( test )
 const Proto =
 {
 
-  name : 'Tools.Introspector',
+  name : 'Tools.Introspector.l0.l9',
   silencing : 1,
 
   onSuiteBegin,

@@ -233,7 +233,7 @@ function vectorizeVectorizeArray( test )
 const Proto =
 {
 
-  name : 'Tools.LongLike',
+  name : 'Tools.ContainerAdapterRelated.l1',
   silencing : 1,
   enabled : 0, /* qqq : for Dmytro : ?? */
 

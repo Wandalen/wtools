@@ -161,6 +161,7 @@ var ArgumentsArrayExtension =
   //
 
   NamespaceName : 'argumentsArray',
+  NamespaceQname : 'wTools/argumentsArray',
   TypeName : 'ArgumentsArray',
   SecondTypeName : 'Arguments',
   InstanceConstructor : null,

@@ -218,10 +218,12 @@ function eachLongType( o )
 
   // debugger;
 
-  for( let l in _.LongDescriptors )
+  for( let k in _.long.namespaces )
   {
-    let Long = _.LongDescriptors[ l ];
-    result[ Long.name ] = o.onEach( Long.make, Long );
+    let namespace = _.long.namespaces[ k ];
+    let long = _.withLong[ namespace.TypeName ];
+    debugger;
+    result[ long.TypeName ] = o.onEach( long.make, long );
   }
 
   // debugger;

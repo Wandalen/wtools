@@ -118,220 +118,213 @@ function strHas( src, ins )
   return ins.test( src );
 
 }
-
 //
-
-function _identicalShallow( src1, src2 )
-{
-  return src1 === src2;
-}
-
+// //
 //
-
-function identicalShallow( src1, src2, accuracy )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-  return this._identicalShallow( ... arguments );
-}
-
+// function _identicalShallow( src1, src2 )
+// {
+//   return src1 === src2;
+// }
 //
-
-function _equivalentShallow( src1, src2 )
-{
-  let strIs1 = _.strIs( src1 );
-  let strIs2 = _.strIs( src2 );
-
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  //
-  // if( !strIs1 && strIs2 )
-  // return this._equivalentShallow( src2, src1 );
-
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-
-  if( strIs1 && strIs2 )
-  {
-    /* qqq : for Yevhen : bad | aaa : Fixed. */
-    if( src1 === src2 )
-    return true;
-    return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-  }
-  else
-  {
-    return false;
-    // return _.regexpIdentical( src1, src2 );
-  }
-
-  return false;
-}
-
+// //
 //
+// function identicalShallow( src1, src2, accuracy )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   if( !this.is( src1 ) )
+//   return false;
+//   if( !this.is( src2 ) )
+//   return false;
+//   return this._identicalShallow( ... arguments );
+// }
+//
+// //
 //
 // function _equivalentShallow( src1, src2 )
 // {
 //   let strIs1 = _.strIs( src1 );
 //   let strIs2 = _.strIs( src2 );
 //
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   //
+//   // if( !strIs1 && strIs2 )
+//   // return this._equivalentShallow( src2, src1 );
 //
-//   if( !strIs1 && strIs2 )
-//   return this._equivalentShallow( src2, src1 );
-//
-//   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-//   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
 //
 //   if( strIs1 && strIs2 )
 //   {
 //     /* qqq : for Yevhen : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
-//
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-//
-//   }
-//   else if( strIs1 )
-//   {
-//     _.assert( !!src2.exec );
-//     let matched = src2.exec( src1 );
-//     if( !matched )
-//     return false;
-//     if( matched[ 0 ].length !== src1.length )
-//     return false;
-//     return true;
 //   }
 //   else
 //   {
-//     return _.regexpIdentical( src1, src2 );
+//     return false;
+//     // return _.regexpIdentical( src1, src2 );
 //   }
 //
 //   return false;
 // }
-
 //
-
-function equivalentShallow( src1, src2, accuracy )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !_.str.is( src1 ) )
-  return false;
-  if( !_.str.is( src2 ) )
-  return false;
-  return _.str._equivalentShallow( ... arguments );
-}
-
-  // _identicalShallow,
-  // identicalShallow,
-  // identical : identicalShallow,
-  // _equivalentShallow,
-  // equivalentShallow,
-  // equivalent : equivalentShallow,
-
+// //
+// //
+// // function _equivalentShallow( src1, src2 )
+// // {
+// //   let strIs1 = _.strIs( src1 );
+// //   let strIs2 = _.strIs( src2 );
+// //
+// //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// //
+// //   if( !strIs1 && strIs2 )
+// //   return this._equivalentShallow( src2, src1 );
+// //
+// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+// //
+// //   if( strIs1 && strIs2 )
+// //   {
+// //     /* qqq : for Yevhen : bad | aaa : Fixed. */
+// //     if( src1 === src2 )
+// //     return true;
+// //
+// //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+// //
+// //   }
+// //   else if( strIs1 )
+// //   {
+// //     _.assert( !!src2.exec );
+// //     let matched = src2.exec( src1 );
+// //     if( !matched )
+// //     return false;
+// //     if( matched[ 0 ].length !== src1.length )
+// //     return false;
+// //     return true;
+// //   }
+// //   else
+// //   {
+// //     return _.regexpIdentical( src1, src2 );
+// //   }
+// //
+// //   return false;
+// // }
 //
-
-function strsEquivalent( src1, src2 )
-{
-
-  _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
-  _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  let isLong1 = _.longIs( src1 );
-  let isLong2 = _.longIs( src2 );
-
-  if( isLong1 && isLong2 )
-  {
-    let result = [];
-    _.assert( src1.length === src2.length );
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
-    }
-    return result;
-  }
-  else if( !isLong1 && isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src2.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1, src2[ i ] );
-    }
-    return result;
-  }
-  else if( isLong1 && !isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2 );
-    }
-    return result;
-  }
-  else
-  {
-    return _.str.equivalent( src1, src2 );
-  }
-
-}
+// //
+//
+// function equivalentShallow( src1, src2, accuracy )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   if( !_.str.is( src1 ) )
+//   return false;
+//   if( !_.str.is( src2 ) )
+//   return false;
+//   return _.str._equivalentShallow( ... arguments );
+// }
+//
+// //
+//
+// function strsEquivalent( src1, src2 )
+// {
+//
+//   _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
+//   _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   let isLong1 = _.longIs( src1 );
+//   let isLong2 = _.longIs( src2 );
+//
+//   if( isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     _.assert( src1.length === src2.length );
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( !isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src2.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1, src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( isLong1 && !isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2 );
+//     }
+//     return result;
+//   }
+//   else
+//   {
+//     return _.str.equivalent( src1, src2 );
+//   }
+//
+// }
 
 // --
 // converter
 // --
 
-/* xxx : move to entity */
-function exportStringShallowDiagnostic( src, o )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
-
-  let result = '';
-
-  if( _.primitive.is( src ) )
-  {
-    result = _.primitive.exportStringShallowDiagnostic( src );
-  }
-  else if( _.date.is( src ) )
-  {
-    result = _.date.exportStringShallowDiagnostic( src );
-  }
-  else if( _.regexpIs( src ) )
-  {
-    result = _.regexp.exportStringShallowDiagnostic( src );
-  }
-  else if( _.set.like( src ) )
-  {
-    result = _.set.exportStringShallowDiagnostic( src );
-  }
-  else if( _.hashMap.like( src ) )
-  {
-    result = _.hashMap.exportStringShallowDiagnostic( src );
-  }
-  else if( _.vector.like( src ) )
-  {
-    result = _.vector.exportStringShallowDiagnostic( src );
-  }
-  else if( _.routine.is( src ) )
-  {
-    result = _.routine.exportStringShallowDiagnostic( src );
-  }
-  else if( _.aux.like( src ) )
-  {
-    result = _.aux.exportStringShallowDiagnostic( src );
-  }
-  else if( _.object.like( src ) )
-  {
-    result = _.object.exportStringShallowDiagnostic( src );
-  }
-  else
-  {
-    result = String( src );
-    result = _.strShort_( result ).result;
-  }
-
-  return result;
-}
+// /* xxx : move to entity */
+// function exportStringShallowDiagnostic( src, o )
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+//
+//   let result = '';
+//
+//   if( _.primitive.is( src ) )
+//   {
+//     result = _.primitive.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.date.is( src ) )
+//   {
+//     result = _.date.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.regexpIs( src ) )
+//   {
+//     result = _.regexp.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.set.like( src ) )
+//   {
+//     result = _.set.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.hashMap.like( src ) )
+//   {
+//     result = _.hashMap.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.vector.like( src ) )
+//   {
+//     result = _.vector.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.routine.is( src ) )
+//   {
+//     result = _.routine.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.aux.like( src ) )
+//   {
+//     result = _.aux.exportStringShallowDiagnostic( src );
+//   }
+//   else if( _.object.like( src ) )
+//   {
+//     result = _.object.exportStringShallowDiagnostic( src );
+//   }
+//   else
+//   {
+//     result = String( src );
+//     result = _.strShort_( result ).result;
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -1146,241 +1139,95 @@ _strShortHeight.defaults =
 //   cutting : 'center',
 // }
 
+// //
 //
-
-function strPrimitive( src )
-{
-  let result = '';
-
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-
-  if( src === null || src === undefined )
-  return;
-
-  if( _.primitive.is( src ) )
-  return String( src );
-
-  return;
-}
-
+// function strParseType( src )
+// {
+//   /*
+//     - 'string'
+//     - '5'
+//     - '5n'
+//     - 'null'
+//     - 'undefined'
+//     - 'Escape( 1 )'
+//     - '{- Symbol undefined -}'
+//     - '{- routine name -}'
+//     - '{- routine.anonymous -}'
+//     - '{- Map -}'
+//     - '{- Map name -}'
+//     - '{- Map with 9 elements -}'
+//     - '{- Map.polluted with 9 elements -}'
+//     - '{- Map name with 9 elements -}'
+//   */
 //
-
-/**
- * Return primitive type of src.
- *
- * @example
- * let str = _.entity.strTypeSecondary( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strTypeSecondary
- * @namespace Tools
- */
-
-function strTypeSecondary( src )
-{
-
-  let name = Object.prototype.toString.call( src );
-  let result = /\[(\w+) (\w+)\]/.exec( name );
-  _.assert( !!result, 'unknown type', name );
-  return result[ 2 ];
-}
-
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.assert( _.strIs( src ), 'Expects string' );
 //
-
-/**
- * Return type of src.
- *
- * @example
- * let str = _.entity.strType( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strType
- * @namespace Tools
- */
-
-/* qqq for Yevhen : jsdoc */
-/* xxx : optimize later */
-/* xxx : move to namesapce type? */
-function strTypeWithTraits( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.aux.is( src ) )
-  {
-
-    if( _.mapIsPure( src ) )
-    return 'Map.pure';
-    else if( _.mapIsPolluted( src ) )
-    return 'Map.polluted';
-    else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.pure.prototyped';
-    else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.polluted.prototyped';
-    else _.assert( 0, 'undexpected' );
-
-  }
-
-  if( _.primitive.is( src ) )
-  return end( _.entity.strTypeSecondary( src ) );
-
-  let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
-  return end( proto.constructor.name );
-
-  return end( _.entity.strTypeSecondary( src ) );
-
-  function end( result )
-  {
-    let translated = _.entity.TranslatedTypeMap[ result ];
-    if( translated )
-    result = translated;
-
-    if( !_.entity.StandardTypeSet.has( result ) )
-    {
-      if( _.countableIs( src ) )
-      result += '.countable';
-      if( _.constructibleIs( src ) )
-      result += '.constructible';
-    }
-
-    return result;
-  }
-
-}
-
+//   if( !( /^{- .+ -}$/g.test( src ) ) )
+//   return Object.create( null );
 //
-
-/* qqq for Yevhen : jsdoc */
-function strTypeWithoutTraits( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.aux.is( src ) )
-  {
-
-    if( _.mapIs( src ) )
-    return 'Map';
-    else
-    return 'Aux';
-
-  }
-
-  if( _.primitive.is( src ) )
-  return end( _.entity.strTypeSecondary( src ) );
-
-  let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
-  return end( proto.constructor.name );
-
-  return end( _.entity.strTypeSecondary( src ) );
-
-  function end( result )
-  {
-    let translated = _.entity.TranslatedTypeMap[ result ];
-    if( translated )
-    result = translated;
-    return result;
-  }
-
-}
-
+//   src = src.slice( 3, -3 );
 //
-
-function strParseType( src )
-{
-  /*
-    - 'string'
-    - '5'
-    - '5n'
-    - 'null'
-    - 'undefined'
-    - 'Escape( 1 )'
-    - '{- Symbol undefined -}'
-    - '{- routine name -}'
-    - '{- routine.anonymous -}'
-    - '{- Map -}'
-    - '{- Map name -}'
-    - '{- Map with 9 elements -}'
-    - '{- Map.polluted with 9 elements -}'
-    - '{- Map name with 9 elements -}'
-  */
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  if( !( /^{- .+ -}$/g.test( src ) ) )
-  return Object.create( null );
-
-  src = src.slice( 3, -3 );
-
-  return _.entity._strParseType( src );
-
-}
-
+//   return _.entity._strParseType( src );
 //
-
-function _strParseType( src )
-{
-  /*
-
-  {- with with 2 elements -} 4
-  {- with name with 2 elements -} 5
-  {- with.with with with 2 elements -} 5
-
-  */
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  let o =
-  {
-    type : '',
-    traits : [],
-  }
-
-  let splitted = src.split( ' ' );
-  let type = splitted[ 0 ];
-  let length;
-
-  if( splitted.length === 2 ) /* with name & no length */
-  {
-    o.name = splitted[ 1 ];
-  }
-  else if( splitted.length === 4 ) /* without name & with length */
-  {
-    length = +splitted[ 2 ];
-  }
-  else if( splitted.length === 5 ) /* with name & with length */
-  {
-    o.name = splitted[ 1 ];
-    length = +splitted[ 3 ];
-  }
-
-  length = isNaN( length ) ? null : length;
-
-  if( type.indexOf( '.' ) === -1 )
-  {
-    o.type = type;
-  }
-  else
-  {
-    let [ t, ... traits ] = type.split( '.' );
-    o.type = t;
-    o.traits = traits;
-  }
-
-  if( length !== null )
-  o.length = length;
-
-  return o;
-
-}
+// }
+//
+// //
+//
+// function _strParseType( src )
+// {
+//   /*
+//
+//   {- with with 2 elements -} 4
+//   {- with name with 2 elements -} 5
+//   {- with.with with with 2 elements -} 5
+//
+//   */
+//   _.assert( _.strIs( src ), 'Expects string' );
+//
+//   let o =
+//   {
+//     type : '',
+//     traits : [],
+//   }
+//
+//   let splitted = src.split( ' ' );
+//   let type = splitted[ 0 ];
+//   let length;
+//
+//   if( splitted.length === 2 ) /* with name & no length */
+//   {
+//     o.name = splitted[ 1 ];
+//   }
+//   else if( splitted.length === 4 ) /* without name & with length */
+//   {
+//     length = +splitted[ 2 ];
+//   }
+//   else if( splitted.length === 5 ) /* with name & with length */
+//   {
+//     o.name = splitted[ 1 ];
+//     length = +splitted[ 3 ];
+//   }
+//
+//   length = isNaN( length ) ? null : length;
+//
+//   if( type.indexOf( '.' ) === -1 )
+//   {
+//     o.type = type;
+//   }
+//   else
+//   {
+//     let [ t, ... traits ] = type.split( '.' );
+//     o.type = t;
+//     o.traits = traits;
+//   }
+//
+//   if( length !== null )
+//   o.length = length;
+//
+//   return o;
+//
+// }
 
 //
 
@@ -2019,62 +1866,62 @@ function strLinesStrip( src )
 // --
 // implementation
 // --
-
-let TranslatedTypeMap =
-{
-
-  'BigUint64Array' : 'U64x',
-  'Uint32Array' : 'U32x',
-  'Uint16Array' : 'U16x',
-  'Uint8Array' : 'U8x',
-  'Uint8ClampedArray' : 'U8ClampedX',
-
-  'BigInt64Array' : 'I64x',
-  'Int32Array' : 'I32x',
-  'Int16Array' : 'I16x',
-  'Int8Array' : 'I8x',
-
-  'Float64Array' : 'F64x',
-  'Float32Array' : 'F32x',
-
-  'Buffer' : 'BufferNode',
-  'ArrayBuffer' : 'BufferRaw',
-  'SharedArrayBuffer' : 'BufferRawShared',
-  'Map' : 'HashMap',
-  'WeakMap' : 'HashMapWeak',
-  'Function' : 'Routine',
-  'Arguments' : 'ArgumentsArray',
-
-}
-
-let StandardTypeSet = new Set
-([
-
-  'U64x',
-  'U32x',
-  'U16x',
-  'U8x',
-  'U8ClampedX',
-  'I64x',
-  'I32x',
-  'I16x',
-  'I8x',
-  'F64x',
-  'F32x',
-
-  'BufferNode',
-  'BufferRaw',
-  'BufferRawShared',
-  'HashMap',
-  'HashMapWeak',
-
-  'ArgumentsArray',
-  'Array',
-  'Set',
-  'Routine',
-  'Global',
-
-]);
+//
+// let TranslatedTypeMap =
+// {
+//
+//   'BigUint64Array' : 'U64x',
+//   'Uint32Array' : 'U32x',
+//   'Uint16Array' : 'U16x',
+//   'Uint8Array' : 'U8x',
+//   'Uint8ClampedArray' : 'U8ClampedX',
+//
+//   'BigInt64Array' : 'I64x',
+//   'Int32Array' : 'I32x',
+//   'Int16Array' : 'I16x',
+//   'Int8Array' : 'I8x',
+//
+//   'Float64Array' : 'F64x',
+//   'Float32Array' : 'F32x',
+//
+//   'Buffer' : 'BufferNode',
+//   'ArrayBuffer' : 'BufferRaw',
+//   'SharedArrayBuffer' : 'BufferRawShared',
+//   'Map' : 'HashMap',
+//   'WeakMap' : 'HashMapWeak',
+//   'Function' : 'Routine',
+//   'Arguments' : 'ArgumentsArray',
+//
+// }
+//
+// let StandardTypeSet = new Set
+// ([
+//
+//   'U64x',
+//   'U32x',
+//   'U16x',
+//   'U8x',
+//   'U8ClampedX',
+//   'I64x',
+//   'I32x',
+//   'I16x',
+//   'I8x',
+//   'F64x',
+//   'F32x',
+//
+//   'BufferNode',
+//   'BufferRaw',
+//   'BufferRawShared',
+//   'HashMap',
+//   'HashMapWeak',
+//
+//   'ArgumentsArray',
+//   'Array',
+//   'Set',
+//   'Routine',
+//   'Global',
+//
+// ]);
 
 //
 
@@ -2090,12 +1937,12 @@ let ToolsExtension =
   strDefined,
   strsDefined,
 
-  strType : strTypeWithTraits,
+  // strType : strTypeWithTraits,
   strHas,
 
   // strEquivalent, /* qqq : for Yevhen : bad */
   // areEquivalentShallow : strEquivalent, xxx
-  strsEquivalent,
+  // strsEquivalent,
 
   // converter
 
@@ -2146,27 +1993,27 @@ Object.assign( _, ToolsExtension );
 let ExtensionEntity =
 {
 
-  // exporter
-
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
-
-  strPrimitive,
-  strTypeSecondary,
-  strType : strTypeWithTraits,
-  strTypeWithTraits,
-  strTypeWithoutTraits,
-  strParseType,
-  _strParseType,
-
-  // fields
-
-  TranslatedTypeMap,
-  StandardTypeSet,
+  // // exporter
+  //
+  // exportString : exportStringShallowDiagnostic,
+  // exportStringShallow : exportStringShallowDiagnostic,
+  // exportStringShallowDiagnostic,
+  // exportStringShallowCode : exportStringShallowDiagnostic,
+  // exportStringDiagnostic : exportStringShallowDiagnostic,
+  // exportStringCode : exportStringShallowDiagnostic,
+  //
+  // strPrimitive,
+  // strTypeSecondary,
+  // strType : strTypeWithTraits,
+  // strTypeWithTraits,
+  // strTypeWithoutTraits,
+  // // strParseType,
+  // // _strParseType,
+  //
+  // // fields
+  //
+  // TranslatedTypeMap,
+  // StandardTypeSet,
 
 }
 
@@ -2183,12 +2030,12 @@ let StrExtension =
 
   // equaler
 
-  _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
-  _equivalentShallow,
-  equivalentShallow,
-  equivalent : equivalentShallow,
+  // _identicalShallow,
+  // identicalShallow,
+  // identical : identicalShallow,
+  // _equivalentShallow,
+  // equivalentShallow,
+  // equivalent : equivalentShallow,
 
   // exporter
 

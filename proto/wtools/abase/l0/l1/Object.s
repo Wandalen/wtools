@@ -17,6 +17,32 @@ _global_.wTools.object = _global_.wTools.object || Object.create( null );
  *
  * @example
  * let obj = { x : 100 };
+ * _.object.isBasic(obj);
+ * // returns true
+ *
+ * @example
+ * _.object.isBasic( 10 );
+ * // returns false
+ *
+ * @param { * } src.
+ * @return { Boolean }.
+ * @function is
+ * @namespace Tools/object
+ */
+
+function isBasic( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Object]';
+}
+
+//
+
+/**
+ * Function is checks incoming param whether it is object.
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example
+ * let obj = { x : 100 };
  * _.object.is(obj);
  * // returns true
  *
@@ -27,20 +53,13 @@ _global_.wTools.object = _global_.wTools.object || Object.create( null );
  * @param { * } src.
  * @return { Boolean }.
  * @function is
- * @namespace Tools
+ * @namespace Tools/object
  */
 
-function is( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Object]';
-}
-
-//
-
-function like( src ) /* xxx : qqq : for Yevhen : optimize */
+function is( src ) /* xxx : qqq : for junior : optimize */
 {
 
-  if( _.object.is( src ) )
+  if( Object.prototype.toString.call( src ) === '[object Object]' )
   return true;
 
   if( _.primitive.is( src ) )
@@ -63,7 +82,33 @@ function like( src ) /* xxx : qqq : for Yevhen : optimize */
 
 //
 
-function likeStandard( src ) /* xxx : qqq : for Yevhen : optimize */
+function like( src ) /* xxx : qqq : for junior : optimize */
+{
+  return _.object.is( src );
+  // if( _.object.isBasic( src ) )
+  // return true;
+  //
+  // if( _.primitive.is( src ) )
+  // return false;
+  //
+  // if( _.vector.is( src ) )
+  // return false;
+  //
+  // if( _.routine.isTrivial( src ) )
+  // return false;
+  //
+  // if( _.set.is( src ) )
+  // return false;
+  //
+  // if( _.hashMap.is( src ) )
+  // return false;
+  //
+  // return true;
+}
+
+//
+
+function likeStandard( src ) /* xxx : qqq : for junior : optimize */
 {
 
   if( _.primitive.is( src ) )
@@ -193,6 +238,7 @@ let ToolsExtension =
   // dichotomy
 
   objectIs : is.bind( _.object ),
+  objectIsBasic : isBasic.bind( _.object ),
   objectIsEmpty : isEmpty.bind( _.object ),
   objectIsPopulated : isPopulated.bind( _.object ),
   objectLike : like.bind( _.object ),
@@ -218,6 +264,7 @@ let ObjectExtension =
   //
 
   NamespaceName : 'object',
+  NamespaceQname : 'wTools/object',
   TypeName : 'Object',
   SecondTypeName : 'Object',
   InstanceConstructor : null,
@@ -226,6 +273,7 @@ let ObjectExtension =
   // dichotomy
 
   is,
+  isBasic,
   like,
   likeStandard,
 
@@ -235,34 +283,34 @@ let ObjectExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
 
   // properties
 
-  _keys : _.props._keys, /* qqq : for Yevhen : cover */
-  keys : _.props.keys, /* qqq : for Yevhen : cover */
-  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for Yevhen : cover */
-  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
-  allKeys : _.props.allKeys, /* qqq : for Yevhen : cover */
+  _keys : _.props._keys, /* qqq : for junior : cover */
+  keys : _.props.keys, /* qqq : for junior : cover */
+  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for junior : cover */
+  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  allKeys : _.props.allKeys, /* qqq : for junior : cover */
 
-  _vals : _.props._vals, /* qqq : for Yevhen : cover */
-  vals : _.props.vals, /* qqq : for Yevhen : cover */
-  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for Yevhen : cover */
-  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
-  allVals : _.props.allVals, /* qqq : for Yevhen : cover */
+  _vals : _.props._vals, /* qqq : for junior : cover */
+  vals : _.props.vals, /* qqq : for junior : cover */
+  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for junior : cover */
+  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  allVals : _.props.allVals, /* qqq : for junior : cover */
 
-  _pairs : _.props._pairs, /* qqq : for Yevhen : cover */
-  pairs : _.props.pairs, /* qqq : for Yevhen : cover */
-  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for Yevhen : cover */
-  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
-  allPairs : _.props.allPairs, /* qqq : for Yevhen : cover */
+  _pairs : _.props._pairs, /* qqq : for junior : cover */
+  pairs : _.props.pairs, /* qqq : for junior : cover */
+  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for junior : cover */
+  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  allPairs : _.props.allPairs, /* qqq : for junior : cover */
 
   // amender
 

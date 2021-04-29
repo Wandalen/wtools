@@ -428,7 +428,6 @@ function error_functor( name, onErrorMake )
           break;
         }
 
-        debugger;
         if( err1 )
         return ErrorConstructor.apply( err1, arguments );
         return new ErrorConstructor( ... arguments );

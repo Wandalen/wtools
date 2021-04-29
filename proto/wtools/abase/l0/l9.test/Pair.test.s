@@ -296,7 +296,7 @@ function construct( test )
 const Proto =
 {
 
-  name : 'Tools.Pair',
+  name : 'Tools.Pair.l0.l9',
   silencing : 1,
 
   tests :

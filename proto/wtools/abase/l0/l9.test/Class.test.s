@@ -350,7 +350,7 @@ function methodEqualOf( test )
 const Proto =
 {
 
-  name : 'Tools.Class',
+  name : 'Tools.Class.l0.l9',
   silencing : 1,
 
   tests :

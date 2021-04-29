@@ -6,7 +6,8 @@
 
 if( typeof module !== 'undefined' )
 {
-  module[ 'exports' ] = require( './Include9.s' );
+  module[ 'exports' ] = require( './Include7.s' );
+  require( './l8/Setup.s' );
 }
 
 })();

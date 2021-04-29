@@ -1562,7 +1562,7 @@ function entityEach( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.object.is( src ) )
+    if( _.object.isBasic( src ) )
     got = src;
     else
     got += 10;
@@ -2102,7 +2102,7 @@ function entityEachOwn( test )
   test.case = 'Third argument in onEach'
   var onEach = function( v, k, src )
   {
-    if( _.object.is( src ) )
+    if( _.object.isBasic( src ) )
     got = src;
     else
     got += 10;
@@ -21909,7 +21909,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -21917,7 +21917,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -21965,7 +21965,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -21973,7 +21973,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -21994,7 +21994,7 @@ function remap( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remap( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22002,7 +22002,7 @@ function remap( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remap( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22160,7 +22160,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22168,7 +22168,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22216,7 +22216,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22224,7 +22224,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22245,7 +22245,7 @@ function remapExtending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapExtending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22253,7 +22253,7 @@ function remapExtending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapExtending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22427,7 +22427,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22435,7 +22435,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22483,7 +22483,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22491,7 +22491,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22512,7 +22512,7 @@ function remapSupplementing( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapSupplementing( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22520,7 +22520,7 @@ function remapSupplementing( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapSupplementing( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22694,7 +22694,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22702,7 +22702,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22750,7 +22750,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22758,7 +22758,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22779,7 +22779,7 @@ function remapAppending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapAppending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22787,7 +22787,7 @@ function remapAppending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapAppending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -22961,7 +22961,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -22969,7 +22969,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23017,7 +23017,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23025,7 +23025,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src, ( e, k ) => e );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -23046,7 +23046,7 @@ function remapPrepending( test )
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.remapPrepending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - array';
@@ -23054,7 +23054,7 @@ function remapPrepending( test )
   var src = [ 'a', 'b', 'c' ];
   var got = _.remapPrepending( src, ( e, k ) => k );
   test.true( src !== got );
-  test.identical( _.entityLengthOf( got ), _.entityLengthOf( src ) );
+  test.identical( _.entity.lengthOf( got ), _.entity.lengthOf( src ) );
   test.identical( got, exp );
 
   test.case = 'src - str';
@@ -25067,7 +25067,7 @@ function swapsCount( test )
 const Proto =
 {
 
-  name : 'Tools.Functional',
+  name : 'Tools.Functional.l0.l9',
   silencing : 1,
   enabled : 1,
 

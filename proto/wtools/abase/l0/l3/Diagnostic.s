@@ -16,6 +16,8 @@ function objectMake( o )
   let result;
 
   _.assert( arguments.length === 1 );
+  _.aux.supplement( o, objectMake.defaults );
+
   countableConstructorPure.prototype = Object.create( null );
   if( o.withConstructor )
   countableConstructorPure.prototype.constructor = countableConstructorPure;
@@ -101,11 +103,11 @@ function objectMake( o )
 
 objectMake.defaults =
 {
-  new : 0,
+  new : 1,
   pure : 0,
-  withIterator : 0,
+  withIterator : 1,
   withOwnConstructor : 0,
-  withConstructor : 0,
+  withConstructor : 1,
   elements : null,
 }
 

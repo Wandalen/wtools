@@ -8,7 +8,9 @@ const _ = _global_.wTools;
 
 _.assert( !!_.props._aptLeft, 'Expects routine props._aptLeft' );
 
-//
+// --
+// equaler
+// --
 
 /**
  * The long.identicalShallow() routine checks the equality of two arrays.
@@ -26,7 +28,6 @@ _.assert( !!_.props._aptLeft, 'Expects routine props._aptLeft' );
  * @namespace Tools
  */
 
-/* xxx : vector? */
 /* qqq : extend test */
 function identicalShallow( src1, src2, o )
 {
@@ -63,43 +64,6 @@ function _identicalShallow( src1, src2 )
 //
 // --
 
-function exportStringShallowCode( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.primitive.is( src ) );
-
-  if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowCode( src );
-
-  if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowCode( src );
-
-  if( _.strIs( src ) )
-  return `'${src}'`;
-
-  return String( src );
-}
-
-//
-
-function exportStringShallowDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.primitive.is( src ) );
-
-  if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowDiagnostic( src );
-
-  if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowDiagnostic( src );
-
-  return String( src );
-}
-
-// --
-// exporter
-// --
-
 function exportStringShallowDiagnostic( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
@@ -108,7 +72,7 @@ function exportStringShallowDiagnostic( src )
 }
 
 // --
-// container interface
+// inspector
 // --
 
 function _lengthOf( src )
@@ -176,7 +140,28 @@ function keyWithCardinal( src, cardinal )
   return this._keyWithCardinal( src, cardinal );
 }
 
+// --
+// editor
+// --
+
+function _empty( dst )
+{
+  throw _.err( `${this.TypeName} has fixed length` );
+  return false;
+}
+
 //
+
+function empty( dst )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( this.like( dst ) );
+  return this._empty( dst );
+}
+
+// --
+// elementor
+// --
 
 function _elementWithKey( src, key )
 {
@@ -274,6 +259,7 @@ function elementWithCardinalSet( src, cardinal, val )
 
 function _elementWithKeyDel( src, key )
 {
+  throw _.err( `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -290,6 +276,7 @@ function elementWithKeyDel( src, key )
 
 function _elementWithCardinalDel( src, cardinal )
 {
+  throw _.err( `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -302,23 +289,9 @@ function elementWithCardinalDel( src, cardinal )
   return this._elementWithCardinalDel( src, cardinal, val );
 }
 
-//
-
-function _empty( dst )
-{
-  throw _.err( 'Arguments array is non-muttable' );
-}
-
-//
-
-function empty( dst )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( this.like( dst ) );
-  return this._empty( dst );
-}
-
-//
+// --
+// iterator
+// --
 
 function _eachLeft( src, onEach )
 {
@@ -434,17 +407,23 @@ var ArgumentsArrayExtension =
   exportStringDiagnostic : exportStringShallowDiagnostic,
   exportStringCode : exportStringShallowDiagnostic,
 
-  // container interface
+  // inspector
 
   _lengthOf,
   lengthOf, /* qqq : cover */
-
   _hasKey,
   hasKey, /* qqq : cover */
   _hasCardinal,
   hasCardinal, /* qqq : cover */
   _keyWithCardinal,
   keyWithCardinal, /* qqq : cover */
+
+  // editor
+
+  _empty,
+  empty, /* qqq : for Yevhen : cover */
+
+  // elementor
 
   _elementGet : _elementWithKey,
   elementGet : elementWithKey, /* qqq : cover */
@@ -468,8 +447,8 @@ var ArgumentsArrayExtension =
   elementWithKeyDel, /* qqq : cover */
   _elementWithCardinalDel,
   elementWithCardinalDel,  /* qqq : cover */
-  _empty,
-  empty, /* qqq : for Yevhen : cover */
+
+  // iterator
 
   _each : _eachLeft,
   each : eachLeft, /* qqq : cover */

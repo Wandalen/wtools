@@ -6,7 +6,7 @@
 const _global = _global_;
 const _ = _global_.wTools;
 _.set = _.set || Object.create( null );
-_.set.s = _.set.s || Object.create( null );
+_.set.s = _.set.s || Object.create( null ); /* qqq : xxx : ask */
 
 // --
 // implementation
@@ -195,6 +195,7 @@ let SetExtension =
   //
 
   NamespaceName : 'set',
+  NamespaceQname : 'wTools/set',
   TypeName : 'Set',
   SecondTypeName : 'Set',
   InstanceConstructor : Set,

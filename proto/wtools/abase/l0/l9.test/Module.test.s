@@ -4633,6 +4633,48 @@ function experiment( test )
 
 experiment.experimental = 1;
 
+//
+
+function requireThirdPartyModule( test )
+{
+  let a = test.assetFor( false );
+
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } });
+
+  let structure = { dependencies : { chalk : '4.1.1' } };
+  a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : structure, encoding : 'json' });
+
+  /* */
+
+  a.shell( `npm i --production` )
+  a.appStartNonThrowing({ execPath : programRoutine1Path })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    test.identical( _.strCount( op.output, 'programRoutine1.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'programRoutine1.end' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function programRoutine1()
+  {
+    console.log( 'programRoutine1.begin' )
+
+    require( _ToolsPath_ );
+    require( 'chalk' );
+
+    console.log( 'programRoutine1.end' )
+  }
+
+}
+
 // --
 // test suite definition
 // --
@@ -4640,7 +4682,7 @@ experiment.experimental = 1;
 const Proto =
 {
 
-  name : 'Tools.Module',
+  name : 'Tools.Module.l0.l9',
   silencing : 1,
   routineTimeOut : 30000,
 
@@ -4690,6 +4732,8 @@ const Proto =
     localPathAssumption,
     globalPathAssumption,
     experiment,
+
+    requireThirdPartyModule
 
   }
 

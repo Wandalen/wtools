@@ -195,7 +195,7 @@ function dichotomy( test )
   test.case = 'from pure with iterator';
   var src = Object.create( null );
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.is( src ), true );
 
   test.case = 'empty polluted map';
   var src = {};
@@ -212,7 +212,7 @@ function dichotomy( test )
   test.case = 'from polluted with iterator';
   var src = {};
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.aux.is( src ), true );
 
   test.case = 'new object';
   var src = new Object();
@@ -225,6 +225,18 @@ function dichotomy( test )
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
+  test.identical( _.aux.is( src ), true );
+
+  test.case = 'prototyped from pure map with iterator in prototype';
+  var prototype = Object.create( null );
+  prototype[ Symbol.iterator ] = function(){}
+  var src = Object.create( prototype );
+  test.identical( _.aux.is( src ), false );
+
+  test.case = 'prototyped from pure map with iterator in prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  src[ Symbol.iterator ] = function(){}
   test.identical( _.aux.is( src ), true );
 
   test.case = 'prototyped from pure map deep';
@@ -252,6 +264,18 @@ function dichotomy( test )
   prototype.constructor = function(){}
   var src = Object.create( prototype );
   test.identical( _.aux.is( src ), false );
+
+  test.case = 'prototyped from polluted map with iterator in prototype';
+  var prototype = {};
+  prototype[ Symbol.iterator ] = function(){}
+  var src = Object.create( prototype );
+  test.identical( _.aux.is( src ), false );
+
+  test.case = 'prototyped from polluted map with iterator in prototype';
+  var prototype = {};
+  var src = Object.create( prototype );
+  src[ Symbol.iterator ] = function(){}
+  test.identical( _.aux.is( src ), true );
 
   test.case = 'prototyped from polluted map deep';
   var prototype1 = {};
@@ -884,7 +908,7 @@ function pairs( test )
   // var got = _.aux.pairs( arrObj );
   // var expected = [ [ 'k', 1 ] ];
   // test.identical( got, expected );
-  // 
+  //
   // test.case = 'src - Date object';
   // var got = _.aux.pairs( new Date );
   // var expected = [];
@@ -1125,7 +1149,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Auxiliary.l1',
+  name : 'Tools.Auxiliary.l0.l1',
   silencing : 1,
 
   tests :

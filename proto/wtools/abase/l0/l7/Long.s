@@ -675,15 +675,15 @@ function longFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
+  _.assert( _.routine.is( this.tools.defaultLong.from ) );
 
   debugger;
 
   if( numberOfSteps === 0 )
-  return this.tools./*longDescriptor*/defaultLong.from();
+  return this.tools.defaultLong.from();
 
   if( numberOfSteps === 1 )
-  return this.tools./*longDescriptor*/defaultLong.from([ progression[ 0 ] ]);
+  return this.tools.defaultLong.from([ progression[ 0 ] ]);
 
   let range = [ progression[ 0 ], progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ];
   let step = ( range[ 1 ]-range[ 0 ] ) / ( numberOfSteps-1 );
@@ -701,11 +701,11 @@ function longFromRangeWithStep( range, step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
+  _.assert( _.routine.is( this.tools.defaultLong.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
-  return this.tools./*longDescriptor*/defaultLong.make();
-  // return this.tools./*longDescriptor*/defaultLong.from();
+  return this.tools.defaultLong.make();
+  // return this.tools.defaultLong.from();
 
   if( range[ 0 ] < range[ 1 ] )
   {
@@ -716,7 +716,7 @@ function longFromRangeWithStep( range, step )
     _.assert( step > 0 );
 
     // debugger;
-    result = this.tools./*longDescriptor*/defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+    result = this.tools.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
 
     let i = 0;
     while( range[ 0 ] < range[ 1 ] )
@@ -735,8 +735,8 @@ function longFromRangeWithStep( range, step )
 
     _.assert( step < 0 );
 
-    // result = this.tools./*longDescriptor*/defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
-    result = this.tools./*longDescriptor*/defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
+    // result = this.tools.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
+    result = this.tools.defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )
@@ -760,13 +760,13 @@ function longFromRangeWithNumberOfSteps( range, numberOfSteps )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( _.routine.is( this.tools./*longDescriptor*/defaultLong.from ) );
+  _.assert( _.routine.is( this.tools.defaultLong.from ) );
 
   if( numberOfSteps === 0 )
-  return this.tools./*longDescriptor*/defaultLong.from();
+  return this.tools.defaultLong.from();
 
   if( numberOfSteps === 1 )
-  return this.tools./*longDescriptor*/defaultLong.from( range[ 0 ] );
+  return this.tools.defaultLong.from( range[ 0 ] );
 
   let step;
 
@@ -917,7 +917,7 @@ function longOnlyWithIndices( srcArray, indicesArray )
 {
   let scalarsPerElement = 1;
 
-  if( _.object.is( indicesArray ) )
+  if( _.object.isBasic( indicesArray ) )
   {
     scalarsPerElement = indicesArray.scalarsPerElement || 1;
     indicesArray = indicesArray.indices;
@@ -1295,7 +1295,7 @@ function longSort( dstLong, srcLong, onEvaluate )
   if( dstLong === null )
   dstLong = _.array.make( srcLong );
   if( _.argumentsArray.is( dstLong ) ) // Dmytro : missed
-  dstLong = this.tools./*longDescriptor*/defaultLong.from( dstLong );
+  dstLong = this.tools.defaultLong.from( dstLong );
 
   if( onEvaluate === undefined )
   {

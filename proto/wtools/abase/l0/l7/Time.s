@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 
 // --
 // implementation
@@ -45,7 +44,7 @@ function once( delay, onBegin, onEnd )
     onEnd : null,
   }
 
-  if( _.object.is( delay ) )
+  if( _.object.isBasic( delay ) )
   {
     options = delay;
     _.assert( arguments.length === 1, 'Expects single argument' );
@@ -61,8 +60,8 @@ function once( delay, onBegin, onEnd )
 
   // _.assert( 0, 'not tested' );
   _.assert( delay >= 0 );
-  _.assert( _.primitive.is( onBegin ) || _.routine.is( onBegin ) || _.object.is( onBegin ) );
-  _.assert( _.primitive.is( onEnd ) || _.routine.is( onEnd ) || _.object.is( onEnd ) );
+  _.assert( _.primitive.is( onBegin ) || _.routine.is( onBegin ) || _.object.isBasic( onBegin ) );
+  _.assert( _.primitive.is( onEnd ) || _.routine.is( onEnd ) || _.object.isBasic( onEnd ) );
 
   return function once()
   {
@@ -77,7 +76,7 @@ function once( delay, onBegin, onEnd )
     if( onBegin )
     {
       if( _.routine.is( onBegin ) ) onBegin.apply( this, arguments );
-      else if( _.object.is( onBegin ) ) onBegin.take( arguments );
+      else if( _.object.isBasic( onBegin ) ) onBegin.take( arguments );
       if( con )
       con.take( null );
     }
@@ -88,7 +87,7 @@ function once( delay, onBegin, onEnd )
       if( onEnd )
       {
         if( _.routine.is( onEnd ) ) onEnd.apply( this, arguments );
-        else if( _.object.is( onEnd ) ) onEnd.take( arguments );
+        else if( _.object.isBasic( onEnd ) ) onEnd.take( arguments );
         if( con )
         con.take( null );
       }
@@ -164,20 +163,11 @@ debounce.defaults =
   immediate : false
 }
 
-
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
-// implementation
+// declaration
 // --
 
-let Routines =
+let TimeExtension =
 {
 
   rarely_functor, /* check */
@@ -189,7 +179,6 @@ let Routines =
 
 //
 
-_.props.supplement( Self, Fields );
-_.props.supplement( Self, Routines );
+_.props.supplement( _.time, TimeExtension );
 
 })();

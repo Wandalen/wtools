@@ -901,7 +901,7 @@ function areInt( test )
 const Proto =
 {
 
-  name : 'Tools.Number.l1',
+  name : 'Tools.Number.l0.l1',
   silencing : 1,
   enabled : 1,
 

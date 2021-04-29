@@ -186,7 +186,7 @@ function checks( test ) /* qqq for Yevhen : enable and extend ( file Global.test
 const Proto =
 {
 
-  name : 'Tools.Global',
+  name : 'Tools.Global.l0.l9',
   silencing : 1,
 
   tests :

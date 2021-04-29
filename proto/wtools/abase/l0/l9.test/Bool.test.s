@@ -587,7 +587,7 @@ function fromForce( test )
 const Proto =
 {
 
-  name : 'Tools.Bool',
+  name : 'Tools.Bool.l0.l9',
   silencing : 1,
   enabled : 1,
 

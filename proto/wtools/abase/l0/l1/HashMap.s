@@ -225,6 +225,7 @@ let Extension =
   //
 
   NamespaceName : 'hashMap',
+  NamespaceQname : 'wTools/hashMap',
   TypeName : 'HashMap',
   SecondTypeName : 'Map',
   InstanceConstructor : HashMap,

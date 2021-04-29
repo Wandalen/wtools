@@ -2333,7 +2333,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Props.l1',
+  name : 'Tools.Props.l0.l1',
   silencing : 1,
 
   tests :

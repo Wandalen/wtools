@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include9_s_()
+( function _Include7_s_()
 {
 
 'use strict';
@@ -63,8 +63,6 @@ if( typeof module !== 'undefined' )
   require( './l7/Units.s' );
   require( './l7/Unroll.s' );
   require( './l7/Vector.s' );
-
-  require( './l8/Setup.s' );
 
 }
 

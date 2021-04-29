@@ -987,7 +987,7 @@ function has( test )
 const Proto =
 {
 
-  name : 'Tools.Prototype',
+  name : 'Tools.Prototype.l0.l9',
   silencing : 1,
 
   tests :

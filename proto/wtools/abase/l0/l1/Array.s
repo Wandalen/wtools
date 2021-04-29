@@ -230,9 +230,10 @@ Object.assign( _, ToolsExtension );
 let ArrayExtension =
 {
 
-  //
+  // fields
 
   NamespaceName : 'array',
+  NamespaceQname : 'wTools/array',
   TypeName : 'Array',
   SecondTypeName : 'Array',
   InstanceConstructor : Array,

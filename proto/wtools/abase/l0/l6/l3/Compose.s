@@ -5,45 +5,31 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.compose = _global_.wTools.compose || Object.create( null );
+// _global_.wTools.compose = _global_.wTools.compose || Object.create( null );
+_.routine.chainer = _.routine.chainer || Object.create( null );
+_.routine.tail = _.routine.tail || Object.create( null );
 
 // --
 // chainer
 // --
 
-function originaChainer( /* args, result, op, k */ )
+function originalChainer( /* args, result, fo, k */ )
 {
   let args = arguments[ 0 ];
   let result = arguments[ 1 ];
-  let op = arguments[ 2 ];
+  let fo = arguments[ 2 ];
   let k = arguments[ 3 ];
-
   _.assert( result !== false );
   return args;
 }
 
 //
 
-function originalWithDontChainer( /* args, result, op, k */ )
+function originalWithDontChainer( /* args, result, fo, k */ )
 {
   let args = arguments[ 0 ];
   let result = arguments[ 1 ];
-  let op = arguments[ 2 ];
-  let k = arguments[ 3 ];
-
-  _.assert( result !== false );
-  if( result === _.dont )
-  return _.dont;
-  return args;
-}
-
-//
-
-function composeAllChainer( /* args, result, op, k */ )
-{
-  let args = arguments[ 0 ];
-  let result = arguments[ 1 ];
-  let op = arguments[ 2 ];
+  let fo = arguments[ 2 ];
   let k = arguments[ 3 ];
 
   _.assert( result !== false );
@@ -54,11 +40,26 @@ function composeAllChainer( /* args, result, op, k */ )
 
 //
 
-function chainingChainer( /* args, result, op, k */ )
+function composeAllChainer( /* args, result, fo, k */ )
 {
   let args = arguments[ 0 ];
   let result = arguments[ 1 ];
-  let op = arguments[ 2 ];
+  let fo = arguments[ 2 ];
+  let k = arguments[ 3 ];
+
+  _.assert( result !== false );
+  if( result === _.dont )
+  return _.dont;
+  return args;
+}
+
+//
+
+function chainingChainer( /* args, result, fo, k */ )
+{
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let fo = arguments[ 2 ];
   let k = arguments[ 3 ];
 
   _.assert( result !== false );
@@ -70,15 +71,17 @@ function chainingChainer( /* args, result, op, k */ )
 }
 
 // --
-// supervisor
+// tail
 // --
 
-function returningLastSupervisor( /* self, args, act, op */ )
+function returningLastTail( args, fo )
 {
-  let self = arguments[ 0 ];
-  let args = arguments[ 1 ];
-  let act = arguments[ 2 ];
-  let op = arguments[ 3 ];
+  // let self = arguments[ 0 ];
+  // let args = arguments[ 1 ];
+  // let act = arguments[ 2 ];
+  // let fo = arguments[ 3 ];
+  let self = this;
+  let act = fo.act;
 
   let result = act.apply( self, args );
   return result[ result.length-1 ];
@@ -86,12 +89,14 @@ function returningLastSupervisor( /* self, args, act, op */ )
 
 //
 
-function composeAllSupervisor( /* self, args, act, op */ )
+function composeAllTail( args, fo )
 {
-  let self = arguments[ 0 ];
-  let args = arguments[ 1 ];
-  let act = arguments[ 2 ];
-  let op = arguments[ 3 ];
+  // let self = arguments[ 0 ];
+  // let args = arguments[ 1 ];
+  // let act = arguments[ 2 ];
+  // let fo = arguments[ 3 ];
+  let self = this;
+  let act = fo.act;
 
   let result = act.apply( self, args );
   _.assert( !!result );
@@ -106,12 +111,14 @@ function composeAllSupervisor( /* self, args, act, op */ )
 
 //
 
-function chainingSupervisor( /* self, args, act, op */ )
+function chainingTail( args, fo )
 {
-  let self = arguments[ 0 ];
-  let args = arguments[ 1 ];
-  let act = arguments[ 2 ];
-  let op = arguments[ 3 ];
+  // let self = arguments[ 0 ];
+  // let args = arguments[ 1 ];
+  // let act = arguments[ 2 ];
+  // let fo = arguments[ 3 ];
+  let self = this;
+  let act = fo.act;
 
   let result = act.apply( self, args );
   if( result[ result.length-1 ] === _.dont )
@@ -125,32 +132,36 @@ function chainingSupervisor( /* self, args, act, op */ )
 
 let chainer =
 {
-  original : originaChainer,
+  original : originalChainer,
   originalWithDont : originalWithDontChainer,
   composeAll : composeAllChainer,
   chaining : chainingChainer,
 }
 
-let supervisor =
+Object.assign( _.routine.chainer, chainer );
+
+let tail =
 {
-  returningLast : returningLastSupervisor,
-  composeAll : composeAllSupervisor,
-  chaining : chainingSupervisor,
+  returningLast : returningLastTail,
+  composeAll : composeAllTail,
+  chaining : chainingTail,
 }
+
+Object.assign( _.routine.tail, tail );
 
 // --
 // extend
 // --
 
-let Extension =
-{
-
-  chainer,
-  supervisor
-
-}
-
-Object.assign( Self, Extension );
-/* xxx : qqq : remove */
+// let Extension =
+// {
+//
+//   chainer,
+//   supervisor
+//
+// }
+//
+// Object.assign( Self, Extension );
+// /* xxx : qqq : remove */
 
 })();

@@ -41,7 +41,7 @@ structureGenerate.timeOut = 50000;
 const Proto =
 {
 
-  name : 'Tools.Diagnostic',
+  name : 'Tools.Diagnostic.l0.l9',
   silencing : 1,
   enabled : 1,
 

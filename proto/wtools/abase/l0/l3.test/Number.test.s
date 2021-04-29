@@ -466,7 +466,7 @@ function equivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not opti
 const Proto =
 {
 
-  name : 'Tools.Number.l3',
+  name : 'Tools.Number.l0.l3',
   silencing : 1,
   enabled : 1,
 

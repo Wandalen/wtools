@@ -372,7 +372,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.Array.l3',
+  name : 'Tools.Array.l0.l3',
   silencing : 1,
   enabled : 1,
 

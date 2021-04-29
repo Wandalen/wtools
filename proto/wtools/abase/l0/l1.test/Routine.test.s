@@ -19,6 +19,7 @@ const __ = _globals_.testing.wTools;
 
 function is( test )
 {
+
   test.case = 'without argument';
   var got = _.routine.is();
   test.identical( got, false );
@@ -685,7 +686,7 @@ function constructorJoin( test )
     var result =
     {
       context : this,
-      args : _.longSlice( arguments )
+      args : Array.prototype.slice.call( arguments )
     }
     return result;
   }
@@ -2895,8 +2896,8 @@ function routineExtend( test )
   // test.equivalent( got.c, {} );
   // test.identical
   // (
-  //   _.mapBut_( null, _.props.onlyExplicit( got.c ), [ '__proto__' ] ),
-  //   _.mapBut_( null, _.props.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
+  //   __.mapBut_( null, _.props.onlyExplicit( got.c ), [ '__proto__' ] ),
+  //   __.mapBut_( null, _.props.onlyExplicit( Object.create( null ) ), [ '__proto__' ] )
   // );
   // test.identical( typeof got, 'function' );
   /* qqq : for Dmytro : bad : dont use routines from modules as test assets */
@@ -2995,7 +2996,7 @@ function routineExtend( test )
       'strategy' : 'replacing',
     }
   }
-  test.identical( _.mapBut_( null, _.routine.unite, [ 'body', 'head' ] ), exp );
+  test.identical( __.mapBut_( null, _.routine.unite, [ 'body', 'head' ] ), exp );
 
   if( !Config.debug )
   return;
@@ -3551,7 +3552,7 @@ function uniteBasic( test )
   var tailUseOptions = ( result, o ) =>
   {
     result[ 0 ] += 1;
-    _.arrayAppend( result, o );
+    __.arrayAppend( result, o );
     return result;
   }
 
@@ -3621,7 +3622,7 @@ function uniteBasic( test )
   var tailUseOptions = ( result, o ) =>
   {
     result[ 0 ] += 1;
-    _.arrayAppend( result, o );
+    __.arrayAppend( result, o );
     return result;
   }
 
@@ -3883,13 +3884,177 @@ function uniteWithNumberInsteadOfHead( test )
 }
 
 // --
+// etc
+// --
+
+function composeBasic( test )
+{
+
+  /* - */
+
+  test.case = 'empty';
+
+  var counter = 0;
+  var routines = [];
+  var composition = _.routine.s.compose( routines );
+  var got = composition( 1, 2, 3 );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( counter, 0 );
+
+  /* - */
+
+  test.open( 'unrolling:1' )
+
+  /* */
+
+  test.case = 'without chainer';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, r2, null ];
+  var composition = _.routine.s.compose( routines );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 128 ];
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  /* */
+
+  test.case = 'with chainer';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, r2, null ];
+  var composition = _.routine.s.compose( routines, chainer1 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 160 ];
+  test.identical( got, expected );
+  test.identical( counter, 160 );
+
+  /* */
+
+  test.case = 'with chainer and break';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
+  var composition = _.routine.s.compose( routines, chainer1 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, _.dont ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  /* */
+
+  test.close( 'unrolling:1' )
+
+  /* - */
+
+  test.open( 'unrolling:0' )
+
+  /* */
+
+  test.case = 'without chainer';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, r2, null ];
+  var composition = _.routine.s.compose( routines );
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], 128 ];
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  /* */
+
+  test.case = 'with chainer';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, r2, null ];
+  var composition = _.routine.s.compose( routines, chainer1 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], 160 ];
+  test.identical( got, expected );
+  test.identical( counter, 160 );
+
+  /* */
+
+  test.case = 'with chainer and break';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
+  var composition = _.routine.s.compose( routines, chainer1 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], _.dont ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  /* */
+
+  test.close( 'unrolling:0' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll() );
+  test.shouldThrowErrorSync( () => _.routine.s.composeAll( routines, function(){}, function(){} ) );
+
+  /* - */
+
+  function routineUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    return _.unrollAppend( _.unroll.make( null ), _.unroll.make( arguments ), counter );
+  }
+
+  function routineNotUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    let result = __.arrayAppendArrays( null, arguments );
+    return __.arrayAppend( result, counter );
+  }
+
+  function r2()
+  {
+    counter += 100;
+    debugger;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function _break()
+  {
+    return _.dont;
+  }
+
+  function chainer1( /* args, result, o, k */ )
+  {
+    let args = arguments[ 0 ];
+    let result = arguments[ 1 ];
+    let o = arguments[ 2 ];
+    let k = arguments[ 3 ];
+    debugger;
+    if( result !== _.dont )
+    return _.unroll.as( result );
+    return result;
+  }
+
+}
+
+// --
 //
 // --
 
 const Proto =
 {
 
-  name : 'Tools.Routine.l1',
+  name : 'Tools.Routine.l0.l1',
   silencing : 1,
 
   tests :
@@ -3917,7 +4082,7 @@ const Proto =
     assertOptionsWithoutUndefined, /* qqq : make templating test subroutine act() */
     assertOptionsWithUndefined, /* qqq : make templating test subroutine act() */
 
-    //
+    // amend
 
     /* routineExtend_old, */
     routineExtend,
@@ -3925,9 +4090,16 @@ const Proto =
     extendBodyInstanicing,
     extendThrowing,
     routineDefaults,
+
+    // unite
+
     uniteBasic,
     uniteInstancing,
     uniteWithNumberInsteadOfHead,
+
+    // etc
+
+    composeBasic,
 
   }
 

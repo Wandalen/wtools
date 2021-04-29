@@ -124,7 +124,7 @@ function searchFirstIndex( test )
 const Proto =
 {
 
-  name : 'Tools.Sorted',
+  name : 'Tools.Sorted.l0.l9',
   silencing : 1,
 
   tests :

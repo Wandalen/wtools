@@ -46,25 +46,25 @@ function exportStringShallowDiagnostic( test )
   test.identical( got, expected );
 
   test.case = 'vector & vectorLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var expected = '{- countableConstructor.countable with 2 elements -}';
   var got = _.object.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = 'countable & countableLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
   var got = _.object.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var expected = '{- Object.countable with 0 elements -}';
   var got = _.object.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var expected = '{- Object.countable with 3 elements -}';
   var got = _.object.exportStringShallowDiagnostic( src );
   test.identical( got, expected );
@@ -206,7 +206,7 @@ function identicalShallow( test )
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.object.identicalShallow( {}, {}, 'redundant argument' );
+    _.object.identicalShallow( {}, {}, {}, 'redundant argument' );
   });
 
 }
@@ -352,7 +352,7 @@ function aptRightBlank( test )
 const Proto =
 {
 
-  name : 'Tools.Object.l3',
+  name : 'Tools.Object.l0.l3',
   silencing : 1,
 
   tests :

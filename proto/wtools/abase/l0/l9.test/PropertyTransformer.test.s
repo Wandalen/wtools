@@ -1475,7 +1475,7 @@ function transformersUnregister( test )
 const Proto =
 {
 
-  name : 'Tools.PropertyTransformer',
+  name : 'Tools.PropertyTransformer.l0.l9',
   silencing : 1,
 
   tests :

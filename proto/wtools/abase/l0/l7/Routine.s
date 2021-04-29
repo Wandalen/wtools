@@ -83,7 +83,7 @@ routinesComposeReturningLast.head = _.routine.s.compose.head;
 routinesComposeReturningLast.body = _.routine.s.compose.body;
 routinesComposeReturningLast.defaults = Object.create( _.routine.s.compose.defaults );
 
-routinesComposeReturningLast.defaults.supervisor = _.compose.supervisor.returningLast;
+routinesComposeReturningLast.defaults.tail = _.routine.tail.returningLast;
 
 function routinesComposeAll()
 {
@@ -96,11 +96,11 @@ routinesComposeAll.head = _routinesComposeWithSingleArgument_head;
 routinesComposeAll.body = _.routine.s.compose.body;
 
 var defaults = routinesComposeAll.defaults = Object.create( _.routine.s.compose.defaults );
-defaults.chainer = _.compose.chainer.composeAll;
-defaults.supervisor = _.compose.supervisor.composeAll;
+defaults.chainer = _.routine.chainer.composeAll;
+defaults.tail = _.routine.tail.composeAll;
 
-_.assert( _.routine.is( _.compose.chainer.originalWithDont ) );
-_.assert( _.routine.is( _.compose.supervisor.composeAll ) );
+_.assert( _.routine.is( _.routine.chainer.originalWithDont ) );
+_.assert( _.routine.is( _.routine.tail.composeAll ) );
 
 //
 
@@ -115,8 +115,8 @@ routinesComposeAllReturningLast.head = _routinesComposeWithSingleArgument_head;
 routinesComposeAllReturningLast.body = _.routine.s.compose.body;
 
 var defaults = routinesComposeAllReturningLast.defaults = Object.create( _.routine.s.compose.defaults );
-defaults.chainer = _.compose.chainer.originalWithDont;
-defaults.supervisor = _.compose.supervisor.returningLast;
+defaults.chainer = _.routine.chainer.originalWithDont;
+defaults.tail = _.routine.tail.returningLast;
 
 //
 
@@ -131,8 +131,8 @@ routinesChain.head = _routinesComposeWithSingleArgument_head;
 routinesChain.body = _.routine.s.compose.body;
 
 var defaults = routinesChain.defaults = Object.create( _.routine.s.compose.defaults );
-defaults.chainer = _.compose.chainer.chaining;
-defaults.supervisor = _.compose.supervisor.chaining;
+defaults.chainer = _.routine.chainer.chaining;
+defaults.tail = _.routine.tail.chaining;
 
 //
 

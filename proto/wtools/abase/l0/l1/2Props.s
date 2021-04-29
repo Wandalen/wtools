@@ -39,7 +39,7 @@ function _makeEmpty( src )
   return _.map._makeEmpty( src );
   if( _.aux.is( src ) )
   return _.aux._makeEmpty( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._makeEmpty( src );
 
   _.assert( 0 );
@@ -63,7 +63,7 @@ function _makeUndefined( src, length )
   return _.map._makeUndefined( src );
   if( _.aux.is( src ) )
   return _.aux._makeUndefined( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._makeUndefined( src );
 
   _.assert( 0 );
@@ -87,7 +87,7 @@ function _make( src )
   return _.map._make( src );
   if( _.aux.is( src ) )
   return _.aux._make( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._make( src );
 
   _.assert( 0 );
@@ -115,7 +115,7 @@ function _cloneShallow( src )
   return _.map._cloneShallow( src );
   if( _.aux.is( src ) )
   return _.aux._cloneShallow( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._cloneShallow( src );
 
   let method = _.class.methodCloneShallowOf( src );
@@ -1850,6 +1850,7 @@ let PropsExtension =
   //
 
   NamespaceName : 'props',
+  NamespaceQname : 'wTools/props',
   TypeName : 'Props',
   SecondTypeName : 'Properties',
   InstanceConstructor : null,

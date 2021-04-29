@@ -20,16 +20,20 @@ function is( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
 
   if( proto === Object.prototype )
-  return true;
+  {
+    if( src[ Symbol.iterator ] )
+    return Object.prototype.toString.call( src ) !== '[object Arguments]';
+    return true;
+  }
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
+  return false;
 
   if( !_.primitive.is( proto ) )
   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
@@ -38,13 +42,36 @@ function is( src )
   return false;
 }
 
+// function is( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto === Object.prototype )
+//   return true;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
+//
+//   return false;
+// }
+
 //
 
 function like( src )
 {
   return _.aux.is( src );
 }
-
 //
 
 function isPrototyped( src )
@@ -53,15 +80,15 @@ function isPrototyped( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return false;
 
   if( proto === Object.prototype )
+  return false;
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( !_.primitive.is( proto ) )
@@ -79,15 +106,15 @@ function isPure( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
 
   if( proto.constructor === Object )
+  return false;
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( !_.primitive.is( proto ) )
@@ -105,12 +132,19 @@ function isPolluted( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
+  return false;
+
+ if( proto === Object.prototype )
+ {
+   if( src[ Symbol.iterator ] )
+   return Object.prototype.toString.call( src ) !== '[object Arguments]';
+   return true;
+ }
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( proto.constructor === Object )
@@ -118,6 +152,80 @@ function isPolluted( src )
 
   return false;
 }
+
+// //
+//
+// function isPrototyped( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto === Object.prototype )
+//   return false;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPure( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto.constructor === Object )
+//   return false;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPolluted( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto.constructor === Object )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -146,8 +254,11 @@ function _makeEmpty( src )
   let result = Object.create( null );
   let src2 = _.prototype.of( src );
   while( src2 )
-  result = Object.create( result );
-  _.assert( 0, 'not tested' );
+  {
+    result = Object.create( result );
+    src2 = _.prototype.of( src2 );
+  }
+  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -166,7 +277,8 @@ function makeEmpty( src )
 function _makeUndefined( src, length )
 {
   let result = Object.create( null );
-  _.assert( 0, 'not tested' );
+  // debugger;
+  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -293,6 +405,7 @@ var AuxiliaryExtension =
   //
 
   NamespaceName : 'aux',
+  NamespaceQname : 'wTools/aux',
   TypeName : 'Aux',
   SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,
@@ -300,11 +413,11 @@ var AuxiliaryExtension =
 
   // dichotomy
 
-  is, /* qqq : cover */
-  like, /* qqq : cover */
-  isPrototyped, /* qqq : cover */
-  isPure, /* qqq : cover */
-  isPolluted, /* qqq : cover */
+  is,
+  like,
+  isPrototyped,
+  isPure,
+  isPolluted,
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */

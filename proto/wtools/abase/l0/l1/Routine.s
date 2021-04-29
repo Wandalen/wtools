@@ -5,10 +5,10 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
-let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
-let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
-/* qqq : for Yevhen : bad : remove vars */
+_.routine = _.routine || Object.create( null );
+_.routine.s = _.routines = _.routine.s || _.routines || Object.create( null );
+_.routine.chainer = _.routine.chainer || Object.create( null );
+_.routine.tail = _.routine.tail || Object.create( null );
 
 // --
 // routine
@@ -88,6 +88,13 @@ function __mapSupplementWithoutUndefined( dstMap, srcMap )
   }
 }
 
+__mapSupplementWithoutUndefined.meta = Object.create( null );
+__mapSupplementWithoutUndefined.meta.locals =
+{
+  __primitiveLike,
+  __strType,
+}
+
 //
 
 function __mapSupplementWithUndefined( dstMap, srcMap )
@@ -104,6 +111,31 @@ function __mapSupplementWithUndefined( dstMap, srcMap )
     continue;
     dstMap[ k ] = srcMap[ k ];
   }
+}
+
+__mapSupplementWithUndefined.meta = Object.create( null );
+__mapSupplementWithUndefined.meta.locals =
+{
+  __primitiveLike,
+  __strType,
+}
+
+//
+
+function __arrayFlatten( src )
+{
+  let result = [];
+  if( src === null )
+  return result;
+  for( let i = 0 ; i < src.length ; i++ )
+  {
+    let e = src[ i ];
+    if( _.array.is( e ) || _.argumentsArray.is( e ) )
+    result.push( ... e );
+    else
+    result.push( e );
+  }
+  return result;
 }
 
 // --
@@ -584,7 +616,7 @@ function optionsWithoutUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   if( options === null || options === undefined )
@@ -626,6 +658,15 @@ function optionsWithoutUndefined( routine, options )
   return options;
 }
 
+optionsWithoutUndefined.meta = Object.create( null );
+optionsWithoutUndefined.meta.locals =
+{
+  __mapButKeys,
+  __mapUndefinedKeys,
+  __keysQuote,
+  __mapSupplementWithoutUndefined,
+}
+
 //
 
 function assertOptionsWithoutUndefined( routine, options )
@@ -645,7 +686,7 @@ function assertOptionsWithoutUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   let name = routine.name || '';
@@ -686,6 +727,16 @@ function assertOptionsWithoutUndefined( routine, options )
   return options;
 }
 
+assertOptionsWithoutUndefined.meta = Object.create( null );
+assertOptionsWithoutUndefined.meta.locals =
+{
+  __mapButKeys,
+  __mapUndefinedKeys,
+  __keysQuote,
+  __primitiveLike,
+  __strType,
+}
+
 //
 
 function optionsWithUndefined( routine, options )
@@ -708,7 +759,7 @@ function optionsWithUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   if( options === null )
@@ -730,6 +781,13 @@ function optionsWithUndefined( routine, options )
   return options;
 }
 
+optionsWithUndefined.meta = Object.create( null );
+optionsWithUndefined.meta.locals =
+{
+  __keysQuote,
+  __mapSupplementWithUndefined,
+}
+
 //
 
 function assertOptionsWithUndefined( routine, options )
@@ -749,7 +807,7 @@ function assertOptionsWithUndefined( routine, options )
   {
     _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
     _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
-    _.assert( _.objectIs( options ) || options === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
   }
 
   let name = routine.name || '';
@@ -783,6 +841,14 @@ function assertOptionsWithUndefined( routine, options )
   return options;
 }
 
+assertOptionsWithUndefined.meta = Object.create( null );
+assertOptionsWithUndefined.meta.locals =
+{
+  __keysQuote,
+  __primitiveLike,
+  __strType,
+}
+
 //
 
 function _verifyDefaults( defaults )
@@ -799,142 +865,79 @@ function _verifyDefaults( defaults )
 
 }
 
-//
-
-function options_deprecated( routine, args, defaults )
+_verifyDefaults.meta = Object.create( null );
+_verifyDefaults.meta.locals =
 {
-
-  if( !_.argumentsArray.like( args ) )
-  args = [ args ];
-
-  let options = args[ 0 ];
-  if( options === undefined )
-  options = Object.create( null );
-
-  let name = routine ? routine.name : '';
-  defaults = defaults || ( routine ? routine.defaults : null );
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
-
-  if( Config.debug )
-  {
-    let extraKeys = __mapButKeys( options, defaults );
-    _.assert( extraKeys.length === 0, () => `Routine "${ name }" does not expect options: ${ __keysQuote( extraKeys ) }` );
-  }
-
-  __mapSupplementWithoutUndefined( options, defaults );
-
-  if( Config.debug )
-  {
-    let undefineKeys = __mapUndefinedKeys( options );
-    _.assert
-    (
-      undefineKeys.length === 0,
-      () => `Options map for routine "${ name }" should have no undefined fields, but it does have option::${ __keysQuote( undefineKeys ) } = undefined`
-    );
-  }
-
-  return options;
+  __primitiveLike,
+  __strType,
 }
 
+// //
 //
-
-function assertOptions_deprecated( routine, args, defaults )
-{
-
-  if( !_.argumentsArray.like( args ) )
-  args = [ args ];
-
-  let options = args[ 0 ];
-
-  defaults = defaults || ( routine ? routine.defaults : null );
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.aux.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
-
-  if( Config.debug )
-  {
-    let extraOptionsKeys = __mapButKeys( options, defaults );
-    _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ __keysQuote( extraOptionsKeys ) }` );
-    let extraDefaultsKeys = __mapButKeys( defaults, options );
-    _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ __keysQuote( extraDefaultsKeys ) }` );
-    let undefineKeys = __mapUndefinedKeys( options );
-    _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ __keysQuote( undefineKeys ) }` );
-  }
-
-  return options;
-
-  // /* */
-  //
-  // function __mapButKeys( srcMap, butMap )
-  // {
-  //   let result = [];
-  //
-  //   for( let s in srcMap )
-  //   if( !( s in butMap ) )
-  //   result.push( s );
-  //
-  //   return result;
-  // }
-  //
-  // /* */
-  //
-  // function __mapUndefinedKeys( srcMap )
-  // {
-  //   let result = [];
-  //
-  //   for( let s in srcMap )
-  //   if( srcMap[ s ] === undefined )
-  //   result.push( s );
-  //
-  //   return result;
-  // }
-  //
-  // /* */
-  //
-  // function __keysQuote( keys )
-  // {
-  //   let result = `"${ keys[ 0 ] }"`;
-  //   for( let i = 1 ; i < keys.length ; i++ )
-  //   result += `, "${ keys[ i ] }"`;
-  //   return result.trim();
-  // }
-}
+// function options_deprecated( routine, args, defaults )
+// {
+//
+//   if( !_.argumentsArray.like( args ) )
+//   args = [ args ];
+//
+//   let options = args[ 0 ];
+//   if( options === undefined )
+//   options = Object.create( null );
+//
+//   let name = routine ? routine.name : '';
+//   defaults = defaults || ( routine ? routine.defaults : null );
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
+//   _.assert( _.object.isBasic( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.object.isBasic( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
+//
+//   if( Config.debug )
+//   {
+//     let extraKeys = __mapButKeys( options, defaults );
+//     _.assert( extraKeys.length === 0, () => `Routine "${ name }" does not expect options: ${ __keysQuote( extraKeys ) }` );
+//   }
+//
+//   __mapSupplementWithoutUndefined( options, defaults );
+//
+//   if( Config.debug )
+//   {
+//     let undefineKeys = __mapUndefinedKeys( options );
+//     _.assert
+//     (
+//       undefineKeys.length === 0,
+//       () => `Options map for routine "${ name }" should have no undefined fields, but it does have option::${ __keysQuote( undefineKeys ) } = undefined`
+//     );
+//   }
+//
+//   return options;
+// }
+//
+//
+// options_deprecated.meta = Object.create( null );
+// options_deprecated.meta.locals =
+// {
+//   __mapUndefinedKeys,
+// }
 //
 // //
 //
-// function assertOptions_( defaults, options )
+// function assertOptions_deprecated( routine, args, defaults )
 // {
 //
-//   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
-//   _.assert( _.routine.is( defaults ) || _.aux.is( defaults ) || defaults === null, 'Expects an object with options' );
+//   if( !_.argumentsArray.like( args ) )
+//   args = [ args ];
 //
-//   if( _.argumentsArray.like( options ) )
-//   {
-//     _.assert
-//     (
-//       options.length === 0 || options.length === 1,
-//       `Expects single options map, but got ${options.length} arguments`
-//     );
-//     options = options[ 0 ];
-//   }
+//   let options = args[ 0 ];
 //
-//   if( options === undefined )
-//   options = Object.create( null );
-//   if( defaults === null )
-//   defaults = Object.create( null );
+//   defaults = defaults || ( routine ? routine.defaults : null );
 //
-//   defaults = ( _.routine.is( defaults ) && defaults.defaults ) ? defaults.defaults : defaults;
-//   _.assert( _.aux.is( defaults ), 'Expects defined defaults' );
-//
-//   /* */
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
+//   _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.aux.is( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${ args.length } arguments` );
 //
 //   if( Config.debug )
 //   {
@@ -948,8 +951,8 @@ function assertOptions_deprecated( routine, args, defaults )
 //
 //   return options;
 //
-//   /* */
-//
+//   // /* */
+//   //
 //   // function __mapButKeys( srcMap, butMap )
 //   // {
 //   //   let result = [];
@@ -984,36 +987,113 @@ function assertOptions_deprecated( routine, args, defaults )
 //   //   return result.trim();
 //   // }
 // }
-
 // //
+// // //
+// //
+// // function assertOptions_( defaults, options )
+// // {
+// //
+// //   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+// //   _.assert( _.routine.is( defaults ) || _.aux.is( defaults ) || defaults === null, 'Expects an object with options' );
+// //
+// //   if( _.argumentsArray.like( options ) )
+// //   {
+// //     _.assert
+// //     (
+// //       options.length === 0 || options.length === 1,
+// //       `Expects single options map, but got ${options.length} arguments`
+// //     );
+// //     options = options[ 0 ];
+// //   }
+// //
+// //   if( options === undefined )
+// //   options = Object.create( null );
+// //   if( defaults === null )
+// //   defaults = Object.create( null );
+// //
+// //   defaults = ( _.routine.is( defaults ) && defaults.defaults ) ? defaults.defaults : defaults;
+// //   _.assert( _.aux.is( defaults ), 'Expects defined defaults' );
+// //
+// //   /* */
+// //
+// //   if( Config.debug )
+// //   {
+// //     let extraOptionsKeys = __mapButKeys( options, defaults );
+// //     _.assert( extraOptionsKeys.length === 0, () => `Object should have no fields : ${ __keysQuote( extraOptionsKeys ) }` );
+// //     let extraDefaultsKeys = __mapButKeys( defaults, options );
+// //     _.assert( extraDefaultsKeys.length === 0, () => `Object should have fields : ${ __keysQuote( extraDefaultsKeys ) }` );
+// //     let undefineKeys = __mapUndefinedKeys( options );
+// //     _.assert( undefineKeys.length === 0, () => `Object should have no undefines, but has : ${ __keysQuote( undefineKeys ) }` );
+// //   }
+// //
+// //   return options;
+// //
+// //   /* */
+// //
+// //   // function __mapButKeys( srcMap, butMap )
+// //   // {
+// //   //   let result = [];
+// //   //
+// //   //   for( let s in srcMap )
+// //   //   if( !( s in butMap ) )
+// //   //   result.push( s );
+// //   //
+// //   //   return result;
+// //   // }
+// //   //
+// //   // /* */
+// //   //
+// //   // function __mapUndefinedKeys( srcMap )
+// //   // {
+// //   //   let result = [];
+// //   //
+// //   //   for( let s in srcMap )
+// //   //   if( srcMap[ s ] === undefined )
+// //   //   result.push( s );
+// //   //
+// //   //   return result;
+// //   // }
+// //   //
+// //   // /* */
+// //   //
+// //   // function __keysQuote( keys )
+// //   // {
+// //   //   let result = `"${ keys[ 0 ] }"`;
+// //   //   for( let i = 1 ; i < keys.length ; i++ )
+// //   //   result += `, "${ keys[ i ] }"`;
+// //   //   return result.trim();
+// //   // }
+// // }
 //
-// /* aaa for Dmytro : forbid 3rd argument */ /* Dmytro : forbidden */
-// /* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
-// /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
-// /* aaa for Dmytro : make sure _.routine.options_ and routine.options are similar */ /* Dmytro : implemented similar routine */
-// /* xxx : make routine.options default routineOptions */
-function optionsPreservingUndefines_deprecated( routine, args, defaults )
-{
-
-  if( !_.argumentsArray.like( args ) )
-  args = [ args ];
-  let options = args[ 0 ];
-  if( options === undefined )
-  options = Object.create( null );
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
-  _.assert( _.aux.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${options.length} arguments` );
-
-  defaults = defaults || routine.defaults;
-
-  _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
-  _.map.assertHasOnly( options, defaults );
-  _.mapComplementPreservingUndefines( options, defaults );
-
-  return options;
-}
+// // //
+// //
+// // /* aaa for Dmytro : forbid 3rd argument */ /* Dmytro : forbidden */
+// // /* aaa for Dmytro : inline implementation */ /* Dmytro : inlined */
+// // /* aaa for Dmytro : make possible pass defaults-map instead of routine */ /* Dmytro : implemented and covered */
+// // /* aaa for Dmytro : make sure _.routine.options_ and routine.options are similar */ /* Dmytro : implemented similar routine */
+// // /* xxx : make routine.options default routineOptions */
+// function optionsPreservingUndefines_deprecated( routine, args, defaults )
+// {
+//
+//   if( !_.argumentsArray.like( args ) )
+//   args = [ args ];
+//   let options = args[ 0 ];
+//   if( options === undefined )
+//   options = Object.create( null );
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routine.is( routine ) || routine === null, 'Expects routine' );
+//   _.assert( _.aux.is( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, `Expects single options map, but got ${options.length} arguments` );
+//
+//   defaults = defaults || routine.defaults;
+//
+//   _.assert( _.aux.is( defaults ), 'Expects routine with defined defaults' );
+//   _.map.assertHasOnly( options, defaults );
+//   _.mapComplementPreservingUndefines( options, defaults );
+//
+//   return options;
+// }
 
 // //
 //
@@ -1119,30 +1199,30 @@ function optionsPreservingUndefines_deprecated( routine, args, defaults )
 //   //   return result;
 //   // }
 // }
-
 //
-
-function assertOptionsPreservingUndefines_deprecated( routine, args, defaults )
-{
-
-  if( !_.argumentsArray.like( args ) )
-  args = [ args ];
-  let options = args[ 0 ];
-  defaults = defaults || routine.defaults;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
-  _.assert( _.routine.is( routine ), 'Expects routine' );
-  _.assert( _.object.is( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.object.is( options ), 'Expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
-
-  _.map.assertHasOnly( options, defaults );
-  _.map.assertHasAll( options, defaults );
-
-  /* qqq : for Dmytro : rewrite without using higher level. discuss */
-
-  return options;
-}
+// //
+//
+// function assertOptionsPreservingUndefines_deprecated( routine, args, defaults )
+// {
+//
+//   if( !_.argumentsArray.like( args ) )
+//   args = [ args ];
+//   let options = args[ 0 ];
+//   defaults = defaults || routine.defaults;
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+//   _.assert( _.routine.is( routine ), 'Expects routine' );
+//   _.assert( _.object.isBasic( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+//   _.assert( _.object.isBasic( options ), 'Expects object' );
+//   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+//
+//   _.map.assertHasOnly( options, defaults );
+//   _.map.assertHasAll( options, defaults );
+//
+//   /* qqq : for Dmytro : rewrite without using higher level. discuss */
+//
+//   return options;
+// }
 
 // //
 //
@@ -1221,170 +1301,6 @@ function assertOptionsPreservingUndefines_deprecated( routine, args, defaults )
 //
 //   return _.routine.options( routine, options );
 // }
-
-//
-
-function _routinesCompose_head( routine, args )
-{
-  let o = args[ 0 ];
-
-  if( !_.mapIs( o ) )
-  o = { elements : args[ 0 ] }
-  if( args[ 1 ] !== undefined )
-  o.chainer = args[ 1 ];
-
-  // if( o.elements === null )
-  // debugger;
-  // o.elements = _.arrayAppendArrays( [], [ o.elements ] );
-  o.elements = merge( o.elements );
-  o.elements = o.elements.filter( ( e ) => e !== null );
-
-  _.routine.options( routine, o );
-  _.assert( _.routine.s.are( o.elements ) );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.object.is( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.elements ) || _.routine.is( o.elements ) );
-  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
-  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
-  _.assert( o.supervisor === null || _.routine.is( o.supervisor ) );
-
-  return o;
-
-  function merge( arrays )
-  {
-    let result = [];
-    if( arrays === null )
-    return result;
-    for( let i = 0 ; i < arrays.length ; i++ )
-    {
-      let array = arrays[ i ];
-      if( _.array.is( array ) || _.argumentsArray.is( array ) )
-      result.push( ... array );
-      else
-      result.push( array );
-    }
-    return result;
-  }
-}
-
-//
-
-function _routinesCompose_body( o )
-{
-
-  if( o.chainer === null )
-  o.chainer = _.compose.chainer.original;
-
-  o.elements = _.arrayFlatten( o.elements );
-
-  let elements = [];
-  for( let s = 0 ; s < o.elements.length ; s++ )
-  {
-    let src = o.elements[ s ];
-    _.assert( _.routine.is( src ) );
-    if( src.composed )
-    {
-      if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
-      {
-        // _.arrayAppendArray( elements, src.composed.elements );
-        elements.push( ... src.composed.elements );
-      }
-      else
-      {
-        // _.arrayAppendElement( elements, src );
-        elements.push( ... src );
-      }
-    }
-    else
-    {
-      elements.push( src );
-      // _.arrayAppendElement( elements, src );
-    }
-  }
-
-  o.elements = elements;
-
-  let supervisor = o.supervisor;
-  let chainer = o.chainer;
-  let act;
-
-  _.assert( _.routine.is( chainer ) );
-  _.assert( supervisor === null || _.routine.is( supervisor ) );
-
-  /* */
-
-  if( elements.length === 0 )
-  act = function empty()
-  {
-    return [];
-  }
-  // else if( elements.length === 1 ) /* zzz : optimize the case */
-  // {
-  //   act = elements[ 0 ];
-  // }
-  else act = function composition()
-  {
-    let result = [];
-    // let args = _.unrollAppend( _.unroll.from( null ), arguments );
-    let args = _.unroll.from( arguments );
-    for( let k = 0 ; k < elements.length ; k++ )
-    {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
-      let routine = elements[ k ];
-      let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArray.is( r ) );
-      if( r !== undefined )
-      _.unrollAppend( result, r );
-      // args = chainer( r, k, args, o );
-      args = chainer( args, r, o, k );
-      _.assert( args !== undefined && args !== false );
-      // if( args === undefined )
-      if( args === _.dont )
-      break;
-      args = _.unroll.from( args );
-    }
-    return result;
-  }
-
-  o.act = act;
-  act.composed = o;
-
-  if( supervisor )
-  {
-    _.routine.extend( compositionSupervise, act );
-    return compositionSupervise;
-  }
-
-  return act;
-
-  function compositionSupervise()
-  {
-    let result = supervisor( this, arguments, act, o );
-    return result;
-  }
-}
-
-_routinesCompose_body.defaults =
-{
-  elements : null,
-  chainer : null,
-  supervisor : null,
-}
-
-//
-
-function compose()
-{
-  let o = _.routine.s.compose.head( compose, arguments );
-  let result = _.routine.s.compose.body( o );
-  return result;
-}
-
-compose.head = _routinesCompose_head;
-compose.body = _routinesCompose_body;
-compose.defaults = Object.assign( Object.create( null ), compose.body.defaults );
 
 // --
 // amend
@@ -1516,7 +1432,7 @@ function _amend( o )
   //   for( let s in dst )
   //   {
   //     let property = dst[ s ];
-  //     if( _.objectIs( property ) )
+  //     if( _.object.isBasic( property ) )
   //     {
   //       property = _.props.extend( null, property );
   //       dst[ s ] = property;
@@ -1533,7 +1449,7 @@ function _amend( o )
   //   for( let s in dst )
   //   {
   //     let property = dst[ s ];
-  //     if( _.objectIs( property ) )
+  //     if( _.object.isBasic( property ) )
   //     {
   //       property = Object.create( property );
   //       dst[ s ] = property;
@@ -1557,9 +1473,9 @@ function _amend( o )
       if( d && !d.writable )
       continue;
       extended = true;
-      if( _.object.is( property ) )
+      if( _.object.isBasic( property ) )
       {
-        _.assert( !_.props.own( dst, s ) || _.objectIs( dst[ s ] ) );
+        _.assert( !_.props.own( dst, s ) || _.object.isBasic( dst[ s ] ) );
 
         if( dst[ s ] )
         _.props.extend( dst[ s ], property );
@@ -1595,7 +1511,7 @@ function _amend( o )
       if( d && !d.writable )
       continue;
       extended = true;
-      if( _.object.is( property ) )
+      if( _.object.isBasic( property ) )
       {
         property = Object.create( property );
         if( dst[ s ] )
@@ -1634,7 +1550,17 @@ function _amend( o )
     _.assert( body.tail === undefined, 'Body should not have own tail' );
     _.assert( body.body === undefined, 'Body should not have own body' );
     {
-      let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      // let srcs = srcIsVector ? _.map_( null, o.srcs, ( src ) => propertiesBut( src ) ) : [ propertiesBut( o.srcs ) ];
+      let srcs;
+      if( srcIsVector )
+      {
+        // debugger;
+        srcs = o.srcs.map( (src ) => propertiesBut( src ) );
+      }
+      else
+      {
+        srcs = [ propertiesBut( o.srcs ) ];
+      }
       srcs.unshift( body );
       body2 = _.routine._amend
       ({
@@ -1654,7 +1580,14 @@ function _amend( o )
 
   function propertiesBut( src )
   {
-    return src ? _.mapBut_( null, src, [ 'head', 'body', 'tail' ] ) : src;
+    if( !src )
+    return src;
+    let result = _.props.extend( null, src );
+    delete result.head;
+    delete result.body;
+    delete result.taul;
+    // return src ? _.mapBut_( null, src, [ 'head', 'body', 'tail' ] ) : src;
+    return result;
   }
 
   /* */
@@ -1862,6 +1795,17 @@ function unite_body( o )
   {
     /* xxx : deprecate compose */
     /* qqq : for Dmytro : implement without compose */
+    // let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
+    // {
+    //   let args = arguments[ 0 ];
+    //   let result = arguments[ 1 ];
+    //   let op = arguments[ 2 ];
+    //   let k = arguments[ 3 ];
+    //   _.assert( arguments.length === 4 );
+    //   _.assert( !_.unrollIs( result ) );
+    //   _.assert( _.object.isBasic( result ) );
+    //   return _.unrollAppend([ unitedRoutine, [ result ] ]);
+    // });
     let _head = _.routine.s.compose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
@@ -1870,8 +1814,8 @@ function unite_body( o )
       let k = arguments[ 3 ];
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
-      _.assert( _.object.is( result ) );
-      return _.unrollAppend([ unitedRoutine, [ result ] ]);
+      _.assert( _.object.isBasic( result ) );
+      return _.unroll.from([ unitedRoutine, [ result ] ]);
     });
     _.assert( _.routine.is( _head ) );
     o.head = function head()
@@ -2111,51 +2055,399 @@ uniteReplacing.defaults = { ... unite_body.defaults, strategy : 'replacing' };
 
 //
 
-function exportStringShallowDiagnostic( src )
+function _compose_old_head( routine, args )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.routine.is( src ) );
+  let o = args[ 0 ];
 
-  if( src.name )
-  return `{- routine ${src.name} -}`;
+  if( !_.mapIs( o ) )
+  o = { bodies : args[ 0 ] }
+  if( args[ 1 ] !== undefined )
+  o.chainer = args[ 1 ];
+
+  // if( o.bodies === null )
+  // debugger;
+  // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
+  // o.bodies = merge( o.bodies );
+  o.bodies = __arrayFlatten( o.bodies );
+  o.bodies = o.bodies.filter( ( e ) => e !== null );
+
+  _.routine.options( routine, o );
+  _.assert( _.routine.s.are( o.bodies ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( args.length === 1 || !_.object.isBasic( args[ 0 ] ) );
+  _.assert( _.arrayIs( o.bodies ) || _.routine.is( o.bodies ) );
+  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
+  _.assert( o.tail === null || _.routine.is( o.tail ) );
+
+  return o;
+
+  // function merge( arrays )
+  // {
+  //   let result = [];
+  //   if( arrays === null )
+  //   return result;
+  //   for( let i = 0 ; i < arrays.length ; i++ )
+  //   {
+  //     let array = arrays[ i ];
+  //     if( _.array.is( array ) || _.argumentsArray.is( array ) )
+  //     result.push( ... array );
+  //     else
+  //     result.push( array );
+  //   }
+  //   return result;
+  // }
+}
+
+_compose_old_head.locals =
+{
+  __arrayFlatten,
+}
+
+//
+
+function _compose_old_body( o )
+{
+
+  if( o.chainer === null )
+  o.chainer = _.routine.chainer.default;
+
+  // if( o.chainer === null )
+  // o.chainer = _.routine.chainer.original;
+  // o.bodies = __arrayFlatten( o.bodies );
+
+  let bodies = [];
+  for( let s = 0 ; s < o.bodies.length ; s++ )
+  {
+    let src = o.bodies[ s ];
+    _.assert( _.routine.is( src ) );
+    if( src.composed )
+    {
+      if( src.composed.chainer === o.chainer && src.composed.tail === o.tail )
+      {
+        bodies.push( ... src.composed.bodies );
+      }
+      else
+      {
+        bodies.push( ... src );
+      }
+    }
+    else
+    {
+      bodies.push( src );
+    }
+  }
+
+  o.bodies = bodies;
+
+  let tail = o.tail;
+  let chainer = o.chainer;
+  let act;
+
+  _.assert( _.routine.is( chainer ) );
+  _.assert( tail === null || _.routine.is( tail ) );
+
+  /* */
+
+  if( bodies.length === 0 )
+  act = function empty()
+  {
+    return [];
+  }
+  else act = function composition()
+  {
+    let result = [];
+    let args = _.unroll.from( arguments );
+    for( let k = 0 ; k < bodies.length ; k++ )
+    {
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      let routine = bodies[ k ];
+      let r = routine.apply( this, args );
+      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
+      _.assert( !_.argumentsArray.is( r ) );
+      if( r !== undefined )
+      // result.push( r );
+      _.unrollAppend( result, r );
+      args = chainer( args, r, o, k );
+      _.assert( args !== undefined && args !== false );
+      if( args === _.dont )
+      break;
+      args = _.unroll.from( args );
+    }
+    return result;
+  }
+
+  o.act = act;
+  act.composed = o;
+
+  if( tail )
+  {
+    _.routine.extend( compositionSupervise, act );
+    return compositionSupervise;
+  }
+
+  return act;
+
+  function compositionSupervise()
+  {
+    // let result = tail( this, arguments, act, o );
+    let result = tail.call( this, arguments, o );
+    return result;
+  }
+}
+
+_compose_old_body.defaults =
+{
+  bodies : null,
+  chainer : null,
+  tail : null,
+}
+
+//
+
+function compose_old()
+{
+  let o = _.routine.s.compose_old.head( compose_old, arguments );
+  let result = _.routine.s.compose_old.body( o );
+  return result;
+}
+
+compose_old.head = _compose_old_head;
+compose_old.body = _compose_old_body;
+compose_old.defaults = Object.assign( Object.create( null ), compose_old.body.defaults );
+
+//
+
+function _compose_head( routine, args )
+{
+  let o = args[ 0 ];
+
+  if( !_.mapIs( o ) )
+  o = { bodies : args[ 0 ] }
+  if( args[ 1 ] !== undefined )
+  o.chainer = args[ 1 ];
+
+  // if( o.bodies === null )
+  // debugger;
+  // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
+  // o.bodies = merge( o.bodies );
+  o.bodies = __arrayFlatten( o.bodies );
+  o.bodies = o.bodies.filter( ( e ) => e !== null );
+
+  _.routine.options( routine, o );
+  _.assert( _.routine.s.are( o.bodies ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( args.length === 1 || !_.object.isBasic( args[ 0 ] ) );
+  _.assert( _.arrayIs( o.bodies ) || _.routine.is( o.bodies ) );
+  _.assert( _.routine.is( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  _.assert( o.chainer === null || _.routine.is( o.chainer ) );
+  _.assert( o.tail === null || _.routine.is( o.tail ) );
+
+  return o;
+
+  // function merge( arrays )
+  // {
+  //   let result = [];
+  //   if( arrays === null )
+  //   return result;
+  //   for( let i = 0 ; i < arrays.length ; i++ )
+  //   {
+  //     let array = arrays[ i ];
+  //     if( _.array.is( array ) || _.argumentsArray.is( array ) )
+  //     result.push( ... array );
+  //     else
+  //     result.push( array );
+  //   }
+  //   return result;
+  // }
+}
+
+_compose_head.locals =
+{
+  __arrayFlatten,
+}
+
+//
+
+function _compose_body( o )
+{
+
+  // if( o.chainer === null )
+  // o.chainer = defaultChainer;
+  // o.bodies = __arrayFlatten( o.bodies );
+  if( o.chainer === null )
+  o.chainer = _.routine.chainer.default;
+
+  let bodies = [];
+  for( let s = 0 ; s < o.bodies.length ; s++ )
+  {
+    let body = o.bodies[ s ];
+    _.assert( _.routine.is( body ) );
+    if( body.composed )
+    {
+      if( body.composed.chainer === o.chainer && body.composed.tail === o.tail )
+      {
+        bodies.push( ... body.composed.bodies );
+      }
+      else
+      {
+        bodies.push( ... body );
+      }
+    }
+    else
+    {
+      bodies.push( body );
+    }
+  }
+
+  o.bodies = bodies;
+
+  let tail = o.tail;
+  let chainer = o.chainer;
+
+  _.assert( _.routine.is( chainer ) );
+  _.assert( tail === null || _.routine.is( tail ) );
+
+  /* */
+
+  if( bodies.length === 0 )
+  o.act = compositionEmpty;
+  else if( bodies.length === 1 )
+  o.act = compositionOfSingle;
   else
-  return `{- routine.anonymous -}`;
+  o.act = composition;
+
+  o.act.composed = o;
+
+  if( tail )
+  {
+    _.routine.extendReplacing( routineWithTail, o.act );
+    return routineWithTail;
+  }
+
+  return o.act;
+
+  /* */
+
+  function compositionEmpty()
+  {
+    return [];
+  }
+
+  function compositionOfSingle()
+  {
+    let result = [];
+    let args = _.unroll.from( arguments );
+    _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+    let routine = bodies[ 0 ];
+    let r = routine.apply( this, args );
+    _.assert( !_.argumentsArray.is( r ) );
+    if( r !== undefined )
+    // result.push( r )
+    _.unrollAppend( result, r );
+    return result;
+  }
+
+  function composition()
+  {
+    let result = [];
+    let args = _.unroll.from( arguments );
+    for( let k = 0 ; k < bodies.length ; k++ )
+    {
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      let routine = bodies[ k ];
+      let r = routine.apply( this, args );
+      _.assert( !_.argumentsArray.is( r ) );
+      if( r !== undefined )
+      // result.push( r );
+      _.unrollAppend( result, r );
+      args = chainer( args, r, o, k );
+      if( args === _.dont )
+      break;
+      _.assert( _.unroll.is( args ) );
+    }
+    return result;
+  }
+
+  // function defaultChainer( /* args, result, op, k */ )
+  // {
+  //   let args = arguments[ 0 ];
+  //   let result = arguments[ 1 ];
+  //   let op = arguments[ 2 ];
+  //   let k = arguments[ 3 ];
+  //   if( result === _.dont )
+  //   return result;
+  //   return args;
+  // }
+
+  function routineWithTail()
+  {
+    let result = tail.call( this, arguments, o );
+    return result;
+  }
 }
 
-// --
-// implementation
-// --
-
-let ToolsExtension =
+_compose_body.defaults =
 {
-
-  routineIs : is,
-  _routineIs : _is,
-  routineLike : like,
-  _routineLike : _like,
-  routineIsTrivial : isTrivial,
-  routineIsSync : isSync,
-  routineIsAsync : isAsync,
-  routinesAre : are,
-  routineWithName : withName,
-
-  _routineJoin : _join,
-  constructorJoin,
-  routineJoin : join,
-  routineSeal : seal,
-
-  routinesCompose : compose, /* xxx : deprecate */
-  routineExtend : extendCloning,
-  routineDefaults : defaults,
-
+  chainer : null,
+  bodies : null,
+  tail : null,
 }
 
-Object.assign( _, ToolsExtension );
+//
+
+function compose()
+{
+  let o = _.routine.s.compose.head( compose, arguments );
+  let result = _.routine.s.compose.body( o );
+  return result;
+}
+
+compose.head = _compose_head;
+compose.body = _compose_body;
+compose.defaults = _compose_body.defaults;
+
+// --
+// chainers
+// --
+
+function defaultChainer( /* args, result, op, k */ )
+{
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+  if( result === _.dont )
+  return result;
+  return args;
+}
+
+// --
+// declaration
+// --
+
+let ChainerExtension =
+{
+  default : defaultChainer,
+}
+
+Object.assign( _.routine.chainer, ChainerExtension );
 
 //
 
 let RoutineExtension =
 {
+
+  // fields
+
+  NamespaceName : 'routine',
+  NamespaceQname : 'wTools/routine',
+  TypeName : 'Routine',
+  SecondTypeName : 'Function',
+  InstanceConstructor : null,
+  tools : _,
 
   // dichotomy
 
@@ -2187,10 +2479,10 @@ let RoutineExtension =
   assertOptions_ : assertOptionsWithUndefined,
   _verifyDefaults,
 
-  options_deprecated,
-  assertOptions_deprecated,
-  optionsPreservingUndefines_deprecated,
-  assertOptionsPreservingUndefines_deprecated,
+  // options_deprecated,
+  // assertOptions_deprecated,
+  // optionsPreservingUndefines_deprecated,
+  // assertOptionsPreservingUndefines_deprecated,
 
   // amend
 
@@ -2210,15 +2502,6 @@ let RoutineExtension =
   uniteReplacing,
   /* qqq : cover routines uniteReplacing, uniteInheriting, uniteCloning */
 
-  // exporter
-
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
-
 }
 
 Object.assign( _.routine, RoutineExtension );
@@ -2229,10 +2512,42 @@ let RoutinesExtension =
 {
 
   are,
+  compose_old,
   compose,
 
 }
 
 Object.assign( _.routine.s, RoutinesExtension );
+
+//
+
+let ToolsExtension =
+{
+
+  routineIs : is.bind( _.routine ),
+  _routineIs : _is.bind( _.routine ),
+  routineLike : like.bind( _.routine ),
+  _routineLike : _like.bind( _.routine ),
+  routineIsTrivial : isTrivial.bind( _.routine ),
+  routineIsSync : isSync.bind( _.routine ),
+  routineIsAsync : isAsync.bind( _.routine ),
+  routinesAre : are.bind( _.routine ),
+  routineWithName : withName.bind( _.routine ),
+
+  _routineJoin : _join.bind( _.routine ),
+  constructorJoin : constructorJoin.bind( _.routine ),
+  routineJoin : join.bind( _.routine ),
+  routineSeal : seal.bind( _.routine ),
+
+  routineExtend : extendCloning.bind( _.routine ),
+  routineDefaults : defaults.bind( _.routine ),
+
+  routinesCompose : compose.bind( _.routines ), /* xxx : review */
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

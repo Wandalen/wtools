@@ -1874,10 +1874,9 @@ function elementWithKeyDel( src, key )
 
 function _elementWithCardinalDel( src, cardinal )
 {
-  let has = this._keyWithCardinal( src, cardinal );
-  if( !has[ 1 ] )
+  if( !this._hasKey( src, cardinal ) )
   return false;
-  delete src[ has[ 0 ] ];
+  src.splice( cardinal, 1 );
   return true;
 }
 

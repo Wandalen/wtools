@@ -135,7 +135,7 @@ function exportStringShallowDiagnostic( test )
 const Proto =
 {
 
-  name : 'Tools.Vector',
+  name : 'Tools.Vector.l0.l9',
   silencing : 1,
 
   tests :

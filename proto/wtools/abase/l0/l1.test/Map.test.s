@@ -22,7 +22,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'pure empty map';
   var src = Object.create( null );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -38,7 +38,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'pure map';
   var src = Object.create( null );
   src.x = 1;
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -54,7 +54,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'pure map with constructor';
   var src = Object.create( null );
   src.constructor = function(){};
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -70,12 +70,12 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'from pure with iterator';
   var src = Object.create( null );
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
-  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.aux.isPolluted( src ), false );
   // test.identical( _.map.isEmpty( src ), false );
@@ -85,7 +85,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'empty polluted map';
   var src = {};
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -100,7 +100,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -116,7 +116,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'polluted map with constructor';
   var src = {};
   src.constructor = function(){};
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -132,14 +132,14 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'from polluted with iterator';
   var src = {};
   src[ Symbol.iterator ] = function(){};
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.aux.isPolluted( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
   // test.identical( _.map.isEmpty( src ), false );
   // test.identical( _.aux.isEmpty( src ), false );
   // test.identical( _.map.isPopulated( src ), false );
@@ -147,7 +147,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'new object';
   var src = new Object();
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), true );
   test.identical( _.aux.is( src ), true );
@@ -162,7 +162,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'empty array';
   var src = [];
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -177,7 +177,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'empty arguments array';
   var src = _.argumentsArray.make();
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -192,7 +192,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'undefined';
   var src = undefined;
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -207,7 +207,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'null';
   var src = null;
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -221,7 +221,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'string';
   var src = 'str';
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -236,7 +236,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'number';
   var src = 13;
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -251,7 +251,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'symbol';
   var src = Symbol.for( 'a' );
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -266,7 +266,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'boolean false';
   var src = true;
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -281,7 +281,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'boolean true';
   var src = true;
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -296,7 +296,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
 
   test.case = 'routine';
   var src = function() {};
-  test.identical( _.object.is( src ), false );
+  test.identical( _.object.isBasic( src ), false );
   test.identical( _.object.like( src ), false );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -312,7 +312,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -329,7 +329,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   var prototype1 = Object.create( null );
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -349,7 +349,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -365,7 +365,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -382,7 +382,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   var prototype = {};
   prototype.constructor = function(){};
   var src = Object.create( prototype );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), false );
@@ -399,7 +399,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   var prototype1 = {};
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -419,7 +419,7 @@ function dichotomy( test ) /* qqq : extend with construbile* checks */
   prototype2.b = 1;
   var src = Object.create( prototype1 );
   src.c = 1;
-  test.identical( _.object.is( src ), true );
+  test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
   test.identical( _.mapIs( src ), false );
   test.identical( _.aux.is( src ), true );
@@ -1441,7 +1441,7 @@ function allPairs( test )
 const Proto =
 {
 
-  name : 'Tools.Map.l1',
+  name : 'Tools.Map.l0.l1',
   silencing : 1,
 
   tests :

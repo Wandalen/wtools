@@ -1410,7 +1410,7 @@ function numbersFromInt( test )
 const Proto =
 {
 
-  name : 'Tools.Number.l9',
+  name : 'Tools.Number.l0.l9',
   silencing : 1,
   enabled : 1,
 

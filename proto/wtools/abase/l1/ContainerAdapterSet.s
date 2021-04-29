@@ -153,7 +153,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       {
         if( from === 0 )
         {
-          if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equal( v, e, onEvaluate1, onEvaluate2 ) )
           result++;
         }
         else
@@ -357,7 +357,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       // aaa | Dmytro : tabs are removed
       // aaa : not clear. explain during call
       let last = _.nothing;
-      self.reduce( ( a, e2 ) => _.entity.equalize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
+      self.reduce( ( a, e2 ) => _.entity.equal( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
       _.assert( last !== _.nothing );
       container.delete( last );
       return last;
@@ -367,7 +367,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let last = this.last();
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entity.equalize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
+    _.assert( _.entity.equal( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
 
     this.original.delete( last );
     return last;
@@ -389,7 +389,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       {
         if( from === 0 )
         {
-          if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equal( v, e, onEvaluate1, onEvaluate2 ) )
           {
             this.original.delete( v );
             result++;
@@ -424,7 +424,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( from === 0 )
       {
-        if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equal( v, e, onEvaluate1, onEvaluate2 ) )
         {
           this.original.delete( v );
           return ++index;
@@ -455,7 +455,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     for( let i = to - 1; i >= 0; i-- )
     {
-      if( _.entity.equalize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
+      if( _.entity.equal( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
       {
         this.original.delete( temp[ i ] );
         return i;
@@ -480,7 +480,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( from === 0 )
       {
-        if( _.entity.equalize( v, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equal( v, e, onEvaluate1, onEvaluate2 ) )
         {
           if( result === undefined )
           {
@@ -522,7 +522,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     for( let i = to - 1; i >= 0; i-- )
     {
-      if( _.entity.equalize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
+      if( _.entity.equal( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
       {
         if( result === undefined )
         {

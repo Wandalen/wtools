@@ -322,7 +322,7 @@ function arrayFromCoercing( src )
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
 
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.props.pairs( src );
 
   _.assert( 0, 'Unknown data type : ' + _.entity.strType( src ) );
@@ -2689,7 +2689,7 @@ function arrayFlattened( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( this ) );
+  _.assert( _.object.isBasic( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
   if( arguments.length === 1 )
@@ -3255,7 +3255,7 @@ function arrayFlattenedDefined( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( this ) );
+  _.assert( _.object.isBasic( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
@@ -3374,7 +3374,7 @@ function arrayFlattenedDefined( dstArray, src )
 // {
 //
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.object.is( this ) );
+//   _.assert( _.object.isBasic( this ) );
 //   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )
@@ -4766,16 +4766,16 @@ let ToolsExtension =
 
   arrayBut,
   arrayButInplace, /* !!! : use instead of arrayBut, arrayButInplace */
-  arrayBut_,
+  arrayBut_, /* qqq : for Dmytro : use in wTools */
   arrayShrink,
   arrayShrinkInplace, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
-  arrayShrink_,
+  arrayShrink_, /* qqq : for Dmytro : use in wTools */
   arrayGrow,
   arrayGrowInplace, /* !!! : use instead of arrayGrow, arrayGrowInplace */
-  arrayGrow_,
+  arrayGrow_, /* qqq : for Dmytro : use in wTools */
   arrayRelength,
   arrayRelengthInplace, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
-  arrayRelength_,
+  arrayRelength_, /* qqq : for Dmytro : use in wTools */
 
   // array prepend on l3
 

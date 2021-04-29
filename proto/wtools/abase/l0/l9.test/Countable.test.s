@@ -107,7 +107,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   /* */
 //
 //   test.case = `countable`;
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( !_.vector.like( src ) );
@@ -120,7 +120,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   /* */
 //
 //   test.case = `countable made`;
-//   var src = countableMake( null, { elements : [ '1', '10' ], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '10' ], withIterator : 1 } );
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( !_.vector.like( src ) );
@@ -133,7 +133,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   /* */
 //
 //   test.case = `vector`;
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( _.vector.like( src ) );
@@ -368,7 +368,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.true( _.arrayIs( src ) );
 //
 //   test.case = 'vector & vectorLike';
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( _.vector.like( src ) );
@@ -379,7 +379,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.true( !_.arrayIs( src ) );
 //
 //   test.case = 'countable & countableLike';
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   test.true( _.countable.like( src ) );
 //   test.true( _.countable.is( src ) );
 //   test.true( !_.vector.like( src ) );
@@ -886,26 +886,26 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = 'vector & vectorLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-//   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = 'countable & countableLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -980,26 +980,26 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = 'vector & vectorLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-//   var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1, length : 2 });
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = 'countable & countableLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-//   var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1 });
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.identicalShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -1085,26 +1085,26 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = 'vector & vectorLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-//   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = 'countable & countableLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-//   var src2 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, true );
 //
@@ -1180,26 +1180,26 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector, not same array`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = 'vector & vectorLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
-//   var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1, length : 2 });
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = 'countable & countableLike';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
-//   var src2 = new countableConstructor({ elements : [ '1', '11' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1 });
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src1 = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
-//   var src2 = countableMake( null, { elements : [ '1', '2', '4' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1 } );
 //   var got = _.countable.equivalentShallow( src1, src2 );
 //   test.identical( got, false );
 //
@@ -1223,25 +1223,25 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 //
 //   test.case = 'vectorLike and array';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   var src2 = [ '1', '10' ];
 //   test.identical( _.countable.identicalShallow( src1, src2 ), false );
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 //
 //   test.case = 'countable and array';
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   var src2 = [ '1', '10' ];
 //   test.identical( _.countable.identicalShallow( src1, src2 ), false );
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 //
 //   test.case = 'countable made and array';
-//   var src1 = countableMake( null, { elements : [ '1', '10' ], withIterator : 1 } );
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '10' ], withIterator : 1 } );
 //   var src2 = [ '1', '10' ];
 //   test.identical( _.countable.identicalShallow( src1, src2 ), false );
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 //
 //   test.case = `vector and array`;
-//   var src1 = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   var src2 = [ '1', '10' ];
 //   test.identical( _.countable.identicalShallow( src1, src2 ), false );
 //   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
@@ -1333,25 +1333,25 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 //   test.identical( got, expected );
 //
 //   test.case = 'vector & vectorLike';
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
 //   var expected = '{- countableConstructor.countable with 2 elements -}';
 //   var got = _.countable.exportStringShallowDiagnostic( src );
 //   test.identical( got, expected );
 //
 //   test.case = 'countable & countableLike';
-//   var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+//   var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
 //   var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
 //   var got = _.countable.exportStringShallowDiagnostic( src );
 //   test.identical( got, expected );
 //
 //   test.case = `object countable - empty, non-vector`;
-//   var src = countableMake( null, { elements : [], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
 //   var expected = '{- Object.countable with 0 elements -}';
 //   var got = _.countable.exportStringShallowDiagnostic( src );
 //   test.identical( got, expected );
 //
 //   test.case = `object countable - non empty, non-vector`;
-//   var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+//   var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
 //   var expected = '{- Object.countable with 3 elements -}';
 //   var got = _.countable.exportStringShallowDiagnostic( src );
 //   test.identical( got, expected );
@@ -1419,7 +1419,7 @@ function typing( test ) /* qqq for Yevhen : extend for like. first discuss ( fil
 const Proto =
 {
 
-  name : 'Tools.Countable',
+  name : 'Tools.Countable.l0.l9',
   silencing : 1,
 
   tests :

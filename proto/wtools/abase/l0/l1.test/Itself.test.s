@@ -132,7 +132,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Itself.l1',
+  name : 'Tools.Itself.l0.l1',
   silencing : 1,
 
   tests :

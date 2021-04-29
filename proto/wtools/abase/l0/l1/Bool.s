@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.bool = _.bool || Object.create( null );
+_.bool = _.bool || Object.create( null );
 
 // --
 // bool
@@ -164,6 +164,20 @@ function likeTrue( src )
 // extension
 // --
 
+let BoolExtension =
+{
+
+  is,
+  like,
+  likeFalse,
+  likeTrue,
+
+}
+
+Object.assign( _.bool, BoolExtension );
+
+//
+
 let ToolsExtension =
 {
 
@@ -174,19 +188,6 @@ let ToolsExtension =
 
 }
 
-//
-
-let Extension =
-{
-
-  is,
-  like,
-  likeFalse,
-  likeTrue,
-
-}
-
 Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
 
 })();

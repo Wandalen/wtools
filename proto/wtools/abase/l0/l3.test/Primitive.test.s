@@ -455,7 +455,7 @@ function exportStringShallowDiagnostic( test )
 const Proto =
 {
 
-  name : 'Tools.Primitive.l3',
+  name : 'Tools.Primitive.l0.l3',
   silencing : 1,
 
   tests :

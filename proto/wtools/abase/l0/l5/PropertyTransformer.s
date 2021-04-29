@@ -122,7 +122,7 @@ function transformerRegister( fi, name )
   name = fi.name;
 
   _.assert( _.strDefined( name ) );
-  _.assert( _.object.is( fi.identity ), 'Not property transformer' );
+  _.assert( _.object.isBasic( fi.identity ), 'Not property transformer' );
 
   if( fi.identity.propertyMapper )
   {
@@ -196,7 +196,7 @@ function transformerIs( transformer )
 {
   if( !_.routine.is( transformer ) )
   return false;
-  if( !_.object.is( transformer.identity ) )
+  if( !_.object.isBasic( transformer.identity ) )
   return false;
 
   let result =
@@ -215,7 +215,7 @@ function mapperIs( transformer )
 {
   if( !_.routine.is( transformer ) )
   return false;
-  if( !_.object.is( transformer.identity ) )
+  if( !_.object.isBasic( transformer.identity ) )
   return false;
   return !!transformer.identity.propertyMapper;
 }
@@ -226,7 +226,7 @@ function filterIs( transformer )
 {
   if( !_.routine.is( transformer ) )
   return false;
-  if( !_.object.is( transformer.identity ) )
+  if( !_.object.isBasic( transformer.identity ) )
   return false;
   return !!transformer.identity.propertyFilter;
 }

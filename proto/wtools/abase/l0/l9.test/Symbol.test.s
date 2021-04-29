@@ -256,7 +256,7 @@ function exportStringShallowDiagnostic( test )
 const Proto =
 {
 
-  name : 'Tools.Symbol',
+  name : 'Tools.Symbol.l0.l9',
   silencing : 1,
 
   tests :

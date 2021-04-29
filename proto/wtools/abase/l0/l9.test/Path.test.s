@@ -7164,7 +7164,7 @@ function fullName( test )
 const Proto =
 {
 
-  name : 'Tools.path.Fundamental',
+  name : 'Tools.path.Fundamental.l0.l9',
   silencing : 1,
 
   tests :

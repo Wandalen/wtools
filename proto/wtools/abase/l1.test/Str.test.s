@@ -10945,7 +10945,7 @@ function strLinesSize( test )
 const Proto =
 {
 
-  name : 'Tools.Str.base',
+  name : 'Tools.Str.l1',
   silencing : 1,
   enabled : 1,
 

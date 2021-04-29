@@ -325,7 +325,7 @@ function from( test )
 const Proto =
 {
 
-  name : 'Tools.ArgumentsArray',
+  name : 'Tools.ArgumentsArray.l0.l9',
   silencing : 1,
   enabled : 1,
 

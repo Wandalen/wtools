@@ -23,7 +23,12 @@ if( typeof module !== 'undefined' )
   require( './l1/BigInt.s' );
   require( './l1/Bool.s' );
   require( './l1/Buffer.s' );
+  require( './l1/BufferBytes.s' );
+  require( './l1/BufferNode.s' );
+  require( './l1/BufferRaw.s' );
+  require( './l1/BuffersTyped.s' );
   require( './l1/BufferTyped.s' );
+  require( './l1/BufferView.s' );
   require( './l1/Class.s' );
   require( './l1/Constructible.s' );
   require( './l1/Container.s' );

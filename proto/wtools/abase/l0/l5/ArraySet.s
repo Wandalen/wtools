@@ -789,7 +789,7 @@ function containAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
     {
       if( from === 0 )
       {
-        if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equal( el, e, onEvaluate1, onEvaluate2 ) )
         {
           result = true;
           break;
@@ -900,7 +900,7 @@ function containAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
       {
         if( from === 0 )
         {
-          if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equal( el, e, onEvaluate1, onEvaluate2 ) )
           return true;
         }
         else
@@ -979,7 +979,7 @@ function containNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
       {
         if( from === 0 )
         {
-          if( _.entity.equalize( el, e, onEvaluate1, onEvaluate2 ) )
+          if( _.entity.equal( el, e, onEvaluate1, onEvaluate2 ) )
           return false;
         }
         else
@@ -1128,7 +1128,7 @@ function left( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     {
       if( from === 0 )
       {
-        if( _.entity.equalize( e, ins, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equal( e, ins, onEvaluate1, onEvaluate2 ) )
         {
           result.index = index;
           result.element = e;
@@ -1188,7 +1188,7 @@ function right( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
     {
       if( index < to )
       {
-        if( _.entity.equalize( e, ins, onEvaluate1, onEvaluate2 ) )
+        if( _.entity.equal( e, ins, onEvaluate1, onEvaluate2 ) )
         {
           result.index = index;
           result.element = e;

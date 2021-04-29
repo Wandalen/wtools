@@ -163,13 +163,13 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
-    _.assert( e === undefined || _.entity.equalize( poped, e, onEvaluate1, onEvaluate2 ) );
+    _.assert( e === undefined || _.entity.equal( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.entity.equalize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
+    _.assert( _.entity.equal( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
 
     var poped = this.original.pop();
     return poped;

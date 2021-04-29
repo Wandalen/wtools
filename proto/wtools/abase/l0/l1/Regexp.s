@@ -5,7 +5,11 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
+
+_.assert( _.regexp === undefined );
+_.regexp = Object.create( null );
+_.assert( _.regexp.s === undefined );
+_.regexp.s = Object.create( null );
 
 // --
 // regexp
@@ -65,36 +69,6 @@ function likeAll( src )
 
 //
 
-function identicalShallow( src1, src2, o )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  
-
-  if( !_.regexp.is( src1 ) || !_.regexp.is( src2 ) )
-  return false;
-
-  return _.regexp._identicalShallow( src1, src2 );
-}
-
-//
-
-function _identicalShallow( src1, src2 )
-{
-  return src1.source === src2.source && src1.flags === src2.flags;
-}
-
-//
-
-function equivalentShallow( src1, src2 )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
-  return false;
-  return src1.source === src2.source;
-}
-
-//
-
 /**
  * Escapes special characters with a slash ( \ ). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
@@ -115,16 +89,6 @@ function escape( src )
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1' );
 }
 
-//
-
-function exportStringShallowDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.regexp.is( src ) );
-
-  return `/${src.source}/${src.flags}`;
-}
-
 // --
 // extension
 // --
@@ -136,16 +100,16 @@ let ToolsExtension =
   regexpObjectIs : objectIs,
   regexpLike : like,
   regexpsLikeAll : likeAll,
-  regexpIdentical : identicalShallow, /* qqq : cover please */
-  regexpEquivalent : equivalentShallow, /* qqq : cover please | Done. Yevhen S. */
 
   regexpEscape : escape,
 
 }
 
+Object.assign( _, ToolsExtension )
+
 //
 
-let Extension =
+let RegexpExtension =
 {
 
   // regexp
@@ -153,27 +117,16 @@ let Extension =
   is,
   objectIs,
   like,
-  identical : identicalShallow,
-  equivalent : equivalentShallow,
-  equivalentShallow,
-  identicalShallow,
-  _identicalShallow,
 
   escape,
 
-  // exporter
-
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
 }
+
+Object.assign( _.regexp, RegexpExtension )
 
 //
 
-let ExtensionS =
+let RegexpExtensions =
 {
 
   // regexps
@@ -182,13 +135,6 @@ let ExtensionS =
 
 }
 
-_.assert( _.regexp === undefined );
-_.regexp = Object.create( null );
-_.assert( _.regexp.s === undefined );
-_.regexp.s = Object.create( null );
-
-Object.assign( _.regexp, Extension )
-Object.assign( _.regexp.s, ExtensionS )
-Object.assign( Self, ToolsExtension )
+Object.assign( _.regexp.s, RegexpExtensions )
 
 })();

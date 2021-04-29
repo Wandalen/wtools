@@ -855,7 +855,7 @@ function verbosityRelative( test )
 const Proto =
 {
 
-  name : 'Tools.Logger',
+  name : 'Tools.Logger.l0.l9',
   silencing : 1,
 
   tests :

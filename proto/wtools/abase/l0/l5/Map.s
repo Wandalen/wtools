@@ -393,7 +393,7 @@ function objectSatisfy( o )
   o = { template : arguments[ 0 ], src : arguments[ 1 ] };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( o.template ) || _.routine.is( o.template ) );
+  _.assert( _.object.isBasic( o.template ) || _.routine.is( o.template ) );
   _.assert( o.src !== undefined );
   _.routine.options( objectSatisfy, o );
 
@@ -419,8 +419,8 @@ function objectSatisfy( o )
     {
       if
       (
-        _.object.is( template )
-        && _.object.is( src )
+        _.object.isBasic( template )
+        && _.object.isBasic( src )
         && _.routine.is( template.identicalWith )
         && src.identicalWith === template.identicalWith
       )
@@ -436,10 +436,10 @@ function objectSatisfy( o )
     if( _.routine.is( template ) )
     return template( src );
 
-    if( !_.object.is( src ) )
+    if( !_.object.isBasic( src ) )
     return false;
 
-    if( _.object.is( template ) )
+    if( _.object.isBasic( template ) )
     {
       for( let t in template )
       {
@@ -1624,7 +1624,7 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 
       if( filters.onUpFilter( dstMap, srcMap, s ) === true )
       {
-        if( !_.object.is( dstMap[ s ] ) )
+        if( !_.object.isBasic( dstMap[ s ] ) )
         dstMap[ s ] = Object.create( null );
         _._mapExtendRecursiveConditional( filters, dstMap[ s ], srcMap[ s ] );
       }
@@ -1886,7 +1886,7 @@ function mapSetWithKeys( dstMap, key, val )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( _.object.is( dstMap ) );
+  _.assert( _.object.isBasic( dstMap ) );
   _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
@@ -1925,7 +1925,7 @@ function mapSetWithKeyStrictly( dstMap, key, val )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( _.object.is( dstMap ) );
+  _.assert( _.object.isBasic( dstMap ) );
   _.assert( _.strIs( key ) || _.countable.is( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 

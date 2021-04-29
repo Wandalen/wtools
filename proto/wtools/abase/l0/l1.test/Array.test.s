@@ -1670,7 +1670,7 @@ function arrayFrom( test )
 const Proto =
 {
 
-  name : 'Tools.Array.l0',
+  name : 'Tools.Array.l0.l1',
   silencing : 1,
   enabled : 1,
 

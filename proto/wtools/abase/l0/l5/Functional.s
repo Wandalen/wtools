@@ -3182,9 +3182,9 @@ function _filter_functor( condition, levels )
   let result;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.routine.is( condition ) || _.object.is( condition ) );
+  _.assert( _.routine.is( condition ) || _.object.isBasic( condition ) );
 
-  if( _.object.is( condition ) )
+  if( _.object.isBasic( condition ) )
   {
     let template = condition;
     condition = function condition( e, k, src )

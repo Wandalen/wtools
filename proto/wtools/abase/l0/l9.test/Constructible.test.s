@@ -25,7 +25,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -40,7 +40,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -55,7 +55,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -70,7 +70,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -87,7 +87,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -104,7 +104,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -119,7 +119,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -136,7 +136,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -152,7 +152,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -169,7 +169,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -185,7 +185,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -200,7 +200,7 @@ function typingBasic( test ) /* qqq for Yevhen : extend */
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -235,7 +235,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -250,7 +250,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -265,7 +265,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -280,7 +280,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -295,7 +295,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -310,7 +310,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -325,7 +325,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -340,7 +340,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -355,7 +355,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -370,7 +370,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -385,7 +385,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -396,11 +396,11 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'vector & vectorLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -411,11 +411,11 @@ function typingExtended( test )
   test.true( !_.mapIsPolluted( src ) );
 
   test.case = 'countable & countableLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -430,7 +430,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -445,7 +445,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -460,7 +460,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -476,7 +476,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -491,7 +491,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -506,7 +506,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -521,7 +521,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -536,7 +536,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -551,7 +551,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -566,7 +566,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -581,7 +581,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -596,7 +596,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -611,7 +611,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -626,7 +626,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -641,7 +641,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -656,7 +656,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -671,7 +671,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -686,7 +686,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -701,7 +701,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -716,7 +716,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -731,7 +731,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -746,7 +746,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -761,7 +761,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -776,7 +776,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -792,7 +792,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -807,7 +807,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -822,7 +822,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -837,7 +837,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -852,7 +852,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -867,7 +867,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -882,7 +882,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -897,7 +897,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( !_.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -912,7 +912,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -927,7 +927,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -942,7 +942,7 @@ function typingExtended( test )
   // test.true( !_.constructible.like( src ) );
   // test.true( !_.constructible.is( src ) );
   // test.true( _.object.like( src ) );
-  // test.true( !_.object.is( src ) );
+  // test.true( !_.object.isBasic( src ) );
   // test.true( _.aux.like( src ) );
   // test.true( _.aux.is( src ) );
   // test.true( !_.mapIs( src ) );
@@ -957,7 +957,7 @@ function typingExtended( test )
   test.true( !_.constructible.like( src ) );
   test.true( !_.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.aux.like( src ) );
   test.true( _.aux.is( src ) );
   test.true( _.mapIs( src ) );
@@ -972,7 +972,7 @@ function typingExtended( test )
   test.true( _.constructible.like( src ) );
   test.true( _.constructible.is( src ) );
   test.true( _.object.like( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( !_.aux.like( src ) );
   test.true( !_.aux.is( src ) );
   test.true( !_.mapIs( src ) );
@@ -1058,7 +1058,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
       var src = _.diagnostic.objectMake( { elements : [ '1', '10' ], ... env } );
       test.true( !_.constructible.is( src ) );
 
-      test.identical( _.object.is( src ), true );
+      test.identical( _.object.isBasic( src ), true );
       test.identical( _.object.like( src ), true );
       test.identical( _.mapIs( src ), !env.withIterator );
       test.identical( _.aux.is( src ), !env.withIterator );
@@ -1078,7 +1078,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
       test.true( !_.constructible.is( src ) ^ !!env.withConstructor );
 
-      test.identical( _.object.is( src ), true );
+      test.identical( _.object.isBasic( src ), true );
       test.identical( _.object.like( src ), true );
       test.identical( _.mapIs( src ), false );
       test.identical( _.aux.is( src ), !env.withIterator && !env.withConstructor );
@@ -1102,7 +1102,7 @@ function typingObject( test ) /* qqq for Yevhen : extend */
 
 //
 
-/* qqq : wrote very good test for objectIs */
+/* qqq : wrote very good test for object.isBasic */
 /* qqq  : use test.true() instead of test.identical() */
 function objectLike( test ) /* qqq : rewrote the test */
 {
@@ -1129,7 +1129,7 @@ function objectLike( test ) /* qqq : rewrote the test */
 const Proto =
 {
 
-  name : 'Tools.Constructible',
+  name : 'Tools.Constructible.l0.l9',
   silencing : 1,
 
   tests :

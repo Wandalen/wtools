@@ -46,25 +46,25 @@ function exportStringShallowDiagnostic( test )
   test.identical( got, exp );
 
   test.case = 'vector & vectorLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
   var exp = '{- countableConstructor.countable -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = 'countable & countableLike';
-  var src = new countableConstructor({ elements : [ '1', '10' ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
   var exp = '{- countableConstructor.countable.constructible -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
-  var src = countableMake( null, { elements : [], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
   var exp = '{- Object.countable -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = countableMake( null, { elements : [ '1', '2', '3' ], withIterator : 1 } );
+  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
   var exp = '{- Object.countable -}';
   var got = _.blank.exportStringShallowDiagnostic( src );
   test.identical( got, exp );
@@ -354,7 +354,7 @@ function aptRightItself( test )
 const Proto =
 {
 
-  name : 'Tools.Itself.l3',
+  name : 'Tools.Itself.l0.l3',
   silencing : 1,
 
   tests :

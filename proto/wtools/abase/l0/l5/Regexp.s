@@ -6,13 +6,59 @@
 const _global = _global_;
 const _ = _global_.wTools;
 // const Self = _global_.wTools;
-let Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
-let Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
-
+_global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
+_global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
 // --
 // regexp
 // --
+
+function regexpsEquivalent( src1, src2 )
+{
+
+  _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
+  _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  let isLong1 = _.longIs( src1 );
+  let isLong2 = _.longIs( src2 );
+
+  if( isLong1 && isLong2 )
+  {
+    let result = [];
+    _.assert( src1.length === src2.length );
+    for( let i = 0, len = src1.length ; i < len; i++ )
+    {
+      result[ i ] = _.regexp.equivalent( src1[ i ], src2[ i ] );
+    }
+    return result;
+  }
+  else if( !isLong1 && isLong2 )
+  {
+    let result = [];
+    for( let i = 0, len = src2.length ; i < len; i++ )
+    {
+      result[ i ] = _.regexp.equivalent( src1, src2[ i ] );
+    }
+    return result;
+  }
+  else if( isLong1 && !isLong2 )
+  {
+    let result = [];
+    for( let i = 0, len = src1.length ; i < len; i++ )
+    {
+      result[ i ] = _.regexp.equivalent( src1[ i ], src2 );
+    }
+    return result;
+  }
+  else
+  {
+    return _.regexp.equivalent( src1, src2 );
+  }
+
+}
+
+//
 
 function _test( regexp, str )
 {
@@ -129,14 +175,17 @@ function regexpsTestNone( regexps, strs )
   return regexps.every( ( regexp ) => _.regexpTestNone( regexp, strs ) );
 }
 
-//
-
 // --
 // extension
 // --
 
 let ToolsExtension =
 {
+
+  regexpsEquivalent : regexpsEquivalent,
+  regexpsEquivalentAll : _.vectorizeAll( _.regexp.equivalentShallow.bind( _.regexp ), 2 ),
+  regexpsEquivalentAny : _.vectorizeAny( _.regexp.equivalentShallow.bind( _.regexp ), 2 ),
+  regexpsEquivalentNone : _.vectorizeNone( _.regexp.equivalentShallow.bind( _.regexp ), 2 ),
 
   regexpsEscape : _.vectorize( _.regexpEscape ),
 
@@ -151,11 +200,14 @@ let ToolsExtension =
   regexpsTestAny,
   regexpsTestNone,
 
+
 }
+
+_.props.supplement( _, ToolsExtension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
 
 //
 
-let Extension =
+let RegexpExtension =
 {
 
   // regexp
@@ -169,12 +221,16 @@ let Extension =
 
 }
 
+_.props.supplement( _.regexp, RegexpExtension );
+
 //
 
-let ExtensionS =
+let RegexpsExtension =
 {
 
   // regexps
+
+  regexpsEquivalent,
 
   escape : _.vectorize( _.regexpEscape ),
 
@@ -186,8 +242,6 @@ let ExtensionS =
 
 //
 
-_.props.supplement( Regexp, Extension );
-_.props.supplement( Regexps, ExtensionS );
-_.props.supplement( _, ToolsExtension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
+_.props.supplement( _.regexp.s, RegexpsExtension );
 
 })();

@@ -2562,7 +2562,7 @@ function traitIs( test )
 const Proto =
 {
 
-  name : 'Tools.Typing',
+  name : 'Tools.Typing.l0.l9',
   silencing : 1,
 
   tests :

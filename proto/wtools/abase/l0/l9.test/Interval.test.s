@@ -7780,7 +7780,7 @@ function ointervalLastGet( test )
 const Proto =
 {
 
-  name : 'Tools.Interval',
+  name : 'Tools.Interval.l0.l9',
   silencing : 1,
   enabled : 1,
 

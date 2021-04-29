@@ -53,7 +53,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Props.l9',
+  name : 'Tools.Props.l0.l9',
   silencing : 1,
 
   tests :

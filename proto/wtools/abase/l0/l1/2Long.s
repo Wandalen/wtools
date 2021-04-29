@@ -7,10 +7,13 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 _.assert( _.long === undefined );
+_.assert( _.withLong === undefined );
 _.long = _.long || Object.create( null );
 _.long.namespaces = _.long.namespaces || Object.create( null );
-_.long.toolsNamespaces = _.long.toolsNamespaces || Object.create( null );
-_.withLong = _.withLong || Object.create( null );
+_.long.toolsNamespacesByType = _.long.toolsNamespacesByType || Object.create( null );
+_.long.toolsNamespacesByName = _.long.toolsNamespacesByName || Object.create( null );
+_.long.toolsNamespaces = _.long.toolsNamespacesByName;
+_.withLong = _.long.toolsNamespacesByType;
 
 // --
 // dichotomy
@@ -45,7 +48,7 @@ _.withLong = _.withLong || Object.create( null );
  */
 
 /* xxx : optimize! */
-/* qqq : for Yevhen : optimize. ask how to */
+/* qqq : for junior : optimize. ask how to */
 /* qqq : check coverage */
 function is( src )
 {
@@ -109,14 +112,13 @@ function _makeEmpty( src )
   }
   else
   {
-    return this.tools./*longDescriptor*/defaultLong.make();
-    // return [];
+    return this.tools.defaultLong.make();
   }
 }
 
 //
 
-/* qqq2 : for Yevhen : cover please */
+/* qqq2 : for junior : cover please */
 function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -138,7 +140,12 @@ function _makeUndefined( src, length )
   if( arguments.length === 2 )
   {
     if( !_.numberIs( length ) )
-    length = length.length;
+    {
+      if( _.numberIs( length.length ) )
+      length = length.length;
+      else
+      length = [ ... length ].length;
+    }
     if( _.argumentsArray.is( src ) )
     return _.argumentsArray._makeUndefined( src, length );
     if( _.unroll.is( src ) )
@@ -149,6 +156,8 @@ function _makeUndefined( src, length )
       _.assert( _.long.is( result ) );
       return result;
     }
+    if( src === null )
+    return this.tools.defaultLong.make( length );
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
@@ -165,37 +174,115 @@ function _makeUndefined( src, length )
     }
     else
     {
-      return this.tools./*longDescriptor*/defaultLong.make( src );
+      return this.tools.defaultLong.make( src );
     }
     return new constructor( length );
   }
   else
   {
-    return this.tools./*longDescriptor*/defaultLong.make();
+    return this.tools.defaultLong.make();
   }
 }
 
 //
 
-/* qqq2 : for Yevhen : cover please */
+/* qqq2 : for junior : cover please */
 function makeUndefined( src, length )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || this.like( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || this.like( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.numberIs( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === undefined || src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
 
 //
 
-/* qqq2 : for Yevhen : full implementation and coverage are required */
+function _makeZeroed( src, length )
+{
+  if( arguments.length === 2 )
+  {
+    if( !_.numberIs( length ) )
+    {
+      if( _.numberIs( length.length ) )
+      length = length.length;
+      else
+      length = [ ... length ].length;
+    }
+    if( _.argumentsArray.is( src ) )
+    return fill( _.argumentsArray._makeUndefined( src, length ) );
+    if( _.unroll.is( src ) )
+    return fill( _.unroll._makeUndefined( src, length ) );
+    if( _.routineIs( src ) )
+    {
+      let result = fill( new src( length ) );
+      _.assert( _.long.is( result ) );
+      return result;
+    }
+    if( src === null )
+    return fill( this.tools.defaultLong.make( length ) );
+    return fill( new src.constructor( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    let constructor;
+    if( this.like( src ) )
+    {
+      if( _.argumentsArray.is( src ) )
+      return fill( _.argumentsArray._makeUndefined( src ) );
+      if( _.unroll.is( src ) )
+      return fill( _.unroll._makeUndefined( src ) );
+      constructor = src.constructor;
+      length = src.length;
+    }
+    else
+    {
+      return fill( this.tools.defaultLong.make( src ) );
+    }
+    return fill( new constructor( length ) );
+  }
+  else
+  {
+    return fill( this.tools.defaultLong.make() );
+  }
+
+  function fill( dst )
+  {
+    let l = dst.length;
+    for( let i = 0 ; i < l ; i++ )
+    dst[ i ] = 0;
+    return dst;
+  }
+
+}
+
+//
+
+/* qqq2 : for junior : cover please */
+/* qqq : for junior : extend with test cases with countable in 2nd arg */
+function makeZeroed( src, length )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+  }
+  return this._makeZeroed( ... arguments );
+}
+
+//
+
 function _make( src, length )
 {
 
@@ -203,16 +290,27 @@ function _make( src, length )
   {
     let data = length;
     if( _.numberIs( length ) )
-    data = src;
+    {
+      data = src;
+    }
     else
-    length = length.length;
+    {
+      if( _.numberIs( length.length ) )
+      {
+        length = length.length;
+      }
+      else
+      {
+        data = [ ... length ];
+        length = data.length;
+      }
+    }
     if( _.argumentsArray.is( src ) )
     return fill( _.argumentsArray.make( length ), data );
     if( _.unroll.is( src ) )
     return fill( _.unroll.make( length ), data );
     if( src === null )
-    return fill( this.tools./*longDescriptor*/defaultLong.make( length ), data );
-
+    return fill( this.tools.defaultLong.make( length ), data );
     let result;
     if( _.routineIs( src ) )
     result = fill( new src( length ), data )
@@ -220,9 +318,6 @@ function _make( src, length )
     result = fill( new src.constructor( length ), data );
     _.assert( _.long.is( result ), 'Not clear how to make such long' );
     return result;
-    // if( src.constructor === Array )
-    // return fill( new src.constructor( length ), data );
-    // _.assert( 0, 'Not clear how to make such long' );
   }
   else if( src !== undefined && src !== null )
   {
@@ -231,7 +326,7 @@ function _make( src, length )
     if( _.unroll.is( src ) )
     return _.unroll.make( src );
     if( _.numberIs( src ) )
-    return this.tools./*longDescriptor*/defaultLong.make( src );
+    return this.tools.defaultLong.make( src );
     if( _.routineIs( src ) )
     return new src();
     if( src.constructor === Array )
@@ -239,7 +334,7 @@ function _make( src, length )
     return new src.constructor( src );
   }
 
-  return this.tools./*longDescriptor*/defaultLong.make();
+  return this.tools.defaultLong.make();
 
   function fill( dst, data )
   {
@@ -255,24 +350,26 @@ function _make( src, length )
 
 //
 
+/* qqq2 : for junior : full implementation and coverage are required */
+/* qqq : for junior : extend with test cases with countable in 2nd arg */
 function make( src, length )
 {
   _.assert( arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || this.like( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || this.like( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.numberIs( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === undefined || src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
   }
   return this._make( ... arguments );
 }
 
 //
 
-/* qqq2 : for Yevhen : full implementation and coverage are required */
+/* qqq2 : for junior : full implementation and coverage are required */
 function _cloneShallow( src )
 {
   if( _.argumentsArray.is( src ) )
@@ -280,7 +377,7 @@ function _cloneShallow( src )
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
   if( _.numberIs( src ) )
-  return this.tools./*longDescriptor*/defaultLong.make( src );
+  return this.tools.defaultLong.make( src );
   if( src.constructor === Array )
   return [ ... src ];
   else
@@ -303,7 +400,9 @@ function from( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( this.is( src ) )
   return src;
-  return this.make( src );
+  if( src === null )
+  return this.make( null );
+  return this.make( null, src );
 }
 
 // --
@@ -675,15 +774,34 @@ function rightDefined( arr )
 function _namespaceRegister( namespace )
 {
 
-  _.assert( !!namespace.NamespaceName );
-  _.assert( _[ namespace.NamespaceName ] === namespace );
-  _.assert( _.long.namespaces[ namespace.NamespaceName ] === undefined );
+  if( Config.debug )
+  verify();
+
   _.long.namespaces[ namespace.NamespaceName ] = namespace;
 
   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
   namespace.IsLong = true;
 
   namespace.AsDefault = _.long._asDefaultGenerate( namespace );
+
+  function verify()
+  {
+    _.assert( !!namespace.NamespaceName );
+    _.assert( _.long.namespaces[ namespace.Name ] === undefined );
+    _.assert( _[ namespace.NamespaceName ] === namespace );
+    _.assert( _select( _global_, namespace.NamespaceQname ) === namespace );
+  }
+
+  function _select( src, selector )
+  {
+    selector = selector.split( '/' );
+    while( selector.length && !!src )
+    {
+      src = src[ selector[ 0 ] ];
+      selector.splice( 0, 1 )
+    }
+    return src;
+  }
 
 }
 
@@ -695,14 +813,16 @@ function _asDefaultGenerate( namespace )
   _.assert( !!namespace );
   _.assert( !!namespace.TypeName );
 
-  let result = _.long.toolsNamespaces[ namespace.TypeName ];
-
+  let result = _.long.toolsNamespacesByType[ namespace.TypeName ];
   if( result )
   return result;
 
-  result = _.long.toolsNamespaces[ namespace.TypeName ] = Object.create( _ );
+  result = _.long.toolsNamespacesByType[ namespace.TypeName ] = Object.create( _ );
   result.defaultLong = namespace;
 
+  _.long.toolsNamespacesByName[ namespace.NamespaceName ] = result;
+
+  /* xxx : introduce map _.namespaces */
   for( let name in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ name ];
@@ -712,7 +832,7 @@ function _asDefaultGenerate( namespace )
 
   result.long = Object.create( _.long );
   result.long.tools = result;
-  _.withLong[ namespace.TypeName ] = result;
+  // _.withLong[ namespace.TypeName ] = result;
 
   return result;
 }
@@ -735,6 +855,7 @@ let ToolsExtension =
 
   longMakeEmpty : makeEmpty.bind( _.long ),
   longMakeUndefined : makeUndefined.bind( _.long ),
+  longMakeZeroed : makeZeroed.bind( _.long ),
   longMake : make.bind( _.long ),
   longCloneShallow : cloneShallow.bind( _.long ),
   longFrom : from.bind( _.long ),
@@ -762,6 +883,7 @@ let LongExtension =
   //
 
   NamespaceName : 'long',
+  NamespaceQname : 'wTools/long',
   TypeName : 'Long',
   SecondTypeName : 'Long',
   InstanceConstructor : null,
@@ -778,14 +900,16 @@ let LongExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed,
+  makeZeroed, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
-  from, /* qqq : for Yevhen : cover */
+  cloneShallow, /* qqq : for junior : cover */
+  from, /* qqq : for junior : cover */
 
   // long sequential search
 

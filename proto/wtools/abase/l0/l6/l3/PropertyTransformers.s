@@ -244,7 +244,7 @@ function drop( dropContainer )
 
   debugger;
 
-  _.assert( _.object.is( dropContainer ) );
+  _.assert( _.object.isBasic( dropContainer ) );
 
   let routine = drop;
 

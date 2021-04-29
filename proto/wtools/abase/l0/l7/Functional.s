@@ -393,7 +393,7 @@ function eachSample_( o )
   let len = [];
   let indexnd = [];
   let index = 0;
-  let l = _.entityLengthOf( o.sets );
+  let l = _.entity.lengthOf( o.sets );
 
   /* sets */
 
@@ -412,7 +412,7 @@ function eachSample_( o )
       if( set.length === 0 )
       breaking = 1;
 
-      len[ sindex ] = _.entityLengthOf( o.sets[ k ] );
+      len[ sindex ] = _.entity.lengthOf( o.sets[ k ] );
       indexnd[ sindex ] = 0;
       sindex += 1;
     }

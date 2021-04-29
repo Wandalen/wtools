@@ -45,16 +45,17 @@ function is( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
 
   if( proto === Object.prototype )
-  return true;
+  {
+    if( src[ Symbol.iterator ] )
+    return Object.prototype.toString.call( src ) !== '[object Arguments]';
+    return true;
+  }
 
   return false;
 }
@@ -64,9 +65,6 @@ function is( src )
 function isPure( src )
 {
   if( !src )
-  return false;
-
-  if( src[ Symbol.iterator ] )
   return false;
 
   if( Object.getPrototypeOf( src ) === null )
@@ -83,19 +81,78 @@ function isPolluted( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return false;
 
   if( proto === Object.prototype )
-  return true;
+  {
+    if( src[ Symbol.iterator ] )
+    return Object.prototype.toString.call( src ) !== '[object Arguments]';
+    return true;
+  }
 
   return false;
 }
+
+// function is( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto === Object.prototype )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPure( src )
+// {
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   if( Object.getPrototypeOf( src ) === null )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPolluted( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto === Object.prototype )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -735,6 +792,7 @@ let ExtensionMap =
   //
 
   NamespaceName : 'map',
+  NamespaceQname : 'wTools/map',
   TypeName : 'Map',
   SecondTypeName : 'Map',
   InstanceConstructor : null,

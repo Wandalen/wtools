@@ -179,7 +179,7 @@ function exportStringShallowCode( test )
 const Proto =
 {
 
-  name : 'Tools.BigInt',
+  name : 'Tools.BigInt.l0.l9',
   silencing : 1,
 
   tests :

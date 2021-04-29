@@ -2063,7 +2063,7 @@ function vectorizeAccessSpecial( test )
 const Proto =
 {
 
-  name : 'Tools.Functor',
+  name : 'Tools.Functor.l0.l9',
   silencing : 1,
 
   tests :

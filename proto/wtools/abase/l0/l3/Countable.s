@@ -68,7 +68,7 @@ function _equivalentShallow( src1, src2 )
 
   if( _.longIs( src1 ) && _.longIs( src2 ) )
   {
-    return _.longEquivalentShallow( src1, src2 );
+    return _.long.equivalentShallow( src1, src2 );
   }
   else
   {
@@ -452,9 +452,9 @@ var CountableExtension =
   _identicalShallow,
   identicalShallow,
   identical : identicalShallow,
-  _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
 
   // exporter
 

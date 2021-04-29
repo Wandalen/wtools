@@ -755,7 +755,7 @@ function strForCall()
   let result = nameOfRoutine + '( ';
   let first = true;
 
-  _.assert( _.arrayIs( args ) || _.object.is( args ) );
+  _.assert( _.arrayIs( args ) || _.object.isBasic( args ) );
   _.assert( arguments.length <= 4 );
 
   _.each( args, function( e, k )
@@ -764,7 +764,7 @@ function strForCall()
     if( first === false )
     result += ', ';
 
-    if( _.object.is( e ) )
+    if( _.object.isBasic( e ) )
     result += k + ' :' + _.entity.exportString( e, o );
     else
     result += _.entity.exportString( e, o );
@@ -2707,7 +2707,7 @@ function strLinesOnly( src, range )
 function strLinesNumber( o )
 {
 
-  if( !_.object.is( o ) )
+  if( !_.object.isBasic( o ) )
   o = { src : arguments[ 0 ], zeroLine : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
 
   _.routine.options( strLinesNumber, o );

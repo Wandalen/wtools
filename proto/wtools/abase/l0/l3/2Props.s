@@ -50,7 +50,7 @@ function exportStringShallowDiagnostic( src, o )
 {
   _.assert( this.like( src ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( o === undefined || _.object.is( o ) );
+  _.assert( o === undefined || _.object.isBasic( o ) );
   return `{- ${_.entity.strType( src )} with ${this._lengthOf( src )} elements -}`;
 }
 

@@ -298,8 +298,8 @@ function on( ehandler, o )
 
   _.routine.options( on, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.object.is( ehandler ) );
-  _.assert( _.object.is( ehandler.events ) );
+  _.assert( _.object.isBasic( ehandler ) );
+  _.assert( _.object.isBasic( ehandler.events ) );
   _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
@@ -438,8 +438,8 @@ function once( ehandler, o )
 
   _.routine.options( once, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.object.is( ehandler ) );
-  _.assert( _.object.is( ehandler.events ) );
+  _.assert( _.object.isBasic( ehandler ) );
+  _.assert( _.object.isBasic( ehandler.events ) );
   _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
@@ -592,8 +592,8 @@ function off( ehandler, o )
 
   _.routine.options( off, o );
   _.assert( _.mapIs( o.callbackMap ) );
-  _.assert( _.object.is( ehandler ) );
-  _.assert( _.object.is( ehandler.events ) );
+  _.assert( _.object.isBasic( ehandler ) );
+  _.assert( _.object.isBasic( ehandler.events ) );
   _.map.assertHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 

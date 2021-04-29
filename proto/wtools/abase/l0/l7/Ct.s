@@ -177,7 +177,7 @@ function _formatAffixes( styles )
   {
     let style = styles[ s ];
 
-    if( _.object.is( style ) )
+    if( _.object.isBasic( style ) )
     {
       let affixes = _.ct._formatAffixesForStyleObject( style );
       _.ct._affixesJoin( result, affixes );

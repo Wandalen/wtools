@@ -74,7 +74,7 @@ function _setupTesterPlaceholder()
     testSuit.suiteFileLocation = _.introspector.location( 1 ).fileNameLineCol;
 
     _.assert( _.strDefined( testSuit.suiteFileLocation ), 'Test suit expects a mandatory option ( suiteFileLocation )' );
-    _.assert( _.object.is( testSuit ) );
+    _.assert( _.object.isBasic( testSuit ) );
 
     if( !testSuit.abstract )
     _.assert( !_realGlobal_.wTests[ testSuit.name ], 'Test suit with name "' + testSuit.name + '" already registered!' );

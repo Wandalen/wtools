@@ -5,7 +5,9 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.vector = _global_.wTools.vector || Object.create( null );
+_.vector = _.vector || Object.create( null );
+
+_.assert( !!_.long.make, 'Expects routine _.long.make' );
 
 // --
 // implementation
@@ -56,6 +58,7 @@ var VectorExtension =
   //
 
   NamespaceName : 'vector',
+  NamespaceQname : 'wTools/vector',
   TypeName : 'Vector',
   SecondTypeName : 'Vector',
   InstanceConstructor : null,
@@ -66,18 +69,17 @@ var VectorExtension =
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
 
-  /* xxx : implement */
   // maker
-  //
-  // _makeEmpty,
-  // makeEmpty, /* qqq : for Yevhen : cover */
-  // _makeUndefined,
-  // makeUndefined, /* qqq : for Yevhen : cover */
-  // _make,
-  // make, /* qqq : for Yevhen : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for Yevhen : cover */
-  // from, /* qqq : for Yevhen : cover */
+
+  _makeEmpty : _.long._makeEmpty,
+  makeEmpty : _.long.makeEmpty, /* qqq : for Yevhen : cover */
+  _makeUndefined : _.long._makeUndefined,
+  makeUndefined : _.long.makeUndefined, /* qqq : for Yevhen : cover */
+  _make : _.long._make,
+  make : _.long.make, /* qqq : for Yevhen : cover */
+  _cloneShallow : _.long._cloneShallow,
+  cloneShallow : _.long.cloneShallow, /* qqq : for Yevhen : cover */
+  from : _.long.from, /* qqq : for Yevhen : cover */
 
 }
 

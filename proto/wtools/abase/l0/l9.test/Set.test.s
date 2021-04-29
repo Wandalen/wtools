@@ -344,7 +344,7 @@ function diff( test )
 const Proto =
 {
 
-  name : 'Tools.Set.l9',
+  name : 'Tools.Set.l0.l9',
   silencing : 1,
 
   tests :

@@ -315,7 +315,7 @@ function exportStringShallowCode( test )
 const Proto =
 {
 
-  name : 'Tools.Date',
+  name : 'Tools.Date.l0.l9',
   silencing : 1,
   enabled : 1,
 

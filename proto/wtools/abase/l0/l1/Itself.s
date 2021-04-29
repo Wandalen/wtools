@@ -46,9 +46,10 @@ Object.assign( _, ToolsExtension );
 let ItselfExtension =
 {
 
-  //
+  // fields
 
   NamespaceName : 'itself',
+  NamespaceQname : 'wTools/itself',
   TypeName : 'Itself',
   SecondTypeName : 'Itself',
   InstanceConstructor : null,

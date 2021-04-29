@@ -1180,7 +1180,7 @@ function fromBufferTypedInstance( test )
 const Proto =
 {
 
-  name : 'Tools.LongDescriptor',
+  name : 'Tools.LongDescriptor.l0.l9',
   silencing : 1,
 
   tests :

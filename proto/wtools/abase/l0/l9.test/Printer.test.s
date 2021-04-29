@@ -308,7 +308,7 @@ function like( test )
 const Proto =
 {
 
-  name : 'Tools.Printer',
+  name : 'Tools.Printer.l0.l9',
   silencing : 1,
 
   tests :

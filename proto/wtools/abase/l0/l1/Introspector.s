@@ -1048,7 +1048,7 @@ function stackFilter( stack, onEach )
       result.push( r );
       return;
     }
-    _.assert( _.object.is( r ) );
+    _.assert( _.object.isBasic( r ) );
     _.assert( _.strIs( r.original ) );
     result.push( r.original );
   });

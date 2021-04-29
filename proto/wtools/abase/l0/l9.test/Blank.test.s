@@ -31,7 +31,7 @@ function bulky( test )
 const Proto =
 {
 
-  name : 'Tools.Blank.l9',
+  name : 'Tools.Blank.l0.l9',
   silencing : 1,
 
   tests :

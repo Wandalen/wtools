@@ -161,7 +161,7 @@ function strip( test )
 const Proto =
 {
 
-  name : 'Tools.Ct',
+  name : 'Tools.Ct.l0.l9',
   silencing : 1,
   enabled : 1,
 

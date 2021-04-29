@@ -100,7 +100,7 @@ function promiseLike( src )
 {
   if( !src )
   return false;
-  // if( !_.object.is( src ) )
+  // if( !_.object.isBasic( src ) )
   // return false;
   return _.routine.is( src.then ) && _.routine.is( src.catch ) && ( src.constructor ) && ( src.constructor.name !== 'wConsequence' );
 }
@@ -227,7 +227,7 @@ function workerIs( src )
 function streamIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  return _.object.is( src ) && _.routine.is( src.pipe )
+  return _.object.isBasic( src ) && _.routine.is( src.pipe )
 }
 
 //

@@ -64,8 +64,15 @@ function sureIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
-  _.assert.apply( _, args );
+  // let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // debugger;
+  let args =
+  [
+    _.cinterval.has( cinterval, src )
+    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
+  _.sure.apply( _, args );
   return true;
 }
 
@@ -76,7 +83,14 @@ function assertIn( src, linterval )
   _.assert( arguments.length >= 2 );
   if( _.longIs( src ) )
   src = src.length;
-  let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // let args = _.unroll.from([ _.linterval.has( linterval, src ), () => 'Out of linterval' + _.rangeToStr( linterval ), _.unrollSelect( arguments, 2 ) ]);
+  // debugger;
+  let args =
+  [
+    _.cinterval.has( cinterval, src )
+    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    , Array.prototype.slice.call( arguments, 2 )
+  ];
   _.assert.apply( _, args );
   return true;
 }

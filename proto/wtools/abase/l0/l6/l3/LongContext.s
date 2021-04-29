@@ -85,14 +85,14 @@
 // _.longDescriptorProducer.applyTo( _, 'Array' );
 //
 // _.assert( !_.Array );
-// _.assert( _.object.is( _.withLong ) );
+// _.assert( _.object.isBasic( _.withLong ) );
 // _.assert( !_.defaultLong );
 //
 // _.assert( _.longDescriptorProducer );
 // _.assert( _.LongDescriptors );
 // _.assert( _.longDescriptor );
 //
-// _.assert( _./*longDescriptor*/defaultLong.name === 'Array' );
+// _.assert( _.defaultLong.name === 'Array' );
 // _.assert( _.long.tools === _ );
 //
 // })();

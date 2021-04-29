@@ -192,7 +192,7 @@ function identicalShallow( test )
   test.case = 'redundant arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.aux.identicalShallow( {}, {}, 'redundant argument' );
+    _.aux.identicalShallow( {}, {}, {}, 'redundant argument' );
   });
 
 }
@@ -558,7 +558,7 @@ function aptRight( test )
 const Proto =
 {
 
-  name : 'Tools.Auxiliary.l3',
+  name : 'Tools.Auxiliary.l0.l3',
   silencing : 1,
 
   tests :

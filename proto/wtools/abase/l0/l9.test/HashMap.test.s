@@ -53,7 +53,7 @@ function fromMap( test )
 const Proto =
 {
 
-  name : 'Tools.HashMap.l9', /* xxx : make optional name. deduce if not defined */
+  name : 'Tools.HashMap.l0.l9', /* xxx : make optional name. deduce if not defined */
   silencing : 1,
 
   tests :

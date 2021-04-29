@@ -68,7 +68,7 @@ function numbersFrom( src )
     for( let s = 0 ; s < src.length ; s++ )
     result[ s ] = _.number.from( src[ s ] );
   }
-  else if( _.object.is( src ) )
+  else if( _.object.isBasic( src ) )
   {
     result = Object.create( null );
     for( let s in src )
