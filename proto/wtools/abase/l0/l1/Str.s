@@ -1758,27 +1758,12 @@ function strLine( src, index )
   _.assert( _.strIs( src ), 'Expects string as first argument' );
   _.assert( _.numberIs( index ) && index >= 0, 'Expects number as second argument' );
 
-  let position = src.indexOf( '\n' );
+  let array = src.split( '\n' );
 
-  if( index === 0 )
-  {
-    if( position === -1 )
-    return src;
-    else
-    return src.slice( 0, position );
-  }
-  else
-  {
-    if( position === -1 )
-    return '';
-  }
-
-  let matches = src.match( /\n(.)+/g );
-
-  if( index > matches.length )
+  if( index >= array.length )
   return '';
 
-  return matches[ index-1 ][ 1 ]; /* first line was skipped, match includes '\n' character */
+  return array[ index ];
 
 }
 
