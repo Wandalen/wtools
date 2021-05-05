@@ -76,7 +76,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.printer.is( new Map( [] ) );
+  var got = _.printer.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -215,7 +215,7 @@ function like( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.printer.like( new Map( [] ) );
+  var got = _.printer.like( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';

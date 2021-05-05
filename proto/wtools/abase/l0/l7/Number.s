@@ -5,18 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.number = _.number || Object.create( null );
-_.number.s = _.number.s || Object.create( null );
-
-const _ArrayIndexOf = Array.prototype.indexOf;
-const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
-const _ArraySlice = Array.prototype.slice;
-const _ArraySplice = Array.prototype.splice;
-const _FunctionBind = Function.prototype.bind;
-const _ObjectToString = Object.prototype.toString;
-const _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
-let _ceil = Math.ceil;
-let _floor = Math.floor;
 
 // --
 // number
@@ -613,9 +601,11 @@ let ToolsExtension =
 
 }
 
+Object.assign( _, ToolsExtension );
+
 //
 
-let Extension =
+let NumberExtension =
 {
 
 
@@ -629,9 +619,11 @@ let Extension =
 
 }
 
+Object.assign( _.number, NumberExtension );
+
 //
 
-let ExtensionS =
+let NumbersExtension =
 {
 
   total : numbersTotal,
@@ -647,10 +639,6 @@ let ExtensionS =
 
 }
 
-//
-
-Object.assign( Self, Extension );
-Object.assign( _.number.s, ExtensionS );
-Object.assign( _, ToolsExtension );
+Object.assign( _.number.s, NumbersExtension );
 
 })();

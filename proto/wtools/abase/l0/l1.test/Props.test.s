@@ -217,7 +217,7 @@ function make( test )
   test.true( got !== src );
 
   // test.case = 'src - empty Map';
-  // var src = new Map([]);
+  // var src = new HashMap([]);
   // var got = _.props.make( src );
   // var expected = {};
   // test.identical( got, expected );
@@ -225,7 +225,7 @@ function make( test )
   // test.true( got !== src );
   //
   // test.case = 'src - pure map';
-  // var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  // var src = new HashMap( [ [ 'a', 1 ], [ 2, 2 ] ] );
   // var got = _.props.make( src );
   // var expected = {};
   // test.identical( got, expected );
@@ -264,7 +264,7 @@ function make( test )
   return;
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.props.make( { a : 1 }, { a : 'extra' } ) );
+  test.shouldThrowErrorSync( () => _.props.make( { a : 1 }, { a : 'extra' }, {} ) );
 
   test.case = 'wrong argument';
   test.shouldThrowErrorSync( () => _.props.make() );

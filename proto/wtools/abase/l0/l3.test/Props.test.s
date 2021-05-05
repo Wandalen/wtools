@@ -6,6 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( '../Include3.s' );
+  // const _ = require( 'Tools' );
   require( 'wTesting' );
 }
 
@@ -74,14 +75,14 @@ function dichotomy( test )
   src[ Symbol.iterator ] = function(){};
   test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
-  test.identical( _.mapIsPure( src ), false );
+  test.identical( _.mapIsPure( src ), true );
   test.identical( _.mapIsPolluted( src ), false );
   test.identical( _.aux.isPolluted( src ), false );
-  test.identical( _.map.isEmpty( src ), false );
-  test.identical( _.aux.isEmpty( src ), false );
+  test.identical( _.map.isEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.map.isPopulated( src ), false );
   test.identical( _.aux.isPopulated( src ), false );
 
@@ -136,14 +137,14 @@ function dichotomy( test )
   src[ Symbol.iterator ] = function(){};
   test.identical( _.object.isBasic( src ), true );
   test.identical( _.object.like( src ), true );
-  test.identical( _.mapIs( src ), false );
-  test.identical( _.aux.is( src ), false );
+  test.identical( _.mapIs( src ), true );
+  test.identical( _.aux.is( src ), true );
   test.identical( _.aux.isPrototyped( src ), false );
   test.identical( _.mapIsPure( src ), false );
-  test.identical( _.mapIsPolluted( src ), false );
-  test.identical( _.aux.isPolluted( src ), false );
-  test.identical( _.map.isEmpty( src ), false );
-  test.identical( _.aux.isEmpty( src ), false );
+  test.identical( _.mapIsPolluted( src ), true );
+  test.identical( _.aux.isPolluted( src ), true );
+  test.identical( _.map.isEmpty( src ), true );
+  test.identical( _.aux.isEmpty( src ), true );
   test.identical( _.map.isPopulated( src ), false );
   test.identical( _.aux.isPopulated( src ), false );
 
@@ -438,39 +439,39 @@ function dichotomy( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'pure empty map';
   var src = Object.create( null );
   var exp = '{- Map.pure with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'pure map';
   var src = Object.create( null );
   var exp = '{- Map.pure with 1 elements -}';
   src.x = 1;
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'empty polluted map';
   var src = {};
   var exp = '{- Map.polluted with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'polluted map';
   var src = { a : 7, b : 13 };
   var exp = '{- Map.polluted with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
   var exp = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map deep';
@@ -478,7 +479,7 @@ function exportStringShallowDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var exp = '{- Aux.pure.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from pure map deep with props';
@@ -489,14 +490,14 @@ function exportStringShallowDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var exp = '{- Aux.pure.prototyped with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map';
   var prototype = {};
   var src = Object.create( prototype );
   var exp = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map deep';
@@ -504,7 +505,7 @@ function exportStringShallowDiagnostic( test )
   var prototype2 = Object.create( prototype1 );
   var src = Object.create( prototype1 );
   var exp = '{- Aux.polluted.prototyped with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'prototyped from polluted map deep with props';
@@ -515,25 +516,25 @@ function exportStringShallowDiagnostic( test )
   var src = Object.create( prototype1 );
   src.c = 1;
   var exp = '{- Aux.polluted.prototyped with 2 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( src );
+  var got = _.props.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'number with options map';
   var exp = '{- Number with 0 elements -}';
-  var got = _.props.exportStringShallowDiagnostic( 13, {} );
+  var got = _.props.exportStringDiagnosticShallow( 13, {} );
   test.identical( got, exp );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow() );
 
   test.case = 'bad second argument'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic( {}, 'a' ) );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow( {}, 'a' ) );
 
   test.case = 'extra argument'
-  test.shouldThrowErrorSync( () => _.props.exportStringShallowDiagnostic( [], {}, 'a' ) );
+  test.shouldThrowErrorSync( () => _.props.exportStringDiagnosticShallow( [], {}, 'a' ) );
 
 }
 
@@ -1067,6 +1068,487 @@ function aptRight( test )
 
 }
 
+//
+
+function filterMapCommonPass( test )
+{
+  let ops = [];
+  let env;
+
+  _.assert( _.routine.is( _.props.filterWithEscape ) );
+
+  namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithoutEscape', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithEscape', left : 1 });
+  namespaceEach({ method : 'filter', left : 1 });
+
+  namespaceEach({ method : 'mapWithoutEscapeLeft', left : 1 });
+  namespaceEach({ method : 'mapWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'mapWithoutEscape', left : 1 });
+  namespaceEach({ method : 'mapWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'mapWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'mapWithEscape', left : 1 });
+  namespaceEach({ method : 'map', left : 1 });
+
+  /* - */
+
+  function namespaceEach( env )
+  {
+    env.namespace = 'props';
+    caseEach( env );
+    env.namespace = 'map';
+    caseEach( env );
+    env.namespace = 'aux';
+    caseEach( env );
+    env.namespace = 'object';
+    caseEach( env );
+    env.namespace = 'container';
+    caseEach( env );
+  }
+
+  /* - */
+
+  function caseEach( _env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}`;
+    env = _env;
+    test.identical( _.strType( _[ env.namespace ][ env.method ] ), 'Routine' );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    clean();
+    var src = { a : 1, b : 2, c : 3 };
+    var dst = { d : 4 }
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = { d : 4, a : 11, b : 12, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 };
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 'a', 'b', 'c' ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
+    clean();
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = { a : 11, b : 12, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 }
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 'a', 'b', 'c' ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
+    clean();
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( src, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : 12, c : 13 }
+    test.identical( got, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 'a', 'b', 'c' ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
+    clean();
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : 12, c : 13 }
+    test.identical( got, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 'a', 'b', 'c' ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+  }
+
+  /* - */
+
+  function order( dst )
+  {
+    if( !env.left )
+    dst.reverse();
+    return dst;
+  }
+
+  /* - */
+
+  function clean()
+  {
+    ops = [];
+  }
+
+  /* - */
+
+  function f1( e, k, c, src )
+  {
+    ops.push([ ... arguments ]); debugger;
+    return e + 10;
+  }
+
+  /* - */
+
+}
+
+filterMapCommonPass.rapidity = -1;
+filterMapCommonPass.timeOut = 60000;
+
+//
+
+function filterCommonDropping( test )
+{
+  let env;
+
+  namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithoutEscape', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithEscape', left : 1 });
+  namespaceEach({ method : 'filter', left : 1 });
+
+  /* - */
+
+  function namespaceEach( env )
+  {
+    env.namespace = 'props';
+    caseEach( env );
+    env.namespace = 'map';
+    caseEach( env );
+    env.namespace = 'aux';
+    caseEach( env );
+    env.namespace = 'object';
+    caseEach( env );
+    env.namespace = 'container';
+    caseEach( env );
+  }
+
+  /* - */
+
+  function caseEach( _env )
+  {
+    env = _env;
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var dst = { d : 4 }
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = { d : 4, a : 11, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 };
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = { a : 11, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 }
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( src, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+  }
+
+  /* - */
+
+  function f1( e, k, c, src )
+  {
+    if( e === 2 )
+    return undefined;
+    return e + 10;
+  }
+
+  /* - */
+
+}
+
+filterCommonDropping.rapidity = -1;
+filterCommonDropping.timeOut = 60000;
+
+//
+
+function mapCommonReturningUndefined( test )
+{
+  let env;
+
+  namespaceEach({ method : 'mapWithoutEscapeLeft', left : 1 });
+  namespaceEach({ method : 'mapWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'mapWithoutEscape', left : 1 });
+  namespaceEach({ method : 'mapWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'mapWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'mapWithEscape', left : 1 });
+  namespaceEach({ method : 'map', left : 1 });
+
+  /* - */
+
+  function namespaceEach( env )
+  {
+    env.namespace = 'props';
+    caseEach( env );
+    env.namespace = 'map';
+    caseEach( env );
+    env.namespace = 'aux';
+    caseEach( env );
+    env.namespace = 'object';
+    caseEach( env );
+    env.namespace = 'container';
+    caseEach( env );
+  }
+
+  /* - */
+
+  function caseEach( _env )
+  {
+    env = _env;
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var dst = { d : 4 }
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = { d : 4, a : 11, b : 2, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 };
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = { a : 11, b : 2, c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 }
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( src, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : 2, c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : 2, c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+  }
+
+  /* - */
+
+  function f1( e, k, c, src )
+  {
+    if( e === 2 )
+    return undefined;
+    return e + 10;
+  }
+
+  /* - */
+
+}
+
+mapCommonReturningUndefined.rapidity = -1;
+mapCommonReturningUndefined.timeOut = 60000;
+
+//
+
+function filterMapCommonEscaping( test )
+{
+  let env;
+
+  namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1, escaping : 0 });
+  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0, escaping : 0 });
+  namespaceEach({ method : 'filterWithoutEscape', left : 1, escaping : 0 });
+  namespaceEach({ method : 'filterWithEscapeLeft', left : 1, escaping : 1 });
+  namespaceEach({ method : 'filterWithEscapeRight', left : 0, escaping : 1 });
+  namespaceEach({ method : 'filterWithEscape', left : 1, escaping : 1 });
+  namespaceEach({ method : 'filter', left : 1, escaping : 0 });
+
+  namespaceEach({ method : 'mapWithoutEscapeLeft', left : 1, escaping : 0 });
+  namespaceEach({ method : 'mapWithoutEscapeRight', left : 0, escaping : 0 });
+  namespaceEach({ method : 'mapWithoutEscape', left : 1, escaping : 0 });
+  namespaceEach({ method : 'mapWithEscapeLeft', left : 1, escaping : 1 });
+  namespaceEach({ method : 'mapWithEscapeRight', left : 0, escaping : 1 });
+  namespaceEach({ method : 'mapWithEscape', left : 1, escaping : 1 });
+  namespaceEach({ method : 'map', left : 1, escaping : 0 });
+
+  /* - */
+
+  function namespaceEach( env )
+  {
+    env.namespace = 'props';
+    caseEach( env );
+    env.namespace = 'map';
+    caseEach( env );
+    env.namespace = 'aux';
+    caseEach( env );
+    env.namespace = 'object';
+    caseEach( env );
+    env.namespace = 'container';
+    caseEach( env );
+  }
+
+  /* - */
+
+  function caseEach( _env )
+  {
+    env = _env;
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var dst = { d : 4 }
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = { d : 4, a : 11, b : escape( undefined ), c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 };
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    test.identical( got, exp );
+    var exp = { a : 1, b : 2, c : 3 }
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( src, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
+    var src = { a : 1, b : 2, c : 3 };
+    var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
+    test.true( got === src );
+    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    test.identical( got, exp );
+
+    /* */
+
+  }
+
+  /* - */
+
+  function escape( src )
+  {
+    if( env.escaping )
+    return src;
+    return _.escape.left( src );
+  }
+
+  /* - */
+
+  function f1( e, k, c, src )
+  {
+    if( e === 2 )
+    return _.escape.left( undefined );
+    return e + 10;
+  }
+
+  /* - */
+
+}
+
+filterMapCommonEscaping.timeOut = 60000;
+filterMapCommonEscaping.rapidity = -1;
+
 // --
 // define test suite
 // --
@@ -1081,13 +1563,18 @@ const Proto =
   {
 
     dichotomy,
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
     identicalShallow,
 
     onlyImplicit,
 
     aptLeft,
     aptRight,
+
+    filterMapCommonPass,
+    filterCommonDropping,
+    mapCommonReturningUndefined,
+    filterMapCommonEscaping,
 
   }
 

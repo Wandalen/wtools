@@ -58,7 +58,7 @@ _realGlobal_.U64x = BigUint64Array;
 _realGlobal_.U32x = Uint32Array;
 _realGlobal_.U16x = Uint16Array;
 _realGlobal_.U8x = Uint8Array;
-_realGlobal_.U8ClampedX = Uint8ClampedArray;
+_realGlobal_.U8xClamped = Uint8ClampedArray;
 _realGlobal_.Ux = _realGlobal_.U32x;
 
 _realGlobal_.I64x = BigInt64Array;

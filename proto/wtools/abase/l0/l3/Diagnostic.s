@@ -18,9 +18,36 @@ function objectMake( o )
   _.assert( arguments.length === 1 );
   _.aux.supplement( o, objectMake.defaults );
 
+  if( o.countable === null )
+  o.countable = true;
+  if( o.vector === null )
+  o.vector = _.number.is( o.length ) ? true : false;
+
   countableConstructorPure.prototype = Object.create( null );
+
+  let constructor = o.pure ? countableConstructorPure : countableConstructorPolluted;
+
   if( o.withConstructor )
-  countableConstructorPure.prototype.constructor = countableConstructorPure;
+  {
+    countableConstructorPure.prototype.constructor = countableConstructorPure;
+    _.assert( countableConstructorPolluted.prototype.constructor = countableConstructorPolluted );
+  }
+  else
+  {
+    delete countableConstructorPolluted.prototype.constructor;
+  }
+
+  _.assert( countableConstructorPolluted.prototype !== Object.prototype );
+  _.assert( countableConstructorPolluted.prototype !== Function.prototype );
+
+  if( o.vector && o.length === undefined )
+  {
+    _.long.is( o.elements )
+    o.length = o.elements.length;
+  }
+
+  _.assert( !o.vector || !!o.countable );
+  _.assert( !!o.vector === !!_.number.is( o.length ) );
 
   /* xxx : replace countableMake */
 
@@ -39,9 +66,24 @@ function objectMake( o )
   if( o.withOwnConstructor )
   result.constructor = function ownConstructor(){}
 
+  if( !o.basic )
+  {
+    Object.defineProperty( constructor.prototype, Symbol.toStringTag,
+    {
+      enumerable : false,
+      configurable : false,
+      get : TypeNameGet,
+    });
+  }
+
   return result;
 
   /* - */
+
+  function TypeNameGet()
+  {
+    return 'Custom1';
+  }
 
   function _iterate()
   {
@@ -78,7 +120,11 @@ function objectMake( o )
   {
     let result = _objectMake( this, o );
     if( !o.withConstructor )
-    delete Object.getPrototypeOf( result ).constructor;
+    {
+      _.assert( Object.getPrototypeOf( result ) !== Object.prototype );
+      // delete Object.getPrototypeOf( result ).constructor;
+      _.assert( Object.getPrototypeOf( result ).constructor === Object.prototype.constructor );
+    }
     return result
   }
 
@@ -92,7 +138,7 @@ function objectMake( o )
     else
     dst = {};
     _.props.extend( dst, o );
-    if( o.withIterator )
+    if( o.countable )
     dst[ Symbol.iterator ] = _iterate;
     return dst;
   }
@@ -105,7 +151,9 @@ objectMake.defaults =
 {
   new : 1,
   pure : 0,
-  withIterator : 1,
+  basic : 1,
+  countable : null,
+  vector : null,
   withOwnConstructor : 0,
   withConstructor : 1,
   elements : null,

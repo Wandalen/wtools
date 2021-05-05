@@ -7,6 +7,7 @@ if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
   // _.include( 'wSelector' );
+  // require( 'wTesting' );
   _.include( 'wTesting' );
 }
 
@@ -317,15 +318,16 @@ function modulingLogistic( test )
   var module = _.module.withPath( testingPath );
   test.identical( _.entity.lengthOf( module.files ), 4 );
   test.identical( _.entity.lengthOf( module.alias ), 2 );
-  var exp =
-  [
+  var exp = new Set
+  ([
     'proto/node_modules/wTesting',
     'proto/wtools/atop/testing/entry/Main.s',
     'proto/wtools/atop/testing/include/Top.s',
     'proto/wtools/abase/l0/l0/l0/Global.s',
-  ]
+  ]);
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
-  test.identical( __.path.s.relative( testingPath + '/../../..', files ), exp );
+  _.assert( files[ 0 ] !== undefined );
+  test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp );
   var module2 = _.module.withName( 'wTesting' );
   test.true( module === module2 );
   var module2 = _.module.withName( 'wtesting' );
@@ -333,7 +335,7 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.entity.lengthOf( module.files ), 100 );
-  test.identical( _.entity.lengthOf( module.files ), 185 );
+  test.identical( _.entity.lengthOf( module.files ), 218 );
   test.identical( _.entity.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
@@ -4633,22 +4635,60 @@ function experiment( test )
 
 experiment.experimental = 1;
 
+// //
+//
+// function requireThirdPartyModule( test )
+// {
+//   let a = test.assetFor( false );
+//
+//   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+//   let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } });
+//
+//   let structure = { dependencies : { chalk : '4.1.1' } };
+//   a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : structure, encoding : 'json' });
+//
+//   /* */
+//
+//   a.shell( `npm i --production` )
+//   a.appStartNonThrowing({ execPath : programRoutine1Path })
+//   .then( ( op ) =>
+//   {
+//     test.identical( op.exitCode, 0 );
+//     test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+//     test.identical( _.strCount( op.output, 'error' ), 0 );
+//     test.identical( _.strCount( op.output, 'programRoutine1.begin' ), 1 );
+//     test.identical( _.strCount( op.output, 'programRoutine1.end' ), 1 );
+//     return null;
+//   });
+//
+//   /* */
+//
+//   return a.ready;
+//
+//   function programRoutine1()
+//   {
+//     console.log( 'programRoutine1.begin' )
+//
+//     require( _ToolsPath_ );
+//     require( 'chalk' );
+//
+//     console.log( 'programRoutine1.end' )
+//   }
+//
+// }
+
 //
 
-function requireThirdPartyModule( test )
+function requireModuleFileWithAccessor( test )
 {
   let a = test.assetFor( false );
+  let programRoutine1Path = a.program({ routine : programRoutine1 });
 
-  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } });
-
-  let structure = { dependencies : { chalk : '4.1.1' } };
-  a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : structure, encoding : 'json' });
+  a.program({ routine : programRoutine2 });
 
   /* */
 
-  a.shell( `npm i --production` )
-  a.appStartNonThrowing({ execPath : programRoutine1Path })
+  a.fork({ execPath : programRoutine1Path })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -4663,20 +4703,51 @@ function requireThirdPartyModule( test )
 
   return a.ready;
 
+  /* */
+
   function programRoutine1()
   {
     console.log( 'programRoutine1.begin' )
 
-    require( _ToolsPath_ );
-    require( 'chalk' );
+    const _ = require( toolsPath );
+    const p2 = require( './programRoutine2' );
 
     console.log( 'programRoutine1.end' )
   }
 
+  /* */
+
+  function programRoutine2()
+  {
+    console.log( 'programRoutine2.begin' )
+
+    Object.defineProperty( module, 'exports',
+    {
+    	enumerable : true,
+    	get,
+    });
+
+    console.log( 'programRoutine2.end' )
+
+    function get()
+    {
+      return { a : 1 };
+    }
+
+  }
+
+  /* */
+
 }
 
+requireModuleFileWithAccessor.description =
+`
+- exports of module file may be defined with accessor returning different entity with each attempt of getting it
+- no error  should be throwen in such case
+`
+
 // --
-// test suite definition
+// test suite declaration
 // --
 
 const Proto =
@@ -4733,7 +4804,8 @@ const Proto =
     globalPathAssumption,
     experiment,
 
-    requireThirdPartyModule
+    // requireThirdPartyModule
+    requireModuleFileWithAccessor,
 
   }
 

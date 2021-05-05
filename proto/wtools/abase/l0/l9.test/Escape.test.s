@@ -58,7 +58,7 @@ function basic( test )
 
   test.case = 'nothing';
   var src = _.nothing;
-  var exp = _.escape.nothing;
+  var exp = _.escape.escaped.nothing;
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -69,7 +69,7 @@ function basic( test )
 
   test.case = 'escaped1 null';
   var src = _.null;
-  var exp = _.escape.null;
+  var exp = _.escape.escaped.null;
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -80,7 +80,7 @@ function basic( test )
 
   test.case = 'escaped1 undefined';
   var src = _.undefined;
-  var exp = _.escape.undefined;
+  var exp = _.escape.escaped.undefined;
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -91,7 +91,7 @@ function basic( test )
 
   test.case = 'escaped1 nothing';
   var src = _.nothing;
-  var exp = _.escape.nothing;
+  var exp = _.escape.escaped.nothing;
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -101,8 +101,8 @@ function basic( test )
   /* */
 
   test.case = 'escaped2 null';
-  var src = _.escape.null;
-  var exp = new _.Escape( _.escape.null );
+  var src = _.escape.escaped.null;
+  var exp = new _.Escape( _.escape.escaped.null );
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -112,8 +112,8 @@ function basic( test )
   /* */
 
   test.case = 'escaped2 undefined';
-  var src = _.escape.undefined;
-  var exp = new _.Escape( _.escape.undefined );
+  var src = _.escape.escaped.undefined;
+  var exp = new _.Escape( _.escape.escaped.undefined );
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -123,8 +123,8 @@ function basic( test )
   /* */
 
   test.case = 'escaped2 nothing';
-  var src = _.escape.nothing;
-  var exp = new _.Escape( _.escape.nothing );
+  var src = _.escape.escaped.nothing;
+  var exp = new _.Escape( _.escape.escaped.nothing );
   var left = _.escape.left( src );
   test.identical( left, exp );
   var right = _.escape.right( left );
@@ -197,7 +197,7 @@ function right( test )
   /* */
 
   test.case = 'escaped2 null';
-  var src = _.escape.null;
+  var src = _.escape.escaped.null;
   var exp = _.null;
   var right = _.escape.right( src );
   test.identical( right, exp );
@@ -206,7 +206,7 @@ function right( test )
   /* */
 
   test.case = 'escaped2 undefined';
-  var src = _.escape.undefined;
+  var src = _.escape.escaped.undefined;
   var exp = _.undefined;
   var right = _.escape.right( src );
   test.identical( right, exp );
@@ -215,7 +215,7 @@ function right( test )
   /* */
 
   test.case = 'escaped2 nothing';
-  var src = _.escape.nothing;
+  var src = _.escape.escaped.nothing;
   var exp = _.nothing;
   var right = _.escape.right( src );
   test.identical( right, exp );
@@ -235,7 +235,7 @@ function equal( test )
   test.case = 'equal, 2 levels';
   var src1 = _.escape.left( _.escape.left( null ) );
   var src2 = _.escape.left( _.escape.left( null ) );
-  test.true( src1 === _.escape.null );
+  test.true( src1 === _.escape.escaped.null );
   test.true( src1 === src2 );
   test.identical( src1, src2 );
   test.identical( src2, src1 );
@@ -247,7 +247,7 @@ function equal( test )
   test.case = 'equal, 3 levels';
   var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
   var src2 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
-  test.true( src1 !== _.escape.null );
+  test.true( src1 !== _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.true( src1.val.val === src2.val.val );
   test.true( src1.val.val === _.null );
@@ -261,7 +261,7 @@ function equal( test )
   test.case = 'equal, 4 levels';
   var src1 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
   var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
-  test.true( src1 !== _.escape.null );
+  test.true( src1 !== _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.true( src1.val.val.val === src2.val.val.val );
   test.true( src1.val.val.val === _.null );
@@ -275,7 +275,7 @@ function equal( test )
   test.case = 'not equal, 2 levels';
   var src1 = _.escape.left( _.escape.left( null ) );
   var src2 = _.escape.left( _.escape.left( undefined ) );
-  test.true( src1 === _.escape.null );
+  test.true( src1 === _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.nil( src1, src2 );
   test.nil( src2, src1 );
@@ -287,7 +287,7 @@ function equal( test )
   test.case = 'not equal, 3 levels';
   var src1 = _.escape.left( _.escape.left( _.escape.left( null ) ) );
   var src2 = _.escape.left( _.escape.left( _.escape.left( undefined ) ) );
-  test.true( src1 !== _.escape.null );
+  test.true( src1 !== _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.true( src1.val.val !== src2.val.val );
   test.true( src1.val.val === _.null );
@@ -301,7 +301,7 @@ function equal( test )
   test.case = 'not equal, 4 levels';
   var src1 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
   var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( undefined ) ) ) );
-  test.true( src1 !== _.escape.null );
+  test.true( src1 !== _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.true( src1.val.val.val !== src2.val.val.val );
   test.true( src1.val.val.val === _.null );
@@ -315,7 +315,7 @@ function equal( test )
   test.case = 'not equal, 2 and 4 levels';
   var src1 = _.escape.left( _.escape.left( null ) );
   var src2 = _.escape.left( _.escape.left( _.escape.left( _.escape.left( null ) ) ) );
-  test.true( src1 === _.escape.null );
+  test.true( src1 === _.escape.escaped.null );
   test.true( src1 !== src2 );
   test.true( src1.val === _.null );
   test.true( src2.val.val.val === _.null );
@@ -428,20 +428,20 @@ function is( test )
   var got = _.escape.is( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var exp = true;
   var got = _.escape.is( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var exp = true;
   var got = _.escape.is( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var exp = true;
   var got = _.escape.is( src )
   test.identical( got, exp );
@@ -500,7 +500,7 @@ function make( test )
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.null );
+  test.identical( got, _.escape.escaped.null );
   test.identical( got.val, src );
 
   test.case = '_.undefined';
@@ -508,7 +508,7 @@ function make( test )
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.undefined );
+  test.identical( got, _.escape.escaped.undefined );
   test.identical( got.val, src );
 
   test.case = '_.nothing';
@@ -516,27 +516,27 @@ function make( test )
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.nothing );
+  test.identical( got, _.escape.escaped.nothing );
   test.identical( got.val, src );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
   test.identical( got.val, src );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
   test.identical( got.val, src );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.make( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
@@ -605,38 +605,38 @@ function from( test )
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.null );
+  test.identical( got, _.escape.escaped.null );
 
   test.case = '_.undefined';
   var src = _.undefined;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.undefined );
+  test.identical( got, _.escape.escaped.undefined );
 
   test.case = '_.nothing';
   var src = _.nothing;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.nothing );
+  test.identical( got, _.escape.escaped.nothing );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( got, src );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( got, src );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.from( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
@@ -716,20 +716,20 @@ function isEscapable( test )
   var got = _.escape.isEscapable( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var exp = true;
   var got = _.escape.isEscapable( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var exp = true;
   var got = _.escape.isEscapable( src )
   test.identical( got, exp );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var exp = true;
   var got = _.escape.isEscapable( src )
   test.identical( got, exp );
@@ -788,39 +788,39 @@ function left( test )
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.null );
+  test.identical( got, _.escape.escaped.null );
 
   test.case = '_.undefined';
   var src = _.undefined;
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.undefined );
+  test.identical( got, _.escape.escaped.undefined );
 
   test.case = '_.nothing';
   var src = _.nothing;
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.nothing );
+  test.identical( got, _.escape.escaped.nothing );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( got.val, src );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
   test.identical( _.escape.unwrap( got ), src );
   test.identical( got.val, src );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.left( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), true );
@@ -903,22 +903,22 @@ function rightWithNothing( test )
   test.identical( _.escape.is( got ), false );
   test.identical( got, undefined );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.null );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.undefined );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.rightWithNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
@@ -1006,22 +1006,22 @@ function rightWithoutNothing( test )
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.nothing );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.null );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.undefined );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.rightWithoutNothing( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
@@ -1093,21 +1093,21 @@ function wrap( test )
   var got = _.escape.wrap( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.null );
+  test.identical( got, _.escape.escaped.null );
 
   test.case = '_.undefined';
   var src = _.undefined;
   var got = _.escape.wrap( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.undefined );
+  test.identical( got, _.escape.escaped.undefined );
 
   test.case = '_.nothing';
   var src = _.nothing;
   var got = _.escape.wrap( src );
   test.identical( _.escape.is( src ), false );
   test.identical( _.escape.is( got ), true );
-  test.identical( got, _.escape.nothing );
+  test.identical( got, _.escape.escaped.nothing );
 
   test.case = 'null';
   var src = null;
@@ -1153,8 +1153,8 @@ function wrap( test )
 
   /* - */
 
-  test.case = 'already escaped - _.escape.null'
-  test.shouldThrowErrorSync( () => _.escape.wrap( _.escape.null ) );
+  test.case = 'already escaped - _.escape.escaped.null'
+  test.shouldThrowErrorSync( () => _.escape.wrap( _.escape.escaped.null ) );
 
   test.case = 'already escaped - _.escape.make( 1 )'
   test.shouldThrowErrorSync( () => _.escape.wrap( _.escape.make( 1 ) ) );
@@ -1187,22 +1187,22 @@ function unwrap( test )
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.nothing );
 
-  test.case = '_.escape.null';
-  var src = _.escape.null;
+  test.case = '_.escape.escaped.null';
+  var src = _.escape.escaped.null;
   var got = _.escape.unwrap( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.null );
 
-  test.case = '_.escape.undefined';
-  var src = _.escape.undefined;
+  test.case = '_.escape.escaped.undefined';
+  var src = _.escape.escaped.undefined;
   var got = _.escape.unwrap( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );
   test.identical( got, _.undefined );
 
-  test.case = '_.escape.nothing';
-  var src = _.escape.nothing;
+  test.case = '_.escape.escaped.nothing';
+  var src = _.escape.escaped.nothing;
   var got = _.escape.unwrap( src );
   test.identical( _.escape.is( src ), true );
   test.identical( _.escape.is( got ), false );

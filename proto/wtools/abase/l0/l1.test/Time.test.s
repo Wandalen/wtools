@@ -80,7 +80,7 @@ function timerIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.timerIs( new Map( [] ) );
+  var got = _.timerIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -2921,6 +2921,8 @@ function timerInEndEnded( test )
 
   return ready;
 }
+
+timerInEndEnded.timeOut = 10000;
 
 //
 

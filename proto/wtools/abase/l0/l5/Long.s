@@ -249,8 +249,6 @@ function _longMake_functor( onMake )
 //     {
 //       result = new src( length );
 //       // let minLength = Math.min( length, ins.length );
-//       // if( !ins && minLength )
-//       // debugger;
 //       for( let i = 0 ; i < minLength ; i++ )
 //       result[ i ] = ins[ i ];
 //     }
@@ -484,7 +482,6 @@ function longMakeEmpty( src )
 //   }
 //   else if( _.arrayIs( src ) )
 //   {
-//     debugger;
 //     if( length === src.length )
 //     {
 //       result = new( _.constructorJoin( src.constructor, src ) );
@@ -937,7 +934,8 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.tools.defaultLong.InstanceConstructor && _.longIs( src ) )
+  if( this.defaultLong.InstanceConstructor )
+  if( src instanceof this.defaultLong.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
@@ -946,7 +944,7 @@ function longFromCoercing( src )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
-  return this.tools.defaultLong.from( src );
+  return this.defaultLong.from( src );
 
   if( _.object.isBasic( src ) )
   return this.longFromCoercing( _.props.pairs( src ) );
@@ -1230,9 +1228,6 @@ function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyp
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longLike( src ) || _.bufferAnyIs( src ) );
   // _.assert( !_.bufferNodeIs( src ), 'not tested' );
-
-  if( _.bufferViewIs( src ) )
-  debugger;
 
   if( _.unrollIs( src ) )
   return _.unroll.make( src );
@@ -1720,7 +1715,6 @@ function longEmpty( dstLong )
 //
 //   let result = _.long.makeUndefined( array, l2 );
 //
-//   // debugger;
 //   // _.assert( 0, 'not tested' )
 //
 //   for( let i = 0 ; i < range[ 0 ] ; i++ )
@@ -1865,7 +1859,6 @@ function longEmpty( dstLong )
 //   //
 //   // result = _.long.makeUndefined( src, range[ 1 ] );
 //   //
-//   // debugger;
 //   // _.assert( 0, 'not tested' )
 //   //
 //   // for( let i = 0 ; i < range[ 0 ] ; i++ )
@@ -2519,7 +2512,6 @@ function longOnly_( dst, src, cinterval )
 //   let f2 = Math.max( -range[ 0 ], 0 );
 //   let l2 = Math.min( array.length, l );
 //
-//   // debugger;
 //   let result = _.long.makeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
 //   for( let r = f2 ; r < l2 + f2 ; r++ )
 //   result[ r ] = array[ r - f2 ];
@@ -3149,7 +3141,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 // function long.identicalShallow( src1, src2 )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   // qqq : for Yevhen : !
+//   // qqq : for junior : !
 //   // _.assert( _.longLike( src1 ) );
 //   // _.assert( _.longLike( src2 ) );
 //
@@ -3525,12 +3517,10 @@ function longAny( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longLike( src ) );
 
-  debugger;
   for( let s = 0 ; s < src.length ; s += 1 )
   if( src[ s ] )
   return true;
 
-  debugger;
   return false;
 }
 
@@ -3736,7 +3726,7 @@ let Extension =
   // _longMakeOfLength,
   // longMakeUndefined,
   // longMakeZeroed, /* xxx : review */
-  longMakeFilling,
+  // longMakeFilling,
   /* qqq : check routine longMakeFilling, and add perfect coverage */
   /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
 

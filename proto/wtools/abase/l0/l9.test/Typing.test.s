@@ -79,7 +79,7 @@ function nothingIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.nothingIs( new Map( [] ) );
+  var got = _.nothingIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -186,7 +186,7 @@ function definedIs( test )
   test.identical( got, true );
 
   test.case = 'check empty Map';
-  var got = _.definedIs( new Map( [] ) );
+  var got = _.definedIs( new HashMap( [] ) );
   test.identical( got, true );
 
   test.case = 'check empty BufferRaw';
@@ -295,7 +295,7 @@ function vectorAdapterIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.vector.adapterIs( new Map( [] ) );
+  var got = _.vector.adapterIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -559,7 +559,7 @@ function streamIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.streamIs( new Map( [] ) );
+  var got = _.streamIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -736,7 +736,7 @@ function consequenceIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.consequenceIs( new Map( [] ) );
+  var got = _.consequenceIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -861,7 +861,7 @@ function consequenceLike( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.consequenceLike( new Map( [] ) );
+  var got = _.consequenceLike( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -986,7 +986,7 @@ function promiseIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.promiseIs( new Map( [] ) );
+  var got = _.promiseIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -1115,7 +1115,7 @@ function promiseLike( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.promiseLike( new Map( [] ) );
+  var got = _.promiseLike( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -1250,7 +1250,7 @@ function typeOf( test )
   test.identical( got.name, 'Set' );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
+  var src = new HashMap( [ [ 1, 1 ] ] );
   var got = _.typeOf( src );
   test.identical( got, src.constructor );
   test.identical( got.name, 'Map' );
@@ -1364,8 +1364,8 @@ function typeOf( test )
   test.identical( got, true );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
-  var src1 = new Map();
+  var src = new HashMap( [ [ 1, 1 ] ] );
+  var src1 = new HashMap();
   var got = _.typeOf( src, src1.constructor );
   test.identical( got, true );
 
@@ -1482,7 +1482,7 @@ function constructorIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.constructorIs( new Map( [] ) );
+  var got = _.constructorIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -1624,7 +1624,7 @@ function instanceIs( test )
   test.identical( got, true );
 
   test.case = 'check empty Map';
-  var got = _.instanceIs( new Map( [] ) );
+  var got = _.instanceIs( new HashMap( [] ) );
   test.identical( got, true );
 
   test.case = 'check empty BufferRaw';
@@ -1766,7 +1766,7 @@ function consoleIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.consoleIs( new Map( [] ) );
+  var got = _.consoleIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -1916,7 +1916,7 @@ function loggerIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.loggerIs( new Map( [] ) );
+  var got = _.loggerIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -2057,7 +2057,7 @@ function processIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.processIs( new Map( [] ) );
+  var got = _.processIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -2196,7 +2196,7 @@ function procedureIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.procedureIs( new Map( [] ) );
+  var got = _.procedureIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -2335,7 +2335,7 @@ function definitionIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.definitionIs( new Map( [] ) );
+  var got = _.definitionIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -2477,7 +2477,7 @@ function traitIs( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.traitIs( new Map( [] ) );
+  var got = _.traitIs( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';

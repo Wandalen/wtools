@@ -5,7 +5,42 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
+
+// --
+// exporter
+// --
+
+function _exportStringDiagnosticShallow( src, o )
+{
+  return src;
+}
+
+//
+
+function exportStringDiagnosticShallow( src, o )
+{
+  let result;
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+  _.assert( this.like( src ) );
+  return this._exportStringDiagnosticShallow( ... arguments );
+}
+
+//
+
+function _exportStringCodeShallow( src, o )
+{
+  return `'${src}'`;
+}
+
+//
+
+function exportStringCodeShallow( src, o )
+{
+  let result;
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+  _.assert( this.like( src ) );
+  return this._exportStringCodeShallow( ... arguments );
+}
 
 // --
 // decorator
@@ -308,91 +343,6 @@ strQuoteAnalyze.defaults =
 // splitter
 // --
 
-// function _strLeftSingle( src, ins, range )
-// {
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   _.assert( _.strIs( src ) );
-//
-//   if( _.number.is( range ) )
-//   range = [ range, src.length ];
-//   else if( range === undefined )
-//   range = [ 0, src.length ];
-//
-//   range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
-//   range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
-//   if( range[ 0 ] < 0 )
-//   range[ 0 ] = src.length + range[ 0 ];
-//   if( range[ 1 ] < 0 )
-//   range[ 1 ] = src.length + range[ 1 ];
-//
-//   _.assert( _.intervalIs( range ) );
-//   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
-//   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
-//
-//   let result = Object.create( null );
-//   result.index = src.length;
-//   result.instanceIndex = -1;
-//   result.entry = undefined;
-//
-//   ins = _.arrayAs( ins );
-//   let src1 = src.substring( range[ 0 ], range[ 1 ] );
-//
-//   for( let k = 0 ; k < ins.length ; k++ )
-//   {
-//     let entry = ins[ k ];
-//     if( _.strIs( entry ) )
-//     {
-//       let found = src1.indexOf( entry );
-//       if( found >= 0 && ( found < result.index || result.entry === undefined ) )
-//       {
-//         result.instanceIndex = k;
-//         result.index = found;
-//         result.entry = entry;
-//       }
-//     }
-//     else if( _.regexpIs( entry ) )
-//     {
-//       let found = src1.match( entry );
-//       if( found && ( found.index < result.index || result.entry === undefined ) )
-//       {
-//         result.instanceIndex = k;
-//         result.index = found.index;
-//         result.entry = found[ 0 ];
-//       }
-//     }
-//     else _.assert( 0, 'Expects string-like ( string or regexp )' );
-//   }
-//
-//   if( range[ 0 ] !== 0 && result.index !== src.length )
-//   result.index += range[ 0 ];
-//
-//   return result;
-// }
-//
-// //
-//
-// function strLeft( src, ins, range )
-// {
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( _.argumentsArray.like( src ) )
-//   {
-//     let result = [];
-//     for( let s = 0 ; s < src.length ; s++ )
-//     result[ s ] = _._strLeftSingle( src[ s ], ins, range );
-//     return result;
-//   }
-//   else
-//   {
-//     return _._strLeftSingle( src, ins, range );
-//   }
-//
-// }
-
-//
-
 function _strLeftSingle_( src, ins, cinterval )
 {
 
@@ -477,148 +427,6 @@ function strLeft_( src, ins, cinterval )
   }
 
 }
-
-//
-
-/*
-
-(bb)(?!(?=.).*(?:bb))
-aa_bb_|bb|b_cc_cc
-
-.*(bb)
-aa_bb_b|bb|_cc_cc
-
-(b+)(?!(?=.).*(?:b+))
-aa_bb_|bb|_cc_cc
-
-.*(b+)
-aa_bb_bb|b|_cc_cc
-
-*/
-
-// function _strRightSingle( src, ins, range )
-// {
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   _.assert( _.strIs( src ) );
-//
-//   if( _.number.is( range ) )
-//   range = [ range, src.length ];
-//   else if( range === undefined )
-//   range = [ 0, src.length ];
-//
-//   range[ 0 ] = range[ 0 ] === undefined ? 0 : range[ 0 ];
-//   range[ 1 ] = range[ 1 ] === undefined ? src.length : range[ 1 ];
-//   if( range[ 0 ] < 0 )
-//   range[ 0 ] = src.length + range[ 0 ];
-//   if( range[ 1 ] < 0 )
-//   range[ 1 ] = src.length + range[ 1 ];
-//
-//   _.assert( _.intervalIs( range ) );
-//   _.assert( 0 <= range[ 0 ] && range[ 0 ] <= src.length );
-//   _.assert( 0 <= range[ 1 ] && range[ 1 ] <= src.length );
-//
-//   let olength = src.length;
-//   let result = Object.create( null );
-//   result.index = -1;
-//   result.instanceIndex = -1;
-//   result.entry = undefined;
-//   ins = _.arrayAs( ins );
-//   let src1 = src.substring( range[ 0 ], range[ 1 ] );
-//
-//   for( let k = 0, len = ins.length ; k < len ; k++ )
-//   {
-//     let entry = ins[ k ];
-//     if( _.strIs( entry ) )
-//     {
-//       let found = src1.lastIndexOf( entry );
-//       if( found >= 0 && found > result.index )
-//       {
-//         result.instanceIndex = k;
-//         result.index = found;
-//         result.entry = entry;
-//       }
-//     }
-//     else if( _.regexpIs( entry ) )
-//     {
-//
-//       let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
-//       let match1 = src1.match( regexp1 );
-//       if( !match1 )
-//       continue;
-//
-//       let regexp2 = _.regexpsJoin([ entry, '(?!(?=.).*', entry, ')' ]);
-//       let match2 = src1.match( regexp2 );
-//       _.assert( !!match2 );
-//
-//       let found;
-//       let found1 = match1[ 1 ];
-//       let found2 = match2[ 0 ];
-//       let index;
-//       let index1 = match1.index + match1[ 0 ].length;
-//       let index2 = match2.index + match2[ 0 ].length;
-//
-//       if( index1 === index2 )
-//       {
-//         if( found1.length < found2.length )
-//         {
-//           found = found2;
-//           index = index2 - found.length;
-//         }
-//         else
-//         {
-//           found = found1;
-//           index = index1 - found.length;
-//         }
-//       }
-//       else if( index1 < index2 )
-//       {
-//         found = found2;
-//         index = index2 - found.length;
-//       }
-//       else
-//       {
-//         found = found1;
-//         index = index1 - found.length;
-//       }
-//
-//       if( index > result.index )
-//       {
-//         result.instanceIndex = k;
-//         result.index = index;
-//         result.entry = found;
-//       }
-//
-//     }
-//     else _.assert( 0, 'Expects string-like ( string or regexp )' );
-//   }
-//
-//   if( range[ 0 ] !== 0 && result.index !== -1 )
-//   result.index += range[ 0 ];
-//
-//   return result;
-// }
-//
-// //
-//
-// function strRight( src, ins, range )
-// {
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( _.argumentsArray.like( src ) )
-//   {
-//     let result = [];
-//     for( let s = 0 ; s < src.length ; s++ )
-//     result[ s ] = _._strRightSingle( src[ s ], ins, range );
-//     return result;
-//   }
-//   else
-//   {
-//     return _._strRightSingle( src, ins, range );
-//   }
-//
-// }
 
 //
 
@@ -750,31 +558,6 @@ function strRight_( src, ins, cinterval )
 
 }
 
-// //
-//
-// function _strCutOff_head( routine, args )
-// {
-//   let o;
-//
-//   if( args.length > 1 )
-//   {
-//     o = { src : args[ 0 ], delimeter : args[ 1 ], number : args[ 2 ] };
-//   }
-//   else
-//   {
-//     o = args[ 0 ];
-//     _.assert( args.length === 1, 'Expects single argument' );
-//   }
-//
-//   _.routine.options( routine, o );
-//   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
-//
-//   return o;
-// }
-
 //
 
 /**
@@ -903,7 +686,7 @@ strInsideOf_body.defaults =
 
 //
 
-let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body );
 
 //
 
@@ -1289,83 +1072,6 @@ function strReplaceEnd( src, end, ins )
 *
 */
 
-// function strReplace( src, ins, sub )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( sub ) || _.longIs( sub ), 'Expects {-sub-} as string/array of strings' );
-//
-//   if( _.longIs( ins ) && _.longIs( sub ) )
-//   _.assert( ins.length === sub.length );
-//
-//   ins = _.arrayAs( ins );
-//   let result = _.arrayAs( src ).slice();
-//
-//   for( let k = 0 ; k < result.length ; k++ )
-//   for( let j = 0 ; j < ins.length ; j++ )
-//   if( _.strHas( result[ k ], ins[ j ] ) )
-//   {
-//     let postfix = _.longIs( sub ) ? sub[ j ] : sub;
-//     _.assert( _.strIs( postfix ) );
-//     result[ k ] = result[ k ].replace( ins[ j ], postfix );
-//     break;
-//   }
-//
-//   if( result.length === 1 && _.strIs( src ) )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-//
-// function strReplace( src, ins, sub ) /* aaa2 : ask */ /* Dmytro : implemented. See below, please */
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
-//
-//   if( _.longIs( ins ) && _.longIs( sub ) )
-//   _.assert( ins.length === sub.length );
-//
-//   ins = _.arrayAs( ins );
-//   for( let i = 0 ; i < ins.length ; i++ )
-//   _.assert( ins[ i ] !== '', '{-ins-} should be a string with length' );
-//
-//   /* */
-//
-//   let result = _.arrayAs( src ).slice();
-//
-//   for( let k = 0 ; k < result.length ; k++ )
-//   result[ k ] = replaceRecurcive( result[ k ], 0 );
-//
-//   if( result.length === 1 && _.strIs( src ) )
-//   return result[ 0 ];
-//
-//   return result;
-//
-//   /* */
-//
-//   function replaceRecurcive( src, index )
-//   {
-//     for( let i = index ; i < ins.length ; i++ )
-//     {
-//       if( _.strHas( src, ins[ i ] ) )
-//       {
-//         let postfix = _.longIs( sub ) ? sub[ i ] : sub;
-//
-//         let parts = src.split( ins[ i ] )
-//         if( index + 1 < ins.length )
-//         for( let i = 0 ; i < parts.length ; i++ )
-//         parts[ i ] = replaceRecurcive( parts[ i ], index + 1 )
-//
-//         return parts.join( postfix );
-//       }
-//     }
-//
-//     return src;
-//   }
-//
-// }
-
-/* aaa2 : poor implementation */ /* Dmytro : used routine `strSplit` instead of cycles */
-
 function strReplace( src, ins, sub )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -1396,65 +1102,6 @@ function strReplace( src, ins, sub )
     });
     result[ i ] = result[ i ].join( '' );
   }
-
-  // for( let k = 0 ; k < result.length ; k++ )
-  // {
-  //   let container = [ result[ k ] ];
-  //
-  //   for( let i = 0 ; i < ins.length ; i++ )
-  //   {
-  //     for( let l = 0 ; l < container.length ; l++ )
-  //     {
-  //       let insSrc = ins[ i ];
-  //       let src  = container[ l ];
-  //
-  //       if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
-  //       {
-  //         let index, ins;
-  //         if( _.regexpIs( insSrc ) )
-  //         {
-  //           let entry = insSrc.exec( src ); // Dmytro : single searching of substring
-  //           index = entry.index;
-  //           ins = entry[ 0 ];
-  //         }
-  //         else
-  //         {
-  //           index = src.indexOf( insSrc );
-  //           ins = insSrc;
-  //         }
-  //
-  //         _.assert( ins !== '', '{-ins-} should find string with length' );
-  //
-  //         while( index !== -1 )
-  //         {
-  //           container.splice( l, 1, src.substring( 0, index ), i );
-  //           src = src.substring( index + ins.length );
-  //           l += 2;
-  //
-  //           if( _.regexpIs( insSrc ) )
-  //           {
-  //             let entry = insSrc.exec( src );
-  //             index = entry === null ? -1 : entry.index;
-  //             ins = entry ? entry[ 0 ] : ins;
-  //             _.assert( ins !== '', '{-ins-} should find string with length' );
-  //           }
-  //           else
-  //           {
-  //             index = src.indexOf( insSrc );
-  //           }
-  //         }
-  //
-  //         container.splice( l, 0, src );
-  //       }
-  //     }
-  //   }
-  //
-  //   for( let j = 0 ; j < container.length ; j++ )
-  //   if( _.number.is( container[ j ] ) )
-  //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
-  //
-  //   result[ k ] = container.join( '' );
-  // }
 
   if( result.length === 1 && _.strIs( src ) )
   return result[ 0 ];
@@ -2079,7 +1726,7 @@ strSplitsQuotedRejoin_body.defaults =
   inliningQuoting : 1,
   splits : null,
   delimeter : null,
-  onQuoting : null, /* qqq : cover | aaa : Done. Yevhen S. */
+  onQuoting : null,
   pairing : 0
 }
 
@@ -2610,8 +2257,8 @@ defaults.quoting = 1;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
-defaults.onDelimeter = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
-defaults.onQuote = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
+defaults.onDelimeter = null;
+defaults.onQuote = null;
 
 //
 
@@ -2830,118 +2477,6 @@ _strSplitInlined_body.defaults =
 
 let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
-// //
-//
-// /**
-//  * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
-//  * Function can be called in two ways:
-//  * - First to pass only source string and use default options;
-//  * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
-//  *
-//  * Returns result as array of strings.
-//  *
-//  * Function extracts words in two attempts:
-//  * First by splitting source string by ( o.prefix ).
-//  * Second by splitting each element of the result of first attempt by( o.postfix ).
-//  * If splitting by ( o.prefix ) gives only single element then second attempt is skipped, otherwise function
-//  * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
-//  * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
-//  * with ( o.prefix ) prepended to the last element of result array.
-//  *
-//  * @param {string} src - Source string.
-//  * @param {object} o - Options map.
-//  * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
-//  * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
-//  * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
-//  * @returns {object} Returns an array of strings separated by( o.delimeter ).
-//  *
-//  * @example
-//  * _.strSplitInlinedStereo( '#abc#' );
-//  * // returns [ '', 'abc', '' ]
-//  *
-//  * @example
-//  * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
-//  * // returns [ 'abc' ]
-//  *
-//  * @example
-//  * function onInlined( strip )
-//  * {
-//  *   if( strip.length )
-//  *   return strip.toUpperCase();
-//  * }
-//  * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
-//  * // returns [ 'ABC' ]
-//  *
-//  * @method strSplitInlinedStereo
-//  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
-//  * @throws { Exception } Throw an exception if( o.src ) is not a String.
-//  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
-//  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
-//  * @namespace Tools
-//  *
-//  */
-//
-// function strSplitInlinedStereo( o )
-// {
-//
-//   if( _.strIs( o ) )
-//   o = { src : o };
-//
-//   _.assert( this === _ );
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.object.isBasic( o ) );
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.routine.options( strSplitInlinedStereo, o );
-//
-//   let result = [];
-//   let splitted = o.src.split( o.prefix );
-//
-//   if( splitted.length === 1 )
-//   return splitted;
-//
-//   /* */
-//
-//   if( splitted[ 0 ] )
-//   result.push( splitted[ 0 ] );
-//
-//   /* */
-//
-//   for( let i = 1; i < splitted.length; i++ )
-//   {
-//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-//
-//     _.assert( halfs.length === 3 );
-//
-//     if( strip !== undefined )
-//     {
-//       result.push( strip );
-//       if( halfs[ 2 ] )
-//       result.push( halfs[ 2 ] );
-//     }
-//     else
-//     {
-//       if( result.length )
-//       result[ result.length-1 ] += o.prefix + splitted[ i ];
-//       else
-//       result.push( o.prefix + splitted[ i ] );
-//     }
-//
-//   }
-//
-//   return result;
-// }
-//
-// strSplitInlinedStereo.defaults =
-// {
-//   src : null,
-//   prefix : '#',
-//   postfix : '#',
-//   // prefix : '❮',
-//   // postfix : '❯',
-//   onInlined : null,
-// }
-
 //
 
 /**
@@ -3018,6 +2553,18 @@ function strSplitInlinedStereo_( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routine.options( strSplitInlinedStereo_, o );
 
+  let isDefaultOnInlined = true;
+
+  if( o.onInlined === null )
+  {
+    o.onInlined = ( e ) => [ e ];
+  }
+  else
+  {
+    _.assert( _.routine.is( o.onInlined ), 'Expects a routine as option::onInlined' );
+    isDefaultOnInlined = false;
+  }
+
   /* Trivial cases */
   let end = handleTrivial();
   if( end !== false )
@@ -3034,7 +2581,6 @@ function strSplitInlinedStereo_( o )
   let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimeters */
   result = preprocessBeforeJoin( result );
 
-  if( o.inliningDelimeters ) /* new */
   result = _.strSplitsQuotedRejoin
   ({
     splits : result,
@@ -3051,6 +2597,9 @@ function strSplitInlinedStereo_( o )
   handlePreservingEmpty();
 
   unescape();
+
+  if( o.preservingDelimeters && !o.inliningDelimeters && isDefaultOnInlined ) /* for default onInlined */
+  splitInlined();
 
   if( isReplacedPrefix )
   result = result.map( ( el ) =>
@@ -3092,6 +2641,19 @@ function strSplitInlinedStereo_( o )
     }
 
     return false;
+  }
+
+  /* */
+
+  function splitInlined()
+  {
+    result = result.map( ( el ) =>
+    {
+      if( _.arrayIs( el ) )
+      el = [ o.prefix, el[ 0 ].slice( 1, -1 ), o.postfix ];
+
+      return el;
+    });
   }
 
   /* */
@@ -3209,245 +2771,6 @@ function strSplitInlinedStereo_( o )
     }
   }
 
-  /* Previous version */
-  // if( _.strIs( o ) )
-  // o = { src : o };
-
-  // _.assert( this === _ );
-  // _.assert( _.strIs( o.src ) );
-  // _.assert( _.object.isBasic( o ) );
-  // _.assert( arguments.length === 1, 'Expects single argument' );
-  // _.routine.options( strSplitInlinedStereo_, o );
-
-  // if( o.prefix === o.postfix )
-  // {
-  //   o.delimeter = o.prefix;
-  //   delete o.prefix;
-  //   delete o.postfix;
-  //   return _.strSplitInlined( o );
-  // }
-
-  // let result = [];
-  // let splitted = [];
-  // let src = o.src.slice();
-  // let replacementForQuotes = '\u{20331}';
-  // let positionsInlined = [];
-
-  // let delimLeftPosition = getNextPos( src, o.prefix );
-  // let delimRightPosition = getNextPos( src, o.postfix );
-
-  // if( delimLeftPosition === -1 || delimRightPosition === -1 )
-  // {
-  //   if( !o.preservingOrdinary )
-  //   return [];
-  //   else
-  //   return [ o.src ];
-  // }
-
-  // if( !o.preservingOrdinary && !o.preservingInlined )
-  // return [];
-
-  // if( o.quoting )
-  // {
-  //   src = src.replace( /"❮"/g, replacementForQuotes );
-  //   splitted = src.split( o.prefix );
-  // }
-  // else
-  // {
-  //   splitted = src.split( o.prefix );
-  // }
-
-  // if( splitted.length === 1 )
-  // {
-  //   if( !o.preservingOrdinary )
-  //   return [];
-  //   else
-  //   return [ o.src ];
-  // }
-
-  // if( splitted[ 0 ] )
-  // result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
-
-  // for( let i = 1; i < splitted.length; i++ )
-  // {
-  //   let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-
-  //   if( halfs[ 1 ] === undefined )
-  //   {
-  //     if( result[ result.length - 1 ] !== undefined )
-  //     {
-  //       let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
-
-  //       if( !_.argumentsArray.like( result[ result.length - 1 ] ) )
-  //       {
-  //         result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
-  //       }
-  //       else
-  //       {
-  //         result.push( o.prefix + tempStr );
-  //       }
-  //     }
-  //     else
-  //     {
-  //       result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
-  //     }
-  //     continue;
-  //   }
-
-  //   let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-  //   let ordinary = halfs[ 2 ];
-
-  //   _.assert( halfs.length === 3 );
-
-  //   if( strip !== undefined )
-  //   {
-  //     if( o.preservingDelimeters )
-  //     {
-  //       if( o.stripping )
-  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
-  //       {
-  //         return o.prefix + el.trim() + o.postfix;
-  //       } ) : o.prefix + strip + o.postfix );
-  //       else
-  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
-  //       {
-  //         return o.prefix + el + o.postfix;
-  //       } ) : o.prefix + strip + o.postfix );
-  //     }
-  //     else
-  //     {
-  //       if( o.stripping )
-  //       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
-  //       else
-  //       result.push( strip );
-  //     }
-
-  //     positionsInlined.push( result.length - 1 );
-
-  //     if( ordinary )
-  //     {
-  //       if( o.stripping )
-  //       {
-  //         if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
-  //         {
-  //           result.push( ordinary.trim() );
-  //         }
-  //         else
-  //         {
-  //           splitted[ i + 1 ] !== undefined ? result.push( ordinary.trimStart() ) : result.push( ordinary.trim() )
-  //         }
-  //       }
-  //       else
-  //       {
-  //         result.push( ordinary );
-  //       }
-  //     }
-  //   }
-  //   else
-  //   {
-  //     if( result.length )
-  //     result[ result.length-1 ] += o.prefix + splitted[ i ];
-  //     else
-  //     result.push( o.prefix + splitted[ i ] );
-  //   }
-  // }
-
-  // if( o.quoting )
-  // handleQuoting();
-
-  // if( o.preservingOrdinary && o.onOrdinary )
-  // handleOnOrdinary();
-
-  // if( !o.preservingInlined )
-  // removeInlined();
-
-  // if( !o.preservingOrdinary )
-  // removeOrdinary();
-
-  // if( o.preservingEmpty )
-  // handleEmptyLines();
-
-  // return result;
-
-  // /* - */
-
-  // function getNextPos( str, delim )
-  // {
-  //   return str.indexOf( delim );
-  // }
-
-  // /* - */
-
-  // function handleQuoting()
-  // {
-  //   let reg = new RegExp( replacementForQuotes, 'g' );
-
-  //   result = result.map( ( el ) =>
-  //   {
-  //     if( !_.argumentsArray.like( el ) )
-  //     {
-  //       if( el.indexOf( replacementForQuotes ) !== -1 )
-  //       return el.replace( reg, '"❮"' )
-  //     }
-  //     return el;
-  //   } )
-  // }
-
-  // /* - */
-
-  // function handleOnOrdinary()
-  // {
-  //   result = result.map( ( el ) =>
-  //   {
-  //     if( !_.argumentsArray.like( el ) )
-  //     {
-  //       let res = o.onOrdinary( el );
-  //       if( res !== undefined )
-  //       return res;
-  //       else
-  //       return el;
-  //     }
-  //     else
-  //     {
-  //       return el;
-  //     }
-  //   } )
-  // }
-
-  // /* - */
-
-  // function handleEmptyLines()
-  // {
-  //   if( _.argumentsArray.like( result[ 0 ] ) )
-  //   result.unshift( '' );
-  //   if( _.argumentsArray.like( result[ result.length-1 ] ) )
-  //   result.push( '' );
-  //   let len = result.length;
-  //   for( let i = 0; i < len; i++ )
-  //   {
-  //     if( _.argumentsArray.like( result[ i ] ) )
-  //     if( _.argumentsArray.like( result[ i + 1 ] ) )
-  //     {
-  //       result.splice( i + 1, 0, '' );
-  //       len++;
-  //     }
-  //   }
-  // }
-
-  // /* - */
-
-  // function removeInlined()
-  // {
-  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
-  // }
-
-  // /* - */
-
-  // function removeOrdinary()
-  // {
-  //   result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
-  // }
-
 }
 
 strSplitInlinedStereo_.defaults =
@@ -3455,7 +2778,7 @@ strSplitInlinedStereo_.defaults =
   src : null,
   prefix : '❮',
   postfix : '❯',
-  onInlined : ( e ) => [ e ],
+  onInlined : null,
   onOrdinary : null,
 
   stripping : 0,
@@ -3466,172 +2789,84 @@ strSplitInlinedStereo_.defaults =
   preservingQuoting : 1,
   preservingEmpty : 0, /* changed */
   preservingDelimeters : 0,
-  inliningDelimeters : 1, /* new */
+  inliningDelimeters : 0, /* new */
   preservingOrdinary : 1,
   preservingInlined : 1,
-  /* qqq for Yevhen : ? */
 }
+
+//
 
 // function strSplitInlinedStereo_( o )
 // {
 //   /*
 //     New delimeter.
 //     was : 'this #background:red#is#background:default# text and is not'.
-  //   is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
-  // */
+//     is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
+//     */
 
-  //   if( _.strIs( o ) )
-  //   o = { src : o };
+//   if( _.strIs( o ) )
+//   o = { src : o };
+//   o.quotingPrefixes = o.quotingPrefixes || [ '"' ];
+//   o.quotingPostfixes = o.quotingPostfixes || [ '"' ];
 
-  //   _.assert( this === _ );
-  //   _.assert( _.strIs( o.src ) );
-  //   _.assert( _.object.isBasic( o ) );
-  //   _.assert( arguments.length === 1, 'Expects single argument' );
-  //   _.routine.options( strSplitInlinedStereo_, o );
+//   _.assert( this === _ );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.object.isBasic( o ) );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.routine.options( strSplitInlinedStereo_, o );
 
-  // if( o.prefix === o.postfix )
-  // {
-  //   o.delimeter = o.prefix;
-  //   delete o.prefix;
-  //   delete o.postfix;
-//     return _.strSplitInlined( o );
-//   }
-
-//   let result = [];
-//   let splitted = [];
-//   let src = o.src.slice();
-//   // let replacementForQuotes = '\u{20331}';
-//   let replacementForPrefix = '\u{20330}';
-//   let replacementForPostfix = '\u{20331}';
-//   let positionsInlined = [];
-//   let positionsPrefixes = [];
-//   let positionsPostfixes = [];
-//   let positionsQuotesPrefix = [];
-//   let positionsQuotesPostfix = [];
-//   // let positionsQuotes = [];
-//   let delimLeftPosition = getNextPos( src, o.prefix );
-//   let delimRightPosition = getNextPos( src, o.postfix );
-
-//   if( o.quoting )
-//   handleQuoting();
-
+//   /* Trivial cases */
 //   let end = handleTrivial();
 //   if( end !== false )
 //   return end;
 
-//   if( splitted[ 0 ] )
-//   result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
+//   let replacementForPrefix = '\u{20330}';
+//   let isReplacedPrefix = false;
+//   let splitOptions = _.mapOnly_( null, o, strSplit.defaults );
+//   splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
+//   splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
+//   splitOptions.stripping = 0;
+//   splitOptions.preservingEmpty = 1;
 
-//   for( let i = 1; i < splitted.length; i++ )
-//   {
-//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
-//     // [ leftOfPostfix, postfix, rightOfPostfix ]
-//     // console.log( 'splitted[ i ] : ', splitted[ i ] )
-//     // console.log( 'halfs : ', halfs )
-//     // console.log( '-----------------' )
+//   let result = _.strSplit( splitOptions ); /* array with separated ordinary, inlined and delimeters */
+//   result = preprocessBeforeJoin( result );
 
-//     if( halfs[ 1 ] === undefined ) /* no postfix after prefix */
-//     {
-//       if( result[ result.length - 1 ] === undefined )
-//       {
-//         result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
-//       }
-//       else
-//       {
-//         let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
-
-//         if( _.argumentsArray.like( result[ result.length - 1 ] ) )
-//         {
-//           result.push( o.prefix + tempStr );
-//         }
-//         else
-//         {
-//           result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
-//         }
-//       }
-//       continue;
-//     }
-
-//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-//     let ordinary = halfs[ 2 ];
-
-//     _.assert( halfs.length === 3 );
-
-//     if( strip === undefined )
-//     {
-//       if( result.length )
-//       result[ result.length-1 ] += o.prefix + splitted[ i ];
-//       else
-//       result.push( o.prefix + splitted[ i ] );
-//     }
-//     else
-//     {
-//       handlePreservingDelimeters( strip );
-
-//       positionsInlined.push( result.length - 1 );
-
-//       if( ordinary )
-//       {
-//         if( o.stripping )
-//         {
-//           if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
-//           {
-//             result.push( ordinary.trim() );
-//           }
-//           else
-//           {
-//             splitted[ i + 1 ] === undefined ? result.push( ordinary.trim() ) : result.push( ordinary.trimStart() )
-//           }
-//         }
-//         else
-//         {
-//           result.push( ordinary );
-//         }
-//       }
-//     }
-//   }
-
-//   // if( o.quoting )
-//   // {
-//   //   console.log( result )
-//   //   result = _.strSplitsQuotedRejoin
-//   //   ({
-//   //     splits : result,
-//   //     quoting : 1,
-//   //     quotingPrefixes : [ o.quotingPrefix ],
-//   //     quotingPostfixes : [ o.quotingPostfix ],
-//   //     preservingQuoting : o.preservingQuoting,
-//   //     inliningQuoting : 0,
-//   //   });
-//   // }
-//   // handleQuoting();
-
-//   if( o.preservingOrdinary && o.onOrdinary )
-//   handleOnOrdinary();
-
-//   if( !o.preservingInlined )
-//   removeInlined();
-
-//   if( !o.preservingOrdinary )
-//   removeOrdinary();
+//   if( o.inliningDelimeters ) /* new */
+//   result = _.strSplitsQuotedRejoin
+//   ({
+//     splits : result,
+//     delimeter : [ o.prefix, o.postfix ],
+//     quoting : 1,
+//     quotingPrefixes : [ o.prefix ],
+//     quotingPostfixes : [ o.postfix ],
+//     preservingQuoting : o.preservingDelimeters,
+//     inliningQuoting : 0,
+//     onQuoting : o.preservingEmpty ? escapeInlined( o.onInlined ) : o.onInlined
+//   });
 
 //   if( o.preservingEmpty )
-//   handleEmptyLines();
+//   handlePreservingEmpty();
 
-//   // console.log( '=================' )
+//   unescape();
+
+//   if( isReplacedPrefix )
+//   result = result.map( ( el ) =>
+//   {
+//     if( _.strIs( el ) )
+//     return el.replace( replacementForPrefix, o.prefix )
+//     else
+//     return el;
+//   });
+
 //   return result;
 
 //   /* - */
 
-//   function getNextPos( str, delim )
-//   {
-//     return str.indexOf( delim );
-//   }
-
-//   /* */
-
 //   function handleTrivial()
 //   {
+//     let delimLeftPosition = o.src.indexOf( o.prefix );
+//     let delimRightPosition = o.src.indexOf( o.postfix );
+
 //     if( delimLeftPosition === -1 || delimRightPosition === -1 )
 //     {
 //       if( o.preservingOrdinary )
@@ -3643,7 +2878,7 @@ strSplitInlinedStereo_.defaults =
 //     if( !o.preservingOrdinary && !o.preservingInlined )
 //     return [];
 
-//     splitted = src.split( o.prefix );
+//     let splitted = o.src.split( o.prefix );
 
 //     if( splitted.length === 1 )
 //     {
@@ -3658,84 +2893,101 @@ strSplitInlinedStereo_.defaults =
 
 //   /* */
 
-//   function findIndexes()
+//   function escapeInlined( func )
 //   {
-//     let isQuotesIdentical = o.quotingPrefix === o.quotingPostfix;
-
-//     for( let i = 0; i < o.src.length; i++ )
+//     return function ( el )
 //     {
-//       if( o.src[ i ] === o.prefix )
-//       positionsPrefixes.push( i );
-//       else if( o.src[ i ] === o.postfix )
-//       positionsPostfixes.push( i );
-//       else if( isQuotesIdentical && o.src[ i ] === o.quotingPrefix )
-//       i % 2 === 0 ? positionsQuotesPrefix.push( i ) : positionsQuotesPostfix.push( i );
-//       else if( o.src[ i ] === o.quotingPrefix )
-//       positionsQuotesPrefix.push( i );
-//       else if( o.src[ i ] === o.quotingPostfix )
-//       positionsQuotesPostfix.push( i );
-//       else
-//       continue;
+//       return _.escape.wrap( func( el ) );
 //     }
 //   }
 
 //   /* */
 
-//   function handleQuoting()
+//   function preprocessBeforeJoin( array )
 //   {
-//     if( o.src.indexOf( '"' ) === -1 )
-//     return;
-
-//     findIndexes();
-
-//     console.log( 'pref : ', positionsPrefixes );
-//     console.log( 'post : ', positionsPostfixes );
-//     console.log( 'quotesPre : ', positionsQuotesPrefix );
-//     console.log( 'quotesPost : ', positionsQuotesPostfix );
-//     console.log( '=================' )
-
-//     /*      0               1            2              3                       4
-//       [ 'this "', [ 'background:red], '"is', [ 'background:default' ], ' text and is not' ];
-//       [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' text and is not' ];
-//       [ 'this "', [ 'background:red], '"is"', [ 'background:default' ], ' "text and is not' ];
-//     */
-
-//   }
-
-//   /* */
-
-//   function handleOnOrdinary()
-//   {
-//     result = result.map( ( el ) =>
+//     let ordinary = '';
+//     let result = []
+//     for( let i = 0; i < array.length; i++ )
 //     {
-//       if( _.argumentsArray.like( el ) )
+//       /*
+//         [ '', '❮', ' ', '❮', ' ', '❮', 'inline1', '❯', ' ', '❯', ' inline2' ]
+//         into
+//         [ '❮ ❮ ', '❮', 'inline1', '❯', ' ❯ inline2' ]
+//       */
+//       if( array[ i ] === o.prefix )
 //       {
-//         return el;
+//         if( array[ i + 2 ] === o.postfix )
+//         {
+//           /* push concatenated ordinary string */
+//           pushOrdinary( result, ordinary );
+//           /* push inlined : '❮', 'inline1', '❯' */
+//           if( o.preservingInlined )
+//           {
+//             result.push( array[ i ] );
+//             result.push( o.stripping ? array[ i+1 ].trim() : array[ i+1 ] );
+//             result.push( array[ i+2 ] );
+//           }
+//           i += 2;
+//           ordinary = '';
+//         }
+//         else
+//         {
+//           ordinary += array[ i ];
+//         }
 //       }
 //       else
 //       {
-//         let res = o.onOrdinary( el );
-//         if( res === undefined )
-//         return el;
-//         else
-//         return res;
+//         ordinary += array[ i ];
 //       }
-//     })
+//     }
+
+//     pushOrdinary( result, ordinary );
+
+//     return result;
 //   }
 
 //   /* */
 
-//   function handleEmptyLines()
+//   function pushOrdinary( result, ordinary )
 //   {
-//     if( _.argumentsArray.like( result[ 0 ] ) )
-//     result.unshift( '' );
-//     if( _.argumentsArray.like( result[ result.length-1 ] ) )
-//     result.push( '' );
+//     if( o.preservingOrdinary && ordinary )
+//     {
+//       if( ordinary === o.prefix )
+//       {
+//         result.push( replacementForPrefix );
+//         isReplacedPrefix = true;
+//       }
+//       else
+//       {
+//         ordinary = o.stripping ? ordinary.trim() : ordinary;
+//         if( o.onOrdinary )
+//         {
+//           let ordinary1 = o.onOrdinary( ordinary );
+//           ordinary = ordinary1 ? ordinary1 : ordinary;
+//         }
+
+//         result.push( ordinary );
+//       }
+//     }
+//   }
+
+//   /* */
+
+//   function handlePreservingEmpty()
+//   {
+//     if( _.escape.is( result[ 0 ] ) )
+//     {
+//       result.unshift( '' );
+//     }
+//     if( _.escape.is( result[ result.length-1 ] ) )
+//     {
+//       result.push( '' );
+//     }
 //     let len = result.length;
 //     for( let i = 0; i < len; i++ )
 //     {
-//       if( _.argumentsArray.like( result[ i ] ) )
-//       if( _.argumentsArray.like( result[ i + 1 ] ) )
+//       if( _.escape.is( result[ i ] ) )
+//       if( _.escape.is( result[ i + 1 ] ) )
 //       {
 //         result.splice( i + 1, 0, '' );
 //         len++;
@@ -3745,42 +2997,13 @@ strSplitInlinedStereo_.defaults =
 
 //   /* */
 
-//   function handlePreservingDelimeters( strip )
+//   function unescape()
 //   {
-//     if( o.preservingDelimeters )
+//     for( let i = 0; i < result.length; i++ )
 //     {
-//       if( o.stripping )
-//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
-//       {
-//         return o.prefix + el.trim() + o.postfix;
-//       }) : o.prefix + strip + o.postfix );
-//       else
-//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) =>
-//       {
-//         return o.prefix + el + o.postfix;
-//       }) : o.prefix + strip + o.postfix );
+//       if( _.escape.is( result[ i ] ) )
+//       result[ i ] = _.escape.unwrap( result[ i ] );
 //     }
-//     else
-//     {
-//       if( o.stripping )
-//       result.push( _.argumentsArray.like( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
-//       else
-//       result.push( strip );
-//     }
-//   }
-
-//   /* */
-
-//   function removeInlined()
-//   {
-//     result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
-//   }
-
-//   /* */
-
-//   function removeOrdinary()
-//   {
-//     result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
 //   }
 
 // }
@@ -3795,88 +3018,17 @@ strSplitInlinedStereo_.defaults =
 
 //   stripping : 0,
 //   quoting : 0,
-//   // quotingPrefix : '"',
-//   // quotingPostfix : '"',
+//   quotingPrefixes : null,
+//   quotingPostfixes : null,
 
 //   preservingQuoting : 1,
-//   preservingEmpty : 1,
+//   preservingEmpty : 0, /* changed */
 //   preservingDelimeters : 0,
+//   inliningDelimeters : 1, /* new */
 //   preservingOrdinary : 1,
 //   preservingInlined : 1,
-
-//   /* qqq for Yevhen : ? */
-
 // }
 
-// function strSplitWithDefaultDelimeter( o )
-// {
-//   // ❮❯
-//   // <  >>>
-//   // << >>
-//   // <aa<bb>>
-//   // <a>ff<b<a<c><
-//   let result = [];
-//   let next = 0;
-//   let src = o.src.slice();
-
-//   let delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
-//   let delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-//   debugger;
-//   console.log( `l: ${delimLeftPosition}, r:${delimRightPosition}` )
-
-//   let delimLeftCount = _.strCount( o.src, o.delimeter[ 0 ] );
-//   let delimRightCount = _.strCount( o.src, o.delimeter[ 1 ] );
-//   let delimCount = delimLeftCount + delimRightCount;
-
-//   if( delimLeftPosition === -1 || delimRightPosition === -1 )
-//   return [ o.src ];
-
-//   debugger
-//   for( ; src.length > 0 ; )
-//   {
-//     if( delimLeftPosition === -1 && delimRightPosition === -1 )
-//     break;
-
-//     if( delimLeftPosition < delimRightPosition )
-//     {
-//       result.push( src.slice( 0, delimLeftPosition ) )
-//       // src = src.slice( delimLeftPosition + 1 );
-
-//       // delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-
-//       result.push([ src.slice( delimLeftPosition + 1, delimRightPosition ) ]);
-//       src = src.slice( delimRightPosition + 1 );
-
-//     }
-//     else
-//     {
-//       result.push( src );
-//       src = '';
-//     }
-
-//     delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
-//     delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-//   }
-
-//   return result;
-
-//   /* - */
-
-//   function getNextPos( str, delim )
-//   {
-//     return str.indexOf( delim );
-//   }
-// }
-
-// strSplitWithDefaultDelimeter.defaults =
-// {
-//   src : null,
-//   delimeter : [ '❮', '❯' ],
-//   // preservingEmpty : 1,
-//   // preservingDelimeters : 0,
-// }
-
-//
 
 // --
 // converter
@@ -3901,239 +3053,167 @@ function strFrom( src )
 }
 
 // --
-// entity
+// parser
 // --
 
-/**
- * Return in one string value of all arguments.
- *
- * @example
- * let args = _.entity.exportStringSimple( 'test2' );
- *
- * @return {string}
- * If no arguments return empty string
- * @function exportStringSimple
- * @namespace Tools
- */
-
-function exportStringSimple()
+function parseType( src )
 {
-  let result = '';
-  let line;
+  /*
+    - 'string'
+    - '5'
+    - '5n'
+    - 'null'
+    - 'undefined'
+    - 'Escape( 1 )'
+    - '{- Symbol undefined -}'
+    - '{- routine name -}'
+    - '{- routine.anonymous -}'
+    - '{- Map -}'
+    - '{- Map name -}'
+    - '{- Map with 9 elements -}'
+    - '{- Map.polluted with 9 elements -}'
+    - '{- Map name with 9 elements -}'
+  */
 
-  if( !arguments.length )
-  return result;
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ), 'Expects string' );
 
-  _.assert( arguments.length === 1 );
+  if( !( /^{- .+ -}$/g.test( src ) ) )
+  return Object.create( null );
 
-  for( let a = 0 ; a < arguments.length ; a++ )
+  src = src.slice( 3, -3 );
+
+  return _.str._parseType( src );
+
+}
+
+//
+
+function _parseType( src )
+{
+  /*
+
+  {- with with 2 elements -} 4
+  {- with name with 2 elements -} 5
+  {- with.with with with 2 elements -} 5
+
+  */
+  _.assert( _.strIs( src ), 'Expects string' );
+
+  let o =
   {
-    let src = arguments[ a ];
-
-    if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
-    {
-      line = src.toStr();
-    }
-    else try
-    {
-      line = String( src );
-    }
-    catch( err )
-    {
-      line = _.entity.strType( src );
-    }
-
-    result += line;
-    if( a < arguments.length-1 )
-    result += ' ';
-
+    type : '',
+    traits : [],
   }
 
-  return result;
-}
+  let splitted = src.split( ' ' );
+  let type = splitted[ 0 ];
+  let length;
 
-//
-
-function exportStringShallow( src, opts )
-{
-  let result = '';
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  result = _.entity.exportStringShallowDiagnostic( src );
-  return result;
-}
-
-//
-
-/* xxx : qqq : for Yevhen : take into account throwing cases */
-/* qqq : for Yevhen : optimize. ask how to */
-function _exportStringShallow( src, o )
-{
-
-  _.routine.assertOptions( _exportStringShallow, o );
-  _.assert( arguments.length === 2 );
-  _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
-  _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
-  _.assert( o.src === undefined )
-  _.assert( o.format === 'string.diagnostic' || o.format === 'string.code' );
-
-  let result = '';
-  let method = o.format === 'string.diagnostic' ? 'exportStringShallowDiagnostic' : 'exportStringShallowCode'
-
-  try
+  if( splitted.length === 2 ) /* with name & no length */
   {
-    if( _.primitive.is( src ) )
-    {
-      result = _.primitive[ method ]( src );
-    }
-    else if( _.set.like( src ) )
-    {
-      result = _.set[ method ]( src );
-    }
-    else if( _.hashMap.like( src ) )
-    {
-      result = _.hashMap[ method ]( src );
-    }
-    else if( _.vector.like( src ) )
-    {
-      result = _.vector[ method ]( src );
-    }
-    else if( _.date.is( src ) )
-    {
-      result = _.date[ method ]( src );
-    }
-    else if( _.regexpIs( src ) )
-    {
-      result = _.regexp[ method ]( src );
-    }
-    else if( _.routine.is( src ) )
-    {
-      result = _.routine[ method ]( src );
-    }
-    else if( _.aux.like( src ) )
-    {
-      result = _.aux[ method ]( src );
-    }
-    else if( _.object.like( src ) )
-    {
-      result = _.object[ method ]( src );
-    }
-    else
-    {
-      result = String( src );
-    }
-
-    result = _.strShort_({ src : result, widthLimit : o.widthLimit, heightLimit : o.heightLimit }).result;
-
+    o.name = splitted[ 1 ];
   }
-  catch( err )
+  else if( splitted.length === 4 ) /* without name & with length */
   {
-    debugger;
-    throw err;
+    length = +splitted[ 2 ];
+  }
+  else if( splitted.length === 5 ) /* with name & with length */
+  {
+    o.name = splitted[ 1 ];
+    length = +splitted[ 3 ];
   }
 
-  return result;
+  length = isNaN( length ) ? null : length;
+
+  if( type.indexOf( '.' ) === -1 )
+  {
+    o.type = type;
+  }
+  else
+  {
+    let [ t, ... traits ] = type.split( '.' );
+    o.type = t;
+    o.traits = traits;
+  }
+
+  if( length !== null )
+  o.length = length;
+
+  return o;
+
 }
 
-_exportStringShallow.defaults =
+// --
+// xxx : implement
+// --
+
+let StrExtension =
 {
-  format : null, /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover | aaa : Done. */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ | aaa : Done. */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
+
+  // exporter
+
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  _exportStringCodeShallow,
+  exportStringCodeShallow,
+  exportString : exportStringDiagnosticShallow,
+
+  // parser
+
+  parseType, /* xxx : move */
+  _parseType,
+
 }
 
-//
+/* xxx : duplicate exportString in namespace::diagnostic? */
 
-/* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShallowCode( src, o ) /* */
+_.props.extend( _.str, StrExtension );
+
+// --
+//
+// --
+
+let EntityExtension =
 {
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
 
-  o = _.routine.options_( exportStringShallowCode, o || null );
-  o.format = o.format || exportStringShallowCode.defaults.format;
+  // exportStringSimple, /* xxx : deprecate? */
+  // exportStringDiagnosticShallow,
+  //
+  // _exportStringShallow,
+  // exportString : exportStringDiagnosticShallow,
+  // exportStringCodeShallow,
+  // exportStringDiagnosticShallow,
+  //
+  // // exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
+  // // exportStringSolo,
 
-  return _.entity._exportStringShallow( src, o );
 }
 
-exportStringShallowCode.defaults =
-{
-  format : 'string.code', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
-}
+/* xxx : duplicate exportString in namespace::diagnostic? */
 
 //
 
-/* qqq for Yevhen : make head and body | aaa : Done. */
-function exportStringShallowDiagnostic( src, o ) /* */
-{
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
-
-  o = _.routine.options_( exportStringShallowDiagnostic, o || null );
-  o.format = o.format || exportStringShallowDiagnostic.defaults.format;
-
-  return _.entity._exportStringShallow( src, o );
-}
-
-exportStringShallowDiagnostic.defaults =
-{
-  format : 'string.diagnostic', /* [ 'string.diagnostic', 'string.code' ] */ /* qqq for Yevhen : implement and cover */
-  widthLimit : 0, /* qqq for Yevhen : implement and cover, use strShort_ */
-  heightLimit : 1, /* qqq for Yevhen : implement and cover */
-}
-
-// //
-//
-// function exportStringSolo( src, o )
-// {
-//   let result = _.entity.exportStringShallowDiagnostic( ... arguments )
-//   return _.strReplace( result, '\n', ' ' );
-// }
-//
-// exportStringSolo.defaults =
-// {
-//   ... exportStringShallowDiagnostic.defaults,
-// }
-
-//
-
-// function exportStringShallowCode( src, /* o */ ) /* shortering or modifying string can make js code not valid */
-// {
-//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
-//
-//   // if( o )
-//   // {
-//   //   o.src = src;
-//   //   return _.entity._exportStringShallowCode( o );
-//   // }
-//   // else
-//   // {
-//   return _.entity._exportStringShallowCode({ src });
-//   // }
-// }
-
+_.props.extend( _.entity, EntityExtension );
 
 // --
 // extension
 // --
 
-let Extension =
+let ToolsExtension =
 {
 
   // decorator
 
   strQuote,
   strUnquote,
-  strQuotePairsNormalize, /* qqq : analyze and write good jsdoc | aaa : Done. Yevhen S.*/
-  strQuoteAnalyze, /* qqq : analyze and write good jsdoc | aaa : Done. Yevhen S. */
+  strQuotePairsNormalize,
+  strQuoteAnalyze,
 
   // splitter
 
-  // _strLeftSingle,
-  // strLeft, /* aaa2 for Dmytro : implement and cover strLeft_ with proper ranges */ /* Dmytro : implemented routine strLeft_ with cintervals, covered */
   _strLeftSingle_,
   strLeft_,
-  // _strRightSingle,
-  // strRight, /* aaa2 for Dmytro : implement and cover strRight_ with proper ranges */ /* Dmytro : implemented routine strRight_ with cintervals, covered */
   _strRightSingle_,
   strRight_,
 
@@ -4141,7 +3221,7 @@ let Extension =
   strsEquivalentAny : _.vectorizeAny( _.str.equivalent.bind( _.str ), 2 ),
   strsEquivalentNone : _.vectorizeNone( _.str.equivalent.bind( _.str ), 2 ),
 
-  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */ /* !!! : use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
+  strInsideOf,
   strInsideOf_,
   strOutsideOf, /* !!! deprecate */
 
@@ -4158,7 +3238,7 @@ let Extension =
 
   // stripper
 
-  strStrip, /* aaa for Dmytro : does not look working. fix, please */ /* Dmytro : covered, fixed, optimized */
+  strStrip,
   strStripLeft,
   strStripRight,
   _strRemoveAllSpaces,
@@ -4169,7 +3249,7 @@ let Extension =
   // split
 
   strSplitsCoupledGroup,
-  strSplitsUngroupedJoin, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  strSplitsUngroupedJoin,
   strSplitsQuotedRejoin, /* qqq : light coverage required */
   strSplitsDropDelimeters, /* qqq : light coverage required */
   strSplitsStrip,
@@ -4178,10 +3258,8 @@ let Extension =
   strSplitFast,
   strSplit,
   strSplitNonPreserving,
-  // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
-  // strSplitInlinedStereo, /* !!! xxx : deprecate after fix of strSplitInlinedStereo_ */
   strSplitInlinedStereo_,
 
   // converter
@@ -4190,29 +3268,10 @@ let Extension =
 
 }
 
-//
-
-let ExtensionEntity =
-{
-
-  exportStringSimple, /* xxx : deprecate? */
-  exportStringShallow,
-  _exportStringShallow,
-  exportString : exportStringShallow,
-  exportStringShallowFine : exportStringShallowDiagnostic, /* xxx : remove */
-  exportStringShallowCode,
-  exportStringShallowDiagnostic,
-  // exportStringSolo,
-
-}
-
-/* xxx : duplicate exportString in namespace::diagnostic? */
-
-//
-
-_.props.extend( Self, Extension );
-_.props.extend( _.entity, ExtensionEntity );
+_.props.extend( _, ToolsExtension );
 
 _.assert( !!_.strSplit.defaults.preservingEmpty );
+
+//
 
 })();

@@ -9,7 +9,9 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
+const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 //--
 // tests
@@ -34,6 +36,62 @@ function structureGenerate( test )
 
 structureGenerate.timeOut = 50000;
 
+//
+
+function objectMake( test )
+{
+
+  test.case = `length:2 countable:1 basic:1`;
+  var got = _.diagnostic.objectMake({ elements : [ 'a', 'b' ], length : 2, countable : 1, basic : 1 });
+  test.true(  _.countable.is( got ) );
+  test.true(  _.vector.is( got ) );
+  test.true( _.object.isBasic( got ) );
+  test.true( _.object.is( got ) );
+
+  test.case = `length:2 countable:1 basic:0`;
+  var got = _.diagnostic.objectMake({ elements : [ 'a', 'b' ], length : 2, countable : 1, basic : 0 });
+  test.true(  _.countable.is( got ) );
+  test.true(  _.vector.is( got ) );
+  test.true( !_.object.isBasic( got ) );
+  test.true( _.object.is( got ) );
+
+  act({ countable : 1, vector : 1, basic : 1 });
+  act({ countable : 1, vector : 1, basic : 0 });
+  act({ countable : 1, vector : 0, basic : 1 });
+  act({ countable : 1, vector : 0, basic : 0 });
+  act({ countable : 0, vector : 0, basic : 1 });
+  act({ countable : 0, vector : 0, basic : 0 });
+  act({ countable : null, vector : 1, basic : 1 });
+  act({ countable : null, vector : 1, basic : 0 });
+  act({ countable : null, vector : 0, basic : 1 });
+  act({ countable : null, vector : 0, basic : 0 });
+  act({ countable : 1, vector : null, basic : 1 });
+  act({ countable : 1, vector : null, basic : 0 });
+  act({ countable : 0, vector : null, basic : 1 });
+  act({ countable : 0, vector : null, basic : 0 });
+
+  /* */
+
+  function act( env )
+  {
+
+    test.case = `${__.entity.exportStringSolo( env )}`;
+    var got = _.diagnostic.objectMake({ elements : [ 'a', 'b' ], ... env });
+
+    if( env.countable === null )
+    env.countable = 1;
+    if( !env.vector )
+    env.vector = 0;
+
+    test.true( !( _.countable.is( got ) ^ !!env.countable ) );
+    test.true( !( _.vector.is( got ) ^ !!env.vector ) );
+    test.true( !(_.object.isBasic( got ) ^ !!env.basic ) );
+    test.true( _.object.is( got ) );
+
+  }
+
+}
+
 // --
 //
 // --
@@ -47,7 +105,10 @@ const Proto =
 
   tests :
   {
+
     structureGenerate,
+    objectMake,
+
   }
 
 }

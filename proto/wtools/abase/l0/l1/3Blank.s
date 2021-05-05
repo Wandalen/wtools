@@ -103,6 +103,8 @@ let BlankExtension =
 
   NamespaceName : 'blank',
   NamespaceQname : 'wTools/blank',
+  MoreGeneralNamespaceName : 'blank',
+  MostGeneralNamespaceName : 'blank',
   TypeName : 'Blank',
   SecondTypeName : 'Blank',
   InstanceConstructor : null,
@@ -116,14 +118,14 @@ let BlankExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
 
 }
 

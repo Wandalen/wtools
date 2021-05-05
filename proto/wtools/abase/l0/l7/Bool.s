@@ -5,11 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.bool = _.bool || Object.create( null );
-
-const _ArraySlice = Array.prototype.slice;
-const _FunctionBind = Function.prototype.bind;
-const _ObjectToString = Object.prototype.toString;
+_.bool = _.bool || Object.create( null );
 
 // --
 // bool
@@ -77,7 +73,7 @@ function fromMaybe( src )
  * @namespace Tools
  */
 
-function fromForce( src )
+function coerceFrom( src )
 {
   if( _.strIs( src ) )
   {
@@ -104,26 +100,25 @@ function fromForce( src )
 let ToolsExtension =
 {
 
-  boolFrom : from, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromMaybe : fromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
-  boolFromForce : fromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFrom : from,
+  boolFromMaybe : fromMaybe,
+  boolCoerceFrom : coerceFrom,
 
 }
 
+Object.assign( _, ToolsExtension );
+
 //
 
-let Extension =
+let BoolExtension =
 {
 
   from,
   fromMaybe,
-  fromForce,
+  coerceFrom,
 
 }
 
-//
-
-Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.bool, BoolExtension );
 
 })();

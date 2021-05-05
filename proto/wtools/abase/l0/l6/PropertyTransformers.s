@@ -3,7 +3,6 @@
 
 'use strict';
 
-const Self = _global_.wTools.property = _global_.wTools.property || Object.create( null );
 const _global = _global_;
 const _ = _global_.wTools;
 
@@ -14,7 +13,7 @@ const _ = _global_.wTools;
 function bypass()
 {
   let routine = bypass;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function bypass( dstContainer, srcContainer, key )
@@ -24,7 +23,7 @@ function bypass()
   }
 }
 
-bypass.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+bypass.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -46,7 +45,7 @@ assigning.identity = { propertyMapper : true, propertyTransformer : true, functo
 function primitive()
 {
   let routine = primitive;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function primitive( dstContainer, srcContainer, key )
@@ -58,7 +57,7 @@ function primitive()
   }
 }
 
-primitive.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+primitive.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -248,7 +247,7 @@ function drop( dropContainer )
 
   let routine = drop;
 
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function drop( dstContainer, srcContainer, key )
@@ -262,14 +261,14 @@ function drop( dropContainer )
 
 }
 
-drop.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+drop.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function notIdentical()
 {
   let routine = notIdentical;
-  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
   return routine;
   function notIdentical( dstContainer, srcContainer, key )
   {
@@ -279,7 +278,7 @@ function notIdentical()
   }
 }
 
-notIdentical.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+notIdentical.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 // --
 // src
@@ -288,7 +287,7 @@ notIdentical.identity = { propertyFilter : true, propertyTransformer : true, fun
 function srcDefined()
 {
   let routine = srcDefined;
-  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
   return routine;
 
   function srcDefined( dstContainer, srcContainer, key )
@@ -299,14 +298,14 @@ function srcDefined()
   }
 }
 
-srcDefined.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+srcDefined.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotHasOrSrcNotNull()
 {
   let routine = dstNotHasOrSrcNotNull;
-  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
   return routine;
   function dstNotHasOrSrcNotNull( dstContainer, srcContainer, key )
   {
@@ -318,7 +317,7 @@ function dstNotHasOrSrcNotNull()
   }
 }
 
-dstNotHasOrSrcNotNull.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasOrSrcNotNull.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 // --
 // dst
@@ -327,7 +326,7 @@ dstNotHasOrSrcNotNull.identity = { propertyFilter : true, propertyTransformer : 
 function dstNotConstant()
 {
   let routine = dstNotConstant;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotConstant( dstContainer, srcContainer, key )
@@ -342,14 +341,14 @@ function dstNotConstant()
 
 }
 
-dstNotConstant.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotConstant.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstAndSrcOwn()
 {
   let routine = dstAndSrcOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstAndSrcOwn( dstContainer, srcContainer, key )
@@ -364,14 +363,14 @@ function dstAndSrcOwn()
 
 }
 
-dstAndSrcOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstAndSrcOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstUndefinedSrcNotUndefined()
 {
   let routine = dstUndefinedSrcNotUndefined;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
@@ -385,7 +384,7 @@ function dstUndefinedSrcNotUndefined()
 
 }
 
-dstUndefinedSrcNotUndefined.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstUndefinedSrcNotUndefined.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 // --
 // dstNotHas
@@ -394,7 +393,7 @@ dstUndefinedSrcNotUndefined.identity = { propertyFilter : true, propertyTransfor
 function dstNotHas()
 {
   let routine = dstNotHas;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHas( dstContainer, srcContainer, key )
@@ -408,14 +407,14 @@ function dstNotHas()
 
 }
 
-dstNotHas.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHas.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotHasOrHasNull()
 {
   let routine = dstNotHasOrHasNull;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHasOrHasNull( dstContainer, srcContainer, key )
@@ -427,14 +426,14 @@ function dstNotHasOrHasNull()
 
 }
 
-dstNotHasOrHasNull.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasOrHasNull.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotHasOrHasNil()
 {
   let routine = dstNotHasOrHasNil;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHasOrHasNil( dstContainer, srcContainer, key )
@@ -448,7 +447,7 @@ function dstNotHasOrHasNil()
 
 }
 
-dstNotHasOrHasNil.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasOrHasNil.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -499,7 +498,7 @@ dstNotHasAppending.identity = { propertyMapper : true, propertyTransformer : tru
 function dstNotHasSrcPrimitive()
 {
   let routine = dstNotHasSrcPrimitive;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHasSrcPrimitive( dstContainer, srcContainer, key )
@@ -516,14 +515,14 @@ function dstNotHasSrcPrimitive()
 
 }
 
-dstNotHasSrcPrimitive.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasSrcPrimitive.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotHasSrcOwn()
 {
   let routine = dstNotHasSrcOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHasSrcOwn( dstContainer, srcContainer, key )
@@ -539,7 +538,7 @@ function dstNotHasSrcOwn()
 
 }
 
-dstNotHasSrcOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasSrcOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -568,7 +567,7 @@ dstNotHasSrcOwnAssigning.identity = { propertyMapper : true, propertyTransformer
 function dstNotHasSrcOwnRoutines()
 {
   let routine = dstNotHasSrcOwnRoutines;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
@@ -587,7 +586,7 @@ function dstNotHasSrcOwnRoutines()
 
 }
 
-dstNotHasSrcOwnRoutines.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotHasSrcOwnRoutines.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -616,7 +615,7 @@ dstNotHasAssigningRecursive.identity = { propertyMapper : true, propertyTransfor
 function dstOwn()
 {
   let routine = dstOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstOwn( dstContainer, srcContainer, key )
@@ -628,14 +627,14 @@ function dstOwn()
 
 }
 
-dstOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotOwn()
 {
   let routine = dstNotOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotOwn( dstContainer, srcContainer, key )
@@ -647,14 +646,14 @@ function dstNotOwn()
 
 }
 
-dstNotOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotOwnNotSame()
 {
   let routine = dstNotOwnNotSame;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotOwnNotSame( dstContainer, srcContainer, key )
@@ -670,14 +669,14 @@ function dstNotOwnNotSame()
 
 }
 
-dstNotOwnNotSame.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotOwnNotSame.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstNotOwnSrcOwn()
 {
   let routine = dstNotOwnSrcOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
@@ -693,7 +692,7 @@ function dstNotOwnSrcOwn()
 
 }
 
-dstNotOwnSrcOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstNotOwnSrcOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -803,7 +802,7 @@ dstNotOwnAppending.identity = { propertyMapper : true, propertyTransformer : tru
 function dstHasMaybeUndefined()
 {
   let routine = dstHasMaybeUndefined;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstHasMaybeUndefined( dstContainer, srcContainer, key )
@@ -815,14 +814,14 @@ function dstHasMaybeUndefined()
 
 }
 
-dstHasMaybeUndefined.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstHasMaybeUndefined.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstHasButUndefined()
 {
   let routine = dstHasButUndefined;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstHasButUndefined( dstContainer, srcContainer, key )
@@ -834,14 +833,14 @@ function dstHasButUndefined()
 
 }
 
-dstHasButUndefined.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstHasButUndefined.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstHasSrcOwn()
 {
   let routine = dstHasSrcOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstHasSrcOwn( dstContainer, srcContainer, key )
@@ -855,14 +854,14 @@ function dstHasSrcOwn()
 
 }
 
-dstHasSrcOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstHasSrcOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function dstHasSrcNotOwn()
 {
   let routine = dstHasSrcNotOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function dstHasSrcNotOwn( dstContainer, srcContainer, key )
@@ -876,7 +875,7 @@ function dstHasSrcNotOwn()
 
 }
 
-dstHasSrcNotOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+dstHasSrcNotOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 // --
 // srcOwn
@@ -885,7 +884,7 @@ dstHasSrcNotOwn.identity = { propertyFilter : true, propertyTransformer : true, 
 function srcOwn()
 {
   let routine = srcOwn;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function srcOwn( dstContainer, srcContainer, key )
@@ -899,14 +898,14 @@ function srcOwn()
 
 }
 
-srcOwn.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+srcOwn.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
 function srcOwnRoutines()
 {
   let routine = srcOwnRoutines;
-  routine.identity = { propertyFilter : true, propertyTransformer : true }; ;
+  routine.identity = { propertyCondition : true, propertyTransformer : true }; ;
   return routine;
 
   function srcOwnRoutines( dstContainer, srcContainer, key )
@@ -922,7 +921,7 @@ function srcOwnRoutines()
 
 }
 
-srcOwnRoutines.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+srcOwnRoutines.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 
@@ -949,7 +948,7 @@ srcOwnAssigning.identity = { propertyMapper : true, propertyTransformer : true, 
 function srcOwnPrimitive()
 {
   let routine = srcOwnPrimitive;
-  routine.identity = { propertyFilter : true, propertyTransformer : true };
+  routine.identity = { propertyCondition : true, propertyTransformer : true };
   return routine;
 
   function srcOwnPrimitive( dstContainer, srcContainer, key )
@@ -965,7 +964,7 @@ function srcOwnPrimitive()
 
 }
 
-srcOwnPrimitive.identity = { propertyFilter : true, propertyTransformer : true, functor : true };
+srcOwnPrimitive.identity = { propertyCondition : true, propertyTransformer : true, functor : true };
 
 //
 

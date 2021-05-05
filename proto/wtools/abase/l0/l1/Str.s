@@ -37,6 +37,17 @@ function is( src )
 
 //
 
+function like( src )
+{
+  if( _.str.is( src ) )
+  return true;
+  if( _.regexp.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -118,6 +129,7 @@ function strHas( src, ins )
   return ins.test( src );
 
 }
+
 //
 // //
 //
@@ -155,7 +167,7 @@ function strHas( src, ins )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
@@ -186,7 +198,7 @@ function strHas( src, ins )
 // //
 // //   if( strIs1 && strIs2 )
 // //   {
-// //     /* qqq : for Yevhen : bad | aaa : Fixed. */
+// //     /* qqq : for junior : bad | aaa : Fixed. */
 // //     if( src1 === src2 )
 // //     return true;
 // //
@@ -273,60 +285,6 @@ function strHas( src, ins )
 // --
 // converter
 // --
-
-// /* xxx : move to entity */
-// function exportStringShallowDiagnostic( src, o )
-// {
-//   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
-//
-//   let result = '';
-//
-//   if( _.primitive.is( src ) )
-//   {
-//     result = _.primitive.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.date.is( src ) )
-//   {
-//     result = _.date.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.regexpIs( src ) )
-//   {
-//     result = _.regexp.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.set.like( src ) )
-//   {
-//     result = _.set.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.hashMap.like( src ) )
-//   {
-//     result = _.hashMap.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.vector.like( src ) )
-//   {
-//     result = _.vector.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.routine.is( src ) )
-//   {
-//     result = _.routine.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.aux.like( src ) )
-//   {
-//     result = _.aux.exportStringShallowDiagnostic( src );
-//   }
-//   else if( _.object.like( src ) )
-//   {
-//     result = _.object.exportStringShallowDiagnostic( src );
-//   }
-//   else
-//   {
-//     result = String( src );
-//     result = _.strShort_( result ).result;
-//   }
-//
-//   return result;
-// }
-
-//
 
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
@@ -915,322 +873,6 @@ _strShortHeight.defaults =
 
 //
 
-// function strShort( o ) /* version without binary search cutting */
-// {
-//
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-//   else if( arguments.length === 1 )
-//   if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] };
-//
-//   _.routine.options( strShort, o );
-//
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.number.is( o.widthLimit ) );
-//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
-//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   if( !o.infix )
-//   o.infix = '';
-//   if( !o.prefix )
-//   o.prefix = '';
-//   if( !o.postfix )
-//   o.postfix = '';
-//   if( o.src.length < 1 )
-//   {
-//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
-//     return o.prefix + o.postfix
-//     o.src = o.prefix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//   }
-//   if( _.bool.likeTrue( o.infix ) )
-//   o.infix = '...';
-//
-//   if( !o.onLength )
-//   o.onLength = ( src ) => src.length;
-//
-//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-//   return o.prefix + o.infix + o.postfix;
-//
-//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-//   {
-//     o.src = o.prefix + o.infix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//     o.infix = '';
-//   }
-//
-//   let src = o.src;
-//   let fixLength = 0;
-//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
-//
-//   if( o.cutting === 'left' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-//     {
-//       src = src.slice( 1 );
-//     }
-//     return o.prefix + o.infix + src + o.postfix;
-//   }
-//   else if( o.cutting === 'right' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       src = src.slice( 0, src.length - 1 );
-//     }
-//     return o.prefix + src + o.infix + o.postfix;
-//   }
-//   else
-//   {
-//     if( o.onLength( src ) + fixLength <= o.widthLimit )
-//     return o.prefix + src + o.postfix;
-//     let begin = '';
-//     let end = '';
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       begin = src.slice( 0, Math.floor( src.length / 2 ) );
-//       end = src.slice( Math.floor( src.length / 2 ) + 1 );
-//       src = begin + end;
-//     }
-//     return o.prefix + begin + o.infix + end + o.postfix;
-//   }
-//
-// }
-//
-// strShort.defaults =
-// {
-//   src : null,
-//   widthLimit : 40,
-//   heightLimit : 0,
-//   prefix : null,
-//   postfix : null,
-//   infix : null,
-//   onLength : null, /* xxx : investigate */
-//   cutting : 'center',
-// }
-
-//
-
-// function strShort_2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
-// {
-
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-//   else if( arguments.length === 1 )
-//   if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] };
-
-//   _.routine.options( strShort_2, o );
-
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.number.is( o.widthLimit ) );
-//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
-//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-
-//   if( !o.infix )
-//   o.infix = '';
-//   if( !o.prefix )
-//   o.prefix = '';
-//   if( !o.postfix )
-//   o.postfix = '';
-//   if( o.widthLimit === 0 )
-//   o.widthLimit = Infinity;
-//   if( o.src.length < 1 )
-//   {
-//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
-//     return o.prefix + o.postfix
-//     o.src = o.prefix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//   }
-//   if( _.bool.likeTrue( o.infix ) )
-//   o.infix = '...';
-
-//   if( !o.onLength )
-//   o.onLength = ( src ) => src.length;
-
-//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-//   return o.prefix + o.infix + o.postfix;
-
-//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-//   {
-//     o.src = o.prefix + o.infix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//     o.infix = '';
-//   }
-
-//   let src = o.src;
-//   let fixLength = 0;
-//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
-
-//   if( o.cutting === 'left' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-//     {
-//       src = src.slice( 1 );
-//     }
-//     return o.prefix + o.infix + src + o.postfix;
-//   }
-//   else if( o.cutting === 'right' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       src = src.slice( 0, src.length - 1 );
-//     }
-//     return o.prefix + src + o.infix + o.postfix;
-//   }
-//   else
-//   {
-//     if( o.onLength( src ) + fixLength <= o.widthLimit )
-//     return o.prefix + src + o.postfix;
-
-//     let begin = '';
-//     let end = '';
-
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-
-//       /* find a place between elements, not within element */
-//       let center = Math.floor( src.length / 2 );
-//       begin = src.slice( 0, center );
-//       end = src.slice( center );
-
-//       while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
-//       {
-//         center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
-//         begin = src.slice( 0, center );
-//         end = src.slice( center );
-//       }
-
-//       let beginLength = o.onLength( begin );
-//       let endLength = o.onLength( end );
-//       /* center is between elements, slice from bigger part until 1 complete element is removed */
-//       if( o.onLength( begin ) > o.onLength( end ) )
-//       while( o.onLength( begin ) >= beginLength )
-//         begin = begin.slice( 0, -1 );
-//       else
-//       while( o.onLength( end ) >= endLength )
-//         end = end.slice( 1 );
-
-//       src = begin + end;
-//     }
-//     return o.prefix + begin + o.infix + end + o.postfix;
-//   }
-// }
-
-// strShort_2.defaults =
-// {
-//   src : null,
-//   widthLimit : 40,
-//   heightLimit : 0,
-//   prefix : null,
-//   postfix : null,
-//   infix : null,
-//   onLength : null, /* xxx : investigate */
-//   cutting : 'center',
-// }
-
-// //
-//
-// function strParseType( src )
-// {
-//   /*
-//     - 'string'
-//     - '5'
-//     - '5n'
-//     - 'null'
-//     - 'undefined'
-//     - 'Escape( 1 )'
-//     - '{- Symbol undefined -}'
-//     - '{- routine name -}'
-//     - '{- routine.anonymous -}'
-//     - '{- Map -}'
-//     - '{- Map name -}'
-//     - '{- Map with 9 elements -}'
-//     - '{- Map.polluted with 9 elements -}'
-//     - '{- Map name with 9 elements -}'
-//   */
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.strIs( src ), 'Expects string' );
-//
-//   if( !( /^{- .+ -}$/g.test( src ) ) )
-//   return Object.create( null );
-//
-//   src = src.slice( 3, -3 );
-//
-//   return _.entity._strParseType( src );
-//
-// }
-//
-// //
-//
-// function _strParseType( src )
-// {
-//   /*
-//
-//   {- with with 2 elements -} 4
-//   {- with name with 2 elements -} 5
-//   {- with.with with with 2 elements -} 5
-//
-//   */
-//   _.assert( _.strIs( src ), 'Expects string' );
-//
-//   let o =
-//   {
-//     type : '',
-//     traits : [],
-//   }
-//
-//   let splitted = src.split( ' ' );
-//   let type = splitted[ 0 ];
-//   let length;
-//
-//   if( splitted.length === 2 ) /* with name & no length */
-//   {
-//     o.name = splitted[ 1 ];
-//   }
-//   else if( splitted.length === 4 ) /* without name & with length */
-//   {
-//     length = +splitted[ 2 ];
-//   }
-//   else if( splitted.length === 5 ) /* with name & with length */
-//   {
-//     o.name = splitted[ 1 ];
-//     length = +splitted[ 3 ];
-//   }
-//
-//   length = isNaN( length ) ? null : length;
-//
-//   if( type.indexOf( '.' ) === -1 )
-//   {
-//     o.type = type;
-//   }
-//   else
-//   {
-//     let [ t, ... traits ] = type.split( '.' );
-//     o.type = t;
-//     o.traits = traits;
-//   }
-//
-//   if( length !== null )
-//   o.length = length;
-//
-//   return o;
-//
-// }
-
-//
-
 /**
  * The routine strConcat() provides the concatenation of array of elements ( or single element )
  * into a String. Returned string can be formatted by using options in options map {-o-}.
@@ -1321,6 +963,8 @@ function strConcat( srcs, o )
   };
 
   o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+  // o.optionsForToStr.format = o.optionsForToStr.format || 'string.code';
+  o.optionsForToStr.format = o.optionsForToStr.format || 'string.diagnostic';
 
   if( _.routine.is( srcs ) )
   srcs = srcs();
@@ -1849,66 +1493,8 @@ function strLinesStrip( src )
 }
 
 // --
-// implementation
+// declaration
 // --
-//
-// let TranslatedTypeMap =
-// {
-//
-//   'BigUint64Array' : 'U64x',
-//   'Uint32Array' : 'U32x',
-//   'Uint16Array' : 'U16x',
-//   'Uint8Array' : 'U8x',
-//   'Uint8ClampedArray' : 'U8ClampedX',
-//
-//   'BigInt64Array' : 'I64x',
-//   'Int32Array' : 'I32x',
-//   'Int16Array' : 'I16x',
-//   'Int8Array' : 'I8x',
-//
-//   'Float64Array' : 'F64x',
-//   'Float32Array' : 'F32x',
-//
-//   'Buffer' : 'BufferNode',
-//   'ArrayBuffer' : 'BufferRaw',
-//   'SharedArrayBuffer' : 'BufferRawShared',
-//   'Map' : 'HashMap',
-//   'WeakMap' : 'HashMapWeak',
-//   'Function' : 'Routine',
-//   'Arguments' : 'ArgumentsArray',
-//
-// }
-//
-// let StandardTypeSet = new Set
-// ([
-//
-//   'U64x',
-//   'U32x',
-//   'U16x',
-//   'U8x',
-//   'U8ClampedX',
-//   'I64x',
-//   'I32x',
-//   'I16x',
-//   'I8x',
-//   'F64x',
-//   'F32x',
-//
-//   'BufferNode',
-//   'BufferRaw',
-//   'BufferRawShared',
-//   'HashMap',
-//   'HashMapWeak',
-//
-//   'ArgumentsArray',
-//   'Array',
-//   'Set',
-//   'Routine',
-//   'Global',
-//
-// ]);
-
-//
 
 let ToolsExtension =
 {
@@ -1925,14 +1511,14 @@ let ToolsExtension =
   // strType : strTypeWithTraits,
   strHas,
 
-  // strEquivalent, /* qqq : for Yevhen : bad */
+  // strEquivalent, /* qqq : for junior : bad */
   // areEquivalentShallow : strEquivalent, xxx
   // strsEquivalent,
 
   // converter
 
   strstrShort_ : strShort_, /* xxx : remove */
-  strShort_, /* qqq for Yevhen : cover | aaa : Done. */
+  strShort_, /* qqq for junior : cover | aaa : Done. */
   strShortWidth,
   _strShortWidth,
   strShortHeight,
@@ -1964,45 +1550,9 @@ let ToolsExtension =
 
   strLine
 
-  // fields
-
-  // TranslatedTypeMap,
-  // StandardTypeSet,
-
 }
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let ExtensionEntity =
-{
-
-  // // exporter
-  //
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
-  //
-  // strPrimitive,
-  // strTypeSecondary,
-  // strType : strTypeWithTraits,
-  // strTypeWithTraits,
-  // strTypeWithoutTraits,
-  // // strParseType,
-  // // _strParseType,
-  //
-  // // fields
-  //
-  // TranslatedTypeMap,
-  // StandardTypeSet,
-
-}
-
-Object.assign( _.entity, ExtensionEntity );
 
 //
 
@@ -2012,24 +1562,7 @@ let StrExtension =
   // dichotomy
 
   is,
-
-  // equaler
-
-  // _identicalShallow,
-  // identicalShallow,
-  // identical : identicalShallow,
-  // _equivalentShallow,
-  // equivalentShallow,
-  // equivalent : equivalentShallow,
-
-  // exporter
-
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
+  like,
 
 }
 

@@ -203,7 +203,7 @@ let ToolsExtension =
 
 }
 
-_.props.supplement( _, ToolsExtension ); /* qqq for Yevhen : create namespace _.regexp. stand-alone PR | aaa : Done. */
+_.props.supplement( _, ToolsExtension ); /* qqq for junior : create namespace _.regexp. stand-alone PR | aaa : Done. */
 
 //
 

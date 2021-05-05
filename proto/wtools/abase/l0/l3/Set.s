@@ -35,11 +35,8 @@ function setsToArrays( srcs )
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src )
+function _exportStringDiagnosticShallow( src, o )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.set.is( src ) );
-
   return `{- ${_.entity.strType( src )} with ${_.entity.lengthOf( src )} elements -}`;
 }
 
@@ -59,19 +56,6 @@ function _identicalShallow( src1, src2 )
   return true;
 }
 
-//
-
-function identicalShallow( src1, src2, o )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( !this.like( src1 ) )
-  return false;
-  if( !this.like( src2 ) )
-  return false;
-  return this._identicalShallow( src1, src2 );
-}
-
 // --
 // container interface
 // --
@@ -83,26 +67,9 @@ function _lengthOf( src )
 
 //
 
-function lengthOf( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.like( src ) );
-  return this._lengthOf( src );
-}
-
-//
-
 function _hasKey( src, key )
 {
   return src.has( key );
-}
-
-//
-
-function hasKey( src, key )
-{
-  _.assert( this.like( src ) );
-  return this._hasKey( src, key );
 }
 
 //
@@ -116,14 +83,6 @@ function _hasCardinal( src, cardinal )
 
 //
 
-function hasCardinal( src, cardinal )
-{
-  _.assert( this.like( src ) );
-  return this._hasCardinal( src, cardinal );
-}
-
-//
-
 function _keyWithCardinal( src, cardinal )
 {
   if( cardinal < 0 || src.size <= cardinal )
@@ -133,10 +92,9 @@ function _keyWithCardinal( src, cardinal )
 
 //
 
-function keyWithCardinal( src, cardinal )
+function _cardinalWithKey( src, key )
 {
-  _.assert( this.like( src ) );
-  return this._keyWithCardinal( src, cardinal );
+  return [ ... src ].indexOf( key );
 }
 
 //
@@ -146,33 +104,6 @@ function _elementWithKey( src, key )
   if( src.has( key ) )
   return [ key, key, true ];
   return [ undefined, key, false ];
-}
-
-//
-
-function elementWithKey( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKey( src, key );
-}
-
-//
-
-function _elementWithImplicit( src, key )
-{
-  if( _.props.keyIsImplicit( key ) )
-  return _.props._onlyImplicitWithKeyTuple( src, key );
-  return this._elementWithKey( src, key );
-}
-
-//
-
-function elementWithImplicit( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithImplicit( src, key );
 }
 
 //
@@ -187,40 +118,21 @@ function _elementWithCardinal( src, key )
 
 //
 
-function elementWithCardinal( src, key )
+function _elementWithKeySet( dst, key, val )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinal( src, key );
-}
-
-//
-
-function _elementWithKeySet( src, key, val )
-{
-  src.set( val );
+  dst.set( val );
   return [ val, val, true ];
 }
 
 //
 
-function elementWithKeySet( src, key, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  _.assert( key === val );
-  return this._elementWithKeySet( src, key, val );
-}
-
-//
-
-function _elementWithCardinalSet( src, cardinal, val )
-{
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] === true )
   {
-    src.delete( was[ 0 ] );
-    src.set( val );
+    dst.delete( was[ 0 ] );
+    dst.set( val );
     return [ val, val, true ];
   }
   else
@@ -231,50 +143,23 @@ function _elementWithCardinalSet( src, cardinal, val )
 
 //
 
-function elementWithCardinalSet( src, cardinal, val )
+function _elementWithKeyDel( dst, key )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalSet( src, cardinal, val );
-}
-
-//
-
-function _elementWithKeyDel( src, key )
-{
-  if( !this._hasKey( src, key ) )
+  if( !this._hasKey( dst, key ) )
   return false;
-  src.delete( key );
+  dst.delete( key );
   return true;
 }
 
 //
 
-function elementWithKeyDel( src, key )
+function _elementWithCardinalDel( dst, cardinal )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeyDel( src, key );
-}
-
-//
-
-function _elementWithCardinalDel( src, cardinal )
-{
-  let has = this._keyWithCardinal( src, cardinal );
+  let has = this._keyWithCardinal( dst, cardinal );
   if( !has[ 1 ] )
   return false;
-  src.delete( has[ 0 ] );
+  dst.delete( has[ 0 ] );
   return true;
-}
-
-//
-
-function elementWithCardinalDel( src, cardinal )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalDel( src, cardinal, val );
 }
 
 //
@@ -283,15 +168,6 @@ function _empty( dst )
 {
   dst.clear();
   return dst;
-}
-
-//
-
-function empty( dst )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( this.like( dst ) );
-  return this._empty( dst );
 }
 
 //
@@ -308,15 +184,6 @@ function _eachLeft( src, onEach )
 
 //
 
-function eachLeft( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._eachLeft( src, onEach );
-}
-
-//
-
 function _eachRight( src, onEach )
 {
   let src2 = [ ... src ];
@@ -325,15 +192,6 @@ function _eachRight( src, onEach )
     let e = src[ k ];
     onEach( e, e, k, src );
   }
-}
-
-//
-
-function eachRight( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._eachRight( src, onEach );
 }
 
 //
@@ -358,15 +216,6 @@ function _whileLeft( src, onEach )
 
 //
 
-function whileLeft( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._whileLeft( src, onEach );
-}
-
-//
-
 function _whileRight( src, onEach )
 {
   if( src.size === 0 )
@@ -384,15 +233,6 @@ function _whileRight( src, onEach )
   return [ e, e, 0, true ];
 }
 
-//
-
-function whileRight( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._whileRight( src, onEach );
-}
-
 // --
 // extension
 // --
@@ -400,15 +240,6 @@ function whileRight( src, onEach )
 let ToolsExtension =
 {
 
-  // reader
-
-  _setsAreIdenticalShallow : _identicalShallow.bind( _.set ),
-  setsAreIdenticalShallow : identicalShallow.bind( _.set ),
-
-  //
-
-  // setFrom : from,
-  // setsFrom,
   setToArray : toArray,
   setsToArrays,
 
@@ -431,71 +262,75 @@ let SetExtension =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
   _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
+  exportString : _.props.exportString,
 
-  // container interface
+  // inspector
 
   _lengthOf,
-  lengthOf, /* qqq : cover */
-
+  lengthOf : _.props.lengthOf, /* qqq : cover */
   _hasKey,
-  hasKey, /* qqq : cover */
+  hasKey : _.props.hasKey, /* qqq : cover */
   _hasCardinal,
-  hasCardinal, /* qqq : cover */
+  hasCardinal : _.props.hasCardinal, /* qqq : cover */
   _keyWithCardinal,
-  keyWithCardinal, /* qqq : cover */
+  keyWithCardinal : _.props.keyWithCardinal, /* qqq : cover */
+  _cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
+
+  // elementor
 
   _elementGet : _elementWithKey,
-  elementGet : elementWithKey, /* qqq : cover */
+  elementGet : _.props.elementGet, /* qqq : cover */
   _elementWithKey,
-  elementWithKey, /* qqq : cover */
-  _elementWithImplicit,
-  elementWithImplicit,  /* qqq : cover */
+  elementWithKey : _.props.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.props._elementWithImplicit,
+  elementWithImplicit : _.props.elementWithImplicit,  /* qqq : cover */
   _elementWithCardinal,
-  elementWithCardinal,  /* qqq : cover */
+  elementWithCardinal : _.props.elementWithCardinal,  /* qqq : cover */
 
   _elementSet : _elementWithKeySet,
-  elementSet : elementWithKeySet, /* qqq : cover */
+  elementSet : _.props.elementSet, /* qqq : cover */
   _elementWithKeySet,
-  elementWithKeySet, /* qqq : cover */
+  elementWithKeySet : _.props.elementWithKeySet, /* qqq : cover */
   _elementWithCardinalSet,
-  elementWithCardinalSet,  /* qqq : cover */
+  elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
 
   _elementDel : _elementWithKeyDel,
-  elementDel : elementWithKeyDel, /* qqq : cover */
+  elementDel : _.props.elementDel, /* qqq : cover */
   _elementWithKeyDel,
-  elementWithKeyDel, /* qqq : cover */
+  elementWithKeyDel : _.props.elementWithKeyDel, /* qqq : cover */
   _elementWithCardinalDel,
-  elementWithCardinalDel,  /* qqq : cover */
+  elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty : _.props.empty, /* qqq : for junior : cover */
+
+  // iterator
 
   _each : _eachLeft,
-  each : eachLeft, /* qqq : cover */
+  each : _.props.each, /* qqq : cover */
   _eachLeft,
-  eachLeft, /* qqq : cover */
+  eachLeft : _.props.eachLeft, /* qqq : cover */
   _eachRight,
-  eachRight, /* qqq : cover */
+  eachRight : _.props.eachRight, /* qqq : cover */
 
   _while : _whileLeft,
-  while : whileLeft, /* qqq : cover */
+  while : _.props.while, /* qqq : cover */
   _whileLeft,
-  whileLeft, /* qqq : cover */
+  whileLeft : _.props.whileLeft, /* qqq : cover */
   _whileRight,
-  whileRight, /* qqq : cover */
+  whileRight : _.props.whileRight, /* qqq : cover */
 
   _aptLeft : _.props._aptLeft,
   aptLeft : _.props.aptLeft, /* qqq : cover */
@@ -503,6 +338,26 @@ let SetExtension =
   _aptRight : _.props._aptRight, /* qqq : cover */
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
+
+  _filterAct0 : _.props._filterAct0,
+  _filterAct1 : _.props._filterAct1,
+  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  filterWithoutEscape : _.props.filterWithoutEscape,
+  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  filterWithEscapeRight : _.props.filterWithEscapeRight,
+  filterWithEscape : _.props.filterWithEscape,
+  filter : _.props.filter,
+
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1 : _.props._mapAct1,
+  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  mapWithoutEscape : _.props.mapWithoutEscape,
+  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  mapWithEscapeRight : _.props.mapWithEscapeRight,
+  mapWithEscape : _.props.mapWithEscape,
+  map : _.props.map,
 
 }
 

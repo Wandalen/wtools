@@ -6,8 +6,8 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( !!_.argumentsArray._elementWithKey, 'Expects routine argumentsArray._elementWithKey' );
-_.assert( !!_.argumentsArray.exportString, 'Expects routine _.argumentsArray.exportString' );
+_.assert( !!_.long._elementWithKey, 'Expects routine argumentsArray._elementWithKey' );
+_.assert( !!_.long.exportString, 'Expects routine _.long.exportString' );
 
 // --
 // editor
@@ -200,7 +200,7 @@ function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -297,7 +297,7 @@ function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */
   if( Config.debug )
   {
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -395,7 +395,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
 
   return dstArray;
 }
@@ -1267,7 +1267,7 @@ function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -1319,7 +1319,7 @@ function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ 
   if( Config.debug )
   {
     result = _.arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringShallow( ins ) }` );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.entity.exportStringDiagnosticShallow( ins ) }` );
   }
   else
   {
@@ -1853,6 +1853,40 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
 // container interface
 // --
 
+function _elementAppend( dst, val )
+{
+  dst.push( val );
+  return dst.length-1;
+}
+
+//
+
+function elementAppend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  dst.unshift( val );
+  return 0;
+}
+
+//
+
+function elementPrepend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
 function _elementWithKeyDel( src, key )
 {
   if( !this._hasKey( src, key ) )
@@ -1910,12 +1944,12 @@ function empty( dst )
 // declaration
 // --
 
+/* qqq2 : for junior : duplicate routines. ask */
 let ToolsExtension =
 {
 
   // array prepend
 
-  /* zzz : move maybe? */
   arrayPrepend,
   arrayPrependOnce,
   arrayPrependOnceStrictly,
@@ -1946,7 +1980,6 @@ let ToolsExtension =
 
   // array append
 
-  /* zzz : move maybe? */
   arrayAppend,
   arrayAppendOnce,
   arrayAppendOnceStrictly,
@@ -1998,49 +2031,55 @@ let ArrayExtension =
 
   // equaler
 
-  _identicalShallow : _.argumentsArray._identicalShallow,
-  identicalShallow : _.argumentsArray.identicalShallow,
-  identical : _.argumentsArray.identical,
-  _equivalentShallow : _.argumentsArray._equivalentShallow,
-  equivalentShallow : _.argumentsArray.equivalentShallow,
-  equivalent : _.argumentsArray.equivalent,
+  _identicalShallow : _.long._identicalShallow,
+  identicalShallow : _.long.identicalShallow,
+  identical : _.long.identical,
+  _equivalentShallow : _.long._equivalentShallow,
+  equivalentShallow : _.long.equivalentShallow,
+  equivalent : _.long.equivalent,
 
   // exporter
 
-  exportString : _.argumentsArray.exportString,
-  exportStringShallow : _.argumentsArray.exportStringShallow,
-  exportStringShallowDiagnostic : _.argumentsArray.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.argumentsArray.exportStringShallowCode,
-  exportStringDiagnostic : _.argumentsArray.exportStringDiagnostic,
-  exportStringCode : _.argumentsArray.exportStringCode,
+  _exportStringDiagnosticShallow : _.long._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.long._exportStringCodeShallow,
+  exportStringCodeShallow : _.long.exportStringCodeShallow,
+  exportString : _.long.exportString,
 
   // container interface
 
-  _lengthOf : _.argumentsArray._lengthOf,
-  lengthOf : _.argumentsArray.lengthOf, /* qqq : cover */
+  _lengthOf : _.long._lengthOf,
+  lengthOf : _.long.lengthOf, /* qqq : cover */
 
-  _hasKey : _.argumentsArray._hasKey,
-  hasKey : _.argumentsArray._hasKey, /* qqq : cover */
-  _hasCardinal : _.argumentsArray._hasKey,
-  hasCardinal : _.argumentsArray._hasKey, /* qqq : cover */
-  _keyWithCardinal : _.argumentsArray._hasKey,
-  keyWithCardinal : _.argumentsArray._hasKey, /* qqq : cover */
+  _hasKey : _.long._hasKey,
+  hasKey : _.long._hasKey, /* qqq : cover */
+  _hasCardinal : _.long._hasKey,
+  hasCardinal : _.long._hasKey, /* qqq : cover */
+  _keyWithCardinal : _.long._hasKey,
+  keyWithCardinal : _.long._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.long._cardinalWithKey,
+  cardinalWithKey : _.long.cardinalWithKey, /* qqq : cover */
 
-  _elementGet : _.argumentsArray._elementWithKey,
-  elementGet : _.argumentsArray.elementWithKey, /* qqq : cover */
-  _elementWithKey : _.argumentsArray._elementWithKey,
-  elementWithKey : _.argumentsArray.elementWithKey, /* qqq : cover */
-  _elementWithImplicit : _.argumentsArray._elementWithImplicit,
-  elementWithImplicit : _.argumentsArray.elementWithImplicit,  /* qqq : cover */
-  _elementWithCardinal : _.argumentsArray._elementWithCardinal,
-  elementWithCardinal : _.argumentsArray.elementWithCardinal,  /* qqq : cover */
+  _elementGet : _.long._elementWithKey,
+  elementGet : _.long.elementWithKey, /* qqq : cover */
+  _elementWithKey : _.long._elementWithKey,
+  elementWithKey : _.long.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.long._elementWithImplicit,
+  elementWithImplicit : _.long.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal : _.long._elementWithCardinal,
+  elementWithCardinal : _.long.elementWithCardinal,  /* qqq : cover */
 
-  _elementSet : _.argumentsArray._elementSet,
-  elementSet : _.argumentsArray.elementSet, /* qqq : cover */
-  _elementWithKeySet : _.argumentsArray._elementWithKeySet,
-  elementWithKeySet : _.argumentsArray.elementWithKeySet, /* qqq : cover */
-  _elementWithCardinalSet : _.argumentsArray._elementWithCardinalSet,
-  elementWithCardinalSet : _.argumentsArray.elementWithCardinalSet,  /* qqq : cover */
+  _elementSet : _.long._elementSet,
+  elementSet : _.long.elementSet, /* qqq : cover */
+  _elementWithKeySet : _.long._elementWithKeySet,
+  elementWithKeySet : _.long.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet : _.long._elementWithCardinalSet,
+  elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
+
+  _elementAppend,
+  elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend, /* qqq : cover */
 
   _elementDel : _elementWithKeyDel,
   elementDel : elementWithKeyDel, /* qqq : cover */
@@ -2049,28 +2088,48 @@ let ArrayExtension =
   _elementWithCardinalDel,
   elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty, /* qqq : for junior : cover */
 
-  _each : _.argumentsArray._each,
-  each : _.argumentsArray.each, /* qqq : cover */
-  _eachLeft : _.argumentsArray._eachLeft,
-  eachLeft : _.argumentsArray.eachLeft, /* qqq : cover */
-  _eachRight : _.argumentsArray._eachRight,
-  eachRight : _.argumentsArray.eachRight, /* qqq : cover */
+  _each : _.long._each,
+  each : _.long.each, /* qqq : cover */
+  _eachLeft : _.long._eachLeft,
+  eachLeft : _.long.eachLeft, /* qqq : cover */
+  _eachRight : _.long._eachRight,
+  eachRight : _.long.eachRight, /* qqq : cover */
 
-  _while : _.argumentsArray._while,
-  while : _.argumentsArray.while, /* qqq : cover */
-  _whileLeft : _.argumentsArray._whileLeft,
-  whileLeft : _.argumentsArray.whileLeft, /* qqq : cover */
-  _whileRight : _.argumentsArray._whileRight,
-  whileRight : _.argumentsArray.whileRight, /* qqq : cover */
+  _while : _.long._while,
+  while : _.long.while, /* qqq : cover */
+  _whileLeft : _.long._whileLeft,
+  whileLeft : _.long.whileLeft, /* qqq : cover */
+  _whileRight : _.long._whileRight,
+  whileRight : _.long.whileRight, /* qqq : cover */
 
-  _aptLeft : _.argumentsArray._aptLeft,
-  aptLeft : _.argumentsArray.aptLeft, /* qqq : cover */
-  first : _.argumentsArray.first,
-  _aptRight : _.argumentsArray._aptRight, /* qqq : cover */
-  aptRight : _.argumentsArray.aptRight,
-  last : _.argumentsArray.last, /* qqq : cover */
+  _aptLeft : _.long._aptLeft,
+  aptLeft : _.long.aptLeft, /* qqq : cover */
+  first : _.long.first,
+  _aptRight : _.long._aptRight, /* qqq : cover */
+  aptRight : _.long.aptRight,
+  last : _.long.last, /* qqq : cover */
+
+  _filterAct0 : _.long._filterAct0,
+  _filterAct1 : _.long._filterAct1,
+  filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
+  filterWithoutEscape : _.long.filterWithoutEscape,
+  filterWithEscapeLeft : _.long.filterWithEscapeLeft,
+  filterWithEscapeRight : _.long.filterWithEscapeRight,
+  filterWithEscape : _.long.filterWithEscape,
+  filter : _.long.filter,
+
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1 : _.long._mapAct1,
+  mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
+  mapWithoutEscape : _.long.mapWithoutEscape,
+  mapWithEscapeLeft : _.long.mapWithEscapeLeft,
+  mapWithEscapeRight : _.long.mapWithEscapeRight,
+  mapWithEscape : _.long.mapWithEscape,
+  map : _.long.map,
 
 }
 

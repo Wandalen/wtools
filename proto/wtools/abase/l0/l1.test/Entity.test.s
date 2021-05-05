@@ -178,22 +178,22 @@ function makeEmpty( test )
   test.identical( got, new Set( [] ) );
 
   test.case = 'empty HashMap';
-  var got = _.entity.makeEmpty( new Map( [] ) );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeEmpty( new HashMap( [] ) );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'HashMap';
-  var got = _.entity.makeEmpty( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeEmpty( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'BufferRaw, has constructor';
   var got = _.entity.makeEmpty( new BufferRaw() );
   test.identical( got, new BufferRaw( [] ) );
 
-  test.case = 'constructor';
-  function func(){ return 0 };
-  var got = _.entity.makeEmpty( func );
-  var exp = func;
-  test.equivalent( got(), exp() );
+  // test.case = 'constructor';
+  // function func(){ return 0 };
+  // var got = _.entity.makeEmpty( func );
+  // var exp = func;
+  // test.equivalent( got(), exp() );
 
   test.case = 'constructor';
   function Constr(){ this.x = 1; return this };
@@ -395,22 +395,22 @@ function makeEmptyLongDescriptor( test )
     test.identical( got, new Set( [] ) );
 
     test.case = 'empty HashMap';
-    var got = long.entity.makeEmpty( new Map( [] ) );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeEmpty( new HashMap( [] ) );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'HashMap';
-    var got = long.entity.makeEmpty( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeEmpty( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'BufferRaw, has constructor';
     var got = long.entity.makeEmpty( new BufferRaw() );
     test.identical( got, new BufferRaw( [] ) );
 
-    test.case = 'constructor';
-    function func(){ return 0 };
-    var got = long.entity.makeEmpty( func );
-    var exp = func;
-    test.equivalent( got(), exp() );
+    // test.case = 'constructor';
+    // function func(){ return 0 };
+    // var got = long.entity.makeEmpty( func );
+    // var exp = func;
+    // test.equivalent( got(), exp() );
 
     test.case = 'constructor';
     function Constr(){ this.x = 1; return this };
@@ -639,30 +639,30 @@ function makeUndefined( test )
   test.identical( got, new Set( [] ) );
 
   test.case = 'empty HashMap';
-  var got = _.entity.makeUndefined( new Map( [] ) );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeUndefined( new HashMap( [] ) );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'empty HashMap, length';
-  var got = _.entity.makeUndefined( new Map( [] ), 4 );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeUndefined( new HashMap( [] ), 4 );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'HashMap';
-  var got = _.entity.makeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeUndefined( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'HashMap, length';
-  var got = _.entity.makeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-  test.identical( got, new Map( [] ) );
+  var got = _.entity.makeUndefined( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.identical( got, new HashMap( [] ) );
 
   test.case = 'BufferRaw, has constructor';
   var got = _.entity.makeUndefined( new BufferRaw() );
   test.identical( got, new BufferRaw( [] ) );
 
-  test.case = 'constructor';
-  function func(){ return 0 };
-  var got = _.entity.makeUndefined( func );
-  var exp = func;
-  test.equivalent( got(), exp() );
+  // test.case = 'constructor';
+  // function func(){ return 0 };
+  // var got = _.entity.makeUndefined( func );
+  // var exp = func;
+  // test.equivalent( got(), exp() );
 
   test.case = 'constructor';
   function Constr(){ this.x = 1; return this };
@@ -930,30 +930,30 @@ function makeUndefinedLongDescriptor( test )
     test.identical( got, new Set( [] ) );
 
     test.case = 'empty HashMap';
-    var got = long.entity.makeUndefined( new Map( [] ) );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeUndefined( new HashMap( [] ) );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'empty HashMap, length';
-    var got = long.entity.makeUndefined( new Map( [] ), 4 );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeUndefined( new HashMap( [] ), 4 );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'HashMap';
-    var got = long.entity.makeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeUndefined( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'HashMap, length';
-    var got = long.entity.makeUndefined( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
-    test.identical( got, new Map( [] ) );
+    var got = long.entity.makeUndefined( new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+    test.identical( got, new HashMap( [] ) );
 
     test.case = 'BufferRaw, has constructor';
     var got = long.entity.makeUndefined( new BufferRaw() );
     test.identical( got, new BufferRaw( [] ) );
 
-    test.case = 'constructor';
-    function func(){ return 0 };
-    var got = long.entity.makeUndefined( func );
-    var exp = func;
-    test.equivalent( got(), exp() );
+    // test.case = 'constructor';
+    // function func(){ return 0 };
+    // var got = long.entity.makeUndefined( func );
+    // var exp = func;
+    // test.equivalent( got(), exp() );
 
     test.case = 'constructor';
     function Constr(){ this.x = 1; return this };
@@ -1154,26 +1154,26 @@ function make( test )
   test.true( got !== src );
 
   test.case = 'empty HashMap';
-  var src = new Map( [] );
+  var src = new HashMap( [] );
   var got = _.entity.make( src );
-  test.identical( got, new Map( [] ) );
+  test.identical( got, new HashMap( [] ) );
   test.true( got !== src );
 
   test.case = 'HashMap';
-  var src = new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] );
+  var src = new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] );
   var got = _.entity.make( src );
-  test.identical( got, new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.identical( got, new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
   test.true( got !== src );
 
   test.case = 'BufferRaw, has constructor';
   var got = _.entity.make( new BufferRaw() );
   test.identical( got, new BufferRaw( [] ) );
 
-  test.case = 'constructor';
-  function func(){ return 0 };
-  var got = _.entity.make( func );
-  var exp = func;
-  test.equivalent( got(), exp() );
+  // test.case = 'constructor';
+  // function func(){ return 0 };
+  // var got = _.entity.make( func );
+  // var exp = func;
+  // test.equivalent( got(), exp() );
 
   test.case = 'constructor';
   function Constr(){ this.x = 1; return this };
@@ -1426,26 +1426,26 @@ function makeLongDescriptor( test )
     test.true( got !== src );
 
     test.case = 'empty HashMap';
-    var src = new Map( [] );
+    var src = new HashMap( [] );
     var got = long.entity.make( src );
-    test.identical( got, new Map( [] ) );
+    test.identical( got, new HashMap( [] ) );
     test.true( got !== src );
 
     test.case = 'HashMap';
-    var src = new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] );
+    var src = new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] );
     var got = long.entity.make( src );
-    test.identical( got, new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+    test.identical( got, new HashMap( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
     test.true( got !== src );
 
     test.case = 'BufferRaw, has constructor';
     var got = long.entity.make( new BufferRaw() );
     test.identical( got, new BufferRaw( [] ) );
 
-    test.case = 'constructor';
-    function func(){ return 0 };
-    var got = long.entity.make( func );
-    var exp = func;
-    test.equivalent( got(), exp() );
+    // test.case = 'constructor';
+    // function func(){ return 0 };
+    // var got = long.entity.make( func );
+    // var exp = func;
+    // test.equivalent( got(), exp() );
 
     test.case = 'constructor';
     function Constr(){ this.x = 1; return this };

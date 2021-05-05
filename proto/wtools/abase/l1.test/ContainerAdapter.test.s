@@ -73,7 +73,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'src - Map';
-  var got = _.containerAdapter.is( new Map() );
+  var got = _.containerAdapter.is( new HashMap() );
   test.identical( got, false );
 
   test.case = 'src - Set';
@@ -499,8 +499,8 @@ function toOriginal( test )
   test.identical( got, exp );
 
   test.case = 'from Map';
-  var src = new Map( [ [ 1, 2 ] ] );
-  var exp = new Map( [ [ 1, 2 ] ] );
+  var src = new HashMap( [ [ 1, 2 ] ] );
+  var exp = new HashMap( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginal( src );
   test.true( got === src );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -718,15 +718,15 @@ function toOriginals( test )
   test.identical( got, exp );
 
   test.case = 'from Map';
-  var src = new Map( [ [ 1, 2 ] ] );
-  var exp = new Map( [ [ 1, 2 ] ] );
+  var src = new HashMap( [ [ 1, 2 ] ] );
+  var exp = new HashMap( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginals( src );
   test.true( got === src );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
 
   test.case = 'dsts - null, from Map';
-  var src = new Map( [ [ 1, 2 ] ] );
-  var exp = new Map( [ [ 1, 2 ] ] );
+  var src = new HashMap( [ [ 1, 2 ] ] );
+  var exp = new HashMap( [ [ 1, 2 ] ] );
   var got = _.containerAdapter.toOriginals( null, src );
   test.true( got !== src );
   test.identical( [ ... got[ 0 ].entries() ], [ ... exp.entries() ] );
@@ -1530,7 +1530,7 @@ function same( test )
 
   test.case = 'src - Map';
   var container = _.containerAdapter.make( [] );
-  var got = container.same( new Map( [ [ 1, 2 ] ] ) );
+  var got = container.same( new HashMap( [ [ 1, 2 ] ] ) );
   test.identical( got, false );
 
   test.case = 'src - map';
@@ -1648,7 +1648,7 @@ function same( test )
 
   test.case = 'src - Map';
   var container = _.containerAdapter.make( new Set( [] ) );
-  var got = container.same( new Map( [ [ 1, 2 ] ] ) );
+  var got = container.same( new HashMap( [ [ 1, 2 ] ] ) );
   test.identical( got, false );
 
   test.case = 'src - map';

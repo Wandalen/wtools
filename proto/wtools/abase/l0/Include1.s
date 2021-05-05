@@ -15,8 +15,9 @@ if( typeof module !== 'undefined' )
   require( './l1/1Diagnostic.s' );
   require( './l1/2Long.s' );
   require( './l1/2Props.s' );
+  require( './l1/3ArgumentsArray.s' );
   require( './l1/3Blank.s' );
-  require( './l1/ArgumentsArray.s' );
+  require( './l1/3BufferTyped.s' );
   require( './l1/Array.s' );
   require( './l1/ArraySet.s' );
   require( './l1/Auxiliary.s' );
@@ -27,7 +28,6 @@ if( typeof module !== 'undefined' )
   require( './l1/BufferNode.s' );
   require( './l1/BufferRaw.s' );
   require( './l1/BuffersTyped.s' );
-  require( './l1/BufferTyped.s' );
   require( './l1/BufferView.s' );
   require( './l1/Class.s' );
   require( './l1/Constructible.s' );

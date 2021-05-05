@@ -426,7 +426,7 @@ function ready( test )
 const Proto =
 {
 
-  name : 'Tools.Process',
+  name : 'Tools.Process.l0.l9',
   silencing : 1,
   enabled : 1,
 

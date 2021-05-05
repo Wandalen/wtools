@@ -80,7 +80,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.bigInt.is( new Map( [] ) );
+  var got = _.bigInt.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -124,33 +124,33 @@ function is( test )
 
 //
 
-function exportStringShallowCode( test )
+function exportStringCodeShallow( test )
 {
   test.case = '1n';
   var src = 1n;
   var expected = '1n';
-  var got = _.bigInt.exportStringShallowCode( src );
+  var got = _.bigInt.exportStringCodeShallow( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = '1000n';
   var src = 1000n;
   var expected = '1000n';
-  var got = _.bigInt.exportStringShallowCode( src );
+  var got = _.bigInt.exportStringCodeShallow( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = 'BigInt( 5 )';
   var src = BigInt( 5 );
   var expected = '5n'
-  var got = _.bigInt.exportStringShallowCode( src );
+  var got = _.bigInt.exportStringCodeShallow( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
   test.case = 'BigInt( \'5\' )';
   var src = BigInt( '5' );
   var expected = '5n'
-  var got = _.bigInt.exportStringShallowCode( src );
+  var got = _.bigInt.exportStringCodeShallow( src );
   test.identical( got, expected );
   test.identical( strToBigInt( got ), src );
 
@@ -158,10 +158,10 @@ function exportStringShallowCode( test )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode() );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringCodeShallow() );
 
   test.case = 'not a bigInt';
-  test.shouldThrowErrorSync( () => _.bigInt.exportStringShallowCode( 1 ) );
+  test.shouldThrowErrorSync( () => _.bigInt.exportStringCodeShallow( 1 ) );
 
   /* - */
 
@@ -185,7 +185,7 @@ const Proto =
   tests :
   {
     is,
-    exportStringShallowCode
+    exportStringCodeShallow
   }
 
 }

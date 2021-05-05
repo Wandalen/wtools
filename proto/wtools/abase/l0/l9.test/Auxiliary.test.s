@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-/* qqq : for Yevhen : extend please */
+/* qqq : for junior : extend please */
 function dichotomy( test )
 {
 

@@ -76,8 +76,8 @@ function constructorIsBuffer( test )
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check U8ClampedX constructor';
-  var got = _.constructorIsBuffer( U8ClampedX );
+  test.case = 'check U8xClamped constructor';
+  var got = _.constructorIsBuffer( U8xClamped );
   var expected = true;
   test.identical( got, expected );
 

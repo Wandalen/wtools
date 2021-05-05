@@ -10,13 +10,11 @@ const _ = _global_.wTools;
 //
 // --
 
-/* qqq2 : for Yevhen : bad! | aaa : Fixed. */
 function _identicalShallow( src1, src2 )
 {
 
   if( Object.prototype.toString.call( src1 ) !== Object.prototype.toString.call( src2 ) )
   return false;
-
   if( !_.countable.is( src1 ) )
   return false;
   if( !_.countable.is( src2 ) )
@@ -43,27 +41,13 @@ function _identicalShallow( src1, src2 )
 
     return true;
   }
-}
 
-//
-
-function identicalShallow( src1, src2, o )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-
-  if( !this.like( src1 ) )
-  return false;
-  if( !this.like( src2 ) )
-  return false;
-  return this._identicalShallow( src1, src2 );
 }
 
 //
 
 function _equivalentShallow( src1, src2 )
 {
-
   let result = true;
 
   if( _.longIs( src1 ) && _.longIs( src2 ) )
@@ -110,30 +94,15 @@ function _equivalentShallow( src1, src2 )
   }
 }
 
-//
-
-function equivalentShallow( src1, src2 )
-{
-  _.assert( arguments.length === 2 );
-  if( !this.like( src1 ) )
-  return false;
-  if( !this.like( src2 ) )
-  return false;
-  return this._equivalentShallow( src1, src2 );
-}
-
 // --
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src )
+function _exportStringDiagnosticShallow( src, o )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.countable.like( src ) );
-
-  if( _.vector.is( src ) )
-  return _.vector.exportStringShallowDiagnostic( src );
-  return `{- ${_.entity.strType( src )} with ${_.countable.lengthOf( src )} elements -}`;
+  if( _.unroll.is( src ) )
+  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
+  return `{- ${_.entity.strType( src )} with ${this._lengthOf( src )} elements -}`;
 }
 
 // --
@@ -147,28 +116,11 @@ function _lengthOf( src )
 
 //
 
-function lengthOf( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.like( src ) );
-  return this._lengthOf( src );
-}
-
-//
-
 function _hasKey( src, key )
 {
   if( key < 0 )
   return false;
   return key < this._lengthOf( src );
-}
-
-//
-
-function hasKey( src, key )
-{
-  _.assert( this.like( src ) );
-  return this._hasKey( src, key );
 }
 
 //
@@ -182,14 +134,6 @@ function _hasCardinal( src, cardinal )
 
 //
 
-function hasCardinal( src, cardinal )
-{
-  _.assert( this.like( src ) );
-  return this._hasCardinal( src, cardinal );
-}
-
-//
-
 function _keyWithCardinal( src, cardinal )
 {
   if( cardinal < 0 || this._lengthOf( src ) <= cardinal )
@@ -199,17 +143,18 @@ function _keyWithCardinal( src, cardinal )
 
 //
 
-function keyWithCardinal( src, cardinal )
+function _cardinalWithKey( src, key )
 {
-  _.assert( this.like( src ) );
-  return this._keyWithCardinal( src, cardinal );
+  if( key < 0 || this._lengthOf( src ) <= key )
+  return -1;
+  return key;
 }
 
 //
 
 function _elementWithKey( src, key )
 {
-  if( _.numberIs( key ) )
+  if( _.number.is( key ) )
   {
     if( key < 0 )
     return [ undefined, key, false ];
@@ -221,20 +166,8 @@ function _elementWithKey( src, key )
   }
   else
   {
-    if( _.props.has( src, key ) )
-    return [ src[ key ], key, true ];
-    else
     return [ undefined, key, false ];
   }
-}
-
-//
-
-function elementWithKey( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKey( src, key );
 }
 
 //
@@ -248,18 +181,9 @@ function _elementWithImplicit( src, key )
 
 //
 
-function elementWithImplicit( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithImplicit( src, key );
-}
-
-//
-
 function _elementWithCardinal( src, cardinal )
 {
-  if( !_.numberIs( cardinal ) || cardinal < 0 )
+  if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
   const src2 = [ ... src ];
   if( src2.length <= cardinal )
@@ -270,66 +194,60 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function elementWithCardinal( src, cardinal )
+function _elementWithKeySet( dst, key, val )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinal( src, cardinal );
-}
+  if( !_.number.is( key ) || key < 0 )
+  return [ undefined, key, false ];
+  const dst2 = [ ... dst ];
+  if( dst2.length <= key )
+  return [ undefined, key, false ];
 
-//
-
-function _elementWithKeySet( src, key, val )
-{
-  if( !_.numberIs( cardinal ) || cardinal < 0 )
-  return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
-  return [ undefined, cardinal, false ];
-
-  let elementWithKeySet = _.class.methodElementWithKeySetOf( src );
+  let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
-  return elementWithKeySet.call( src, key, val );
+  return elementWithKeySet.call( dst, key, val );
 
-  let elementSet = _.class.methodElementSetOf( src );
+  let elementSet = _.class.methodElementSetOf( dst );
   if( elementSet )
-  return [ elementSet.call( src, key, val ), key, true ];
+  return [ elementSet.call( dst, key, val ), key, true ];
 
   _.assert( 0, 'Countable does not have implemented neither method "elementWithKeySet" nor method "eSet"' );
 }
 
 //
 
-function elementWithKeySet( src, key, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeySet( src, key, val );
-}
-
-//
-
-function _elementWithCardinalSet( src, cardinal, val )
-{
-  if( !_.numberIs( cardinal ) || cardinal < 0 )
+  if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
+  const dst2 = [ ... dst ];
+  if( dst2.length <= cardinal )
   return [ undefined, cardinal, false ];
 
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] )
-  this._elementWithKeySet( src, was[ 1 ], val );
+  this._elementWithKeySet( dst, was[ 1 ], val );
   return [ undefined, cardinal, false ];
 }
 
 //
 
-function elementWithCardinalSet( src, cardinal, val )
+function _elementWithKeyDel( dst, key )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalSet( src, cardinal, val );
+  _.assert( 0, 'Countable does not have implemented method "_elementWithKeyDel"' );
+}
+
+//
+
+function _elementWithCardinalDel( dst, cardinal )
+{
+  _.assert( 0, 'Countable does not have implemented method "_elementWithCardinalDel"' );
+}
+
+//
+
+function _empty( dst )
+{
+  _.assert( 0, 'Countable does not have implemented method "_empty"' );
 }
 
 //
@@ -339,18 +257,9 @@ function _eachLeft( src, onEach )
   let k = 0;
   for( let val of src )
   {
-    onEach( src[ s ], k, k, src );
+    onEach( val, k, k, src );
     k += 1;
   }
-}
-
-//
-
-function eachLeft( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._eachLeft( src, onEach );
 }
 
 //
@@ -363,15 +272,6 @@ function _eachRight( src, onEach )
     let val = src2[ k ];
     onEach( val, k, k, src );
   }
-}
-
-//
-
-function eachRight( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._eachRight( src, onEach );
 }
 
 //
@@ -397,15 +297,6 @@ function _whileLeft( src, onEach )
 
 //
 
-function whileLeft( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._whileLeft( src, onEach );
-}
-
-//
-
 function _whileRight( src, onEach )
 {
   let src2 = [ ... src ];
@@ -425,11 +316,28 @@ function _whileRight( src, onEach )
 
 //
 
-function whileRight( src, onEach )
+function _filterAct1()
 {
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  this._whileRight( src, onEach );
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._filterAct1( ... arguments );
+  return _.props._filterAct1.call( self, ... arguments );
+}
+
+//
+
+function _mapAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._mapAct1( ... arguments );
+  return _.props._mapAct1.call( self, ... arguments );
 }
 
 // --
@@ -450,72 +358,75 @@ var CountableExtension =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
   _equivalentShallow,
-  equivalentShallow,
-  equivalent : equivalentShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
+  exportString : _.props.exportString,
 
-  // container interface
+  // inspector
 
   _lengthOf,
-  lengthOf, /* qqq : cover */
-
+  lengthOf : _.props.lengthOf, /* qqq : cover */
   _hasKey,
-  hasKey, /* qqq : cover */
+  hasKey : _.props.hasKey, /* qqq : cover */
   _hasCardinal,
-  hasCardinal, /* qqq : cover */
+  hasCardinal : _.props.hasCardinal, /* qqq : cover */
   _keyWithCardinal,
-  keyWithCardinal, /* qqq : cover */
+  keyWithCardinal : _.props.keyWithCardinal, /* qqq : cover */
+  _cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
+
+  // elementor
 
   _elementGet : _elementWithKey,
-  elementGet : elementWithKey, /* qqq : cover */
+  elementGet : _.props.elementGet, /* qqq : cover */
   _elementWithKey,
-  elementWithKey, /* qqq : cover */
-  _elementWithImplicit,
-  elementWithImplicit,  /* qqq : cover */
+  elementWithKey : _.props.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.props._elementWithImplicit,
+  elementWithImplicit : _.props.elementWithImplicit,  /* qqq : cover */
   _elementWithCardinal,
-  elementWithCardinal,  /* qqq : cover */
+  elementWithCardinal : _.props.elementWithCardinal,  /* qqq : cover */
 
   _elementSet : _elementWithKeySet,
-  elementSet : elementWithKeySet, /* qqq : cover */
+  elementSet : _.props.elementSet, /* qqq : cover */
   _elementWithKeySet,
-  elementWithKeySet, /* qqq : cover */
+  elementWithKeySet : _.props.elementWithKeySet, /* qqq : cover */
   _elementWithCardinalSet,
-  elementWithCardinalSet,  /* qqq : cover */
+  elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
 
-  /* xxx : implement own routines */
-  _elementDel : _.blank._elementDel,
-  elementDel : _.blank.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.blank._elementWithKeyDel,
-  elementWithKeyDel : _.blank.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.blank._elementWithCardinalDel,
-  elementWithCardinalDel : _.blank.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.blank._empty,
-  empty : _.blank.empty,  /* qqq : cover */
+  _elementDel : _elementWithKeyDel,
+  elementDel : _.props.elementDel, /* qqq : cover */
+  _elementWithKeyDel,
+  elementWithKeyDel : _.props.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel,
+  elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
+  _empty,
+  empty : _.props.empty, /* qqq : for junior : cover */
+
+  // iterator
 
   _each : _eachLeft,
-  each : eachLeft, /* qqq : cover */
+  each : _.props.each, /* qqq : cover */
   _eachLeft,
-  eachLeft, /* qqq : cover */
+  eachLeft : _.props.eachLeft, /* qqq : cover */
   _eachRight,
-  eachRight, /* qqq : cover */
+  eachRight : _.props.eachRight, /* qqq : cover */
 
   _while : _whileLeft,
-  while : whileLeft, /* qqq : cover */
+  while : _.props.while, /* qqq : cover */
   _whileLeft,
-  whileLeft, /* qqq : cover */
+  whileLeft : _.props.whileLeft, /* qqq : cover */
   _whileRight,
-  whileRight, /* qqq : cover */
+  whileRight : _.props.whileRight, /* qqq : cover */
 
   _aptLeft : _.props._aptLeft,
   aptLeft : _.props.aptLeft, /* qqq : cover */
@@ -523,6 +434,26 @@ var CountableExtension =
   _aptRight : _.props._aptRight, /* qqq : cover */
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
+
+  _filterAct0 : _.props._filterAct0,
+  _filterAct1,
+  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  filterWithoutEscape : _.props.filterWithoutEscape,
+  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  filterWithEscapeRight : _.props.filterWithEscapeRight,
+  filterWithEscape : _.props.filterWithEscape,
+  filter : _.props.filter,
+
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1,
+  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  mapWithoutEscape : _.props.mapWithoutEscape,
+  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  mapWithEscapeRight : _.props.mapWithEscapeRight,
+  mapWithEscape : _.props.mapWithEscape,
+  map : _.props.map,
 
 }
 

@@ -93,7 +93,7 @@ function intervalIs( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.intervalIs( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.intervalIs( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -443,7 +443,7 @@ function is( test )
     test.identical( got, expected );
 
     test.case = 'Map';
-    var got = _[ namespace ].is( new Map( [ [ 1, 2 ] ] ) );
+    var got = _[ namespace ].is( new HashMap( [ [ 1, 2 ] ] ) );
     var expected = false;
     test.identical( got, expected );
 
@@ -1303,7 +1303,7 @@ function firstGet( test )
 
     test.case = 'wrong type of range';
     test.shouldThrowErrorSync( () => _[ namespace ].firstGet( new Set( [ 1, 2 ] ) ) );
-    test.shouldThrowErrorSync( () => _[ namespace ].firstGet( new Map( [ [ 1, 2 ] ] ) ) );
+    test.shouldThrowErrorSync( () => _[ namespace ].firstGet( new HashMap( [ [ 1, 2 ] ] ) ) );
   }
 }
 
@@ -1437,7 +1437,7 @@ function cintervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.cinterval.isEmpty( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.cinterval.isEmpty( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -1698,7 +1698,7 @@ function cintervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.cinterval.isPopulated( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.cinterval.isPopulated( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -3488,7 +3488,7 @@ function cintervalLastGet( test )
 
   test.case = 'wrong type of cinterval';
   test.shouldThrowErrorSync( () => _.cinterval.lastGet( new Set( [ 1, 2 ] ) ) );
-  test.shouldThrowErrorSync( () => _.cinterval.lastGet( new Map( [ [ 1, 2 ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.cinterval.lastGet( new HashMap( [ [ 1, 2 ] ] ) ) );
 }
 
 // --
@@ -3573,7 +3573,7 @@ function lintervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.linterval.isEmpty( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.linterval.isEmpty( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -3834,7 +3834,7 @@ function lintervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.linterval.isPopulated( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.linterval.isPopulated( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -5699,7 +5699,7 @@ function lintervalLastGet( test )
 
   test.case = 'wrong type of linterval';
   test.shouldThrowErrorSync( () => _.linterval.lastGet( new Set( [ 1, 2 ] ) ) );
-  test.shouldThrowErrorSync( () => _.linterval.lastGet( new Map( [ [ 1, 2 ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.linterval.lastGet( new HashMap( [ [ 1, 2 ] ] ) ) );
 }
 
 // --
@@ -5784,7 +5784,7 @@ function ointervalIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.ointerval.isEmpty( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.ointerval.isEmpty( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -6025,7 +6025,7 @@ function ointervalIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.ointerval.isPopulated( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.ointerval.isPopulated( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -7770,7 +7770,7 @@ function ointervalLastGet( test )
 
   test.case = 'wrong type of ointerval';
   test.shouldThrowErrorSync( () => _.ointerval.lastGet( new Set( [ 1, 2 ] ) ) );
-  test.shouldThrowErrorSync( () => _.ointerval.lastGet( new Map( [ [ 1, 2 ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.ointerval.lastGet( new HashMap( [ [ 1, 2 ] ] ) ) );
 }
 
 // --

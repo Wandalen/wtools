@@ -497,7 +497,7 @@ function make( test )
   test.true( got !== src );
 
   test.case = 'src - empty Map';
-  var src = new Map([]);
+  var src = new HashMap([]);
   var got = _.map.make( src );
   var expected = {};
   test.identical( got, expected );
@@ -505,7 +505,7 @@ function make( test )
   test.true( got !== src );
 
   test.case = 'src - pure map';
-  var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  var src = new HashMap( [ [ 'a', 1 ], [ 2, 2 ] ] );
   var got = _.map.make( src );
   var expected = { '2' : 2, a : 1 };
   test.identical( got, expected );
@@ -591,7 +591,7 @@ makeBugWithArray.description =
 // container
 // --
 
-/* qqq : for Yevhen : rewrite tests, please */
+/* qqq : for junior : rewrite tests, please */
 function keys( test )
 {
 
@@ -1458,17 +1458,17 @@ const Proto =
 
     // container
 
-    keys, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnKeys, /* qqq : for Yevhen : rewrite tests, please */
-    allKeys, /* qqq : for Yevhen : rewrite tests, please */
+    keys, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnKeys, /* qqq : for junior : rewrite tests, please */
+    allKeys, /* qqq : for junior : rewrite tests, please */
 
-    vals, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnVals, /* qqq : for Yevhen : rewrite tests, please */
-    allVals, /* qqq : for Yevhen : rewrite tests, please */
+    vals, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnVals, /* qqq : for junior : rewrite tests, please */
+    allVals, /* qqq : for junior : rewrite tests, please */
 
-    pairs, /* qqq : for Yevhen : rewrite tests, please */
-    // onlyOwnPairs, /* qqq : for Yevhen : rewrite tests, please */
-    allPairs, /* qqq : for Yevhen : rewrite tests, please */
+    pairs, /* qqq : for junior : rewrite tests, please */
+    // onlyOwnPairs, /* qqq : for junior : rewrite tests, please */
+    allPairs, /* qqq : for junior : rewrite tests, please */
 
   }
 

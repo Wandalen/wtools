@@ -83,7 +83,7 @@ function strTypeSecondary( src )
  * @namespace Tools
  */
 
-/* qqq for Yevhen : jsdoc */
+/* qqq for junior : jsdoc */
 /* xxx : optimize later */
 /* xxx : move to namesapce type? */
 function strTypeWithTraits( src )
@@ -136,7 +136,7 @@ function strTypeWithTraits( src )
 
 //
 
-/* qqq for Yevhen : jsdoc */
+/* qqq for junior : jsdoc */
 function strTypeWithoutTraits( src )
 {
 
@@ -178,6 +178,7 @@ function strTypeWithoutTraits( src )
 function namespaceForContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
+
   if( src === undefined )
   return _.blank;
   if( _.primitive.is( src ) )
@@ -190,16 +191,14 @@ function namespaceForContainer( src ) /* qqq for junior : cover please */
   return _.long;
   if( _.buffer.like( src ) )
   return _.buffer;
-  if( _.countableIs( src ) )
-  return _.countable;
   if( _.mapIs( src ) )
   return _.map;
   if( _.auxIs( src ) )
   return _.aux;
-  if( _.object.isBasic( src ) )
-  return _.props;
+  if( _.object.is( src ) )
+  return _.object;
 
-  return _.itself;
+  return _.props;
 }
 
 // --
@@ -213,7 +212,7 @@ let TranslatedTypeMap =
   'Uint32Array' : 'U32x',
   'Uint16Array' : 'U16x',
   'Uint8Array' : 'U8x',
-  'Uint8ClampedArray' : 'U8ClampedX',
+  'Uint8ClampedArray' : 'U8xClamped',
 
   'BigInt64Array' : 'I64x',
   'Int32Array' : 'I32x',
@@ -240,7 +239,7 @@ let StandardTypeSet = new Set
   'U32x',
   'U16x',
   'U8x',
-  'U8ClampedX',
+  'U8xClamped',
   'I64x',
   'I32x',
   'I16x',

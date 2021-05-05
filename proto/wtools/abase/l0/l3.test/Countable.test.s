@@ -55,27 +55,33 @@ function countablesAreIdenticalShallow( test )
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
+  test.case = `strange map`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, false );
+
+  test.case = `object countable`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'vector & vectorLike & true';
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'vector & vectorLike & false';
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', 10 ], countable : 1, length : 2 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, false );
+
   test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var got = _.countable.identicalShallow( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector & vectorLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
-  var got = _.countable.identicalShallow( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'countable & countableLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
-  var got = _.countable.identicalShallow( src1, src2 );
-  test.identical( got, true );
-
-  test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 1 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 1 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
@@ -150,26 +156,26 @@ function countablesAreIdenticalShallow( test )
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector, not same array`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1, length : 2 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '11' ], countable : 1, length : 2 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '11' ], countable : 1 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
@@ -177,50 +183,50 @@ function countablesAreIdenticalShallow( test )
 
   /* - */
 
-  function _iterate()
-  {
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
-
 
 function countablesAreEquivalentShallow( test )
 {
@@ -255,29 +261,28 @@ function countablesAreEquivalentShallow( test )
   test.identical( got, true );
 
   test.case = `object countable - non empty, non-vector, not same array`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'vector & vectorLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = 'countable & countableLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
   test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '2', '3' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
-
 
   test.close( 'identical' );
 
@@ -350,26 +355,26 @@ function countablesAreEquivalentShallow( test )
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector, not same array`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'vector & vectorLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1, new : 0, length : 2 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, new : 0, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '11' ], countable : 1, new : 0, length : 2 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = 'countable & countableLike';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
-  var src2 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '11' ], withIterator : 1, new : 0 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '11' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var src2 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '4' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
@@ -380,205 +385,180 @@ function countablesAreEquivalentShallow( test )
   test.open( 'not identical, equivalent' );
 
   test.case = 'set and array';
-  var src1 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src1 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'buffer typed and array';
   var src1 = new F32x([ 1, 2, 3 ])
   var src2 = [ 1, 2, 3 ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'vectorLike and array';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'countable and array';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = 'countable made and array';
-  var src1 = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '10' ], withIterator : 1, new : 0 } );
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
 
   test.case = `vector and array`;
-  var src1 = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = `argumentsArray and array`;
   var src1 = _.argumentsArray.make([ '1', '10' ]);
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.case = `argumentsArray and array`;
   var src1 = _.argumentsArray.make([ '1', '10' ]);
   var src2 = [ '1', '10' ];
   test.identical( _.countable.identicalShallow( src1, src2 ), false );
+  test.identical( _.countable.identicalShallow( src2, src1 ), false );
   test.identical( _.countable.equivalentShallow( src1, src2 ), true );
+  test.identical( _.countable.equivalentShallow( src2, src1 ), true );
 
   test.close( 'not identical, equivalent' );
 
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
   test.case = 'array empty';
   var src = [];
   var expected = '{- Array with 0 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'array non-empty';
   var src = [ 1, 2, 3 ];
   var expected = '{- Array with 3 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'unroll empty';
   var src = _.unroll.make([]);
   var expected = '{- Array.unroll with 0 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'unroll non-empty';
   var src = _.unroll.make([ 1, 2, 3 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0, length : 2 });
-  var expected = '{- countableConstructor.countable with 2 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var expected = '{- countableConstructorPolluted.countable with 2 elements -}';
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, new : 0 });
-  var expected = '{- countableConstructor.countable.constructible with 2 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var expected = '{- countableConstructorPolluted.countable.constructible with 2 elements -}';
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1, new : 0 } );
-  var expected = '{- Object.countable with 0 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [], countable : 1 });
+  var expected = '{- countableConstructorPolluted.countable.constructible with 0 elements -}';
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1, new : 0 } );
-  var expected = '{- Object.countable with 3 elements -}';
-  var got = _.countable.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '2', '3' ], countable : 1 });
+  var expected = '{- countableConstructorPolluted.countable.constructible with 3 elements -}';
+  var got = _.countable.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( {} ) );
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], new : 0 });
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( src ) );
 
   /* - */
 
-  function _iterate()
-  {
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.props.extend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
 
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
@@ -589,7 +569,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'left';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptLeft( src, function( val )
   {
@@ -613,7 +593,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'middle';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptLeft( src, function( val )
   {
@@ -643,7 +623,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'right';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptLeft( src, function( val )
   {
@@ -679,7 +659,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'no';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptLeft( src, function( val )
   {
@@ -715,7 +695,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'empty';
-  var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [], countable : 1 });
   var ops = [];
   var got = _.countable.aptLeft( src, function( val )
   {
@@ -733,7 +713,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'without callback';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var exp = [ 1, 0, 0, true ];
   var got = _.countable.aptLeft( src );
   test.identical( got, exp );
@@ -744,7 +724,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'without callback, empty';
-  var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [], countable : 1 });
   var exp = [ undefined, -1, -1, false ];
   var got = _.countable.aptLeft( src );
   test.identical( got, exp );
@@ -764,7 +744,7 @@ function aptRight( test )
   /* */
 
   test.case = 'left';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptRight( src, function( val )
   {
@@ -800,7 +780,7 @@ function aptRight( test )
   /* */
 
   test.case = 'middle';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptRight( src, function( val )
   {
@@ -830,7 +810,7 @@ function aptRight( test )
   /* */
 
   test.case = 'right';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptRight( src, function( val )
   {
@@ -854,7 +834,7 @@ function aptRight( test )
   /* */
 
   test.case = 'no';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var ops = [];
   var got = _.countable.aptRight( src, function( val )
   {
@@ -890,7 +870,7 @@ function aptRight( test )
   /* */
 
   test.case = 'empty';
-  var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [], countable : 1 });
   var ops = [];
   var got = _.countable.aptRight( src, function( val )
   {
@@ -908,7 +888,7 @@ function aptRight( test )
   /* */
 
   test.case = 'without callback';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var exp = [ 3, 2, 2, true ];
   var got = _.countable.aptRight( src );
   test.identical( got, exp );
@@ -919,7 +899,7 @@ function aptRight( test )
   /* */
 
   test.case = 'without callback, empty';
-  var src = __.diagnostic.objectMake({ elements : [], withIterator : 1, new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [], countable : 1 });
   var exp = [ undefined, -1, -1, false ];
   var got = _.countable.aptRight( src );
   test.identical( got, exp );
@@ -946,7 +926,7 @@ const Proto =
 
     countablesAreIdenticalShallow,
     countablesAreEquivalentShallow,
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
 
     aptLeft,
     aptRight,

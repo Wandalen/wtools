@@ -14,7 +14,7 @@ const constructorSymbol = Symbol.for( 'constructor' );
 
 function _identicalShallow( src1, src2 )
 {
-  if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
+  if( this.keys( src1 ).length !== this.keys( src2 ).length )
   return false;
 
   for( let s in src1 )
@@ -33,7 +33,6 @@ function identicalShallow( src1, src2, o )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-
   if( !this.like( src1 ) )
   return false;
   if( !this.like( src2 ) )
@@ -42,16 +41,54 @@ function identicalShallow( src1, src2, o )
   return this._identicalShallow( src1, src2 );
 }
 
+//
+
+function _equivalentShallow( src1, src2 )
+{
+  if( this.keys( src1 ).length !== this.keys( src2 ).length )
+  return false;
+
+  for( let s in src1 )
+  {
+    if( src1[ s ] !== src2[ s ] )
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+function equivalentShallow( src1, src2, o )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( !this.like( src1 ) )
+  return false;
+  if( !this.like( src2 ) )
+  return false;
+
+  return this._equivalentShallow( src1, src2 );
+}
+
 // --
 // exporter
 // --
 
-function exportStringShallowDiagnostic( src, o )
+function _exportStringDiagnosticShallow( src, o )
+{
+  return `{- ${_.entity.strType( src )} with ${this._lengthOf( src )} elements -}`;
+}
+
+//
+
+function exportStringDiagnosticShallow( src, o )
 {
   _.assert( this.like( src ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( o === undefined || _.object.isBasic( o ) );
-  return `{- ${_.entity.strType( src )} with ${this._lengthOf( src )} elements -}`;
+  return this._exportStringDiagnosticShallow( ... arguments );
 }
 
 // --
@@ -106,7 +143,8 @@ function onlyImplicitWithKey( src, key )
 function _onlyImplicitWithKeyTuple( container, key )
 {
   let r = _.props._onlyImplicitWithKey( container, key );
-  return [ r, key.val, r !== undefined ];
+  return [ r, key, r !== undefined ];
+  // return [ r, key.val, r !== undefined ];
 }
 
 //
@@ -123,13 +161,12 @@ function onlyImplicit( src )
   var prototype = Object.getPrototypeOf( src );
   if( prototype )
   result.set( _.props.implicit.prototype, prototype );
-  debugger;
 
   return result;
 }
 
 // --
-// container interface
+// inspector
 // --
 
 function _lengthOf( src )
@@ -205,6 +242,26 @@ function keyWithCardinal( src, cardinal )
 
 //
 
+function _cardinalWithKey( src, key )
+{
+  if( !( key in src ) )
+  return -1;
+  let keys = this.keys( src );
+  return keys.indexOf( key );
+}
+
+//
+
+function cardinalWithKey( src, key )
+{
+  _.assert( this.like( src ) );
+  return this._cardinalWithKey( src, key );
+}
+
+// --
+// elementor
+// --
+
 function _elementWithKey( src, key )
 {
   if( _.strIs( key ) )
@@ -253,8 +310,7 @@ function _elementWithCardinal( src, cardinal )
 {
   if( !_.numberIs( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
-  // let keys = Object.keys( src );
-  let keys = _.aux.keys( src );
+  let keys = this.keys( src );
   let key2 = keys[ cardinal ];
   if( keys.length <= cardinal )
   return [ undefined, cardinal, false ];
@@ -272,29 +328,29 @@ function elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
-  src[ key ] = val;
+  dst[ key ] = val;
   return [ val, key, true ];
 }
 
 //
 
-function elementWithKeySet( src, key, val )
+function elementWithKeySet( dst, key, val )
 {
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeySet( src, key, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithKeySet( dst, key, val );
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] === true )
   {
-    src[ was[ 1 ] ] = val;
+    dst[ was[ 1 ] ] = val;
     return [ val, was[ 1 ], true ];
   }
   else
@@ -305,50 +361,50 @@ function _elementWithCardinalSet( src, cardinal, val )
 
 //
 
-function elementWithCardinalSet( src, cardinal, val )
+function elementWithCardinalSet( dst, cardinal, val )
 {
   _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalSet( src, cardinal, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithCardinalSet( dst, cardinal, val );
 }
 
 //
 
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
-  if( !this._hasKey( src, key ) ) /* xxx : implemenet */
+  if( !this._hasKey( dst, key ) )
   return false;
-  delete src[ key ];
+  delete dst[ key ];
   return true;
 }
 
 //
 
-function elementWithKeyDel( src, key )
+function elementWithKeyDel( dst, key )
 {
   _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeyDel( src, key );
+  _.assert( this.is( dst ) );
+  return this._elementWithKeyDel( dst, key );
 }
 
 //
 
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
-  let has = this._keyWithCardinal( src, cardinal );  /* xxx : implemenet */
+  let has = this._keyWithCardinal( dst, cardinal );
   if( !has[ 1 ] )
   return false;
-  delete src[ has[ 0 ] ];
+  delete dst[ has[ 0 ] ];
   return true;
 }
 
 //
 
-function elementWithCardinalDel( src, cardinal )
+function elementWithCardinalDel( dst, cardinal )
 {
   _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalDel( src, cardinal, val );
+  _.assert( this.is( dst ) );
+  return this._elementWithCardinalDel( dst, cardinal, val );
 }
 
 //
@@ -369,7 +425,9 @@ function empty( dst )
   return this._empty( dst );
 }
 
-//
+// --
+// iterator
+// --
 
 function _eachLeft( src, onEach )
 {
@@ -517,15 +575,6 @@ function aptLeft( src, onEach )
 
 //
 
-function first( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.is( src ) );
-  return this._aptLeft( src );
-}
-
-//
-
 function _aptRight( src, onEach )
 {
   let result, result2;
@@ -568,28 +617,19 @@ function aptRight( src, onEach )
 
 //
 
-function last( src )
+function _filterAct0()
 {
-  _.assert( arguments.length === 1 );
-  _.assert( this.is( src ) );
-  return this._aptRight( src );
-}
-
-//
-
-function _filter( dst, src, onEach, each, escape )
-{
-  let self = this;
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
+  const self = this;
+  const dst = arguments[ 0 ];
+  const src = arguments[ 1 ];
+  const onEach = arguments[ 2 ];
+  const each = arguments[ 3 ];
+  const escape = arguments[ 4 ];
 
   if( dst === src )
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     self._elementDel( dst, k );
@@ -599,9 +639,9 @@ function _filter( dst, src, onEach, each, escape )
     self._elementSet( dst, k, val3 );
   });
   else
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     return;
@@ -613,64 +653,86 @@ function _filter( dst, src, onEach, each, escape )
 
 //
 
-function filterWithoutEscapeLeft( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachLeft, ( val ) => val );
-}
-
-//
-
-function filterWithoutEscapeRight( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachRight, ( val ) => val );
-}
-
-//
-
-function filterWithEscapeLeft( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachLeft, ( val ) => _.escape.right( val ) );
-}
-
-//
-
-function filterWithEscapeRight( dst, src, onEach )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._filter( dst, src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
-}
-
-//
-
-function _map( dst, src, onEach, each, escape )
+function _filterAct1()
 {
   let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let isLeft = arguments[ 3 ];
+  let eachRoutineName = arguments[ 4 ];
+  let escape = arguments[ 5 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
   dst = this.makeUndefined( src );
   else if( dst === _.self )
   dst = src;
 
-  if( dst === src )
-  each.call( this, src, function( val, k, c, src2 )
+  if( Config.debug )
   {
-    let val2 = onEach( ... arguments );
+    _.assert( arguments.length === 6, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+  }
+
+  this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
+//
+
+function filterWithoutEscapeLeft( dst, src, onEach )
+{
+  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => val );
+}
+
+//
+
+function filterWithoutEscapeRight( dst, src, onEach )
+{
+  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => val );
+}
+
+//
+
+function filterWithEscapeLeft( dst, src, onEach )
+{
+  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
+}
+
+//
+
+function filterWithEscapeRight( dst, src, onEach )
+{
+  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
+}
+
+//
+
+function _mapAct0()
+{
+  const self = this;
+  const dst = arguments[ 0 ];
+  const src = arguments[ 1 ];
+  const onEach = arguments[ 2 ];
+  const each = arguments[ 3 ];
+  const escape = arguments[ 4 ];
+
+  if( dst === src )
+  each( src, function( val, k, c, src2 )
+  {
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val3 === val || val2 === undefined )
     return;
     self._elementSet( dst, k, val3 );
   });
   else
-  each.call( this, src, function( val, k, c, src2 )
+  each( src, function( val, k, c, src2 )
   {
-    let val2 = onEach( ... arguments );
+    let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
     if( val2 === undefined )
     self._elementSet( dst, k, val );
@@ -683,38 +745,60 @@ function _map( dst, src, onEach, each, escape )
 
 //
 
+function _mapAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let onEach = arguments[ 2 ];
+  let isLeft = arguments[ 3 ];
+  let eachRoutineName = arguments[ 4 ];
+  let escape = arguments[ 5 ];
+  let general = this.tools[ this.MostGeneralNamespaceName ];
+
+  if( dst === null )
+  dst = this.makeUndefined( src );
+  else if( dst === _.self )
+  dst = src;
+
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 6, `Expects 3 arguments` );
+    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+  }
+
+  this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
+
+  return dst;
+}
+
+//
+
 function mapWithoutEscapeLeft( dst, src, onEach )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachLeft, ( val ) => val );
+  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function mapWithoutEscapeRight( dst, src, onEach )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachRight, ( val ) => val );
+  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => val );
 }
 
 //
 
 function mapWithEscapeLeft( dst, src, onEach )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( dst, src, onEach, this.eachLeft, ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function mapWithEscapeRight( dst, src, onEach )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._map( src, onEach, this.eachRight, ( val ) => _.escape.right( val ) );
+  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 // --
@@ -738,27 +822,22 @@ _.props.implicit.constructor = new _.props.Implicit( constructorSymbol );
 let Extension =
 {
 
-  //
-
-  NamespaceName : 'props',
-
   // equaler
 
   _identicalShallow,
   identicalShallow,
   identical : identicalShallow,
-  _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  _equivalentShallow,
+  equivalentShallow,
+  equivalent : equivalentShallow,
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  exportString : exportStringDiagnosticShallow,
 
   // properties
 
@@ -768,17 +847,20 @@ let Extension =
   _onlyImplicitWithKeyTuple,
   onlyImplicit,
 
-  // container interface
+  // inspector
 
   _lengthOf,
   lengthOf, /* qqq : cover */
-
   _hasKey,
   hasKey, /* qqq : cover */
   _hasCardinal,
   hasCardinal, /* qqq : cover */
   _keyWithCardinal,
   keyWithCardinal, /* qqq : cover */
+  _cardinalWithKey,
+  cardinalWithKey, /* qqq : cover */
+
+  // elementor
 
   _elementGet : _elementWithKey,
   elementGet : elementWithKey, /* qqq : cover */
@@ -803,7 +885,9 @@ let Extension =
   _elementWithCardinalDel,
   elementWithCardinalDel,  /* qqq : cover */
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty, /* qqq : for junior : cover */
+
+  // iterator
 
   _each : _eachLeft,
   each : eachLeft, /* qqq : cover */
@@ -821,12 +905,13 @@ let Extension =
 
   _aptLeft,
   aptLeft, /* qqq : cover */
-  first,
+  first : aptLeft,
   _aptRight, /* qqq : cover */
   aptRight,
-  last, /* qqq : cover */
+  last : aptRight, /* qqq : cover */
 
-  _filter,
+  _filterAct0,
+  _filterAct1,
   filterWithoutEscapeLeft,
   filterWithoutEscapeRight,
   filterWithoutEscape : filterWithoutEscapeLeft,
@@ -835,7 +920,8 @@ let Extension =
   filterWithEscape : filterWithEscapeLeft,
   filter : filterWithoutEscapeLeft,
 
-  _map,
+  _mapAct0,
+  _mapAct1,
   mapWithoutEscapeLeft,
   mapWithoutEscapeRight,
   mapWithoutEscape : mapWithoutEscapeLeft,

@@ -122,6 +122,23 @@ __mapSupplementWithUndefined.meta.locals =
 
 //
 
+function __mapSupplementWithUndefinedTollerant( dstMap, srcMap )
+{
+  for( let k in srcMap )
+  {
+    if( Object.hasOwnProperty.call( dstMap, k ) )
+    continue;
+    dstMap[ k ] = srcMap[ k ];
+  }
+}
+
+__mapSupplementWithUndefinedTollerant.meta = Object.create( null );
+__mapSupplementWithUndefinedTollerant.meta.locals =
+{
+}
+
+//
+
 function __arrayFlatten( src )
 {
   let result = [];
@@ -787,6 +804,57 @@ optionsWithUndefined.meta.locals =
   __keysQuote,
   __mapSupplementWithUndefined,
 }
+
+//
+
+function optionsWithUndefinedTollerant( routine, options )
+{
+  if( _.argumentsArray.like( options ) )
+  {
+    _.assert
+    (
+      options.length === 0 || options.length === 1,
+      `Expects single options map, but got ${options.length} arguments`
+    );
+    if( options.length === 0 )
+    options = Object.create( null )
+    else
+    options = options[ 0 ];
+  }
+
+  if( Config.debug )
+  {
+    _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+    _.assert( _.routineIs( routine ) || _.aux.is( routine ) || routine === null, 'Expects an object with options' );
+    _.assert( _.object.isBasic( options ) || options === null, 'Expects an object with options' );
+  }
+
+  if( options === null )
+  options = Object.create( null );
+  let name = routine.name || '';
+  let defaults = routine.defaults;
+  _.assert( _.aux.is( defaults ), `Expects map of defaults, but got ${_.strType( defaults )}` );
+
+  /* */
+
+  if( Config.debug )
+  {
+    let extraKeys = __mapButKeys( options, defaults );
+    _.assert( extraKeys.length === 0, () => `Routine "${ name }" does not expect options: ${ __keysQuote( extraKeys ) }` );
+  }
+
+  __mapSupplementWithUndefinedTollerant( options, defaults );
+
+  return options;
+}
+
+optionsWithUndefinedTollerant.meta = Object.create( null );
+optionsWithUndefinedTollerant.meta.locals =
+{
+  __keysQuote,
+  __mapSupplementWithUndefinedTollerant,
+}
+
 
 //
 
@@ -2126,7 +2194,7 @@ function _compose_old_body( o )
     {
       if( src.composed.chainer === o.chainer && src.composed.tail === o.tail )
       {
-        bodies.push( ... src.composed.bodies );
+        bodies.push( ... src.composed.elements );
       }
       else
       {
@@ -2289,7 +2357,7 @@ function _compose_body( o )
     {
       if( body.composed.chainer === o.chainer && body.composed.tail === o.tail )
       {
-        bodies.push( ... body.composed.bodies );
+        bodies.push( ... body.composed.elements );
       }
       else
       {
@@ -2472,10 +2540,12 @@ let RoutineExtension =
   optionsWithoutUndefined,
   assertOptionsWithoutUndefined,
   optionsWithUndefined,
+  optionsWithUndefinedTollerant,
   assertOptionsWithUndefined,
   options : optionsWithUndefined,
   assertOptions : assertOptionsWithUndefined,
   options_ : optionsWithUndefined,
+  optionsTollerant : optionsWithUndefinedTollerant,
   assertOptions_ : assertOptionsWithUndefined,
   _verifyDefaults,
 

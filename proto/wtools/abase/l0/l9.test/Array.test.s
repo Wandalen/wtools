@@ -9,7 +9,9 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
+const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 //--
 //
@@ -1268,7 +1270,7 @@ function arrayFromCoercing( test )
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.arrayFromCoercing( 6 ) );
   test.shouldThrowErrorSync( () => _.arrayFromCoercing( true ) );
-  test.shouldThrowErrorSync( () => _.arrayFromCoercing( new Map() ) );
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( new HashMap() ) );
 }
 
 //
@@ -1446,7 +1448,7 @@ function arrayFromCoercingLongDescriptor( test )
       test.case = 'wrong type of src';
       test.shouldThrowErrorSync( () => long.arrayFromCoercing( 6 ) );
       test.shouldThrowErrorSync( () => long.arrayFromCoercing( true ) );
-      test.shouldThrowErrorSync( () => long.arrayFromCoercing( new Map() ) );
+      test.shouldThrowErrorSync( () => long.arrayFromCoercing( new HashMap() ) );
     }
   }
 }

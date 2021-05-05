@@ -9970,7 +9970,7 @@ ghij
 
   /* */
 
-  // qqq : for Yevhen : bad
+  // qqq : for junior : bad
   // test.case = 'nearestLines : null';
   // var cinterval = [ 3, 5 ];
   //

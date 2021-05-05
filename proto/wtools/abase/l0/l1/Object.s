@@ -65,16 +65,19 @@ function is( src ) /* xxx : qqq : for junior : optimize */
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.vector.is( src ) )
-  return false;
+  // if( _.vector.is( src ) )
+  // return false;
 
-  if( _.routine.isTrivial( src ) )
+  if( _.long.is( src ) )
   return false;
 
   if( _.set.is( src ) )
   return false;
 
   if( _.hashMap.is( src ) )
+  return false;
+
+  if( _.routine.isTrivial( src ) )
   return false;
 
   return true;
@@ -265,6 +268,8 @@ let ObjectExtension =
 
   NamespaceName : 'object',
   NamespaceQname : 'wTools/object',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Object',
   SecondTypeName : 'Object',
   InstanceConstructor : null,
@@ -294,22 +299,22 @@ let ObjectExtension =
 
   // properties
 
-  _keys : _.props._keys, /* qqq : for junior : cover */
+  _keys : _.props._keys,
   keys : _.props.keys, /* qqq : for junior : cover */
   onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for junior : cover */
-  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
   allKeys : _.props.allKeys, /* qqq : for junior : cover */
 
-  _vals : _.props._vals, /* qqq : for junior : cover */
+  _vals : _.props._vals,
   vals : _.props.vals, /* qqq : for junior : cover */
   onlyOwnVals : _.props.onlyOwnVals, /* qqq : for junior : cover */
-  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
   allVals : _.props.allVals, /* qqq : for junior : cover */
 
-  _pairs : _.props._pairs, /* qqq : for junior : cover */
+  _pairs : _.props._pairs,
   pairs : _.props.pairs, /* qqq : for junior : cover */
   onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for junior : cover */
-  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
   allPairs : _.props.allPairs, /* qqq : for junior : cover */
 
   // amender
@@ -318,16 +323,16 @@ let ObjectExtension =
   _extendWithSet : _.props._extendWithSet,
   _extendWithCountable : _.props._extendWithCountable,
   _extendWithProps : _.props._extendWithProps,
-  _extendVersatile : _.props._extendVersatile,
-  extendVersatile : _.props.extendVersatile,
+  _extendUniversal : _.props._extendUniversal,
+  extendUniversal : _.props.extendUniversal,
   extend : _.props.extend,
 
   _supplementWithHashmap : _.props._supplementWithHashmap,
   _supplementWithSet : _.props._supplementWithSet,
   _supplementWithCountable : _.props._supplementWithCountable,
   _supplementWithProps : _.props._supplementWithProps,
-  _supplementVersatile : _.props._supplementVersatile,
-  supplementVersatile : _.props.supplementVersatile,
+  _supplementUniversal : _.props._supplementUniversal,
+  supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
 
 }

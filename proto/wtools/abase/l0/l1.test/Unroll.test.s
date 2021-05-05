@@ -243,7 +243,7 @@ function make( test )
 
   /* qqq : for junior : add similar test case for all *.make* and *.from* routines of all namespaces */
   test.case = 'from countable';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var got = _.unroll.make( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -439,22 +439,22 @@ function makeUndefined( test )
   test.equivalent( got, expected );
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
-
-  test.case = 'src - null, length - null';
-  var src = null;
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
-
-  test.case = 'src - null, length - undefined';
-  var src = null;
-  var got = _.unroll.makeUndefined( src, undefined );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  //
+  // test.case = 'src - null, length - null';
+  // var src = null;
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
+  //
+  // test.case = 'src - null, length - undefined';
+  // var src = null;
+  // var got = _.unroll.makeUndefined( src, undefined );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - null, length - number';
   var src = null;
@@ -482,21 +482,21 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - number, length - null';
-  var src = 5;
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 5 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
-
-  test.case = 'src - null, length - undefined';
-  var src = 5;
-  var got = _.unroll.makeUndefined( src, undefined );
-  var expected = _.unroll.make( 5 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - number, length - null';
+  // var src = 5;
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 5 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
+  //
+  // test.case = 'src - null, length - undefined';
+  // var src = 5;
+  // var got = _.unroll.makeUndefined( src, undefined );
+  // var expected = _.unroll.make( 5 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   /* */
 
@@ -508,13 +508,13 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty array, length - null';
-  var src = [];
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( [] );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty array, length - null';
+  // var src = [];
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( [] );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty array, length - 2';
   var src = [];
@@ -566,13 +566,13 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty U8x, length - null';
-  var src = new U8x();
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( [] );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty U8x, length - null';
+  // var src = new U8x();
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( [] );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty U8x, length - 2';
   var src = new U8x();
@@ -624,13 +624,13 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty I16x, length - null';
-  var src = new I16x();
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty I16x, length - null';
+  // var src = new I16x();
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty I16x, length - 2';
   var src = new I16x();
@@ -682,13 +682,13 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty F32x, length - null';
-  var src = new F32x();
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty F32x, length - null';
+  // var src = new F32x();
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty F32x, length - 2';
   var src = new F32x();
@@ -741,14 +741,14 @@ function makeUndefined( test )
   test.true( !_.argumentsArray.is( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty arguments array, length - null';
-  var src = _.argumentsArray.make( [] );
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( !_.argumentsArray.is( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty arguments array, length - null';
+  // var src = _.argumentsArray.make( [] );
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( !_.argumentsArray.is( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty arguments array, length - number > 0';
   var src = _.argumentsArray.make( [] );
@@ -805,13 +805,13 @@ function makeUndefined( test )
   test.true( _.unrollIs( got ) );
   test.true( src !== got );
 
-  test.case = 'src - empty unroll, length - null';
-  var src = _.unroll.make( [] );
-  var got = _.unroll.makeUndefined( src, null );
-  var expected = _.unroll.make( 0 );
-  test.equivalent( got, expected );
-  test.true( _.unrollIs( got ) );
-  test.true( src !== got );
+  // test.case = 'src - empty unroll, length - null';
+  // var src = _.unroll.make( [] );
+  // var got = _.unroll.makeUndefined( src, null );
+  // var expected = _.unroll.make( 0 );
+  // test.equivalent( got, expected );
+  // test.true( _.unrollIs( got ) );
+  // test.true( src !== got );
 
   test.case = 'src - empty unroll, length - 2';
   var src = _.unroll.make( [] );
@@ -862,10 +862,13 @@ function makeUndefined( test )
   test.shouldThrowErrorSync( () => _.unroll.makeUndefined( 1, 3, 'extra' ) );
 
   test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.unroll.makeUndefined( undefined ) );
   test.shouldThrowErrorSync( () => _.unroll.makeUndefined( {} ) );
   test.shouldThrowErrorSync( () => _.unroll.makeUndefined( 'wrong' ) );
 
   test.case = 'wrong length';
+  test.shouldThrowErrorSync( () => _.unroll.makeUndefined( [], null ) );
+  test.shouldThrowErrorSync( () => _.unroll.makeUndefined( [], undefined ) );
   test.shouldThrowErrorSync( () => _.unroll.makeUndefined( [], Infinity ) );
 
   test.case = 'wrong type of length';
@@ -915,21 +918,21 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - null, length - null';
-    var src = null;
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
-
-    test.case = 'src - null, length - undefined';
-    var src = null;
-    var got = long.unroll.makeUndefined( src, undefined );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - null, length - null';
+    // var src = null;
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
+    //
+    // test.case = 'src - null, length - undefined';
+    // var src = null;
+    // var got = long.unroll.makeUndefined( src, undefined );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - null, length - number';
     var src = null;
@@ -957,21 +960,21 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - number, length - null';
-    var src = 5;
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 5 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
-
-    test.case = 'src - null, length - undefined';
-    var src = 5;
-    var got = long.unroll.makeUndefined( src, undefined );
-    var expected = _.unroll.make( 5 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - number, length - null';
+    // var src = 5;
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 5 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
+    //
+    // test.case = 'src - null, length - undefined';
+    // var src = 5;
+    // var got = long.unroll.makeUndefined( src, undefined );
+    // var expected = _.unroll.make( 5 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     /* */
 
@@ -983,13 +986,13 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty array, length - null';
-    var src = [];
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( [] );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty array, length - null';
+    // var src = [];
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( [] );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty array, length - 2';
     var src = [];
@@ -1041,13 +1044,13 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty U8x, length - null';
-    var src = new U8x();
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( [] );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty U8x, length - null';
+    // var src = new U8x();
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( [] );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty U8x, length - 2';
     var src = new U8x();
@@ -1099,13 +1102,13 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty I16x, length - null';
-    var src = new I16x();
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty I16x, length - null';
+    // var src = new I16x();
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty I16x, length - 2';
     var src = new I16x();
@@ -1157,13 +1160,13 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty F32x, length - null';
-    var src = new F32x();
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty F32x, length - null';
+    // var src = new F32x();
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty F32x, length - 2';
     var src = new F32x();
@@ -1216,14 +1219,14 @@ function makeUndefinedLongDescriptor( test )
     test.true( !_.argumentsArray.is( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty arguments array, length - null';
-    var src = _.argumentsArray.make( [] );
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( !_.argumentsArray.is( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty arguments array, length - null';
+    // var src = _.argumentsArray.make( [] );
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( !_.argumentsArray.is( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty arguments array, length - number > 0';
     var src = _.argumentsArray.make( [] );
@@ -1280,13 +1283,13 @@ function makeUndefinedLongDescriptor( test )
     test.true( _.unrollIs( got ) );
     test.true( src !== got );
 
-    test.case = 'src - empty unroll, length - null';
-    var src = _.unroll.make( [] );
-    var got = long.unroll.makeUndefined( src, null );
-    var expected = _.unroll.make( 0 );
-    test.equivalent( got, expected );
-    test.true( _.unrollIs( got ) );
-    test.true( src !== got );
+    // test.case = 'src - empty unroll, length - null';
+    // var src = _.unroll.make( [] );
+    // var got = long.unroll.makeUndefined( src, null );
+    // var expected = _.unroll.make( 0 );
+    // test.equivalent( got, expected );
+    // test.true( _.unrollIs( got ) );
+    // test.true( src !== got );
 
     test.case = 'src - empty unroll, length - 2';
     var src = _.unroll.make( [] );
@@ -1336,6 +1339,8 @@ function makeUndefinedLongDescriptor( test )
       test.shouldThrowErrorSync( () => long.unroll.makeUndefined( 1, 3, 'extra' ) );
 
       test.case = 'wrong length';
+      test.shouldThrowErrorSync( () => long.unroll.makeUndefined( [], null ) );
+      test.shouldThrowErrorSync( () => long.unroll.makeUndefined( [], undefined ) );
       test.shouldThrowErrorSync( () => long.unroll.makeUndefined( [], Infinity ) );
 
       test.case = 'wrong type of src';
@@ -1464,7 +1469,7 @@ function from( test )
   test.true( src !== got );
 
   test.case = 'from countable';
-  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], withIterator : 1 });
+  var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
   var got = _.unroll.from( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.true( _.arrayIs( got ) );
@@ -1990,15 +1995,15 @@ function unrollsFromLongDescriptor( test )
 //   test.true( _.mapIs( got ) );
 //
 //   test.case = 'src - empty HashMap';
-//   var src = new Map();
+//   var src = new HashMap();
 //   var got = _.unroll.fromMaybe( src );
-//   test.identical( got, new Map() );
+//   test.identical( got, new HashMap() );
 //   test.true( _.hashMap.is( got ) );
 //
 //   test.case = 'src - filled HashMap';
-//   var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+//   var src = new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] );
 //   var got = _.unroll.fromMaybe( src );
-//   test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+//   test.identical( got, new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
 //   test.true( _.hashMap.is( got ) );
 //
 //   test.case = 'src - empty Set';
@@ -2189,15 +2194,15 @@ function unrollsFromLongDescriptor( test )
 //     test.true( _.mapIs( got ) );
 //
 //     test.case = 'src - empty HashMap';
-//     var src = new Map();
+//     var src = new HashMap();
 //     var got = long.unroll.fromMaybe( src );
-//     test.identical( got, new Map() );
+//     test.identical( got, new HashMap() );
 //     test.true( _.hashMap.is( got ) );
 //
 //     test.case = 'src - filled HashMap';
-//     var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+//     var src = new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] );
 //     var got = long.unroll.fromMaybe( src );
-//     test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+//     test.identical( got, new HashMap( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
 //     test.true( _.hashMap.is( got ) );
 //
 //     test.case = 'src - empty Set';
@@ -2435,7 +2440,7 @@ function unrollNormalize( test )
 //   [
 //     I8x,
 //     // U8x,
-//     // U8ClampedX,
+//     // U8xClamped,
 //     // I16x,
 //     U16x,
 //     // I32x,

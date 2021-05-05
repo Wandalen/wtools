@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.object = _global_.wTools.object || Object.create( null );
+_.object = _.object || Object.create( null );
 
 // --
 // dichotomy
@@ -20,14 +20,13 @@ let ToolsExtension =
 
 }
 
-let Extension =
+Object.assign( _, ToolsExtension );
+
+let ObjectExtension =
 {
 
 }
 
-//
-
-Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.object, ObjectExtension );
 
 })();

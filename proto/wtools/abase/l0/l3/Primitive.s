@@ -12,9 +12,6 @@ const _ = _global_.wTools;
 
 function _identicalShallow( src1, src2 )
 {
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.primitive.is( src1 ) );
-  // _.assert( _.primitive.is( src2 ) );
 
   if( !_.primitive.is( src1 ) )
   return false;
@@ -43,10 +40,6 @@ function identicalShallow( src1, src2, o )
 
 function _equivalentShallow( src1, src2, accuracy )
 {
-
-  // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  // _.assert( _.primitive.is( src1 ) );
-  // _.assert( _.primitive.is( src2 ) );
 
   if( _.strsAreAll([ src1, src2 ]) )
   return _.str.equivalentShallow( src1, src2 );
@@ -80,16 +73,16 @@ function equivalentShallow( src1, src2, accuracy )
 //
 // --
 
-function exportStringShallowCode( src )
+function exportStringCodeShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowCode( src );
+  return _.symbol.exportStringCodeShallow( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowCode( src );
+  return _.bigInt.exportStringCodeShallow( src );
 
   if( _.strIs( src ) )
   return `'${src}'`;
@@ -99,37 +92,19 @@ function exportStringShallowCode( src )
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.primitive.is( src ) );
 
   if( _.symbol.is( src ) )
-  return _.symbol.exportStringShallowDiagnostic( src );
+  return _.symbol.exportStringDiagnosticShallow( src );
 
   if( _.bigInt.is( src ) )
-  return _.bigInt.exportStringShallowDiagnostic( src );
+  return _.bigInt.exportStringDiagnosticShallow( src );
 
   return String( src );
 }
-
-// // --
-// // editor
-// // --
-//
-// function _empty( dst )
-// {
-//   return dst;
-// }
-//
-// //
-//
-// function empty( dst )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( this.like( dst ) );
-//   return this._empty( dst );
-// }
 
 // --
 // extension
@@ -161,12 +136,9 @@ let PrimitiveExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowCode,
-  exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowCode,
+  exportStringCodeShallow,
+  exportStringDiagnosticShallow,
+  exportString : exportStringDiagnosticShallow,
 
 }
 

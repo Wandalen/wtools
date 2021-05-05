@@ -42,7 +42,7 @@ function vectorize_body( o )
   o.routine = o.routine[ 0 ];
 
   let routine = o.routine;
-  let propertyFilter = o.propertyFilter;
+  let propertyCondition = o.propertyCondition;
   let bypassingFilteredOut = o.bypassingFilteredOut;
   let bypassingEmpty = o.bypassingEmpty;
   let vectorizingArray = o.vectorizingArray;
@@ -68,7 +68,7 @@ function vectorize_body( o )
 
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )
     resultRoutine = routine;
-    else if( propertyFilter )
+    else if( propertyCondition )
     resultRoutine = vectorizeWithFilters;
     else if( vectorizingMapKeys )
     {
@@ -100,7 +100,7 @@ function vectorize_body( o )
       head = routine.head;
       routine = routine.body;
     }
-    if( propertyFilter )
+    if( propertyCondition )
     {
       _.assert( 0, 'not implemented' );
     }
@@ -139,7 +139,7 @@ function vectorize_body( o )
     {
       return function methodCall()
       {
-        _.assert( _.routine.is( this[ routine ] ), () => 'Context ' + _.entity.exportStringShallow( this ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( this[ routine ] ), () => 'Context ' + _.entity.exportStringDiagnosticShallow( this ) + ' does not have routine ' + routine );
         return this[ routine ].apply( this, arguments );
       }
     }
@@ -149,7 +149,7 @@ function vectorize_body( o )
       return function methodCall()
       {
         let c = this[ routine[ 0 ] ];
-        _.assert( _.routine.is( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringShallow( c ) + ' does not have routine ' + routine );
+        _.assert( _.routine.is( c[ routine[ 1 ] ] ), () => 'Context ' + _.entity.exportStringDiagnosticShallow( c ) + ' does not have routine ' + routine );
         return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
@@ -497,7 +497,7 @@ function vectorize_body( o )
       let each = _.long.eacher( src );
       each( ( e, r ) =>
       {
-        if( propertyFilter( e, r, src ) )
+        if( propertyCondition( e, r, src ) )
         {
           args[ 0 ] = e;
           append( routine.apply( this, args ) );
@@ -520,7 +520,7 @@ function vectorize_body( o )
       throw _.err( 'not tested' ); /* qqq : cover please */
       for( let r in src )
       {
-        if( propertyFilter( src[ r ], r, src ) )
+        if( propertyCondition( src[ r ], r, src ) )
         {
           args[ 0 ] = src[ r ];
           result[ r ] = routine.apply( this, args );
@@ -628,7 +628,7 @@ function vectorize_body( o )
 vectorize_body.defaults =
 {
   routine : null,
-  propertyFilter : null,
+  propertyCondition : null,
   bypassingFilteredOut : 1,
   bypassingEmpty : 0,
   vectorizingArray : 1,

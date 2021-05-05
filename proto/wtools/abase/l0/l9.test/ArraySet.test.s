@@ -7094,7 +7094,7 @@ function right( test )
 const Proto =
 {
 
-  name : 'Tools.ArraySet',
+  name : 'Tools.ArraySet.l0.l9',
   silencing : 1,
   enabled : 1,
 

@@ -88,7 +88,7 @@ function dichotomy( test )
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.regexp.like( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.regexp.like( new HashMap( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 

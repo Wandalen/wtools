@@ -27,22 +27,6 @@ function constructorIsVectorAdapter( src )
 }
 
 // --
-// exporter
-// --
-
-function exportStringShallowDiagnostic( src )
-{
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( _.vector.is( src ) );
-
-  if( _.unrollIs( src ) )
-  return `{- ${_.entity.strType( src )}.unroll with ${src.length} elements -}`;
-  else
-  return `{- ${_.entity.strType( src )} with ${src.length} elements -}`;
-
-}
-
-// --
 // extension
 // --
 
@@ -68,21 +52,22 @@ var VectorExtension =
 
   // equaler
 
-  _identicalShallow : _.array._identicalShallow,
-  identicalShallow : _.array.identicalShallow,
-  identical : _.array.identical,
-  _equivalentShallow : _.array._equivalentShallow,
-  equivalentShallow : _.array.equivalentShallow,
-  equivalent : _.array.equivalent,
+  /* qqq : implement more optimal own version of this routines */
+  _identicalShallow : _.countable.identicalShallow,
+  identicalShallow : _.countable.identicalShallow,
+  identical : _.countable.identical,
+  _equivalentShallow : _.countable.identicalShallow,
+  equivalentShallow : _.countable.equivalentShallow,
+  equivalent : _.countable.equivalent,
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  /* qqq : implement more optimal own version of this routines */
+  _exportStringDiagnosticShallow : _.countable._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.countable.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.countable._exportStringCodeShallow,
+  exportStringCodeShallow : _.countable.exportStringCodeShallow,
+  exportString : _.countable.exportString,
 
     // container interface
 
@@ -95,6 +80,8 @@ var VectorExtension =
   hasCardinal : _.countable._hasKey, /* qqq : cover */
   _keyWithCardinal : _.countable._hasKey,
   keyWithCardinal : _.countable._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.countable._cardinalWithKey,
+  cardinalWithKey : _.countable.cardinalWithKey, /* qqq : cover */
 
   _elementGet : _.countable._elementWithKey,
   elementGet : _.countable.elementWithKey, /* qqq : cover */
@@ -141,6 +128,26 @@ var VectorExtension =
   _aptRight : _.countable._aptRight, /* qqq : cover */
   aptRight : _.countable.aptRight,
   last : _.countable.last, /* qqq : cover */
+
+  _filterAct0 : _.countable._filterAct0,
+  _filterAct1 : _.countable._filterAct1,
+  filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
+  filterWithoutEscape : _.countable.filterWithoutEscape,
+  filterWithEscapeLeft : _.countable.filterWithEscapeLeft,
+  filterWithEscapeRight : _.countable.filterWithEscapeRight,
+  filterWithEscape : _.countable.filterWithEscape,
+  filter : _.countable.filter,
+
+  _mapAct0 : _.countable._mapAct0,
+  _mapAct1 : _.countable._mapAct1,
+  mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
+  mapWithoutEscape : _.countable.mapWithoutEscape,
+  mapWithEscapeLeft : _.countable.mapWithEscapeLeft,
+  mapWithEscapeRight : _.countable.mapWithEscapeRight,
+  mapWithEscape : _.countable.mapWithEscape,
+  map : _.countable.map,
 
 }
 

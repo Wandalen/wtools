@@ -5,8 +5,9 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.number = _.number || Object.create( null );
-_.number.s = _.number.s || Object.create( null );
+
+_.number = _.number || Object.create( null );
+_.number.s = _.numbers = _.numbers || _.number.s || Object.create( null );
 
 // --
 // number

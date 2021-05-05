@@ -104,7 +104,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'HashMap';
-  var got = _.number.is( new Map() );
+  var got = _.number.is( new HashMap() );
   test.identical( got, false );
 
   test.case = 'Object';
@@ -239,7 +239,7 @@ function isNotNan( test )
   test.identical( got, false );
 
   test.case = 'HashMap';
-  var got = _.number.isNotNan( new Map() );
+  var got = _.number.isNotNan( new HashMap() );
   test.identical( got, false );
 
   test.case = 'Object';
@@ -374,7 +374,7 @@ function isFinite( test )
   test.identical( got, false );
 
   test.case = 'HashMap';
-  var got = _.number.isFinite( new Map() );
+  var got = _.number.isFinite( new HashMap() );
   test.identical( got, false );
 
   test.case = 'Object';
@@ -509,7 +509,7 @@ function isInfinite( test )
   test.identical( got, false );
 
   test.case = 'HashMap';
-  var got = _.number.isInfinite( new Map() );
+  var got = _.number.isInfinite( new HashMap() );
   test.identical( got, false );
 
   test.case = 'Object';
@@ -660,7 +660,7 @@ function intIs( test )
   test.identical( got, false );
 
   test.case = 'HashMap';
-  var got = _.intIs( new Map() );
+  var got = _.intIs( new HashMap() );
   test.identical( got, false );
 
   test.case = 'Object';

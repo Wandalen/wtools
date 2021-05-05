@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 //
 
@@ -207,7 +206,7 @@ function longHasUniques( o )
 
   // if( o.onEvaluate )
   // {
-  //   o.src = _.map_( null, o.src, ( e ) => o.onEvaluate( e ) );
+  //   o.src = _.entity.map_( null, o.src, ( e ) => o.onEvaluate( e ) );
   // }
 
   /* */
@@ -704,7 +703,7 @@ function longFromRangeWithStep( range, step )
   _.assert( _.routine.is( this.tools.defaultLong.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
-  return this.tools.defaultLong.make();
+  return this.defaultLong.make();
   // return this.tools.defaultLong.from();
 
   if( range[ 0 ] < range[ 1 ] )
@@ -716,7 +715,8 @@ function longFromRangeWithStep( range, step )
     _.assert( step > 0 );
 
     // debugger;
-    result = this.tools.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+    result = this.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+    // result = this.tools.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
 
     let i = 0;
     while( range[ 0 ] < range[ 1 ] )
@@ -736,7 +736,8 @@ function longFromRangeWithStep( range, step )
     _.assert( step < 0 );
 
     // result = this.tools.defaultLong.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
-    result = this.tools.defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
+    result = this.defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
+    // result = this.tools.defaultLong.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )

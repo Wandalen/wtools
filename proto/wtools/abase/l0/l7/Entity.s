@@ -22,46 +22,56 @@ const Self = _global_.wTools;
  * @returns {number} Returns "size" of entity.
  *
  * @example
- * _.uncountableSize( 'string' );
+ * _.entity.sizeOfUncountable( 'string' );
  * // returns 6
  *
  * @example
- * _.uncountableSize( new BufferRaw( 8 ) );
+ * _.entity.sizeOfUncountable( new BufferRaw( 8 ) );
  * // returns 8
  *
  * @example
- * _.uncountableSize( 123 );
+ * _.entity.sizeOfUncountable( 123 );
  * // returns null
  *
- * @function uncountableSize
+ * @function sizeOfUncountable
  * @namespace Tools
 */
 
-function uncountableSize( src )
+/* qqq : cover argument sizeOfContainer */
+function sizeOfUncountable( src, sizeOfContainer )
 {
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  if( arguments.length === 1 )
+  sizeOfContainer = 8;
+
+  _.assert( _.number.defined( sizeOfContainer ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.strIs( src ) )
   {
     if( src.length )
-    return _.bufferBytesFrom( src ).byteLength;
-    return src.length;
+    return _.bufferBytesFrom( src ).byteLength + sizeOfContainer;
+    return src.length + sizeOfContainer;
   }
 
   if( _.primitive.is( src ) )
-  return 8;
+  return sizeOfContainer || 8;
+
+  if( _.routine.is( src ) )
+  return sizeOfContainer;
 
   if( _.number.is( src.byteLength ) )
-  return src.byteLength;
+  return src.byteLength + sizeOfContainer;
 
   if( _.regexpIs( src ) )
-  return _.uncountableSize( src.source ) + src.flags.length;
+  return _.entity.sizeOfUncountable( src.source, 0 ) + src.flags.length + sizeOfContainer;
 
   // if( !_.iterableIs( src ) ) /* yyy */ /* Dmytro : simulate behavior of routine iterableIs, routine countableIs has different behavior */
-  // return 8;
-  if( !_.aux.is( src ) )
-  if( !_.class.methodIteratorOf( src ) )
-  return 8;
+  // return sizeOfContainer;
+  // if( !_.aux.is( src ) )
+  // if( !_.class.methodIteratorOf( src ) )
+  // return sizeOfContainer;
+  // if( _.countable.is( src ) )
+  // return _.countable.lengthOf( src ) + sizeOfContainer;
 
   return NaN;
 }
@@ -79,19 +89,19 @@ function uncountableSize( src )
  * @returns {number} Returns "size" of entity.
  *
  * @example
- * _.entitySize( 'string' );
+ * _.entity.sizeOf( 'string' );
  * // returns 6
  *
  * @example
- * _.entitySize( [ 1, 2, 3 ] );
+ * _.entity.sizeOf( [ 1, 2, 3 ] );
  * // returns 3
  *
  * @example
- * _.entitySize( new BufferRaw( 8 ) );
+ * _.entity.sizeOf( new BufferRaw( 8 ) );
  * // returns 8
  *
  * @example
- * _.entitySize( 123 );
+ * _.entity.sizeOf( 123 );
  * // returns null
  *
  * @function entitySize
@@ -100,66 +110,52 @@ function uncountableSize( src )
 
 /* qqq : review */
 
-function entitySize( src )
+/* qqq : cover argument sizeOfContainer */
+function sizeOf( src, sizeOfContainer )
 {
   let result = 0;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  if( arguments.length === 1 )
+  sizeOfContainer = 8;
 
-  // if( _.primitive.is( src ) || !_.iterableIs( src ) || _.bufferAnyIs( src ) ) /* yyy */
-  // if( _.primitive.is( src ) || _.bufferAnyIs( src ) ) /* Dmytro : added branch for routine iterableIs, routine countableIs has different behavior */
-  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
-  return _.uncountableSize( src );
+  _.assert( _.number.defined( sizeOfContainer ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.look )
-  // if( _.containerIs( src ) || _.iterableIs( src ) ) /* yyy */
-  // if( _.containerIs( src ) )
-  if( _.containerIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
-  {
-    _.look({ src, onUp : onEach, withCountable : 1 });
-  }
+  // if( _.primitive.is( src ) || _.bufferAnyIs( src ) || !( _.mapIs( src ) || _.class.methodIteratorOf( src ) ) )
+  if( _.primitive.is( src ) || _.bufferAnyIs( src ) || _.routineIs( src ) || _.regexpIs( src ) )
+  return _.entity.sizeOfUncountable( src, sizeOfContainer );
 
-  if( _.look )
-  return result;
+  /*
+  full implementation of routine _.entity.sizeOf() in the module::LookerExtra
+  */
 
   return NaN;
-
-  function onEach( e, k, it )
-  {
-
-    if( !_.number.defined( result ) )
-    {
-      it.iterator.continue = false;
-      return;
-    }
-
-    if( !it.down )
-    return;
-
-    /* qqq : does not work anymore! */
-    if( it.down.iterable === 'map-like' || it.down.iterable === 'hash-map-like' )
-    {
-      result += _.uncountableSize( k );
-    }
-
-    // if( _.primitive.is( e ) || !_.iterableIs( e ) || _.bufferAnyIs( e ) ) /* yyy */
-    if( _.primitive.is( e ) || _.bufferAnyIs( e ) ) /* yyy */
-    result += _.uncountableSize( e );
-
-  }
-
 }
 
 // --
-// declaration
+// entity extension
+// --
+
+let EntityExtension =
+{
+
+  sizeOfUncountable,
+  sizeOf,
+
+}
+
+Object.assign( _.entity, EntityExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
 {
 
-  uncountableSize,
-  entitySize,
-  sizeOf : entitySize,
+  // sizeOfUncountable,
+  // entitySize,
+  // sizeOf : entitySize,
 
 }
 

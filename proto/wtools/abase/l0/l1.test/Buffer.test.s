@@ -40,7 +40,7 @@ function bufferRawIs( test )
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
@@ -91,7 +91,7 @@ function bufferTypedIs( test )
   test.false( _.bufferNodeIs( src ) );
   test.false( _.bufferViewIs( src ) );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
   test.false( _.bufferRawIs( src ) );
@@ -168,7 +168,7 @@ function bufferViewIs( test )
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
@@ -234,7 +234,7 @@ function bufferNodeIs( test )
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
-  var src = new U8ClampedX( 10*10*4 );
+  var src = new U8xClamped( 10*10*4 );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
@@ -737,39 +737,39 @@ function bufferMakeWithArrayAndUnroll( test )
 
   test.case = 'src - null';
   var got = _.bufferMake( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMake( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMake( null, new U8x( 5 ) );
-  var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMake( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMake( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
@@ -802,13 +802,11 @@ function bufferMakeWithArrayAndUnroll( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.bufferMake() );
-
   test.case = 'extra argument';
   test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 4, 'extra' ) );
 
-  test.case = 'wrong type of ins';
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferMake( undefined ) );
   test.shouldThrowErrorSync( () => _.bufferMake( 'wrong', 1 ) );
   test.shouldThrowErrorSync( () => _.bufferMake( 1, 1 ) );
 
@@ -824,63 +822,63 @@ function bufferMakeWithArgumentsArray( test )
   test.case = 'src - empty long, not ins';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - null';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src, null );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - undefined';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src, undefined );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - number';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src, 2 );
-  var expected = _.defaultLong.make( 2 );
+  var expected = _.tools.defaultBufferTyped.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - empty array';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src, [] );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - array';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMake( src, [ 1, 2, 3 ] );
-  var expected = _.defaultLong.make( [ 1, 2, 3 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, not ins';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMake( src );
-  var expected = _.defaultLong.make( [ 1, 2, 3 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins < src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMake( src, 2 );
-  var expected = _.defaultLong.make( [ 1, 2 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 1, 2 ] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins > src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMake( src, 4 );
-  var expected = _.defaultLong.make( [ 1, 2, 3, undefined ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3, 0 ] );
   test.identical( got, expected );
   test.true( got !== src );
 
@@ -888,7 +886,7 @@ function bufferMakeWithArgumentsArray( test )
   var src = _.argumentsArray.make( [ 0, 1 ] );
   var ins = [ 1, 2, 3 ];
   var got = _.bufferMake( src, ins );
-  var expected = _.defaultLong.make( [ 1, 2, 3 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.true( got !== ins );
   test.true( got !== src );
@@ -897,39 +895,39 @@ function bufferMakeWithArgumentsArray( test )
 
   test.case = 'src - null';
   var got = _.bufferMake( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMake( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMake( null, _.argumentsArray.make( 5 ) );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( new Array( 5 ) );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMake( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMake( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
@@ -1086,39 +1084,39 @@ function bufferMakeWithBuffers( test )
 
   test.case = 'src - null';
   var got = _.bufferMake( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMake( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMake( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMake( null, new U8x( 5 ) );
-  var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+  var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMake( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMake( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
@@ -1815,39 +1813,39 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
 
   test.case = 'src - null';
   var got = _.bufferMakeUndefined( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
@@ -1880,13 +1878,11 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined() );
-
   test.case = 'extra argument';
   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra' ) );
 
-  test.case = 'wrong type of ins';
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( undefined ) );
   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 'wrong', 1 ) );
   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 1, 1 ) );
 
@@ -1902,63 +1898,63 @@ function bufferMakeUndefinedWithArgumentsArray( test )
   test.case = 'src - empty long, not ins';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - null';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src, null );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - undefined';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src, undefined );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - number';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src, 2 );
-  var expected = _.defaultLong.make( 2 );
+  var expected = _.tools.defaultBufferTyped.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - empty array';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src, [] );
-  var expected = _.defaultLong.make( [] );
+  var expected = _.tools.defaultBufferTyped.make( [] );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - empty long, ins - array';
   var src = _.argumentsArray.make( [] );
   var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-  var expected = _.defaultLong.make( 3 );
+  var expected = _.tools.defaultBufferTyped.make( 3 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, not ins';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src );
-  var expected = _.defaultLong.make( 3 );
+  var expected = _.tools.defaultBufferTyped.make( 3 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins < src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src, 2 );
-  var expected = _.defaultLong.make( 2 );
+  var expected = _.tools.defaultBufferTyped.make( 2 );
   test.identical( got, expected );
   test.true( got !== src );
 
   test.case = 'src - filled long, ins - number, ins > src.length';
   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
   var got = _.bufferMakeUndefined( src, 4 );
-  var expected = _.defaultLong.make( 4 );
+  var expected = _.tools.defaultBufferTyped.make( 4 );
   test.identical( got, expected );
   test.true( got !== src );
 
@@ -1966,7 +1962,7 @@ function bufferMakeUndefinedWithArgumentsArray( test )
   var src = _.argumentsArray.make( [ 0, 1 ] );
   var ins = [ 1, 2, 3 ];
   var got = _.bufferMakeUndefined( src, ins );
-  var expected = _.defaultLong.make( 3 );
+  var expected = _.tools.defaultBufferTyped.make( 3 );
   test.identical( got, expected );
   test.true( got !== ins );
   test.true( got !== src );
@@ -1975,39 +1971,39 @@ function bufferMakeUndefinedWithArgumentsArray( test )
 
   test.case = 'src - null';
   var got = _.bufferMakeUndefined( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMakeUndefined( null, _.argumentsArray.make( 5 ) );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
@@ -2153,39 +2149,39 @@ function bufferMakeUndefinedWithBuffers( test )
 
   test.case = 'src - null';
   var got = _.bufferMakeUndefined( null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, null );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - null';
   var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.defaultLong.make( 0 );
+  var expected = _.tools.defaultBufferTyped.make( 0 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - number';
   var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - null, ins - long';
   var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */
 
   test.case = 'src - number, ins - null';
   var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   test.case = 'src - number, ins - undefined';
   var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.defaultLong.make( 5 );
+  var expected = _.tools.defaultBufferTyped.make( 5 );
   test.identical( got, expected );
 
   /* */

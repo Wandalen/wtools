@@ -311,24 +311,20 @@ function identicalShallow( src1, src2, o )
 // exporter
 // --
 
-function exportStringShallowCode( src )
+function _exportStringDiagnosticShallow( src )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( this.like( src ) );
   if( _.long.is( src ) )
-  return _.long.exportStringShallowCode( src );
-  return _.object._exportStringShallowCode( src );
+  return _.long._exportStringDiagnosticShallow( src );
+  return _.object._exportStringDiagnosticShallow( src );
 }
 
 //
 
-function exportStringShallowDiagnostic( src )
+function _exportStringCodeShallow( src )
 {
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-  _.assert( this.like( src ) );
   if( _.long.is( src ) )
-  return _.long.exportStringShallowDiagnostic( src );
-  return _.object._exportStringShallowDiagnostic( src );
+  return _.long._exportStringCodeShallow( src );
+  return _.object._exportStringCodeShallow( src );
 }
 
 // --
@@ -339,18 +335,7 @@ function _lengthOf( src )
 {
   if( _.long.is( src ) || _.bufferNode.is( src ) )
   return src.length;
-  // if( _.bufferNode.is( src ) )
-  // return src.length;
   return _.itself._lengthOf( ... arguments );
-}
-
-//
-
-function lengthOf( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( this.like( src ) );
-  return this._lengthOf( src );
 }
 
 //
@@ -364,27 +349,11 @@ function _hasKey( src, key )
 
 //
 
-function hasKey( src, key )
-{
-  _.assert( this.like( src ) );
-  return this._hasKey( src, key );
-}
-
-//
-
 function _hasCardinal( src, cardinal )
 {
   if( _.long.is( src ) || _.bufferNode.is( src ) )
   return _.long._hasCardinal( ... arguments );
   return _.itself._hasCardinal( ... arguments );
-}
-
-//
-
-function hasCardinal( src, cardinal )
-{
-  _.assert( this.like( src ) );
-  return this._hasCardinal( src, cardinal );
 }
 
 //
@@ -396,14 +365,6 @@ function _keyWithCardinal( src, cardinal )
   return _.itself._keyWithCardinal( ... arguments );
 }
 
-//
-
-function keyWithCardinal( src, cardinal )
-{
-  _.assert( this.like( src ) );
-  return this._keyWithCardinal( src, cardinal );
-}
-
 // --
 // editor
 // --
@@ -412,15 +373,6 @@ function _empty( dst )
 {
   throw _.err( `${this.TypeName} has fixed length` );
   return false;
-}
-
-//
-
-function empty( dst )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( this.like( dst ) );
-  return this._empty( dst );
 }
 
 // --
@@ -436,29 +388,11 @@ function _elementWithKey( src, key )
 
 //
 
-function elementWithKey( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKey( src, key );
-}
-
-//
-
 function _elementWithImplicit( src, key )
 {
   if( _.props.keyIsImplicit( key ) )
   return _.props._onlyImplicitWithKeyTuple( src, key );
   return this._elementWithKey( src, key );
-}
-
-//
-
-function elementWithImplicit( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithImplicit( src, key );
 }
 
 //
@@ -472,52 +406,25 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function elementWithCardinal( src, cardinal )
+function _elementWithKeySet( dst, key, val )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinal( src, cardinal );
-}
-
-//
-
-function _elementWithKeySet( src, key, val )
-{
-  if( _.long.is( src ) || _.bufferNode.is( src ) )
+  if( _.long.is( dst ) || _.bufferNode.is( dst ) )
   return _.long._elementWithKeySet( ... arguments );
   return _.itself._elementWithKeySet( ... arguments );
 }
 
 //
 
-function elementWithKeySet( src, key, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeySet( src, key, val );
-}
-
-//
-
-function _elementWithCardinalSet( src, cardinal, val )
-{
-  if( _.long.is( src ) || _.bufferNode.is( src ) )
+  if( _.long.is( dst ) || _.bufferNode.is( dst ) )
   return _.long._elementWithCardinalSet( ... arguments );
   return _.itself._elementWithCardinalSet( ... arguments );
 }
 
 //
 
-function elementWithCardinalSet( src, cardinal, val )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalSet( src, cardinal, val );
-}
-
-//
-
-function _elementWithKeyDel( src, key )
+function _elementWithKeyDel( dst, key )
 {
   throw _.err( `${this.TypeName} has fixed length` );
   return false;
@@ -525,28 +432,10 @@ function _elementWithKeyDel( src, key )
 
 //
 
-function elementWithKeyDel( src, key )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithKeyDel( src, key );
-}
-
-//
-
-function _elementWithCardinalDel( src, cardinal )
+function _elementWithCardinalDel( dst, cardinal )
 {
   throw _.err( `${this.TypeName} has fixed length` );
   return false;
-}
-
-//
-
-function elementWithCardinalDel( src, cardinal )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( this.is( src ) );
-  return this._elementWithCardinalDel( src, cardinal, val );
 }
 
 // --
@@ -569,53 +458,52 @@ let BufferExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
+  exportString : _.props.exportString,
 
   // inspector
 
   _lengthOf,
-  lengthOf, /* qqq : cover */
+  lengthOf : _.props.lengthOf, /* qqq : cover */
   _hasKey,
-  hasKey, /* qqq : cover */
+  hasKey : _.props.hasKey, /* qqq : cover */
   _hasCardinal,
-  hasCardinal, /* qqq : cover */
+  hasCardinal : _.props.hasCardinal, /* qqq : cover */
   _keyWithCardinal,
-  keyWithCardinal, /* qqq : cover */
+  keyWithCardinal : _.props.keyWithCardinal, /* qqq : cover */
 
   // editor
 
   _empty,
-  empty, /* qqq : for Yevhen : cover */
+  empty : _.props.elementWithKeyDel, /* qqq : for junior : cover */
 
   // elementor
 
   _elementGet : _elementWithKey,
-  elementGet : elementWithKey, /* qqq : cover */
+  elementGet : _.props.elementGet, /* qqq : cover */
   _elementWithKey,
-  elementWithKey, /* qqq : cover */
+  elementWithKey : _.props.elementWithKey, /* qqq : cover */
   _elementWithImplicit,
-  elementWithImplicit,  /* qqq : cover */
+  elementWithImplicit : _.props.elementWithImplicit,  /* qqq : cover */
   _elementWithCardinal,
-  elementWithCardinal,  /* qqq : cover */
+  elementWithCardinal : _.props.elementWithCardinal,  /* qqq : cover */
 
   _elementSet : _elementWithKeySet,
-  elementSet : elementWithKeySet, /* qqq : cover */
+  elementSet : _.props.elementSet, /* qqq : cover */
   _elementWithKeySet,
-  elementWithKeySet, /* qqq : cover */
+  elementWithKeySet : _.props.elementWithKeySet, /* qqq : cover */
   _elementWithCardinalSet,
-  elementWithCardinalSet,  /* qqq : cover */
+  elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
 
   _elementDel : _elementWithKeyDel,
-  elementDel : elementWithKeyDel, /* qqq : cover */
+  elementDel : _.props.elementDel, /* qqq : cover */
   _elementWithKeyDel,
-  elementWithKeyDel, /* qqq : cover */
+  elementWithKeyDel : _.props.elementWithKeyDel, /* qqq : cover */
   _elementWithCardinalDel,
-  elementWithCardinalDel,  /* qqq : cover */
+  elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
 
 }
 

@@ -17,7 +17,7 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-/* qqq : for Yevhen : extend with like and other dichotomies */
+/* qqq : for junior : extend with like and other dichotomies */
 function dichotomy( test )
 {
 
@@ -82,7 +82,7 @@ function dichotomy( test )
   test.identical( got, true );
 
   test.case = 'check blank Map';
-  var got = _.blank.is( new Map( [] ) );
+  var got = _.blank.is( new HashMap( [] ) );
   test.identical( got, true );
 
   test.case = 'check blank BufferRaw';

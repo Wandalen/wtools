@@ -414,7 +414,7 @@ function diagnosticStructureGenerate_body( o )
   /**/
 
   o.result = structureMake( 0 );
-  o.size = _.entitySize( o.result );
+  o.size = _.entity.sizeOf( o.result );
 
   return o;
 
@@ -901,7 +901,7 @@ let structureGenerate = _.routine.unite( diagnosticStructureGenerate_head, diagn
 //     else
 //     dst = {};
 //     _.props.extend( dst, o );
-//     if( o.withIterator )
+//     if( o.countable )
 //     dst[ Symbol.iterator ] = _iterate;
 //     return dst;
 //   }
@@ -914,7 +914,7 @@ let structureGenerate = _.routine.unite( diagnosticStructureGenerate_head, diagn
 // {
 //   new : 0,
 //   pure : 0,
-//   withIterator : 0,
+//   countable : 0,
 //   withOwnConstructor : 0,
 //   withConstructor : 0,
 //   elements : null,

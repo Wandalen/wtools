@@ -59,6 +59,8 @@ var VectorExtension =
 
   NamespaceName : 'vector',
   NamespaceQname : 'wTools/vector',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Vector',
   SecondTypeName : 'Vector',
   InstanceConstructor : null,
@@ -72,14 +74,14 @@ var VectorExtension =
   // maker
 
   _makeEmpty : _.long._makeEmpty,
-  makeEmpty : _.long.makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty : _.long.makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.long._makeUndefined,
-  makeUndefined : _.long.makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
   _make : _.long._make,
-  make : _.long.make, /* qqq : for Yevhen : cover */
+  make : _.long.make, /* qqq : for junior : cover */
   _cloneShallow : _.long._cloneShallow,
-  cloneShallow : _.long.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.long.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
+  from : _.long.from, /* qqq : for junior : cover */
 
 }
 

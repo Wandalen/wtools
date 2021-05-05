@@ -819,7 +819,6 @@ function strIsolateInside( src, begin, end )
 let Extension =
 {
 
-
   strIsolate : _.routine.unite( strIsolate_head, strIsolate_body ),
   strIsolateLeftOrNone : _.routine.unite( strIsolate_head, strIsolateLeftOrNone_body ),
   strIsolateLeftOrAll : _.routine.unite( strIsolate_head, strIsolateLeftOrAll_body ),

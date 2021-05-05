@@ -231,38 +231,38 @@ function regexpEquivalent( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'regexp without flags';
   var src = /regexp/;
   var expected = '/regexp/';
-  var got = _.regexp.exportStringShallowDiagnostic( src );
+  var got = _.regexp.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'regexp with flags';
   var src = /regexp/gi;
   var expected = '/regexp/gi';
-  var got = _.regexp.exportStringShallowDiagnostic( src );
+  var got = _.regexp.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'regexp complex';
   var src = /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}1\d{4}/gi;
   var expected = '/(?:\\d{3}|\\(\\d{3}\\))([-\\/\\.])\\d{3}1\\d{4}/gi';
-  var got = _.regexp.exportStringShallowDiagnostic( src );
+  var got = _.regexp.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.routine.exportStringDiagnosticShallow() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( /hello/, /hello/ ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringDiagnosticShallow( /hello/, /hello/ ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.routine.exportStringShallowDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.routine.exportStringDiagnosticShallow( {} ) );
 }
 
 // --
@@ -283,7 +283,7 @@ const Proto =
 
     regexpEquivalent,
 
-    exportStringShallowDiagnostic
+    exportStringDiagnosticShallow
 
   }
 

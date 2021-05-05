@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+_global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 _.assert( !!_.props.keys, 'Expects routine _.props.keys' );
 _.assert( !!_.props._extendWithHashmap, 'Expects routine _.props._extendWithHashmap' );
@@ -310,7 +310,7 @@ function _make( src )
     if( this.like( src ) )
     return this._cloneShallow( src );
     else
-    return this.extendVersatile( Object.create( null ), src );
+    return this.extendUniversal( Object.create( null ), src );
   }
   return Object.create( null );
 }
@@ -406,6 +406,8 @@ var AuxiliaryExtension =
 
   NamespaceName : 'aux',
   NamespaceQname : 'wTools/aux',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Aux',
   SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,
@@ -425,34 +427,34 @@ var AuxiliaryExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
 
   // properties
 
-  _keys : _.props._keys, /* qqq : for Yevhen : cover */
-  keys : _.props.keys, /* qqq : for Yevhen : cover */
-  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for Yevhen : cover */
-  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
-  allKeys : _.props.allKeys, /* qqq : for Yevhen : cover */
+  _keys : _.props._keys,
+  keys : _.props.keys, /* qqq : for junior : cover */
+  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for junior : cover */
+  onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  allKeys : _.props.allKeys, /* qqq : for junior : cover */
 
-  _vals : _.props._vals, /* qqq : for Yevhen : cover */
-  vals : _.props.vals, /* qqq : for Yevhen : cover */
-  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for Yevhen : cover */
-  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
-  allVals : _.props.allVals, /* qqq : for Yevhen : cover */
+  _vals : _.props._vals,
+  vals : _.props.vals, /* qqq : for junior : cover */
+  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for junior : cover */
+  onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  allVals : _.props.allVals, /* qqq : for junior : cover */
 
-  _pairs : _.props._pairs, /* qqq : for Yevhen : cover */
-  pairs : _.props.pairs, /* qqq : for Yevhen : cover */
-  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for Yevhen : cover */
-  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
-  allPairs : _.props.allPairs, /* qqq : for Yevhen : cover */
+  _pairs : _.props._pairs,
+  pairs : _.props.pairs, /* qqq : for junior : cover */
+  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for junior : cover */
+  onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  allPairs : _.props.allPairs, /* qqq : for junior : cover */
 
   // amender
 
@@ -460,16 +462,16 @@ var AuxiliaryExtension =
   _extendWithSet : _.props._extendWithSet,
   _extendWithCountable : _.props._extendWithCountable,
   _extendWithProps : _.props._extendWithProps,
-  _extendVersatile : _.props._extendVersatile,
-  extendVersatile : _.props.extendVersatile,
+  _extendUniversal : _.props._extendUniversal,
+  extendUniversal : _.props.extendUniversal,
   extend : _.props.extend,
 
   _supplementWithHashmap : _.props._supplementWithHashmap,
   _supplementWithSet : _.props._supplementWithSet,
   _supplementWithCountable : _.props._supplementWithCountable,
   _supplementWithProps : _.props._supplementWithProps,
-  _supplementVersatile : _.props._supplementVersatile,
-  supplementVersatile : _.props.supplementVersatile,
+  _supplementUniversal : _.props._supplementUniversal,
+  supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
 
 }

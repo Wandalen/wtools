@@ -332,11 +332,18 @@ Object.defineProperty( _, 'debugger',
   configurable : false,
   set : function( val )
   {
-    _[ Symbol.for( 'debugger' ) ] = val;
+    let debuggerSymbol = Symbol.for( 'debugger' );
+    if( _[ debuggerSymbol ] === val )
+    return;
+    _[ debuggerSymbol ] = val;
+    for( let k in _globals_ )
+    if( _globals_[ k ].wTools[ debuggerSymbol ] !== val )
+    _globals_[ k ].wTools[ debuggerSymbol ] = val;
   },
   get : function()
   {
-    let val = _[ Symbol.for( 'debugger' ) ];
+    let debuggerSymbol = Symbol.for( 'debugger' );
+    let val = _[ debuggerSymbol ];
     if( val )
     debugger; /* eslint-disable-line no-debugger */
     return val;

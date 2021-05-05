@@ -12,7 +12,7 @@ const Self = _global_.wTools.global = _global_.wTools.global || Object.create( n
 // implementation
 // --
 
-/* xxx : qqq : for Yevhen : dicuss tests */
+/* xxx : qqq : for junior : dicuss tests */
 function is( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );

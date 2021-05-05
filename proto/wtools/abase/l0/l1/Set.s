@@ -162,6 +162,53 @@ function from( src )
 // }
 
 // --
+// properties
+// --
+
+function _keys( src )
+{
+  return [ ... src.keys() ];
+}
+
+//
+
+function keys( src )
+{
+  _.assert( this.like( src ) );
+  return this._keys( src );
+}
+
+//
+
+function _vals( src )
+{
+  return [ ... src.values() ];
+}
+
+//
+
+function vals( src )
+{
+  _.assert( this.like( src ) );
+  return this._vals( src );
+}
+
+//
+
+function _pairs( src )
+{
+  return [ ... src.entries() ];
+}
+
+//
+
+function pairs( src )
+{
+  _.assert( this.like( src ) );
+  return this._pairs( src );
+}
+
+// --
 // extension
 // --
 
@@ -196,6 +243,8 @@ let SetExtension =
 
   NamespaceName : 'set',
   NamespaceQname : 'wTools/set',
+  MoreGeneralNamespaceName : 'set',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Set',
   SecondTypeName : 'Set',
   InstanceConstructor : Set,
@@ -212,14 +261,23 @@ let SetExtension =
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
+  cloneShallow, /* qqq : for junior : cover */
   from,
+
+  // properties
+
+  _keys,
+  keys, /* qqq : for junior : cover */
+  _vals,
+  vals, /* qqq : for junior : cover */
+  _pairs,
+  pairs, /* qqq : for junior : cover */
 
 }
 

@@ -19,34 +19,27 @@ function _identicalShallow( src1, src2 )
   if( _.aux.is( src1 ) && _.aux.is( src2 ) )
   return _.aux._identicalShallow( src1, src2 );
 
-  let equal = _.class.methodEqualOf( src1 ) || _.class.methodEqualOf( src2 );
+  if( _.countable.is( src1 ) && _.countable.is( src2 ) )
+  return _.countable._identicalShallow( src1, src2 );
 
+  let equal = _.class.methodEqualOf( src1 ) || _.class.methodEqualOf( src2 );
   if( equal )
   return equal( src1, src2, {} );
 
   return src1 === src2;
-}
-
-//
-
-function identicalShallow( src1, src2, o )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-
-  return this._identicalShallow( src1, src2 );
 }
 
 //
 
 function _equivalentShallow( src1, src2 )
 {
+
+  if( _.aux.is( src1 ) && _.aux.is( src2 ) )
+  return _.aux._equivalentShallow( src1, src2 );
+
+  if( _.countable.is( src1 ) && _.countable.is( src2 ) )
+  return _.countable._equivalentShallow( src1, src2 );
+
   let equal = _.class.methodEqualOf( src1 ) || _.class.methodEqualOf( src2 );
 
   if( equal )
@@ -55,26 +48,11 @@ function _equivalentShallow( src1, src2 )
   return src1 === src2;
 }
 
-//
-
-function equivalentShallow( src1, src2 )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-
-  return this._equivalentShallow( src1, src2 );
-}
-
 // --
 // exporter
 // --
 
-function _exportStringShallowDiagnostic( src )
+function _exportStringDiagnosticShallow( src )
 {
   let result = '';
   let method = _.class.methodExportStringOf( src );
@@ -87,7 +65,7 @@ function _exportStringShallowDiagnostic( src )
   else
   {
     if( _.countable.is( src ) )
-    result = _.countable.exportStringShallowDiagnostic( src );
+    result = _.countable.exportStringDiagnosticShallow( src );
     else
     result = `{- ${_.entity.strType( src )} -}`;
   }
@@ -95,13 +73,172 @@ function _exportStringShallowDiagnostic( src )
   return result;
 }
 
+// --
+// inspector
+// --
+
+function _lengthOf( src )
+{
+  if( _.countable.is( src ) )
+  return _.countable._lengthOf( src );
+  return _.props._lengthOf( src );
+}
+
 //
 
-function exportStringShallowDiagnostic( src )
+function _hasKey( src, key )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( this.like( src ) );
-  return this._exportStringShallowDiagnostic( ... arguments );
+  if( _.number.is( key ) )
+  return _.countable._hasKey( src, key );
+  return _.props._hasKey( src, key );
+}
+
+//
+
+function _hasCardinal( src, cardinal )
+{
+  if( _.countable.is( src ) )
+  return _.countable._hasCardinal( src, cardinal );
+  return _.props._hasCardinal( src, cardinal );
+}
+
+//
+
+function _keyWithCardinal( src, cardinal )
+{
+  if( _.countable.is( src ) )
+  return _.countable._keyWithCardinal( src, cardinal );
+  return _.props._keyWithCardinal( src, cardinal );
+}
+
+//
+
+function _cardinalWithKey( src, key )
+{
+  if( _.countable.is( src ) )
+  return _.countable._cardinalWithKey( src, key );
+  return _.props._cardinalWithKey( src, key );
+}
+
+// --
+// elementor
+// --
+
+function _elementWithKey( src, key )
+{
+  if( _.number.is( key ) )
+  return _.countable._elementWithKey( src, key );
+  return _.props._elementWithKey( src, key );
+}
+
+//
+
+function _elementWithCardinal( src, cardinal )
+{
+  if( _.countable.is( src ) )
+  return _.countable._elementWithCardinal( src, cardinal );
+  return _.props._elementWithCardinal( src, cardinal );
+}
+
+//
+
+function _elementWithKeySet( dst, key, val )
+{
+  if( _.number.is( key ) )
+  return _.countable._elementWithKeySet( dst, key, val );
+  return _.props._elementWithKeySet( dst, key, val );
+}
+
+//
+
+function _elementWithCardinalSet( dst, cardinal, val )
+{
+  if( _.countable.is( dst ) )
+  return _.countable._elementWithCardinalSet( dst, cardinal, val );
+  return _.props._elementWithCardinalSet( dst, cardinal, val );
+}
+
+//
+
+function _elementWithKeyDel( dst, key )
+{
+  if( _.number.is( key ) )
+  return _.countable._elementWithKeyDel( dst, key );
+  return _.props._elementWithKeyDel( dst, key );
+}
+
+//
+
+function _elementWithCardinalDel( dst, cardinal )
+{
+  if( _.countable.is( dst ) )
+  return _.countable._elementWithCardinalDel( dst, cardinal );
+  return _.props._elementWithCardinalDel( dst, cardinal );
+}
+
+//
+
+function _empty( dst )
+{
+  if( _.countable.is( dst ) )
+  return _.countable._empty( dst );
+  return _.props._empty( dst );
+}
+
+// --
+// iterator
+// --
+
+function _eachLeft( src, onEach )
+{
+  if( _.countable.is( src ) )
+  return _.countable._eachLeft( src, onEach );
+  return _.props._eachLeft( src, onEach );
+}
+
+//
+
+function _eachRight( src, onEach )
+{
+  if( _.countable.is( src ) )
+  return _.countable._eachRight( src, onEach );
+  return _.props._eachRight( src, onEach );
+}
+
+//
+
+function _whileLeft( src, onEach )
+{
+  if( _.countable.is( src ) )
+  return _.countable._whileLeft( src, onEach );
+  return _.props._whileLeft( src, onEach );
+}
+
+//
+
+function _whileRight( src, onEach )
+{
+  if( _.countable.is( src ) )
+  return _.countable._whileRight( src, onEach );
+  return _.props._whileRight( src, onEach );
+}
+
+//
+
+function _filterAct0( dst, src, ... args )
+{
+  if( _.countable.is( src ) )
+  return _.countable._filterAct0( dst, src, ... args );
+  return _.props._filterAct0( dst, src, ... args );
+}
+
+//
+
+function _mapAct0( dst, src, ... args )
+{
+  if( _.countable.is( src ) )
+  return _.countable._mapAct0( dst, src, ... args );
+  return _.props._mapAct0( dst, src, ... args );
 }
 
 // --
@@ -122,100 +259,102 @@ let ObjectExtension =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
-  _equivalentShallow,
-  equivalentShallow,
-  equivalent : equivalentShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
+  _equivalentShallow : _identicalShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
 
   // exporter
 
-  _exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  _exportStringShallowCode : _exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
+  exportString : _.props.exportString,
 
-  // container interface
+  // inspector
 
-  /* xxx : qqq : implement routines. should be if countable else blank */
+  _lengthOf,
+  lengthOf : _.props.lengthOf, /* qqq : cover */
+  _hasKey,
+  hasKey : _.props.hasKey, /* qqq : cover */
+  _hasCardinal,
+  hasCardinal : _.props.hasCardinal, /* qqq : cover */
+  _keyWithCardinal,
+  keyWithCardinal : _.props.keyWithCardinal, /* qqq : cover */
+  _cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
 
-  _lengthOf : _.blank._lengthOf,
-  lengthOf : _.blank.lengthOf, /* qqq : cover */
+  // elementor
 
-  _hasKey : _.blank._hasKey,
-  hasKey : _.blank._hasKey, /* qqq : cover */
-  _hasCardinal : _.blank._hasKey,
-  hasCardinal : _.blank._hasKey, /* qqq : cover */
-  _keyWithCardinal : _.blank._hasKey,
-  keyWithCardinal : _.blank._hasKey, /* qqq : cover */
+  _elementGet : _elementWithKey,
+  elementGet : _.props.elementGet, /* qqq : cover */
+  _elementWithKey,
+  elementWithKey : _.props.elementWithKey, /* qqq : cover */
+  _elementWithImplicit : _.props._elementWithImplicit,
+  elementWithImplicit : _.props.elementWithImplicit,  /* qqq : cover */
+  _elementWithCardinal,
+  elementWithCardinal : _.props.elementWithCardinal,  /* qqq : cover */
 
-  _elementGet : _.blank._elementWithKey,
-  elementGet : _.blank.elementWithKey, /* qqq : cover */
-  _elementWithKey : _.blank._elementWithKey,
-  elementWithKey : _.blank.elementWithKey, /* qqq : cover */
-  _elementWithImplicit : _.blank._elementWithImplicit,
-  elementWithImplicit : _.blank.elementWithImplicit,  /* qqq : cover */
-  _elementWithCardinal : _.blank._elementWithCardinal,
-  elementWithCardinal : _.blank.elementWithCardinal,  /* qqq : cover */
+  _elementSet : _elementWithKeySet,
+  elementSet : _.props.elementSet, /* qqq : cover */
+  _elementWithKeySet,
+  elementWithKeySet : _.props.elementWithKeySet, /* qqq : cover */
+  _elementWithCardinalSet,
+  elementWithCardinalSet : _.props.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementSet : _.blank._elementSet,
-  elementSet : _.blank.elementSet, /* qqq : cover */
-  _elementWithKeySet : _.blank._elementWithKeySet,
-  elementWithKeySet : _.blank.elementWithKeySet, /* qqq : cover */
-  _elementWithCardinalSet : _.blank._elementWithCardinalSet,
-  elementWithCardinalSet : _.blank.elementWithCardinalSet,  /* qqq : cover */
+  _elementDel : _elementWithKeyDel,
+  elementDel : _.props.elementDel, /* qqq : cover */
+  _elementWithKeyDel,
+  elementWithKeyDel : _.props.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel,
+  elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
+  _empty,
+  empty : _.props.empty, /* qqq : for junior : cover */
 
-  _elementDel : _.blank._elementDel,
-  elementDel : _.blank.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.blank._elementWithKeyDel,
-  elementWithKeyDel : _.blank.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.blank._elementWithCardinalDel,
-  elementWithCardinalDel : _.blank.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.props._empty,
-  empty : _.props.empty, /* qqq : for Yevhen : cover */
+  // iterator
 
-  _each : _.blank._each,
-  each : _.blank.each, /* qqq : cover */
-  _eachLeft : _.blank._eachLeft,
-  eachLeft : _.blank.eachLeft, /* qqq : cover */
-  _eachRight : _.blank._eachRight,
-  eachRight : _.blank.eachRight, /* qqq : cover */
+  _each : _eachLeft,
+  each : _.props.each, /* qqq : cover */
+  _eachLeft,
+  eachLeft : _.props.eachLeft, /* qqq : cover */
+  _eachRight,
+  eachRight : _.props.eachRight, /* qqq : cover */
 
-  _while : _.blank._while,
-  while : _.blank.while, /* qqq : cover */
-  _whileLeft : _.blank._whileLeft,
-  whileLeft : _.blank.whileLeft, /* qqq : cover */
-  _whileRight : _.blank._whileRight,
-  whileRight : _.blank.whileRight, /* qqq : cover */
+  _while : _whileLeft,
+  while : _.props.while, /* qqq : cover */
+  _whileLeft,
+  whileLeft : _.props.whileLeft, /* qqq : cover */
+  _whileRight,
+  whileRight : _.props.whileRight, /* qqq : cover */
 
-  _aptLeft : _.blank._aptLeft,
-  aptLeft : _.blank.aptLeft, /* qqq : cover */
-  first : _.blank.first,
-  _aptRight : _.blank._aptRight, /* qqq : cover */
-  aptRight : _.blank.aptRight,
-  last : _.blank.last, /* qqq : cover */
+  _aptLeft : _.props._aptLeft,
+  aptLeft : _.props.aptLeft, /* qqq : cover */
+  first : _.props.first,
+  _aptRight : _.props._aptRight, /* qqq : cover */
+  aptRight : _.props.aptRight,
+  last : _.props.last, /* qqq : cover */
 
-  _filter : _.blank._filter,
-  filterWithoutEscapeLeft : _.blank.filterWithoutEscapeLeft,
-  filterWithoutEscapeRight : _.blank.filterWithoutEscapeRight,
-  filterWithoutEscape : _.blank.filterWithoutEscape,
-  filterWithEscapeLeft : _.blank.filterWithEscapeLeft,
-  filterWithEscapeRight : _.blank.filterWithEscapeRight,
-  filterWithEscape : _.blank.filterWithEscape,
-  filter : _.blank.filter,
+  _filterAct0,
+  _filterAct1 : _.props._filterAct1,
+  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  filterWithoutEscape : _.props.filterWithoutEscape,
+  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  filterWithEscapeRight : _.props.filterWithEscapeRight,
+  filterWithEscape : _.props.filterWithEscape,
+  filter : _.props.filter,
 
-  _map : _.blank._map,
-  mapWithoutEscapeLeft : _.blank.mapWithoutEscapeLeft,
-  mapWithoutEscapeRight : _.blank.mapWithoutEscapeRight,
-  mapWithoutEscape : _.blank.mapWithoutEscape,
-  mapWithEscapeLeft : _.blank.mapWithEscapeLeft,
-  mapWithEscapeRight : _.blank.mapWithEscapeRight,
-  mapWithEscape : _.blank.mapWithEscape,
-  map : _.blank.map,
+  _mapAct0,
+  _mapAct1 : _.props._mapAct1,
+  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  mapWithoutEscape : _.props.mapWithoutEscape,
+  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  mapWithEscapeRight : _.props.mapWithEscapeRight,
+  mapWithEscape : _.props.mapWithEscape,
+  map : _.props.map,
 
 }
 

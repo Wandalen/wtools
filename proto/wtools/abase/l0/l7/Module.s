@@ -1030,8 +1030,8 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
 // file path
 // --
 
-/* xxx : qqq : for Yevhen : cover _.module.fileNativeIs() */
-/* qqq : for Yevhen : cover */
+/* xxx : qqq : for junior : cover _.module.fileNativeIs() */
+/* qqq : for junior : cover */
 function path_head( routine, args )
 {
 
@@ -1542,6 +1542,9 @@ function _fileResolve( o )
     let sourcePath = o.sourcePaths[ a ];
     let resolved;
 
+    if( _.strHas( sourcePath, '/Main.s' ) )
+    debugger;
+
     resolved = nativeResolve( sourcePath );
     if( resolved === undefined && o.withAlternatives )
     {
@@ -1979,7 +1982,7 @@ function _trackingEnable()
     if( moduleFile.status !== -1 )
     {
       moduleFile.status = 2;
-      _.assert( Object.is( moduleFile.returned, native.exports ) );
+      // _.assert( Object.is( moduleFile.returned, native.exports ) );
     }
 
     return result;
@@ -2088,7 +2091,7 @@ Object.defineProperty( ModuleFile.prototype, ModuleFileSymbol,
   value : true,
 });
 
-/* xxx : qqq : for Yevhen : cover */
+/* xxx : qqq : for junior : cover */
 Object.defineProperty( ModuleFile.prototype, 'returned',
 {
   enumerable : true,

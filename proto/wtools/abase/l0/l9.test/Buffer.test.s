@@ -62,13 +62,13 @@ function bufferBut_DstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0, without ins';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, [ 0, 0 ] );
-  test.identical( got, [ 2, 3, 4 ] );
+  test.identical( got, new F32x([ 2, 3, 4 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ], ins';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferBut_( dst, [ 0, -1 ], [ 1, 2 ] );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, new F32x([ 1, 2 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, range - undefined, ins';
@@ -1543,7 +1543,7 @@ function bufferOnly_DstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferOnly_( dst, [ 0, 0 ] );
-  test.identical( got, [ 1 ] );
+  test.identical( got, new F32x([ 1 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ]';
@@ -3159,7 +3159,7 @@ function bufferGrow_( test )
   test.case = 'dst = argumentsArray, val = array';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, [ 1, 4 ], [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
+  test.identical( got, new F32x([ 1, 2, 3, 4, 2 ]) );
   test.true( got !== dst );
 
   /* BufferTyped and BufferNode */
@@ -4749,7 +4749,7 @@ function bufferRelength_DstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, -5, [ 2 ] );
-  test.identical( got, [] );
+  test.identical( got, new F32x( [] ) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
@@ -4761,7 +4761,7 @@ function bufferRelength_DstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, [ 1, 4 ], [ 2 ] );
-  test.identical( got, [ 2, 3, 4, [ 2 ] ] );
+  test.identical( got, new F32x([ 2, 3, 4, 2 ]) );
   test.true( got !== dst );
 
   /* - */
@@ -6167,19 +6167,19 @@ function bufferReusingButDstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0, without ins';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingBut( dst, [ 0, 0 ] );
-  test.identical( got, [ 2, 3, 4, undefined, undefined, undefined, undefined, undefined ] );
+  test.identical( got, new F32x([ 2, 3, 4, 0, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ], ins';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferReusingBut( dst, [ 0, -1 ], [ 1, 2 ] );
-  test.identical( got, [ 1, 2, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  test.identical( got, new F32x([ 1, 2, 0, 0, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, range - undefined, ins';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingBut( dst, undefined, [ 1, 2 ] );
-  test.identical( got, [ 1, 2, 1, 2, 3, 4, undefined, undefined ] );
+  test.identical( got, new F32x([ 1, 2, 1, 2, 3, 4, 0, 0 ]) );
   test.true( got !== dst );
 
   /* - */
@@ -7132,21 +7132,21 @@ function bufferReusingOnlyDstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingOnly( dst, [ 0, 0 ] );
-  var exp = [ 1, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  var exp = new F32x([ 1, 0, 0, 0, 0, 0, 0, 0 ]);
   test.identical( got, exp );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ]';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferReusingOnly( dst, [ 0, -1 ] );
-  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  var exp = new F32x( 8 );
   test.identical( got, exp );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingOnly( dst );
-  var exp = [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ]
+  var exp = new F32x([ 1, 2, 3, 4, 0, 0, 0, 0 ]);
   test.identical( got, exp );
   test.true( got !== dst );
 
@@ -8093,19 +8093,19 @@ function bufferReusingGrowDstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, val = array, range = negative number';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingGrow( dst, dst, -5, 0 );
-  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.identical( got, new F32x([ 1, 2, 3, 4, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferReusingGrow( dst, dst, [ 0, -1 ], 0 );
-  test.identical( got, [ 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  test.identical( got, new F32x( 8 ) );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, val = array';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingGrow( dst, dst, [ 1, 4 ], 0 );
-  test.identical( got, [ 1, 2, 3, 4, 0, 0, 0, 0 ] );
+  test.identical( got, new F32x([ 1, 2, 3, 4, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   /* - */
@@ -9045,19 +9045,19 @@ function bufferReusingRelengthDstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingRelength( dst, dst, -5, 2 );
-  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.identical( got, new F32x([ 2, 2, 2, 2, 2, 2, 2, 2 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferReusingRelength( dst, dst, [ 0, -1 ], 2 );
-  test.identical( got, [ 2, 2, 2, 2, 2, 2, 2, 2 ] );
+  test.identical( got, new F32x([ 2, 2, 2, 2, 2, 2, 2, 2 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingRelength( dst, dst, [ 1, 4 ], 2 );
-  test.identical( got, [ 2, 3, 4, 2, 2, 2, 2, 2 ] );
+  test.identical( got, new F32x([ 2, 3, 4, 2, 2, 2, 2, 2 ]) );
   test.true( got !== dst );
 
   /* - */
@@ -12113,7 +12113,7 @@ function bufferLeft( test )
   [
     I8x,
     // U8x,
-    // U8ClampedX,
+    // U8xClamped,
     // I16x,
     U16x,
     // I32x,

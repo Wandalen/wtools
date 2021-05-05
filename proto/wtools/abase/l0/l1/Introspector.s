@@ -31,7 +31,7 @@ let Location =
 // implementation
 // --
 
-/* qqq : for Yevhen : write performance test for this
+/* qqq : for junior : write performance test for this
 let basePath = _.path.dir( _.introspector.location({ level : 2 }).filePath )
 qqq : make it super optimal
 qqq : implement routine _.introspector.dirPathOf( 2 );

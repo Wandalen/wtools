@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.number = _.number || Object.create( null );
 
 // --
 // number

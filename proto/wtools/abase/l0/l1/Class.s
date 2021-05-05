@@ -22,7 +22,7 @@ function methodIteratorOf( src )
 
 //
 
-/* qqq : for Yevhen : cover */
+/* qqq : for junior : cover */
 function methodEqualOf( src )
 {
   if( !src )
@@ -36,7 +36,7 @@ function methodEqualOf( src )
 
 //
 
-/* qqq : for Yevhen : cover */
+/* qqq : for junior : cover */
 function methodExportStringOf( src )
 {
   if( !src )
@@ -50,7 +50,7 @@ function methodExportStringOf( src )
 
 //
 
-/* qqq : for Yevhen : cover */
+/* qqq : for junior : cover */
 function methodCloneShallowOf( src )
 {
   if( !src )
@@ -64,7 +64,7 @@ function methodCloneShallowOf( src )
 
 //
 
-/* qqq : for Yevhen : cover */
+/* qqq : for junior : cover */
 function methodCloneDeepOf( src )
 {
   if( !src )

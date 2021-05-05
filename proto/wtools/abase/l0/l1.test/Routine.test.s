@@ -69,7 +69,7 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routine.is( new Map( [] ) );
+  var got = _.routine.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
@@ -194,7 +194,7 @@ function like( test )
   test.identical( got, false );
 
   test.case = 'Map';
-  var got = _.routine.like( new Map( [] ) );
+  var got = _.routine.like( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
@@ -1850,6 +1850,358 @@ function optionsWithUndefined( test )
     test.equivalent( err.originalMessage, msg );
   };
   test.shouldThrowErrorSync( () => _.routine.optionsWithUndefined( testRoutine, {} ), errCallback );
+
+}
+
+//
+
+function optionsWithUndefinedTollerant( test )
+{
+  test.case = 'args - empty map, defaults - empty map';
+  var testRoutine = () => true;
+  var defaults = {};
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, {} );
+  test.true( got === options );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 0, defaults - empty map';
+  var testRoutine = () => true;
+  var defaults = {};
+  var options = [];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, {} );
+  test.identical( options, [] );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 1 - empty map, defaults - empty map';
+  var testRoutine = () => true;
+  var defaults = {};
+  var options = [ {} ];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, {} );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== defaults );
+
+  test.case = 'args - empty map, routine.defaults - empty map';
+  var testRoutine = () => true;
+  testRoutine.defaults = {};
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, {} );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 0, routine.defaults - empty map';
+  var testRoutine = () => true;
+  testRoutine.defaults = {};
+  var options = [];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, {} );
+  test.identical( options, [] );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 1 - empty map, defaults - empty map';
+  var testRoutine = () => true;
+  testRoutine.defaults = {};
+  var options = [ {} ];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, {} );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== testRoutine.defaults );
+
+  /* */
+
+  test.case = 'args - empty map, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.true( got === options );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 0, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = [];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.identical( options, [] );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 1 - empty map, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = [ {} ];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== defaults );
+
+  test.case = 'args - empty map, routine.defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 0, routine.defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = [];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.identical( options, [] );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 1 - empty map, defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = [ {} ];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : null, b : 1 } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== testRoutine.defaults );
+
+  /* */
+
+  test.case = 'args - map with undefined, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = { a : undefined, b : undefined };
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : undefined, b : undefined } );
+  test.true( got === options );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 1 - map with undefined, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = [ { a : undefined, b : undefined } ];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : undefined, b : undefined } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== defaults );
+
+  test.case = 'args - map with undefined, routine.defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = { a : undefined, b : undefined };
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : undefined, b : undefined } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 1 - map with undefined, defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = [ { a : undefined, b : undefined } ];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : undefined, b : undefined } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== testRoutine.defaults );
+
+  /* */
+
+  test.case = 'args - map with undefine JS value, but not undefined, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = { a : 0, b : '' };
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : 0, b : '' } );
+  test.true( got === options );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 1 - map with undefine JS value, but not undefined, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = [ { a : 0, b : '' } ];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : 0, b : '' } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== defaults );
+
+  test.case = 'args - map with undefine JS value, but not undefined, routine.defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = { a : 0, b : '' };
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : 0, b : '' } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 1 - map with undefine JS value, but not undefined, defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = [ { a : 0, b : '' } ];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : 0, b : '' } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== testRoutine.defaults );
+
+  /* */
+
+  test.case = 'args - map with defined values, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = { a : true, b : 'b' };
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : true, b : 'b' } );
+  test.true( got === options );
+  test.true( got !== defaults );
+
+  test.case = 'args.length === 1 - map with defined values, defaults - map with options';
+  var testRoutine = () => true;
+  var defaults = { a : null, b : 1 };
+  var options = [ { a : true, b : 'b' } ];
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults : defaults }, options );
+  test.identical( got, { a : true, b : 'b' } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== defaults );
+
+  test.case = 'args - map with defined values, routine.defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = { a : true, b : 'b' };
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : true, b : 'b' } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'args.length === 1 - map with defined values, defaults - map with options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : null, b : 1 };
+  var options = [ { a : true, b : 'b' } ];
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : true, b : 'b' } );
+  test.identical( options.length, 1 );
+  test.true( got === options[ 0 ] );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'undefined default. map';
+  var defaults = { known : undefined };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults }, options );
+  test.identical( got, { known : undefined } );
+  test.true( got === options );
+
+  test.case = 'undefined default. routine';
+  var testRoutine = () => true;
+  testRoutine.defaults = { known : undefined };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { known : undefined } );
+  test.true( got === options );
+
+  test.case = 'regexp in defaults';
+  var testRoutine = () => true;
+  testRoutine.defaults = { a : /ab/ };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.identical( got, { a : /ab/ } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'regexp in defaults';
+  var defaults = { a : /ab/ };
+  var options = {};
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults }, options );
+  test.identical( got, { a : /ab/ } );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'defaults has objectLike value';
+  var testRoutine = () => true;
+  var options = {};
+  var defaults = { known : { objectLike : true } };
+  var got = _.routine.optionsWithUndefinedTollerant( { defaults }, options );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  test.case = 'defaults has objectLike value';
+  var testRoutine = () => true;
+  var options = {};
+  testRoutine.defaults = { known : { objectLike : true } };
+  var got = _.routine.optionsWithUndefinedTollerant( testRoutine, options );
+  test.true( got === options );
+  test.true( got !== testRoutine.defaults );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant() );
+
+  test.case = 'not enough arguments';
+  var testRoutine = () => true;
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine ) );
+
+  test.case = 'extra arguments';
+  var testRoutine = () => true;
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, {}, {}, {} ) );
+
+  test.case = 'wrong type of routine';
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( 'wrong', {}, {} ) );
+
+  test.case = 'wrong type of args';
+  var testRoutine = () => true;
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, 'wrong', {} ) );
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, [ 'wrong' ], {} ) );
+
+  test.case = 'wrong type of defaults';
+  var testRoutine = () => true;
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, {}, 'wrong' ) );
+
+  test.case = 'wrong type of defaults';
+  var testRoutine = () => true;
+  testRoutine.defaults = 'wrong';
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, {} ) );
+
+  test.case = 'args.length > 1';
+  var testRoutine = () => true;
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, [ {}, {} ], {} ) );
+
+  test.case = 'options has unknown options';
+  var testRoutine = () => true;
+  var msg = 'Routine "" does not expect options: "unknown", "b"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.error.is( err ) );
+    test.equivalent( err.originalMessage, msg );
+  };
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( { defaults : {} }, { unknown : true, b : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( { defaults : {} }, [ { unknown : true, b : 1 } ] ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( { defaults : { known : 1 } }, { unknown : true, b : 1 } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( { defaults : { known : 1 } }, [ { unknown : true, b : 1 } ] ), errCallback );
+
+  test.case = 'options has unknown options';
+  var testRoutine = () => true;
+  testRoutine.defaults = { known : 1 };
+  var msg = 'Routine "testRoutine" does not expect options: "unknown"';
+  var errCallback = ( err, arg ) =>
+  {
+    test.identical( arg, undefined );
+    test.true( _.error.is( err ) );
+    test.equivalent( err.originalMessage, msg );
+  };
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, { unknown : true } ), errCallback );
+  test.shouldThrowErrorSync( () => _.routine.optionsWithUndefinedTollerant( testRoutine, [ { unknown : true } ] ), errCallback );
 
 }
 
@@ -4079,8 +4431,10 @@ const Proto =
 
     optionsWithoutUndefined, /* qqq : make templating test subroutine act() */
     optionsWithUndefined, /* qqq : make templating test subroutine act() */
+    optionsWithUndefinedTollerant, /* qqq : make templating test subroutine act() */
     assertOptionsWithoutUndefined, /* qqq : make templating test subroutine act() */
     assertOptionsWithUndefined, /* qqq : make templating test subroutine act() */
+
 
     // amend
 

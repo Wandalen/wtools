@@ -17,112 +17,70 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src = { [ Symbol.iterator ] : 1 };
-  var exp = '{- Object -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var exp = '{- Map.polluted -}';
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src = { a : 1 };
   Object.setPrototypeOf( src, { b : 2 } )
   var exp = '{- Aux.polluted.prototyped -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src = Object.create( null );
   var exp = '{- Map.pure -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src = {};
   var exp = '{- Map.polluted -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1, length : 2 });
-  var exp = '{- countableConstructor.countable -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var exp = '{- countableConstructorPolluted.countable -}';
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], withIterator : 1 });
-  var exp = '{- countableConstructor.countable.constructible -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var exp = '{- countableConstructorPolluted.countable.constructible -}';
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [], withIterator : 1 } );
-  var exp = '{- Object.countable -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 } );
+  var exp = '{- countableConstructorPolluted.countable.constructible -}';
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ elements : [ '1', '2', '3' ], withIterator : 1 } );
-  var exp = '{- Object.countable -}';
-  var got = _.blank.exportStringShallowDiagnostic( src );
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var exp = '{- Map.polluted -}';
+  var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.blank.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.blank.exportStringDiagnosticShallow() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.blank.exportStringShallowDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.blank.exportStringDiagnosticShallow( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.countable.exportStringShallowDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( {} ) );
 
-  /* - */
-
-  function _iterate()
-  {
-
-    let iterator = Object.create( null );
-    iterator.next = next;
-    iterator.index = 0;
-    iterator.instance = this;
-    return iterator;
-
-    function next()
-    {
-      let result = Object.create( null );
-      result.done = this.index === this.instance.elements.length;
-      if( result.done )
-      return result;
-      result.value = this.instance.elements[ this.index ];
-      this.index += 1;
-      return result;
-    }
-
-  }
-
-  /* */
-
-  function countableConstructor( o )
-  {
-    return countableMake( this, o );
-  }
-
-  /* */
-
-  function countableMake( dst, o )
-  {
-    if( dst === null )
-    dst = Object.create( null );
-    _.props.extend( dst, o );
-    if( o.withIterator )
-    dst[ Symbol.iterator ] = _iterate;
-    return dst;
-  }
 }
 
 //
@@ -136,9 +94,7 @@ function identicalShallow( test )
   test.identical( got, true );
 
   test.case = 'same values';
-  debugger;
   var got = _.blank.identicalShallow( { a : 7, b : 13 }, { a : 7, b : 13 } );
-  debugger;
   var exp = false;
   test.identical( got, exp );
 
@@ -360,7 +316,7 @@ const Proto =
   tests :
   {
 
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
     identicalShallow,
 
     aptLeftItself,

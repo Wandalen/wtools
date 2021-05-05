@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-function checks( test ) /* qqq for Yevhen : extend */
+function checks( test ) /* qqq for junior : extend */
 {
 
   /* */
@@ -89,43 +89,43 @@ function hasLength( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
   test.case = 'array empty';
   var src = [];
   var expected = '{- Array with 0 elements -}';
-  var got = _.vector.exportStringShallowDiagnostic( src );
+  var got = _.vector.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'array non-empty';
   var src = [ 1, 2, 3 ];
   var expected = '{- Array with 3 elements -}';
-  var got = _.vector.exportStringShallowDiagnostic( src );
+  var got = _.vector.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'unroll empty';
   var src = _.unroll.make([]);
   var expected = '{- Array.unroll with 0 elements -}';
-  var got = _.vector.exportStringShallowDiagnostic( src );
+  var got = _.vector.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'unroll non-empty';
   var src = _.unroll.make([ 1, 2, 3 ]);
   var expected = '{- Array.unroll with 3 elements -}';
-  var got = _.vector.exportStringShallowDiagnostic( src );
+  var got = _.vector.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'without argument';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.vector.exportStringDiagnosticShallow() );
 
   test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic( [], [] ) );
+  test.shouldThrowErrorSync( () => _.vector.exportStringDiagnosticShallow( [], [] ) );
 
   test.case = 'wrong type';
-  test.shouldThrowErrorSync( () => _.vector.exportStringShallowDiagnostic( {} ) );
+  test.shouldThrowErrorSync( () => _.vector.exportStringDiagnosticShallow( {} ) );
 }
 
 // --
@@ -142,7 +142,7 @@ const Proto =
   {
     checks,
     hasLength,
-    exportStringShallowDiagnostic
+    exportStringDiagnosticShallow
   }
 
 }

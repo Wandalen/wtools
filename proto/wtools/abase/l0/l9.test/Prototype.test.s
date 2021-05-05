@@ -75,7 +75,7 @@ function is( test ) /* qqq : merge test wProto/prototypeIs in this one | Dmytro 
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.prototype.is( new Map( [] ) );
+  var got = _.prototype.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -282,7 +282,7 @@ function prototypeOf( test )
   test.identical( got, true );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
+  var src = new HashMap( [ [ 1, 1 ] ] );
   var got = prototypeOf( src, src );
   test.identical( got, true );
 
@@ -385,7 +385,7 @@ function prototypeOf( test )
   test.identical( got, false );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
+  var src = new HashMap( [ [ 1, 1 ] ] );
   var got = prototypeOf( null, src );
   test.identical( got, false );
 
@@ -693,7 +693,7 @@ function has( test )
   test.identical( got, true );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
+  var src = new HashMap( [ [ 1, 1 ] ] );
   var got = _.prototype.has( src, src );
   test.identical( got, true );
 
@@ -796,7 +796,7 @@ function has( test )
   test.identical( got, false );
 
   test.case = 'check HashMap';
-  var src = new Map( [ [ 1, 1 ] ] );
+  var src = new HashMap( [ [ 1, 1 ] ] );
   var got = _.prototype.has( null, src );
   test.identical( got, false );
 

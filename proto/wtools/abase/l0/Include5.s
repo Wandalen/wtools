@@ -41,6 +41,7 @@ if( typeof module !== 'undefined' )
   require( './l5/Object.s' );
   require( './l5/Pair.s' );
   require( './l5/Path.s' );
+  require( './l5/Permutation.s' );
   require( './l5/Primitive.s' );
   require( './l5/Printer.s' );
   require( './l5/Process.s' );

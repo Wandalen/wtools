@@ -6,8 +6,10 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( _.symbolIs( _.symbol.prototype ) );
-_.assert( _.symbolIs( _.symbol.constructor ) );
+_.escape.escaped = _.escape.escaped || Object.create( null );
+
+// _.assert( _.symbolIs( _.symbol.prototype ) );
+// _.assert( _.symbolIs( _.symbol.constructor ) );
 
 // --
 // implementation
@@ -118,14 +120,14 @@ var Extension =
 //
 
 _.props.supplement( _.escape, Extension );
-_.escape.nothing = _.escape.wrap( _.nothing );
-_.escape.null = _.escape.wrap( _.null );
-_.escape.undefined = _.escape.wrap( _.undefined );
+_.escape.escaped.nothing = _.escape.wrap( _.nothing );
+_.escape.escaped.null = _.escape.wrap( _.null );
+_.escape.escaped.undefined = _.escape.wrap( _.undefined );
 
 _.escape._EscapeMap = new HashMap();
-_.escape._EscapeMap.set( _.nothing, _.escape.nothing );
-_.escape._EscapeMap.set( _.null, _.escape.null );
-_.escape._EscapeMap.set( _.undefined, _.escape.undefined );
+_.escape._EscapeMap.set( _.nothing, _.escape.escaped.nothing );
+_.escape._EscapeMap.set( _.null, _.escape.escaped.null );
+_.escape._EscapeMap.set( _.undefined, _.escape.escaped.undefined );
 _.escape._EscapeMap.set( undefined, _.undefined );
 _.escape._EscapeMap.set( null, _.null );
 

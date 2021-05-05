@@ -11,13 +11,13 @@ const _functor_functor = _.container._functor_functor;
 // exporter
 // --
 
-function _exportStringShallowDiagnostic( src, o )
+function _exportStringDiagnosticShallow( src, o )
 {
   let result;
   let namespace = this.namespaceForEntity( src );
 
   if( namespace )
-  result = namespace.exportStringShallowDiagnostic( src );
+  result = namespace.exportStringDiagnosticShallow( src );
   else
   result = _.strShort_( String( src ) ).result;
 
@@ -26,26 +26,78 @@ function _exportStringShallowDiagnostic( src, o )
 
 //
 
-function exportStringShallowDiagnostic( src, o )
+function exportStringDiagnosticShallow( src, o )
 {
   let result;
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
   _.assert( this.like( src ) );
-  return this._exportStringShallowDiagnostic( ... arguments );
+  return this._exportStringDiagnosticShallow( ... arguments );
 }
+
+// --
+//
+// --
+
+function lengthOf( src ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 1 );
+  return lengthOf.functor.call( this, src )();
+}
+
+lengthOf.functor = _functor_functor( 'lengthOf' );
+
+//
+
+function hasKey( src, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return hasKey.functor.call( this, src )( ... args );
+}
+
+hasKey.functor = _functor_functor( 'hasKey' );
+
+//
+
+function hasCardinal( src, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return hasCardinal.functor.call( this, src )( ... args );
+}
+
+hasCardinal.functor = _functor_functor( 'hasCardinal' );
+
+//
+
+function keyWithCardinal( src, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return keyWithCardinal.functor.call( this, src )( ... args );
+}
+
+keyWithCardinal.functor = _functor_functor( 'keyWithCardinal' );
+
+//
+
+function cardinalWithKey( src, ... args ) /* qqq for junior : cover please */
+{
+  _.assert( arguments.length === 2 );
+  return cardinalWithKey.functor.call( this, src )( ... args );
+}
+
+cardinalWithKey.functor = _functor_functor( 'cardinalWithKey' );
 
 // --
 // editor
 // --
 
 /**
- * The routine empty() clears provided container {-dstContainer-}.
+ * The routine empty() clears provided src {-dstContainer-}.
  *
  * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
  *
  * @example
  * let dst = [];
- * let got = _.container.empty( dst );
+ * let got = _.src.empty( dst );
  * console.log( got );
  * // log []
  * console.log( got === dst );
@@ -53,7 +105,7 @@ function exportStringShallowDiagnostic( src, o )
  *
  * @example
  * let dst = [ 1, 'str', { a : 2 } ];
- * let got = _.container.empty( dst );
+ * let got = _.src.empty( dst );
  * console.log( got );
  * // log []
  * console.log( got === dst );
@@ -61,7 +113,7 @@ function exportStringShallowDiagnostic( src, o )
  *
  * @example
  * let dst = _.unroll.make( [ 1, 'str', { a : 2 } ] );
- * let got = _.container.empty( dst );
+ * let got = _.src.empty( dst );
  * console.log( got );
  * // log []
  * console.log( got === dst );
@@ -69,15 +121,15 @@ function exportStringShallowDiagnostic( src, o )
  *
  * @example
  * let dst = new Set( [ 1, 'str', { a : 2 } ] );
- * let got = _.container.empty( dst );
+ * let got = _.src.empty( dst );
  * console.log( got );
  * // log Set {}
  * console.log( got === dst );
  * // log true
  *
  * @example
- * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
- * let got = _.container.empty( dst );
+ * let dst = new HashMap( [ [ 1, 'str' ], [ 'a', null ] ] );
+ * let got = _.src.empty( dst );
  * console.log( got );
  * // log Map {}
  * console.log( got === dst );
@@ -91,73 +143,61 @@ function exportStringShallowDiagnostic( src, o )
  * @namespace Tools
  */
 
-function empty( container ) /* qqq for junior : cover please */
+function empty( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
-  return empty.functor.call( this, container )();
+  return empty.functor.call( this, src )();
 }
 
 empty.functor = _functor_functor( 'empty' );
 
-// --
-//
-// --
-
-function lengthOf( container ) /* qqq for junior : cover please */
-{
-  _.assert( arguments.length === 1 );
-  return lengthOf.functor.call( this, container )();
-}
-
-lengthOf.functor = _functor_functor( 'lengthOf' );
-
 //
 
 /**
- * The routine elementWithCardinal() searches for value under a certain index {-key-} in a container {-container-}
+ * The routine elementWithCardinal() searches for value under a certain index {-key-} in a src {-src-}
  * and returns array with value, key, booLike.
  *
- * @param { Long|Set|HashMap|Aux } container - input container.
- * @param { Number } key - index to be looked in a container.
+ * @param { Long|Set|HashMap|Aux } src - input src.
+ * @param { Number } key - index to be looked in a src.
  *
  * @example
  * var src = { a : 1, b : 2 };
- * var got = _.container.elementWithCardinal( src, 0 );
+ * var got = _.src.elementWithCardinal( src, 0 );
  * console.log( got );
  * // log : [ 1, 'a', true ]
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementWithCardinal( src, 2 );
+ * var got = _.src.elementWithCardinal( src, 2 );
  * console.log( got );
  * // log : [ 3, 2, true ]
  *
  * @example
  * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
- * var got = _.container.elementWithCardinal( src, 1 );
+ * var got = _.src.elementWithCardinal( src, 1 );
  * console.log( got )
  * // log : [ false, true, true ] );
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementWithCardinal( src, 5 );
+ * var got = _.src.elementWithCardinal( src, 5 );
  * console.log( got );
  * // log : [ undefined, 5, false ]
  *
- * @returns { Long } - with 3 elements : value ( undefined if index {-key-} is more or less than container's length ), key, boolLike ( true if index {-key-} is within container's length, false otherwise ).
+ * @returns { Long } - with 3 elements : value ( undefined if index {-key-} is more or less than src's length ), key, boolLike ( true if index {-key-} is within src's length, false otherwise ).
  * @function elementWithCardinal
  * @throws { Error } If arguments.length is not equal to 2.
  * @throws { Error } If {-key-} is not Number.
  * @namespace Tools
  */
 
-function elementWithCardinal( container, key ) /* qqq for junior : cover please | aaa : Done. */
+function elementWithCardinal( src, key ) /* qqq for junior : cover please | aaa : Done. */
 {
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( key ) );
   if( !_.numberIs( key ) || key < 0 )
   return [ undefined, key, false ];
-  return elementWithCardinal.functor.call( this, container )( key );
+  return elementWithCardinal.functor.call( this, src )( key );
 }
 
 elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
@@ -165,33 +205,33 @@ elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
 //
 
 /**
- * The routine elementWithKey() searches for value under a certain {-key-} in a container {-container-}
+ * The routine elementWithKey() searches for value under a certain {-key-} in a src {-src-}
  * and returns array with value, key, booLike.
  *
- * @param { Long|Set|HashMap|Aux } container - input container.
- * @param { * } key - key to be looked in a container.
+ * @param { Long|Set|HashMap|Aux } src - input src.
+ * @param { * } key - key to be looked in a src.
  *
  * @example
  * var src = { a : 1, b : 2 };
- * var got = _.container.elementWithKey( src, 'a' );
+ * var got = _.src.elementWithKey( src, 'a' );
  * console.log( got );
  * // log : [ 1, 'a', true ]
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementWithKey( src, 2 );
+ * var got = _.src.elementWithKey( src, 2 );
  * console.log( got );
  * // log : [ 3, 2, true ]
  *
  * @example
  * var src = new HashMap([ [ 'a', 1 ], [ true, false ], [ objRef, { a : 2 } ] ]);
- * var got = _.container.elementWithKey( src, true );
+ * var got = _.src.elementWithKey( src, true );
  * console.log( got )
  * // log : [ false, true, true ] );
  *
  * @example
  * var src = [ 1, 2, 3 ];
- * var got = _.container.elementWithKey( src, 5 );
+ * var got = _.src.elementWithKey( src, 5 );
  * console.log( got );
  * // log : [ undefined, 5, false ]
  *
@@ -201,121 +241,185 @@ elementWithCardinal.functor = _functor_functor( 'elementWithCardinal' );
  * @namespace Tools
  */
 
-function elementWithKey( container, key )
+function elementWithKey( src, key )
 {
   _.assert( arguments.length === 2 );
-  return elementWithKey.functor.call( this, container )( key );
+  return elementWithKey.functor.call( this, src )( key );
 }
 
 elementWithKey.functor = _functor_functor( 'elementWithKey' );
 
 //
 
-function elementWithImplicit( container, key )
+function elementWithImplicit( src, key )
 {
   _.assert( arguments.length === 2 );
-  return elementWithImplicit.functor.call( this, container )( key );
+  return elementWithImplicit.functor.call( this, src )( key );
 }
 
 elementWithImplicit.functor = _functor_functor( 'elementWithImplicit' );
 
 //
 
-function elementWithCardinalSet( container, key, val ) /* qqq for junior : cover please | aaa : Done. */
+function elementWithCardinalSet( src, key, val )
 {
   _.assert( arguments.length === 3 );
   _.assert( _.numberIs( key ) );
-  return elementWithCardinalSet.functor.call( this, container )( key, val );
+  return elementWithCardinalSet.functor.call( this, src )( key, val );
 }
 
 elementWithCardinalSet.functor = _functor_functor( 'elementWithCardinalSet' );
 
 //
 
-function elementSet( container, key, val )
+function elementSet( src, key, val )
 {
   _.assert( arguments.length === 3 );
   _.assert( _.numberIs( key ) );
-  return elementSet.functor.call( this, container )( key, val );
+  return elementSet.functor.call( this, src )( key, val );
 }
 
 elementSet.functor = _functor_functor( 'elementSet' );
 
 //
 
-function eachLeft( container, onEach )
+function eachLeft( src, onEach )
 {
   _.assert( arguments.length === 2 );
-  return eachLeft.functor.call( this, container )( onEach );
+  return eachLeft.functor.call( this, src )( onEach );
 }
 
 eachLeft.functor = _functor_functor( 'eachLeft' );
 
 //
 
-function eachRight( container, onEach )
+function eachRight( src, onEach )
 {
   _.assert( arguments.length === 2 );
-  return eachRight.functor.call( this, container )( onEach );
+  return eachRight.functor.call( this, src )( onEach );
 }
 
 eachRight.functor = _functor_functor( 'eachRight' );
 
 //
 
-function whileLeft( container, onEach )
+function whileLeft( src, onEach )
 {
   _.assert( arguments.length === 2 );
-  return whileLeft.functor.call( this, container )( onEach );
+  return whileLeft.functor.call( this, src )( onEach );
 }
 
 whileLeft.functor = _functor_functor( 'whileLeft' );
 
 //
 
-function whileRight( container, onEach )
+function whileRight( src, onEach )
 {
   _.assert( arguments.length === 2 );
-  return whileRight.functor.call( this, container )( onEach );
+  return whileRight.functor.call( this, src )( onEach );
 }
 
 whileRight.functor = _functor_functor( 'whileRight' );
 
 //
 
-function aptLeft( container, onEach )
+function aptLeft( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return aptLeft.functor.call( this, container )( onEach );
+  return aptLeft.functor.call( this, src )( onEach );
 }
 
 aptLeft.functor = _functor_functor( 'aptLeft' );
 
 //
 
-function first( container )
-{
-  _.assert( arguments.length === 1 );
-  return _.container.aptLeft( container );
-}
-
-//
-
-function aptRight( container, onEach )
+function aptRight( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return aptRight.functor.call( this, container )( onEach );
+  return aptRight.functor.call( this, src )( onEach );
 }
 
 aptRight.functor = _functor_functor( 'aptRight' );
 
 //
 
-function last( container )
+function filterWithoutEscapeLeft( dst, src, ... args )
 {
-  _.assert( arguments.length === 1 );
-  return _.container.aptRight( container );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return filterWithoutEscapeLeft.functor.call( this, src )( dst, ... args );
 }
+
+filterWithoutEscapeLeft.functor = _functor_functor( 'filterWithoutEscapeLeft', null, 1 );
+
+//
+
+function filterWithoutEscapeRight( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return filterWithoutEscapeRight.functor.call( this, src )( dst, ... args );
+}
+
+filterWithoutEscapeRight.functor = _functor_functor( 'filterWithoutEscapeRight', null, 1 );
+
+//
+
+function filterWithEscapeLeft( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return filterWithEscapeLeft.functor.call( this, src )( dst, ... args );
+}
+
+filterWithEscapeLeft.functor = _functor_functor( 'filterWithEscapeLeft', null, 1 );
+
+//
+
+function filterWithEscapeRight( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return filterWithEscapeRight.functor.call( this, src )( dst, ... args );
+}
+
+filterWithEscapeRight.functor = _functor_functor( 'filterWithEscapeRight', null, 1 );
+
+//
+
+function mapWithoutEscapeLeft( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return mapWithoutEscapeLeft.functor.call( this, src )( dst, ... args );
+}
+
+mapWithoutEscapeLeft.functor = _functor_functor( 'mapWithoutEscapeLeft', null, 1 );
+
+//
+
+function mapWithoutEscapeRight( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return mapWithoutEscapeRight.functor.call( this, src )( dst, ... args );
+}
+
+mapWithoutEscapeRight.functor = _functor_functor( 'mapWithoutEscapeRight', null, 1 );
+
+//
+
+function mapWithEscapeLeft( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return mapWithEscapeLeft.functor.call( this, src )( dst, ... args );
+}
+
+mapWithEscapeLeft.functor = _functor_functor( 'mapWithEscapeLeft', null, 1 );
+
+//
+
+function mapWithEscapeRight( dst, src, ... args )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return mapWithEscapeRight.functor.call( this, src )( dst, ... args );
+}
+
+mapWithEscapeRight.functor = _functor_functor( 'mapWithEscapeRight', null, 1 );
 
 // --
 // extension
@@ -326,20 +430,23 @@ let ContainerExtension =
 
   // exporter
 
-  _exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  _exportStringShallowCode : _exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportString : exportStringShallowDiagnostic,
-
-  // editor
-
-  empty, /* qqq : cover */
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  exportString : exportStringDiagnosticShallow,
 
   // inspector
 
   lengthOf, /* qqq : cover */
+  hasKey, /* qqq : cover */
+  hasCardinal, /* qqq : cover */
+  keyWithCardinal, /* qqq : cover */
+  cardinalWithKey, /* qqq : cover */
+
+  // editor
+
+  empty, /* qqq : cover */
 
   // elementor
 
@@ -348,6 +455,8 @@ let ContainerExtension =
   elementWithImplicit, /* qqq : cover */
   elementWithCardinalSet, /* qqq : cover */
   elementSet, /* qqq : cover */
+
+  // iterator
 
   each : eachLeft, /* qqq : cover */
   eachLeft, /* qqq : cover */
@@ -358,9 +467,28 @@ let ContainerExtension =
   whileRight, /* qqq : cover */
 
   aptLeft, /* qqq : cover */
-  first, /* qqq : cover */
+  first : aptLeft, /* qqq : cover */
   aptRight, /* qqq : cover */
-  last, /* qqq : cover */
+  last : aptRight, /* qqq : cover */
+
+  filterWithoutEscapeLeft,
+  filterWithoutEscapeRight,
+  filterWithoutEscape : filterWithoutEscapeLeft,
+  filterWithEscapeLeft,
+  filterWithEscapeRight,
+  filterWithEscape : filterWithEscapeLeft,
+  filter : filterWithoutEscapeLeft,
+
+  mapWithoutEscapeLeft,
+  mapWithoutEscapeRight,
+  mapWithoutEscape : mapWithoutEscapeLeft,
+  mapWithEscapeLeft,
+  mapWithEscapeRight,
+  mapWithEscape : mapWithEscapeLeft,
+  map : mapWithoutEscapeLeft,
+
+  // map,
+  // filter,
 
 }
 

@@ -76,7 +76,7 @@ function make( test )
   test.true( got !== src );
 
   test.case = 'src - empty Map';
-  var src = new Map([]);
+  var src = new HashMap([]);
   var got = _.aux.make( src );
   var expected = {};
   test.identical( got, expected );
@@ -84,7 +84,7 @@ function make( test )
   test.true( got !== src );
 
   test.case = 'src - pure map';
-  var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  var src = new HashMap( [ [ 'a', 1 ], [ 2, 2 ] ] );
   var got = _.aux.make( src );
   var expected = { '2' : 2, 'a' : 1 };
   test.identical( got, expected );

@@ -7,99 +7,44 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 // --
-// str
+// exporter
 // --
 
-function strParseType( src )
+function _exportStringDiagnosticShallow( src, o )
 {
-  /*
-    - 'string'
-    - '5'
-    - '5n'
-    - 'null'
-    - 'undefined'
-    - 'Escape( 1 )'
-    - '{- Symbol undefined -}'
-    - '{- routine name -}'
-    - '{- routine.anonymous -}'
-    - '{- Map -}'
-    - '{- Map name -}'
-    - '{- Map with 9 elements -}'
-    - '{- Map.polluted with 9 elements -}'
-    - '{- Map name with 9 elements -}'
-  */
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  if( !( /^{- .+ -}$/g.test( src ) ) )
-  return Object.create( null );
-
-  src = src.slice( 3, -3 );
-
-  return _.entity._strParseType( src );
-
+  return src;
 }
 
 //
 
-function _strParseType( src )
+function exportStringDiagnosticShallow( src, o )
 {
-  /*
-
-  {- with with 2 elements -} 4
-  {- with name with 2 elements -} 5
-  {- with.with with with 2 elements -} 5
-
-  */
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  let o =
-  {
-    type : '',
-    traits : [],
-  }
-
-  let splitted = src.split( ' ' );
-  let type = splitted[ 0 ];
-  let length;
-
-  if( splitted.length === 2 ) /* with name & no length */
-  {
-    o.name = splitted[ 1 ];
-  }
-  else if( splitted.length === 4 ) /* without name & with length */
-  {
-    length = +splitted[ 2 ];
-  }
-  else if( splitted.length === 5 ) /* with name & with length */
-  {
-    o.name = splitted[ 1 ];
-    length = +splitted[ 3 ];
-  }
-
-  length = isNaN( length ) ? null : length;
-
-  if( type.indexOf( '.' ) === -1 )
-  {
-    o.type = type;
-  }
-  else
-  {
-    let [ t, ... traits ] = type.split( '.' );
-    o.type = t;
-    o.traits = traits;
-  }
-
-  if( length !== null )
-  o.length = length;
-
-  return o;
-
+  let result;
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+  _.assert( this.like( src ) );
+  return this._exportStringDiagnosticShallow( ... arguments );
 }
 
+//
+
+function _exportStringCodeShallow( src, o )
+{
+  return `'${src}'`;
+}
 
 //
+
+function exportStringCodeShallow( src, o )
+{
+  let result;
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
+  _.assert( this.like( src ) );
+  return this._exportStringCodeShallow( ... arguments );
+}
+
+// --
+// equaler
+// --
 
 function _identicalShallow( src1, src2 )
 {
@@ -120,34 +65,34 @@ function identicalShallow( src1, src2, accuracy )
 
 //
 
-function _equivalentShallow( src1, src2 )
-{
-  let strIs1 = _.strIs( src1 );
-  let strIs2 = _.strIs( src2 );
-
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  //
-  // if( !strIs1 && strIs2 )
-  // return this._equivalentShallow( src2, src1 );
-
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-
-  if( strIs1 && strIs2 )
-  {
-    /* qqq : for Yevhen : bad | aaa : Fixed. */
-    if( src1 === src2 )
-    return true;
-    return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-  }
-  else
-  {
-    return false;
-    // return _.regexpIdentical( src1, src2 );
-  }
-
-  return false;
-}
+// function _equivalentShallow( src1, src2 )
+// {
+//   let strIs1 = _.strIs( src1 );
+//   let strIs2 = _.strIs( src2 );
+//
+//   // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   //
+//   // if( !strIs1 && strIs2 )
+//   // return this._equivalentShallow( src2, src1 );
+//
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//
+//   if( strIs1 && strIs2 )
+//   {
+//     /* qqq : for junior : bad | aaa : Fixed. */
+//     if( src1 === src2 )
+//     return true;
+//     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+//   }
+//   else
+//   {
+//     return false;
+//     // return _.regexpIdentical( src1, src2 );
+//   }
+//
+//   return false;
+// }
 
 //
 //
@@ -166,7 +111,7 @@ function _equivalentShallow( src1, src2 )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //
@@ -193,12 +138,46 @@ function _equivalentShallow( src1, src2 )
 
 //
 
+function _equivalentShallow( src1, src2 )
+{
+  let strIs1 = _.strIs( src1 );
+  let strIs2 = _.strIs( src2 );
+
+  if( !strIs1 && strIs2 )
+  return this._equivalentShallow( src2, src1 );
+
+  if( strIs1 && strIs2 )
+  {
+    if( src1 === src2 )
+    return true;
+    return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+  }
+  else if( strIs1 )
+  {
+    _.assert( !!src2.exec );
+    let matched = src2.exec( src1 );
+    if( !matched )
+    return false;
+    if( matched[ 0 ].length !== src1.length )
+    return false;
+    return true;
+  }
+  else
+  {
+    return _.regexpIdentical( src1, src2 );
+  }
+
+  return false;
+}
+
+//
+
 function equivalentShallow( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !_.str.is( src1 ) )
+  if( !_.regexp.like( src1 ) )
   return false;
-  if( !_.str.is( src2 ) )
+  if( !_.regexp.like( src2 ) )
   return false;
   return _.str._equivalentShallow( ... arguments );
 }
@@ -266,20 +245,28 @@ Object.assign( _, ToolsExtension );
 
 //
 
-let ExtensionEntity =
+let EntityExtension =
 {
 
-  strParseType, /* xxx : move */
-  _strParseType,
+  // strParseType, /* xxx : move */
+  // _strParseType,
 
 }
 
-Object.assign( _.entity, ExtensionEntity );
+Object.assign( _.entity, EntityExtension );
 
 //
 
 let StrExtension =
 {
+
+  // exporter
+
+  _exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  _exportStringCodeShallow,
+  exportStringCodeShallow,
+  exportString : exportStringDiagnosticShallow,
 
   // equaler
 
@@ -289,16 +276,6 @@ let StrExtension =
   _equivalentShallow,
   equivalentShallow,
   equivalent : equivalentShallow,
-
-  // xxx : qqq : implement
-  // exporter
-
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
 
 }
 

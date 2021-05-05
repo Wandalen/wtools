@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 // --
 // scalar
@@ -380,7 +379,7 @@ function entityEach( src, onEach )
 
   /* */
 
-  /* qqq for Yevhen : add branch for countable case */
+  /* qqq for junior : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -420,7 +419,7 @@ function entityEachOwn( src, onEach )
 
   /* */
 
-  /* qqq for Yevhen : add branch for countable case */
+  /* qqq for junior : add branch for countable case */
   if( _.longIs( src ) )
   {
 
@@ -659,7 +658,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     for( let [ key, value ] of src )
     {
@@ -673,7 +672,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     for( let [ key, value ] of dst )
     if( !value )
@@ -685,7 +684,7 @@ function entityOnly( dst, src, onEach )
   function withRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -726,7 +725,7 @@ function entityOnly( dst, src, onEach )
   function withoutRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -812,7 +811,7 @@ function entityOnly( dst, src, onEach )
   function withRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -849,7 +848,7 @@ function entityOnly( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1087,7 +1086,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1101,7 +1100,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( !value )
@@ -1113,7 +1112,7 @@ function entityBut( dst, src, onEach )
   function withRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1154,7 +1153,7 @@ function entityBut( dst, src, onEach )
   function withoutRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1239,7 +1238,7 @@ function entityBut( dst, src, onEach )
   function withRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1276,7 +1275,7 @@ function entityBut( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1511,7 +1510,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1525,7 +1524,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( value )
@@ -1537,7 +1536,7 @@ function entityAnd( dst, src, onEach )
   function withRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1578,7 +1577,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -1676,7 +1675,7 @@ function entityAnd( dst, src, onEach )
   function withRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1723,7 +1722,7 @@ function entityAnd( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -1962,7 +1961,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -1976,7 +1975,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     if( value )
@@ -1988,7 +1987,7 @@ function entityOr( dst, src, onEach )
   function withRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2029,7 +2028,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2139,7 +2138,7 @@ function entityOr( dst, src, onEach )
   function withRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2201,7 +2200,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2457,7 +2456,7 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( null );
+    dst = new HashMap( null );
 
     for( let [ key, value ] of src )
     {
@@ -2473,7 +2472,7 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithoutRoutine()
   {
-    dst = new Map( src );
+    dst = new HashMap( src );
 
     let unnecessaries = [ null, 0, undefined, false, '' ];
     for( let k of unnecessaries )
@@ -2488,7 +2487,7 @@ function entityXor( dst, src, onEach )
   function withRoutine()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
 
@@ -2660,7 +2659,7 @@ function entityXor( dst, src, onEach )
   function withRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2716,7 +2715,7 @@ function entityXor( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( dst ) )
     {
 
@@ -2802,7 +2801,7 @@ function entityAll( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -2828,7 +2827,7 @@ function entityAll( src, onEach )
     else if( _.longIs( src ) )
     {
 
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -2859,7 +2858,7 @@ function entityAll( src, onEach )
   else
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -2921,7 +2920,7 @@ function entityAny( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -2949,7 +2948,7 @@ function entityAny( src, onEach )
     else if( _.longIs( src ) )
     {
 
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, undefined );
@@ -2980,7 +2979,7 @@ function entityAny( src, onEach )
   else
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -3044,7 +3043,7 @@ function entityNone( src, onEach )
   if( _.routine.is( onEach ) )
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.set.like( src ) )
     {
 
@@ -3070,7 +3069,7 @@ function entityNone( src, onEach )
     else if( _.longIs( src ) )
     {
 
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
@@ -3101,7 +3100,7 @@ function entityNone( src, onEach )
   else
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) || _.set.like( src ) )
     {
 
@@ -3229,7 +3228,7 @@ function _filter_functor( condition, levels )
  *   return v * v;
  * };
  *
- * _.map_( null, numbers, sqrt );
+ * _.container.map_( null, numbers, sqrt );
  * // returns [ 9, 16, 36 ]
  * // numbers is still [ 3, 4, 6 ]
  *
@@ -3248,7 +3247,7 @@ function _filter_functor( condition, levels )
  *   return v < sumOthers;
  * }
  *
- * _.map_( null, numbers, checkSidesOfTriangle );
+ * _.container.map_( null, numbers, checkSidesOfTriangle );
  * // returns [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
@@ -3263,7 +3262,7 @@ function _filter_functor( condition, levels )
 
 //
 
-function entityMap_( dst, src, onEach )
+function map_( dst, src, onEach )
 {
   if( arguments.length === 2 )
   {
@@ -3285,7 +3284,7 @@ function entityMap_( dst, src, onEach )
   {
 
     result = src;
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     if( _.longIs( src ) )
     {
       for( let s = 0 ; s < src.length ; s++ )
@@ -3324,7 +3323,7 @@ function entityMap_( dst, src, onEach )
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       for( let s = 0 ; s < src.length ; s++ )
       {
         let r = onEach( src[ s ], s, src );
@@ -3369,7 +3368,7 @@ function entityMap_( dst, src, onEach )
 
 //
 
-function entityFilter_( dst, src, onEach )
+function filter_( dst, src, onEach )
 {
 
   if( arguments.length === 2 )
@@ -3396,7 +3395,7 @@ function entityFilter_( dst, src, onEach )
     result = src;
     if( _.longIs( src ) )
     {
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       /* qqq : should be direct! check other cycles */
       for( let s = src.length - 1 ; s >= 0 ; s-- )
       {
@@ -3445,7 +3444,7 @@ function entityFilter_( dst, src, onEach )
       }
 
       let s, d;
-      /* qqq for Yevhen : add branch for countable case */
+      /* qqq for junior : add branch for countable case */
       for( s = 0, d = 0 ; s < src.length ; s++ )
       {
         let r = onEach.call( src, src[ s ], s, src );
@@ -3513,7 +3512,7 @@ function entityFirst( src, onEach )
   if( _.longIs( src ) )
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3562,7 +3561,7 @@ function entityLast( src, onEach )
   if( _.longIs( src ) )
   {
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     for( let s = src.length - 1 ; s >= 0 ; s-- )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -3658,7 +3657,7 @@ function _most( o )
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
 
-  /* qqq for Yevhen : add branch for countable case */
+  /* qqq for junior : add branch for countable case */
   if( _.longIs( o.src ) )
   {
     if( o.src.length === 0 )
@@ -3682,7 +3681,7 @@ function _most( o )
       result.value = o.onEach( o.src[ s ], s, o.src );
     }
 
-    /* qqq for Yevhen : add branch for countable case */
+    /* qqq for junior : add branch for countable case */
     for( ; s < o.src.length; s++ )
     resultValue( o.src[ s ], s, o.src );
     result.index = result.key;
@@ -3871,7 +3870,7 @@ let ContainerExtension =
   each : entityEach,
   eachOwn : entityEachOwn,
 
-  /* qqq : for Dmytro : implementations with dst-null-convention? */
+  /* qqq : for Dmytro : implementations with dst-null convention? */
   only : entityOnly,
   but : entityBut,
   and : entityAnd,
@@ -3884,8 +3883,8 @@ let ContainerExtension =
 
   _filter_functor,
 
-  map_ : entityMap_,
-  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
+  map_,
+  filter_,
   first : entityFirst,
   last : entityLast,
 
@@ -3953,16 +3952,16 @@ let ToolsExtension =
 
   // entityMap,
   // map : entityMap,/* !!! : use instead of entityMap */
-  entityMap_,
-  map_ : entityMap_,
+  // container.map_,
+  // map_,
   // entityFilter,
   // filter : entityFilter, /* !!! : use instead of entityFilter */
-  entityFilter_,
-  filter_ : entityFilter_, /* qqq : for Yevhen : bad */
-  entityFirst,
-  first : entityFirst,
-  entityLast,
-  last : entityLast,
+  // container.filter_,
+  filter_,
+  // entityFirst,
+  // first : entityFirst,
+  // entityLast,
+  // last : entityLast,
 
   //
 

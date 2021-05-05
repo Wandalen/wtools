@@ -11,6 +11,7 @@ _.countable = _.countable || Object.create( null );
 // dichotomy
 // --
 
+/* qqq : for Junior : cover please */
 function is( src )
 {
 
@@ -20,7 +21,7 @@ function is( src )
   if( _.primitive.is( src ) )
   return false;
 
-  if( _.class.methodIteratorOf( src ) )
+  if( _.routineIs( _.class.methodIteratorOf( src ) ) ) /* qqq : for Junior : cover please */
   if( !_.mapIs( src ) )
   return true;
 
@@ -32,6 +33,15 @@ function is( src )
 function like( src )
 {
   return _.countable.is( src );
+}
+
+//
+
+function isFixedLength( src )
+{
+  if( _.array.is( src ) )
+  return false;
+  return this.is( src );
 }
 
 // --
@@ -201,6 +211,8 @@ var CountableExtension =
 
   NamespaceName : 'countable',
   NamespaceQname : 'wTools/countable',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Countable',
   SecondTypeName : 'Countable',
   InstanceConstructor : null,
@@ -210,6 +222,7 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
+  isFixedLength,
 
   // maker
 
@@ -229,14 +242,14 @@ var CountableExtension =
   // maker
   //
   // _makeEmpty,
-  // makeEmpty, /* qqq : for Yevhen : cover */
+  // makeEmpty, /* qqq : for junior : cover */
   // _makeUndefined,
-  // makeUndefined, /* qqq : for Yevhen : cover */
+  // makeUndefined, /* qqq : for junior : cover */
   // _make,
-  // make, /* qqq : for Yevhen : cover */
+  // make, /* qqq : for junior : cover */
   // _cloneShallow,
-  // cloneShallow, /* qqq : for Yevhen : cover */
-  // from, /* qqq : for Yevhen : cover */
+  // cloneShallow, /* qqq : for junior : cover */
+  // from, /* qqq : for junior : cover */
 
 }
 

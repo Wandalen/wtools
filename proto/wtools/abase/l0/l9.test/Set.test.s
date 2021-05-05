@@ -197,44 +197,44 @@ function areIdenticalShallow( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'empty';
   var src = new Set();
   var expected = '{- Set with 0 elements -}';
-  var got = _.set.exportStringShallowDiagnostic( src );
+  var got = _.set.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'strings';
   var src = new Set([ 'str1', 'str2' ]);
   var expected = '{- Set with 2 elements -}';
-  var got = _.set.exportStringShallowDiagnostic( src );
+  var got = _.set.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'numbers';
   var src = new Set([ 1, 2, 3 ]);
   var expected = '{- Set with 3 elements -}';
-  var got = _.set.exportStringShallowDiagnostic( src );
+  var got = _.set.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   test.case = 'bool';
   var src = new Set([ true, false, true, false ]);
   var expected = '{- Set with 2 elements -}';
-  var got = _.set.exportStringShallowDiagnostic( src );
+  var got = _.set.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
 
   test.case = 'no args'
-  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic() );
+  test.shouldThrowErrorSync( () => _.set.exportStringDiagnosticShallow() );
 
   test.case = 'redundant args'
-  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic( new Set(), new Set() ) );
+  test.shouldThrowErrorSync( () => _.set.exportStringDiagnosticShallow( new Set(), new Set() ) );
 
   test.case = 'not set'
-  test.shouldThrowErrorSync( () => _.set.exportStringShallowDiagnostic( new HashMap() ) );
+  test.shouldThrowErrorSync( () => _.set.exportStringDiagnosticShallow( new HashMap() ) );
 }
 
 //
@@ -351,7 +351,7 @@ const Proto =
   {
 
     areIdenticalShallow,
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
 
     but,
     only,

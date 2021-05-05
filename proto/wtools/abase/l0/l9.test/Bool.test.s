@@ -9,322 +9,9 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
+const _global = _global_;
 const _ = _global_.wTools;
-
-//--
-// l0/l3/Bool.s
-//--
-
-function is( test )
-{
-  test.case = 'string empty input';
-  var got = _.bool.is( '' );
-  test.identical( got, false );
-
-  test.case = 'string input';
-  var got = _.bool.is( 'hello' );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'number 1 input';
-  var got = _.bool.is( 1 );
-  test.identical( got, false );
-
-  test.case = 'number 0 input';
-  var got = _.bool.is( 0 );
-  test.identical( got, false );
-
-  test.case = 'number negative input';
-  var got = _.bool.is( -10 );
-  test.identical( got, false );
-
-  test.case = 'number positive input';
-  var got = _.bool.is( 10 );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'empty object input';
-  var got = _.bool.is( {} );
-  test.identical( got, false );
-
-  test.case = 'object input';
-  var got = _.bool.is( { name : 'a', age : 99 } );
-  test.identical( got, false );
-
-  test.case = 'empty array input';
-  var got = _.bool.is( [] );
-  test.identical( got, false );
-
-  test.case = 'array input';
-  var got = _.bool.is( [ 1, 2, 3 ] );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'bool false input';
-  var got = _.bool.is( false );
-  test.identical( got, true );
-
-  test.case = 'bool true input';
-  var got = _.bool.is( true );
-  test.identical( got, true );
-
-}
-
-//
-
-function like( test )
-{
-  test.case = 'string empty input';
-  var got = _.bool.like( '' );
-  test.identical( got, false );
-
-  test.case = 'string input';
-  var got = _.bool.like( 'hello' );
-  test.identical( got, false );
-
-  test.case = 'string number';
-  var got = _.bool.like( '1' );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'number 1 input';
-  var got = _.bool.like( 1 );
-  test.identical( got, true );
-
-  test.case = 'number 0 input';
-  var got = _.bool.like( 0 );
-  test.identical( got, true );
-
-  test.case = 'number negative input';
-  var got = _.bool.like( -10 );
-  test.identical( got, false );
-
-  test.case = 'number positive input';
-  var got = _.bool.like( 10 );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'empty object input';
-  var got = _.bool.like( {} );
-  test.identical( got, false );
-
-  test.case = 'object input';
-  var got = _.bool.like( { name : 'a', age : 99 } );
-  test.identical( got, false );
-
-  test.case = 'empty array input';
-  var got = _.bool.like( [] );
-  test.identical( got, false );
-
-  test.case = 'array input';
-  var got = _.bool.like( [ 1, 2, 3 ] );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'bool false input';
-  var got = _.bool.like( false );
-  test.identical( got, true );
-
-  test.case = 'bool true input';
-  var got = _.bool.like( true );
-  test.identical( got, true );
-}
-
-//
-
-function likeFalse ( test )
-{
-  test.case = 'string empty input';
-  var got = _.bool.likeFalse( '' );
-  test.identical( got, false );
-
-  test.case = 'string input';
-  var got = _.bool.likeFalse( 'hello' );
-  test.identical( got, false );
-
-  test.case = 'string number';
-  var got = _.bool.likeFalse( '1' );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'number 1 input';
-  var got = _.bool.likeFalse( 1 );
-  test.identical( got, false );
-
-  test.case = 'number 0 input';
-  var got = _.bool.likeFalse( 0 );
-  test.identical( got, true );
-
-  test.case = 'number negative input';
-  var got = _.bool.likeFalse( -10 );
-  test.identical( got, false );
-
-  test.case = 'number positive input';
-  var got = _.bool.likeFalse( 10 );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'empty object input';
-  var got = _.bool.likeFalse( {} );
-  test.identical( got, false );
-
-  test.case = 'object input';
-  var got = _.bool.likeFalse( { name : 'a', age : 99 } );
-  test.identical( got, false );
-
-  test.case = 'empty array input';
-  var got = _.bool.likeFalse( [] );
-  test.identical( got, false );
-
-  test.case = 'array input';
-  var got = _.bool.likeFalse( [ 1, 2, 3 ] );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'bool false input';
-  var got = _.bool.likeFalse( false );
-  test.identical( got, true );
-
-  test.case = 'bool true input';
-  var got = _.bool.likeFalse( true );
-  test.identical( got, false );
-}
-
-//
-
-function likeTrue ( test )
-{
-  test.case = 'string empty input';
-  var got = _.bool.likeTrue( '' );
-  test.identical( got, false );
-
-  test.case = 'string input';
-  var got = _.bool.likeTrue( 'hello' );
-  test.identical( got, false );
-
-  test.case = 'string number';
-  var got = _.bool.likeTrue( '1' );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'number 1 input';
-  var got = _.bool.likeTrue( 1 );
-  test.identical( got, true );
-
-  test.case = 'number 0 input';
-  var got = _.bool.likeTrue( 0 );
-  test.identical( got, false );
-
-  test.case = 'number negative input';
-  var got = _.bool.likeTrue( -10 );
-  test.identical( got, false );
-
-  test.case = 'number positive input';
-  var got = _.bool.likeTrue( 10 );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'empty object input';
-  var got = _.bool.likeTrue( {} );
-  test.identical( got, false );
-
-  test.case = 'object input';
-  var got = _.bool.likeTrue( { name : 'a', age : 99 } );
-  test.identical( got, false );
-
-  test.case = 'empty array input';
-  var got = _.bool.likeTrue( [] );
-  test.identical( got, false );
-
-  test.case = 'array input';
-  var got = _.bool.likeTrue( [ 1, 2, 3 ] );
-  test.identical( got, false );
-
-  /* */
-
-  test.case = 'bool false input';
-  var got = _.bool.likeTrue( false );
-  test.identical( got, false );
-
-  test.case = 'bool true input';
-  var got = _.bool.likeTrue( true );
-  test.identical( got, true );
-}
-
-//--
-// l0/l5/Bool.s
-//--
-
-function areEquivalentShallow ( test )
-{
-  test.case = 'true - true';
-  var got = _.bool.areEquivalentShallow( true, true );
-  test.identical( got, true );
-
-  test.case = 'false - false';
-  var got = _.bool.areEquivalentShallow( false, false );
-  test.identical( got, true );
-
-  test.case = '1 - true';
-  var got = _.bool.areEquivalentShallow( 1, true );
-  test.identical( got, true );
-
-  test.case = '0 - false';
-  var got = _.bool.areEquivalentShallow( 0, false );
-  test.identical( got, true );
-
-  test.case = '1 - 1';
-  var got = _.bool.areEquivalentShallow( 1, 1 );
-  test.identical( got, true );
-
-  test.case = '0 - 0';
-  var got = _.bool.areEquivalentShallow( 1, 1 );
-  test.identical( got, true );
-
-  /* */
-
-  test.case = 'true - false';
-  var got = _.bool.areEquivalentShallow( true, false );
-  test.identical( got, false );
-
-  test.case = '1 - false';
-  var got = _.bool.areEquivalentShallow( 1, false );
-  test.identical( got, false );
-
-  test.case = '0 - true';
-  var got = _.bool.areEquivalentShallow( 0, true );
-  test.identical( got, false );
-
-  test.case = '1 - 0';
-  var got = _.bool.areEquivalentShallow( 1, 0 );
-  test.identical( got, false );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no args';
-  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow() );
-
-  test.case = 'too many args';
-  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( true, true, true ) );
-
-  test.case = 'not a boollike';
-  test.shouldThrowErrorSync( () => _.bool.areEquivalentShallow( {}, [] ) );
-
-}
+const __ = _globals_.testing.wTools;
 
 //--
 // l0/l8/Bool.s
@@ -489,94 +176,94 @@ function fromMaybe( test )
 
 //
 
-function fromForce( test )
+function coerceFrom( test )
 {
   test.case = 'empty string';
-  var got = _.bool.fromForce( '' );
+  var got = _.bool.coerceFrom( '' );
   test.identical( got, false );
 
   test.case = 'string \'1\'';
-  var got = _.bool.fromForce( '1' );
+  var got = _.bool.coerceFrom( '1' );
   test.identical( got, true );
 
   test.case = 'string \'0\'';
-  var got = _.bool.fromForce( '0' );
+  var got = _.bool.coerceFrom( '0' );
   test.identical( got, false );
 
   test.case = 'string \'true\'';
-  var got = _.bool.fromForce( 'true' );
+  var got = _.bool.coerceFrom( 'true' );
   test.identical( got, true );
 
   test.case = 'string \'false\'';
-  var got = _.bool.fromForce( 'false' );
+  var got = _.bool.coerceFrom( 'false' );
   test.identical( got, false );
 
   test.case = 'string \'undefined\'';
-  var got = _.bool.fromForce( 'undefined' );
+  var got = _.bool.coerceFrom( 'undefined' );
   test.identical( got, false );
 
   test.case = 'string \'null\'';
-  var got = _.bool.fromForce( 'null' );
+  var got = _.bool.coerceFrom( 'null' );
   test.identical( got, false );
 
   test.case = 'string \'hello\'';
-  var got = _.bool.fromForce( 'hello' );
+  var got = _.bool.coerceFrom( 'hello' );
   test.identical( got, true );
 
   /* */
 
   test.case = 'number 1 input';
-  var got = _.bool.fromForce( 1 );
+  var got = _.bool.coerceFrom( 1 );
   test.identical( got, true );
 
   test.case = 'number 0 input';
-  var got = _.bool.fromForce( 0 );
+  var got = _.bool.coerceFrom( 0 );
   test.identical( got, false );
 
   test.case = 'number negative input';
-  var got = _.bool.fromForce( -10 );
+  var got = _.bool.coerceFrom( -10 );
   test.identical( got, true );
 
   test.case = 'number positive input';
-  var got = _.bool.fromForce( 10 );
+  var got = _.bool.coerceFrom( 10 );
   test.identical( got, true );
 
   /* */
 
   test.case = 'empty object input';
-  var got = _.bool.fromForce( {} );
+  var got = _.bool.coerceFrom( {} );
   test.identical( got, true );
 
   test.case = 'object input';
-  var got = _.bool.fromForce( { name : 'a', age : 99 } );
+  var got = _.bool.coerceFrom( { name : 'a', age : 99 } );
   test.identical( got, true );
 
   test.case = 'empty array input';
-  var got = _.bool.fromForce( [] );
+  var got = _.bool.coerceFrom( [] );
   test.identical( got, true );
 
   test.case = 'array input';
-  var got = _.bool.fromForce( [ 1, 2, 3 ] );
+  var got = _.bool.coerceFrom( [ 1, 2, 3 ] );
   test.identical( got, true );
 
   /* */
 
   test.case = 'bool false input';
-  var got = _.bool.fromForce( false );
+  var got = _.bool.coerceFrom( false );
   test.identical( got, false );
 
   test.case = 'bool true input';
-  var got = _.bool.fromForce( true );
+  var got = _.bool.coerceFrom( true );
   test.identical( got, true );
 
   /* */
 
   test.case = 'Symbol( maybe ) input';
-  var got = _.bool.fromForce( _.maybe );
+  var got = _.bool.coerceFrom( _.maybe );
   test.identical( got, true );
 
   test.case = 'Symbol( another )input';
-  var got = _.bool.fromForce( Symbol.for( 'another' ) );
+  var got = _.bool.coerceFrom( Symbol.for( 'another' ) );
   test.identical( got, true );
 }
 
@@ -594,22 +281,12 @@ const Proto =
   tests :
   {
 
-    // l0/l3/Bool.s
-
-    is,
-    like,
-    likeFalse,
-    likeTrue,
-
-    // l0/l5/Bool.s
-
-    areEquivalentShallow,
-
     // l0/l8/Bool.s
 
     from,
     fromMaybe,
-    fromForce
+    coerceFrom,
+
   }
 
 }

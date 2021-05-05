@@ -73,15 +73,11 @@ function equivalentShallow( src1, src2 )
   if( !_.regexp.like( src1 ) || !_.regexp.like( src2 ) )
   return false;
   return _.regexp._equivalentShallow( src1, src2 );
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
-  // return false;
-  // return src1.source === src2.source;
 }
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.regexp.is( src ) );
@@ -119,12 +115,12 @@ let RegexpExtension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow,
+  exportStringCodeShallow : exportStringDiagnosticShallow,
+  // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringDiagnosticShallow,
 
 }
 

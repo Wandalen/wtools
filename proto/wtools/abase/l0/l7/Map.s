@@ -5,8 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
-_global_.wTools.map = _global_.wTools.map || Object.create( null );
+_.map = _.map || Object.create( null );
 
 // --
 // implementation
@@ -16,20 +15,21 @@ _global_.wTools.map = _global_.wTools.map || Object.create( null );
 // extension
 // --
 
-let ToolsExtension =
-{
-
-}
-
-//
-
 let ExtensionMap =
 {
 
 }
 
-Object.assign( Self, ToolsExtension );
 Object.assign( _.map, ExtensionMap );
 _.assert( _.aux.is( _.map ) );
+
+//
+
+let ToolsExtension =
+{
+
+}
+
+Object.assign( _, ToolsExtension );
 
 })();

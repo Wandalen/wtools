@@ -7,7 +7,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.module = _.module || Object.create( null );
+_.module = _.module || Object.create( null );
 
 // --
 // implementation

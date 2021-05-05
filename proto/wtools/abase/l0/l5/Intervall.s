@@ -68,8 +68,8 @@ function sureIn( src, linterval )
   // debugger;
   let args =
   [
-    _.cinterval.has( cinterval, src )
-    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    _.linterval.has( linterval, src )
+    ,() => 'Out of linterval' + _.rangeToStr( linterval )
     , Array.prototype.slice.call( arguments, 2 )
   ];
   _.sure.apply( _, args );
@@ -87,8 +87,8 @@ function assertIn( src, linterval )
   // debugger;
   let args =
   [
-    _.cinterval.has( cinterval, src )
-    ,() => 'Out of cinterval' + _.rangeToStr( cinterval )
+    _.linterval.has( linterval, src )
+    ,() => 'Out of linterval' + _.rangeToStr( linterval )
     , Array.prototype.slice.call( arguments, 2 )
   ];
   _.assert.apply( _, args );

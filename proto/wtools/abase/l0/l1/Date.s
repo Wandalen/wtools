@@ -43,7 +43,7 @@ function _identicalShallow( src1, src2 )
 
 //
 
-function exportStringShallowDiagnostic( src )
+function exportStringDiagnosticShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.date.is( src ) );
@@ -53,7 +53,7 @@ function exportStringShallowDiagnostic( src )
 
 //
 
-function exportStringShallowCode( src )
+function exportStringCodeShallow( src )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.date.is( src ) );
@@ -83,12 +83,12 @@ let Extension =
 
   // exporter
 
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowCode,
-  exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowCode
+  exportString : exportStringDiagnosticShallow,
+  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
+  exportStringCodeShallow,
+  exportStringDiagnosticShallow,
+  // exportStringDiagnostic : exportStringDiagnosticShallow,
+  // exportStringCode : exportStringCodeShallow
 }
 
 //

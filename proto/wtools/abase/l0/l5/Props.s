@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.property = _global_.wTools.property || Object.create( null );
+_global_.wTools.props = _global_.wTools.props || Object.create( null );
 
 // --
 // implementation
@@ -155,5 +155,6 @@ let Extension =
 //
 
 Object.assign( _.props, Extension );
+// _.assert( _.routine.is( _.props.filterWithEscape ) ); debugger;
 
 })();

@@ -525,8 +525,8 @@ let unrollSymbol = Symbol.for( 'unroll' );
 let ToolsExtension =
 {
 
-  /* qqq : for Yevhen : duplicate namespace unroll */
-  /* qqq : for Yevhen : make the list of unduplicated namespaces */
+  /* qqq : for junior : duplicate namespace unroll */
+  /* qqq : for junior : make the list of unduplicated namespaces */
 
   // unrollMake,
   // unrollMakeUndefined,

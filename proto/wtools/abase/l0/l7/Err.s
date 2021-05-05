@@ -74,7 +74,7 @@ function assertOwnNoConstructor( ins )
   // args[ 0 ] = _.sureOwnNoConstructor( ins );
   //
   // if( args.length === 1 )
-  // args.push( () => 'Entity should not own constructor, but own ' + _.entity.exportStringShallow( ins ) );
+  // args.push( () => 'Entity should not own constructor, but own ' + _.entity.exportStringDiagnosticShallow( ins ) );
   //
   // _.assert.apply( _, args );
 }

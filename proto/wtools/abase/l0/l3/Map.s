@@ -30,22 +30,6 @@ function _identicalShallow( src1, src2 )
 
 //
 
-function identicalShallow( src1, src2, o )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-
-  return this._identicalShallow( src1, src2 );
-}
-
-//
-
 /**
  * The containShallow() returns true, if the first object {-srcMap-}
  * has the same values as the second object(ins).
@@ -126,8 +110,6 @@ function containShallow( src, ins )
 //  * @namespace Tools
 //  */
 //
-// /* xxx qqq : for Yevhen : duplicate in _.props.identical() | aaa : Done */
-// /* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
 // function mapsAreIdentical( src1, src2 )
 // {
 //
@@ -151,7 +133,7 @@ function containShallow( src, ins )
 // extension
 // --
 
-/* qqq : for Yevhen : duplicate routines */
+/* qqq : for junior : duplicate routines */
 
 let ToolsExtension =
 {
@@ -168,34 +150,35 @@ let ExtensionMap =
   // equaler
 
   _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
+  identicalShallow : _.props.identicalShallow,
+  identical : _.props.identical,
   _equivalentShallow : _identicalShallow,
-  equivalentShallow : identicalShallow,
-  equivalent : identicalShallow,
+  equivalentShallow : _.props.equivalentShallow,
+  equivalent : _.props.equivalent,
+
   containShallow,
   contain : containShallow,
 
   // exporter
 
+  _exportStringDiagnosticShallow : _.props._exportStringDiagnosticShallow,
+  exportStringDiagnosticShallow : _.props.exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.props._exportStringCodeShallow,
+  exportStringCodeShallow : _.props.exportStringCodeShallow,
   exportString : _.props.exportString,
-  exportStringShallow : _.props.exportStringShallow,
-  exportStringShallowDiagnostic : _.props.exportStringShallowDiagnostic,
-  exportStringShallowCode : _.props.exportStringShallowCode,
-  exportStringDiagnostic : _.props.exportStringDiagnostic,
-  exportStringCode : _.props.exportStringCode,
 
   // container interface
 
   _lengthOf : _.props._lengthOf,
   lengthOf : _.props.lengthOf, /* qqq : cover */
-
   _hasKey : _.props._hasKey,
   hasKey : _.props._hasKey, /* qqq : cover */
   _hasCardinal : _.props._hasKey,
   hasCardinal : _.props._hasKey, /* qqq : cover */
   _keyWithCardinal : _.props._hasKey,
   keyWithCardinal : _.props._hasKey, /* qqq : cover */
+  _cardinalWithKey : _.props._cardinalWithKey,
+  cardinalWithKey : _.props.cardinalWithKey, /* qqq : cover */
 
   _elementGet : _.props._elementWithKey,
   elementGet : _.props.elementWithKey, /* qqq : cover */
@@ -220,7 +203,7 @@ let ExtensionMap =
   _elementWithCardinalDel : _.props._elementWithCardinalDel,
   elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
   _empty : _.props._empty,
-  empty : _.props.empty, /* qqq : for Yevhen : cover */
+  empty : _.props.empty, /* qqq : for junior : cover */
 
   _each : _.props._each,
   each : _.props.each, /* qqq : cover */
@@ -243,7 +226,8 @@ let ExtensionMap =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filter : _.props._filter,
+  _filterAct0 : _.props._filterAct0,
+  _filterAct1 : _.props._filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -252,7 +236,8 @@ let ExtensionMap =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  _map : _.props._map,
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1 : _.props._mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,

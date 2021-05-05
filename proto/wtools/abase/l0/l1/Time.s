@@ -742,7 +742,7 @@ const soon = typeof process === 'undefined' ? function( h ){ return setTimeout( 
 let TimeExtension =
 {
 
-  /* qqq : for Yevhen : bad */
+  /* qqq : for junior : bad */
   timerIs, /* qqq : cover */
   competitorIs, /* xxx : move */
 
@@ -778,7 +778,7 @@ Object.assign( _.time, TimeExtension );
 let ToolsExtension =
 {
 
-  /* qqq : for Yevhen : bad */
+  /* qqq : for junior : bad */
   timerIs,
   competitorIs, /* xxx : move */
 
@@ -788,6 +788,6 @@ let ToolsExtension =
 
 Object.assign( _, ToolsExtension );
 
-/* qqq : for Yevhen : replace Routines+Fields -> {- name of namespace -}Extension in all files */
+/* qqq : for junior : replace Routines+Fields -> {- name of namespace -}Extension in all files */
 
 })();

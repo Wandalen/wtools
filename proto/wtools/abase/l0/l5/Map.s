@@ -6,9 +6,9 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-/* qqq for Yevhen : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
-/* qqq for Yevhen : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
-/* qqq for Yevhen : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each _.aux.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each !_.primitive.is() call, extend tests for each branch | aaa : Done. */
+/* qqq for junior : check each _.vector.is() call, extend tests for each branch | aaa : Done. */
 
 // --
 // map selector
@@ -281,8 +281,8 @@ function mapButNulls( srcMap )
 //  * @namespace Tools
 //  */
 //
-// /* xxx qqq : for Yevhen : duplicate in _.props.identical() | aaa : Done */
-// /* xxx qqq : for Yevhen : move to _.aux.identical() | aaa : Done */
+// /* xxx qqq : for junior : duplicate in _.props.identical() | aaa : Done */
+// /* xxx qqq : for junior : move to _.aux.identical() | aaa : Done */
 // function mapsAreIdentical( src1, src2 )
 // {
 //
@@ -635,8 +635,8 @@ function mapHasAll( src, screen )
  * @namespace Tools
  */
 
-/* xxx qqq : for Yevhen : teach to accept vector | aaa : Done. */
-/* xxx qqq : for Yevhen : duplicate in _.props.hasAny() | aaa : Done */
+/* xxx qqq : for junior : teach to accept vector | aaa : Done. */
+/* xxx qqq : for junior : duplicate in _.props.hasAny() | aaa : Done */
 function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -696,8 +696,8 @@ function mapHasAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done */
-/* xxx qqq : for Yevhen : duplicate in _.props.hasNone() | aaa : Done */
+/* qqq : for junior : teach to accept vector | aaa : Done */
+/* xxx qqq : for junior : duplicate in _.props.hasNone() | aaa : Done */
 function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -757,7 +757,7 @@ function mapHasNone( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
+/* qqq : for junior : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -817,7 +817,7 @@ function mapOnlyOwnAll( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done. */
+/* qqq : for junior : teach to accept vector | aaa : Done. */
 function mapOnlyOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -877,7 +877,7 @@ function mapOnlyOwnAny( src, screen )
  * @namespace Tools
  */
 
-/* qqq : for Yevhen : teach to accept vector | aaa : Done.*/
+/* qqq : for junior : teach to accept vector | aaa : Done.*/
 /* xxx : move? */
 function mapOnlyOwnNone( src, screen )
 {
@@ -1561,9 +1561,9 @@ function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 //
 
 function _filterTrue(){ return true };
-_filterTrue.identity = { propertyFilter : true, propertyTransformer : true };
+_filterTrue.identity = { propertyCondition : true, propertyTransformer : true };
 function _filterFalse(){ return true };
-_filterFalse.identity = { propertyFilter : true, propertyTransformer : true };
+_filterFalse.identity = { propertyCondition : true, propertyTransformer : true };
 
 function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 {
@@ -1588,8 +1588,8 @@ function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 
   _.assert( _.routine.is( filters.onUpFilter ) );
   _.assert( _.routine.is( filters.onField ) );
-  // _.assert( _.props.filterIs( filters.onUpFilter ) );
-  _.assert( _.props.filterIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  // _.assert( _.props.conditionIs( filters.onUpFilter ) );
+  _.assert( _.props.conditionIs( filters.onUpFilter ) && !filters.onUpFilter.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
   _.assert( _.props.transformerIs( filters.onField ) );
   // _.assert( filters.onUpFilter.functionFamily === 'PropertyFilter' );
   // _.assert( filters.onField.functionFamily === 'PropertyFilter' || filters.onField.functionFamily === 'PropertyMapper' );
@@ -1988,7 +1988,7 @@ function _mapInvert( o )
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( !_.primitive.is( o.src ) );
   _.assert( !_.primitive.is( o.dst ) );
-  /* qqq : for Yevhen : bad : lack of important assert */
+  /* qqq : for junior : bad : lack of important assert */
 
   let del;
   if( o.duplicate === 'delete' )
@@ -2277,13 +2277,13 @@ function fromHashMap( dstMap, srcMap )
  * @namespace Tools
  */
 
-function mapButConditionalOld( propertyFilter, srcMap, butMap )
+function mapButConditionalOld( propertyCondition, srcMap, butMap )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( !_.primitive.is( butMap ), 'Expects non primitive {-butMap-}' );
   _.assert( !_.primitive.is( srcMap ), 'Expects non primitive {-srcMap-}' );
-  _.assert( propertyFilter && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
-  _.assert( _.props.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  _.assert( propertyCondition && propertyCondition.length === 3, 'Expects PropertyFilter {-propertyCondition-}' );
+  _.assert( _.props.conditionIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
 
   let result = Object.create( null );
 
@@ -2303,7 +2303,7 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
   {
     for( let s in srcMap )
     {
-      if( propertyFilter( butMap, srcMap, s ) )
+      if( propertyCondition( butMap, srcMap, s ) )
       result[ s ] = srcMap[ s ];
     }
   }
@@ -2315,7 +2315,7 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
   function filterWithVectorButMap( s )
   {
     for( let but of butMap )
-    if( !propertyFilter( but, srcMap, s ) )
+    if( !propertyCondition( but, srcMap, s ) )
     return s;
   }
 
@@ -2324,20 +2324,20 @@ function mapButConditionalOld( propertyFilter, srcMap, butMap )
   function filterWithArrayLikeButMap( s )
   {
     for( let m = 0 ; m < butMap.length ; m++ )
-    if( !propertyFilter( butMap[ m ], srcMap, s ) )
+    if( !propertyCondition( butMap[ m ], srcMap, s ) )
     return s;
   }
 }
 
 //
 
-function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
+function mapButConditional_( /* propertyCondition, dstMap, srcMap, butMap */ )
 {
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
 
   _.assert( arguments.length === 4, 'Not clear how to construct {-dstMap-}. Please, specify exactly 4 arguments' );
 
-  let propertyFilter = arguments[ 0 ];
+  let propertyCondition = arguments[ 0 ];
   let dstMap = arguments[ 1 ];
   let srcMap = arguments[ 2 ];
   let butMap = arguments[ 3 ];
@@ -2355,7 +2355,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 
   let o =
   {
-    filter : propertyFilter,
+    filter : propertyCondition,
     dstMap,
     srcMap,
     butMap,
@@ -2363,7 +2363,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 
   o = _._mapBut_VerifyMapFields( o );
   _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
-  _.assert( _.props.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+  _.assert( _.props.conditionIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
 
   let filterRoutine = _._mapBut_FilterFunctor( o );
 
@@ -2375,15 +2375,15 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
 
   // return _._mapBut_
   // ({
-  //   filter : propertyFilter,
+  //   filter : propertyCondition,
   //   dstMap,
   //   srcMap,
   //   butMap,
   // });
 
   // _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
-  // _.assert( _.routineIs( propertyFilter ) && propertyFilter.length === 3, 'Expects PropertyFilter {-propertyFilter-}' );
-  // _.assert( _.props.filterIs( propertyFilter ) && !propertyFilter.identity.functor, 'Expects PropertyFilter {-propertyFilter-}' );
+  // _.assert( _.routineIs( propertyCondition ) && propertyCondition.length === 3, 'Expects PropertyFilter {-propertyCondition-}' );
+  // _.assert( _.props.conditionIs( propertyCondition ) && !propertyCondition.identity.functor, 'Expects PropertyFilter {-propertyCondition-}' );
   // _.assert( !_.primitive.is( dstMap ), 'Expects map like {-dstMap-}' );
   // _.assert( !_.primitive.is( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   // _.assert( !_.primitive.is( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
@@ -2398,7 +2398,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   //     {
   //       for( let m = 0 ; m < butMap.length ; m++ )
   //       {
-  //         if( !propertyFilter( butMap[ m ], srcMap, s ) )
+  //         if( !propertyCondition( butMap[ m ], srcMap, s ) )
   //         delete dstMap[ s ];
   //       }
   //     }
@@ -2407,7 +2407,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   //   {
   //     for( let s in srcMap )
   //     {
-  //       if( !propertyFilter( butMap, srcMap, s ) )
+  //       if( !propertyCondition( butMap, srcMap, s ) )
   //       delete dstMap[ s ];
   //     }
   //   }
@@ -2424,7 +2424,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   //     {
   //       let m;
   //       for( m = 0 ; m < butMap.length ; m++ )
-  //       if( !propertyFilter( butMap[ m ], srcMap, s ) )
+  //       if( !propertyCondition( butMap[ m ], srcMap, s ) )
   //       break;
   //
   //       if( m === butMap.length )
@@ -2435,7 +2435,7 @@ function mapButConditional_( /* propertyFilter, dstMap, srcMap, butMap */ )
   //   {
   //     for( let s in srcMap )
   //     {
-  //       if( propertyFilter( butMap, srcMap, s ) )
+  //       if( propertyCondition( butMap, srcMap, s ) )
   //       dstMap[ s ] = srcMap[ s ];
   //     }
   //   }
@@ -2666,7 +2666,7 @@ function mapBut_( dstMap, srcMap, butMap )
     delete o.dstMap[ key ];
   }
 
-  // let filter = _.props.filterFrom( filterBut );
+  // let filter = _.props.conditionFrom( filterBut );
   //
   // return _._mapBut_
   // ({
@@ -2692,7 +2692,7 @@ function mapBut_( dstMap, srcMap, butMap )
   //     return key;
   //   }
   // }
-  // filterBut.identity = { propertyFilter : true, propertyTransformer : true };
+  // filterBut.identity = { propertyCondition : true, propertyTransformer : true };
   //
   // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   // _.assert( !_.primitive.is( dstMap ), 'Expects map like destination map {-dstMap-}' );
@@ -2882,7 +2882,7 @@ function _mapBut_FilterFunctor( o )
 // {
 //   _.assert( arguments.length === 1, 'Expects single options map {-o-}' );
 //   _.assert( _.routineIs( o.filter ) && o.filter.length === 3, 'Expects filter {-o.filter-}' );
-//   _.assert( _.props.filterIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
+//   _.assert( _.props.conditionIs( o.filter ), 'Expects PropertyFilter {-o.filter-}' );
 //   _.assert( !_.primitive.is( o.dstMap ), 'Expects non primitive {-o.dstMap-}' );
 //   _.assert( !_.primitive.is( o.srcMap ), 'Expects non primitive {-o.srcMap-}' );
 //   _.assert( !_.primitive.is( o.butMap ), 'Expects object like {-o.butMap-}' );
@@ -3101,7 +3101,7 @@ function mapEmpty( dstMap )
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
-//   return _.mapButConditional_( null, _.props.filter.dstUndefinedSrcNotUndefined(), srcMap, butMap );
+//   return _.mapButConditional_( null, _.props.condition.dstUndefinedSrcNotUndefined(), srcMap, butMap );
 // }
 
 //
@@ -3111,7 +3111,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  return _.mapButConditional_( _.props.filter.dstUndefinedSrcNotUndefined(), ... arguments );
+  return _.mapButConditional_( _.props.condition.dstUndefinedSrcNotUndefined(), ... arguments );
 
 }
 
@@ -3149,7 +3149,7 @@ function mapOnlyOwnButOld( srcMap, butMap )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  return _.mapButConditionalOld( _.props.filter.dstNotHasSrcOwn(), srcMap, butMap );
+  return _.mapButConditionalOld( _.props.condition.dstNotHasSrcOwn(), srcMap, butMap );
 }
 
 //
@@ -3159,7 +3159,7 @@ function mapOnlyOwnBut_( dstMap, srcMap, butMap )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  return _.mapButConditional_( _.props.filter.dstNotHasSrcOwn(), ... arguments );
+  return _.mapButConditional_( _.props.condition.dstNotHasSrcOwn(), ... arguments );
 }
 
 //
@@ -3664,7 +3664,7 @@ function _mapOnly( o )
   // {
   //
   //   // _.assert( o.filter.functionFamily === 'PropertyMapper' );
-  //   _.assert( _.props.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
+  //   _.assert( _.props.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyCondition-}' );
   //   _.assert( arguments.length === 1, 'Expects single argument' );
   //   _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
   //   _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
@@ -4100,7 +4100,7 @@ function _screenMapSearchingRoutineFunctor( screenMaps )
 //   // {
 //   //
 //   //   // _.assert( o.filter.functionFamily === 'PropertyMapper' );
-//   //   _.assert( _.props.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyFilter-}' );
+//   //   _.assert( _.props.mapperIs( o.filter ), 'Expects PropertyFilter {-propertyCondition-}' );
 //   //   _.assert( arguments.length === 1, 'Expects single argument' );
 //   //   _.assert( !_.primitive.is( dstMap ), 'Expects object-like {-dstMap-}' );
 //   //   _.assert( !_.primitive.is( screenMap ), 'Expects not primitive {-screenMap-}' );
@@ -5787,7 +5787,7 @@ let Extension =
 //
 // --
 
-/* qqq : for Yevhen : duplicate all routines */
+/* qqq : for junior : duplicate all routines */
 
 let ExtensionMap =
 {

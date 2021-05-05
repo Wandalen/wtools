@@ -489,7 +489,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
           }
           else
           {
-            _.assert( 0, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' );
+            _.assert( 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( e ) + ' is several times in dstArray' );
           }
         }
       }
@@ -531,7 +531,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         }
         else
         {
-          _.assert( 0, () => 'The element ' + _.entity.exportStringShallow( e ) + ' is several times in dstArray' )
+          _.assert( 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( e ) + ' is several times in dstArray' )
         }
       }
     }

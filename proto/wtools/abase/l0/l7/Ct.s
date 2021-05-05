@@ -350,7 +350,7 @@ let Extension =
   formatFinal : format,
 
   strip,
-  parse, /* qqq : for Yevhen : test? */
+  parse, /* qqq : for junior : test? */
 
   _stripAnsi,
   stripAnsi, /* xxx : qqq : move out to module::wCtBasic */

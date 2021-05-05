@@ -133,7 +133,7 @@ function _has( /* src, e, onEvaluate1, onEvaluate2 */ )
 
 //
 
-/* qqq : for Yevhen : should work
+/* qqq : for junior : should work
 _.arraySet.diff_( null, hashMap1.keys(), hashMap2.keys() )
 */
 /* qqq : reimplement. dst should be map. first discuss */
