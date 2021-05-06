@@ -249,7 +249,6 @@ function makeCommon( test )
     var src = [ 2, 3 ];
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -264,7 +263,6 @@ function makeCommon( test )
     var src = _.unroll.make([ 2, 3 ]);
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -310,6 +308,14 @@ function makeCommon( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );
@@ -322,7 +328,6 @@ function makeCommon( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
@@ -492,10 +497,10 @@ function makeCommon( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -635,6 +640,14 @@ function makeCommonWithLongDescriptor( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );
@@ -647,7 +660,6 @@ function makeCommonWithLongDescriptor( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
@@ -782,10 +794,10 @@ function makeCommonWithLongDescriptor( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.type ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.type ].long.default.InstanceConstructor;
   }
 }
 
@@ -831,6 +843,13 @@ function makeLongFilledCommon( test )
     test.true( got instanceof Constructor );
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
 
     /* */
 
@@ -934,10 +953,10 @@ function makeLongFilledCommon( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -999,6 +1018,13 @@ function makeLongFilledCommonWithLongDescriptor( test )
     test.true( got instanceof Constructor );
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
 
     /* */
 
@@ -1080,10 +1106,10 @@ function makeLongFilledCommonWithLongDescriptor( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.type ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.type ].long.default.InstanceConstructor;
   }
 }
 
@@ -1152,8 +1178,8 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -1182,24 +1208,24 @@ function makeSrcIsNullWithLongNamespaces( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.make( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.make( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins = number';
 //     var got = _.long.make( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.make( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -1405,24 +1431,24 @@ function makeSrcIsNullWithLongNamespaces( test )
 //
 //   test.case = 'src = number, not ins';
 //   var got = _.long.make( 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.make( 5, null );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src = null, ins = number';
 //   var got = _.long.make( null, 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = undefined';
 //   // var got = _.long.make( 5, undefined );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src = empty long, not ins';
@@ -1451,7 +1477,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   // test.case = 'src = long, ins = null';
 //   // var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   // var got = _.long.make( src, null );
-//   // var expected = _.defaultLong.make( [ 1, 2, 3 ] );
+//   // var expected = _.long.default.make( [ 1, 2, 3 ] );
 //   // test.identical( got, expected );
 //   // test.true( got !== src );
 //   // test.true( _.arrayIs( got ) );
@@ -1534,24 +1560,24 @@ function makeSrcIsNullWithLongNamespaces( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.make( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.make( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins = number';
 //     var got = _.long.make( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.make( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -1674,8 +1700,8 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -1717,34 +1743,34 @@ function makeSrcIsNullWithLongNamespaces( test )
 //
 //     test.case = 'no args';
 //     var got = long.long.make();
-//     var expected = long.defaultLong.make();
+//     var expected = long.long.default.make();
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, not ins';
 //     var got = long.long.make( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.make( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins = number';
 //     var got = long.long.make( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -1958,47 +1984,47 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.make( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.make( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins = number';
 //     var got = long.long.make( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.make( src );
-//     var expected = long.defaultLong.make( [] );
+//     var expected = long.long.default.make( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.make( src );
-//     var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     var expected = long.long.default.make( [ 1, 2, 3 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, ins = number';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.make( src, 2 );
-//     var expected = long.defaultLong.make( 2 );
+//     var expected = long.long.default.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -2006,20 +2032,20 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     // test.case = 'src = long, ins = null';
 //     // var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     // var got = long.long.make( src, null );
-//     // var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     // var expected = long.long.default.make( [ 1, 2, 3 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'ins = number, ins < src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.make( src, 2 );
-//     var expected = long.defaultLong.make( [ 1, 2 ] );
+//     var expected = long.long.default.make( [ 1, 2 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'ins = number, ins > src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.make( src, 4 );
-//     var expected = long.defaultLong.make( [ 1, 2, 3, undefined ] )
+//     var expected = long.long.default.make( [ 1, 2, 3, undefined ] )
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -2027,7 +2053,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var src = _.argumentsArray.make( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
 //     var got = long.long.make( src, ins );
-//     var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     var expected = long.long.default.make( [ 1, 2, 3 ] );
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
@@ -2036,7 +2062,7 @@ function makeSrcIsNullWithLongNamespaces( test )
 //     var src = _.argumentsArray.make( 2 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
 //     var got = long.long.make( src, ins );
-//     var expected = long.defaultLong.make( [ 1, 2, 3, 4, 5 ] );
+//     var expected = long.long.default.make( [ 1, 2, 3, 4, 5 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -2108,29 +2134,29 @@ function makeSrcIsNullWithLongNamespaces( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.make( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.make( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.make( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins = number';
 //     var got = long.long.make( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.make( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -2355,6 +2381,14 @@ function makeEmptyCommon( test )
 
     /* */
 
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
     if( Config.debug )
     {
       test.case = 'extra arguments';
@@ -2384,10 +2418,10 @@ function makeEmptyCommon( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -2516,15 +2550,11 @@ function makeEmptyCommonWithLongDescriptor( test )
 
     /* */
 
-    if( Config.debug )
-    {
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => long.makeEmpty( [], 1 ) );
-
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => long.makeEmpty( undefined ) );
-      test.shouldThrowErrorSync( () => long.makeEmpty( null ) );
-    }
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
 
     test.close( `${__.entity.exportStringSolo( env )}` );
   }
@@ -2545,10 +2575,10 @@ function makeEmptyCommonWithLongDescriptor( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -2559,8 +2589,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   };
 //   var list =
 //   [
@@ -2585,12 +2615,12 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'without arguments';
 //     var got = _.long.makeEmpty();
-//     var expected = _.defaultLong.make( 0 );
+//     var expected = _.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     // test.case = 'src - null';
 //     // var got = _.long.makeEmpty( null );
-//     // var expected = _.defaultLong.make( 0 );
+//     // var expected = _.long.default.make( 0 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src - empty long';
@@ -2639,12 +2669,12 @@ function makeEmptyCommonWithLongDescriptor( test )
 // {
 //   test.case = 'without arguments';
 //   var got = _.long.makeEmpty();
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //
 //   // test.case = 'src - null';
 //   // var got = _.long.makeEmpty( null );
-//   // var expected = _.defaultLong.make( 0 );
+//   // var expected = _.long.default.make( 0 );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src - empty long';
@@ -2689,12 +2719,12 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'without arguments';
 //     var got = _.long.makeEmpty();
-//     var expected = _.defaultLong.make( 0 );
+//     var expected = _.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     // test.case = 'src - null';
 //     // var got = _.long.makeEmpty( null );
-//     // var expected = _.defaultLong.make( 0 );
+//     // var expected = _.long.default.make( 0 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src - empty long';
@@ -2727,8 +2757,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -2770,12 +2800,12 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'without arguments';
 //     var got = long.long.makeEmpty();
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - null';
 //     var got = long.long.makeEmpty( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - empty long';
@@ -2849,25 +2879,25 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'without arguments';
 //     var got = long.long.makeEmpty();
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - null';
 //     var got = long.long.makeEmpty( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - empty long';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeEmpty( src );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src - filled long';
 //     var src = _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] );
 //     var got = long.long.makeEmpty( src );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //   }
@@ -2918,12 +2948,12 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'without arguments';
 //     var got = long.long.makeEmpty();
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - null';
 //     var got = long.long.makeEmpty( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src - empty long';
@@ -2958,8 +2988,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -2988,28 +3018,28 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _._longMakeOfLength( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _._longMakeOfLength( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _._longMakeOfLength( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _._longMakeOfLength( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _._longMakeOfLength( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -3141,66 +3171,66 @@ function makeEmptyCommonWithLongDescriptor( test )
 // {
 //   test.case = 'src = null, not ins';
 //   var got = _._longMakeOfLength( null );
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = number, not ins';
 //   var got = _._longMakeOfLength( 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _._longMakeOfLength( 5, null );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //   //
 //   // test.case = 'src = number, ins = undefined';
 //   // var got = _._longMakeOfLength( 5, undefined );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - number';
 //   var got = _._longMakeOfLength( null, 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - long';
 //   var got = _._longMakeOfLength( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = empty long, not ins';
 //   var src = _.argumentsArray.make( [] );
 //   var got = _._longMakeOfLength( src );
-//   var expected = _.defaultLong.make( [] );
+//   var expected = _.long.default.make( [] );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = long, not ins';
 //   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _._longMakeOfLength( src );
-//   var expected = _.defaultLong.make( 3 );
+//   var expected = _.long.default.make( 3 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = null';
 //   var src = _.argumentsArray.make( [] );
 //   var got = _._longMakeOfLength( src, null );
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = empty long, ins = number';
 //   var src = _.argumentsArray.make( [] );
 //   var got = _._longMakeOfLength( src, 2 );
-//   var expected = _.defaultLong.make( 2 );
+//   var expected = _.long.default.make( 2 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
 //   test.case = 'src = long, ins = number, ins < src.length';
 //   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _._longMakeOfLength( src, 2 );
-//   var expected = _.defaultLong.make( 2 );
+//   var expected = _.long.default.make( 2 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
@@ -3214,7 +3244,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   test.case = 'src = long, ins = number, ins > src.length';
 //   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //   var got = _._longMakeOfLength( src, 4 );
-//   var expected = _.defaultLong.make( 4 );
+//   var expected = _.long.default.make( 4 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
@@ -3222,7 +3252,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var src = _.argumentsArray.make( [ 0, 1 ] );
 //   var ins = [ 1, 2, 3 ];
 //   var got = _._longMakeOfLength( src, ins );
-//   var expected = _.defaultLong.make( 3 );
+//   var expected = _.long.default.make( 3 );
 //   test.identical( got, expected );
 //   test.true( got !== ins );
 //   test.true( got !== src );
@@ -3231,7 +3261,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var src = _.argumentsArray.make( 5 );
 //   var ins = [ 1, 2, 3, 4, 5 ];
 //   var got = _._longMakeOfLength( src, ins );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //   test.true( got !== src );
 //
@@ -3288,28 +3318,28 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _._longMakeOfLength( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _._longMakeOfLength( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _._longMakeOfLength( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _._longMakeOfLength( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _._longMakeOfLength( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -3412,8 +3442,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -3448,33 +3478,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long._longMakeOfLength( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long._longMakeOfLength( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long._longMakeOfLength( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long._longMakeOfLength( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long._longMakeOfLength( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -3626,66 +3656,66 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long._longMakeOfLength( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long._longMakeOfLength( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long._longMakeOfLength( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long._longMakeOfLength( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long._longMakeOfLength( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long._longMakeOfLength( src );
-//     var expected = long.defaultLong.make( [] );
+//     var expected = long.long.default.make( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long._longMakeOfLength( src );
-//     var expected = long.defaultLong.make( 3 );
+//     var expected = long.long.default.make( 3 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = null';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long._longMakeOfLength( src, null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = number';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long._longMakeOfLength( src, 2 );
-//     var expected = long.defaultLong.make( 2 );
+//     var expected = long.long.default.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins < src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long._longMakeOfLength( src, 2 );
-//     var expected = long.defaultLong.make( 2 );
+//     var expected = long.long.default.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -3699,7 +3729,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     test.case = 'src = long, ins = number, ins > src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long._longMakeOfLength( src, 4 );
-//     var expected = long.defaultLong.make( 4 );
+//     var expected = long.long.default.make( 4 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -3707,7 +3737,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
 //     var got = long._longMakeOfLength( src, ins );
-//     var expected = long.defaultLong.make( 3 );
+//     var expected = long.long.default.make( 3 );
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
@@ -3716,7 +3746,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( 5 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
 //     var got = long._longMakeOfLength( src, ins );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -3780,33 +3810,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long._longMakeOfLength( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long._longMakeOfLength( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long._longMakeOfLength( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long._longMakeOfLength( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long._longMakeOfLength( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long._longMakeOfLength( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -3915,8 +3945,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -3955,28 +3985,28 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.makeUndefined( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeUndefined( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.makeUndefined( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _.long.makeUndefined( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _.long.makeUndefined( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -4140,33 +4170,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 // {
 //   test.case = 'src = null, not ins';
 //   var got = _.long.makeUndefined( null );
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = number, not ins';
 //   var got = _.long.makeUndefined( 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.makeUndefined( 5, null );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //   //
 //   // test.case = 'src = number, ins = undefined';
 //   // var got = _.long.makeUndefined( 5, undefined );
-//   // var expected = _.defaultLong.make( 5 );
+//   // var expected = _.long.default.make( 5 );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - number';
 //   var got = _.long.makeUndefined( null, 5 );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - long';
 //   var got = _.long.makeUndefined( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//   var expected = _.defaultLong.make( 5 );
+//   var expected = _.long.default.make( 5 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = empty long, not ins';
@@ -4185,7 +4215,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   // test.case = 'src = empty long, ins = null';
 //   // var src = _.argumentsArray.make( [] );
 //   // var got = _.long.makeUndefined( src, null );
-//   // var expected = _.defaultLong.make( 0 );
+//   // var expected = _.long.default.make( 0 );
 //   // test.identical( got, expected );
 //   // test.true( got !== src );
 //
@@ -4274,28 +4304,28 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.makeUndefined( 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeUndefined( 5, null );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.makeUndefined( 5, undefined );
-//     // var expected = _.defaultLong.make( 5 );
+//     // var expected = _.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _.long.makeUndefined( null, 5 );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _.long.makeUndefined( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( 5 );
+//     var expected = _.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -4408,8 +4438,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -4450,33 +4480,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeUndefined( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeUndefined( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeUndefined( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeUndefined( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeUndefined( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -4634,66 +4664,66 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeUndefined( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeUndefined( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeUndefined( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeUndefined( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeUndefined( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeUndefined( src );
-//     var expected = long.defaultLong.make( [] );
+//     var expected = long.long.default.make( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeUndefined( src );
-//     var expected = long.defaultLong.make( 3 );
+//     var expected = long.long.default.make( 3 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = null';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeUndefined( src, null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = number';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeUndefined( src, 2 );
-//     var expected = long.defaultLong.make( 2 );
+//     var expected = long.long.default.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins < src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeUndefined( src, 2 );
-//     var expected = long.defaultLong.make( 2 );
+//     var expected = long.long.default.make( 2 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -4707,7 +4737,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     test.case = 'src = long, ins = number, ins > src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeUndefined( src, 4 );
-//     var expected = long.defaultLong.make( 4 );
+//     var expected = long.long.default.make( 4 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -4715,7 +4745,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
 //     var got = long.long.makeUndefined( src, ins );
-//     var expected = long.defaultLong.make( 3 );
+//     var expected = long.long.default.make( 3 );
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
@@ -4724,7 +4754,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( 5 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
 //     var got = long.long.makeUndefined( src, ins );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -4794,33 +4824,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeUndefined( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeUndefined( 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeUndefined( 5, null );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeUndefined( 5, undefined );
-//     // var expected = long.defaultLong.make( 5 );
+//     // var expected = long.long.default.make( 5 );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeUndefined( null, 5 );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeUndefined( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( 5 );
+//     var expected = long.long.default.make( 5 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -4995,8 +5025,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -5021,7 +5051,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'no args';
 //     var got = _.long.makeZeroed();
-//     var expected = _.defaultLong.make( 0 );
+//     var expected = _.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'njs buffer';
@@ -5046,33 +5076,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //     test.case = 'src = null, not ins';
 //     var got = _.long.makeZeroed( null );
-//     var expected = _.defaultLong.make( 0 );
+//     var expected = _.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.makeZeroed( 5 );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeZeroed( 5, null );
-//     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.makeZeroed( 5, undefined );
-//     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _.long.makeZeroed( null, 5 );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _.long.makeZeroed( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -5185,38 +5215,38 @@ function makeEmptyCommonWithLongDescriptor( test )
 //
 //   test.case = 'no args';
 //   var got = _.long.makeZeroed();
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = null, not ins';
 //   var got = _.long.makeZeroed( null );
-//   var expected = _.defaultLong.make( 0 );
+//   var expected = _.long.default.make( 0 );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = number, not ins';
 //   var got = _.long.makeZeroed( 5 );
-//   var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
 //
 //   /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //   // test.case = 'src = number, ins = null';
 //   // var got = _.long.makeZeroed( 5, null );
-//   // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   // test.identical( got, expected );
 //   //
 //   // test.case = 'src = number, ins = undefined';
 //   // var got = _.long.makeZeroed( 5, undefined );
-//   // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   // test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - number';
 //   var got = _.long.makeZeroed( null, 5 );
-//   var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = null, ins - long';
 //   var got = _.long.makeZeroed( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//   var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
 //
 //   test.case = 'src = empty long, not ins';
@@ -5235,7 +5265,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   // test.case = 'src = empty long, ins = null';
 //   // var src = _.argumentsArray.make( [] );
 //   // var got = _.long.makeZeroed( src, null );
-//   // var expected = _.defaultLong.make( 0 );
+//   // var expected = _.long.default.make( 0 );
 //   // test.identical( got, expected );
 //   // test.true( got !== src );
 //
@@ -5355,33 +5385,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = _.long.makeZeroed( null );
-//     var expected = _.defaultLong.make( 0 );
+//     var expected = _.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = _.long.makeZeroed( 5 );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = _.long.makeZeroed( 5, null );
-//     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = _.long.makeZeroed( 5, undefined );
-//     // var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = _.long.makeZeroed( null, 5 );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = _.long.makeZeroed( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -5494,8 +5524,8 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -5530,33 +5560,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeZeroed( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeZeroed( 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeZeroed( 5, undefined );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeZeroed( null, 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeZeroed( null, makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -5708,66 +5738,66 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeZeroed( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeZeroed( 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeZeroed( 5, undefined );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeZeroed( null, 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeZeroed( null, _.argumentsArray.make( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeZeroed( src );
-//     var expected = long.defaultLong.make( [] );
+//     var expected = long.long.default.make( [] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = long, not ins';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeZeroed( src );
-//     var expected = long.defaultLong.make( [ 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = null';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeZeroed( src, null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = empty long, ins = number';
 //     var src = _.argumentsArray.make( [] );
 //     var got = long.long.makeZeroed( src, 2 );
-//     var expected = long.defaultLong.make( [ 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
 //     test.case = 'src = long, ins = number, ins < src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeZeroed( src, 2 );
-//     var expected = long.defaultLong.make( [ 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -5781,7 +5811,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     test.case = 'src = long, ins = number, ins > src.length';
 //     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
 //     var got = long.long.makeZeroed( src, 4 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -5789,7 +5819,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( [ 0, 1 ] );
 //     var ins = [ 1, 2, 3 ];
 //     var got = long.long.makeZeroed( src, ins );
-//     var expected = long.defaultLong.make( [ 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== ins );
 //     test.true( got !== src );
@@ -5798,7 +5828,7 @@ function makeEmptyCommonWithLongDescriptor( test )
 //     var src = _.argumentsArray.make( 5 );
 //     var ins = [ 1, 2, 3, 4, 5 ];
 //     var got = long.long.makeZeroed( src, ins );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //     test.true( got !== src );
 //
@@ -5862,33 +5892,33 @@ function makeEmptyCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'src = null, not ins';
 //     var got = long.long.makeZeroed( null );
-//     var expected = long.defaultLong.make( 0 );
+//     var expected = long.long.default.make( 0 );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = number, not ins';
 //     var got = long.long.makeZeroed( 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* aaa : should throw error : add test cases */ /* Dmytro : added in new test routines */
 //     // test.case = 'src = number, ins = null';
 //     // var got = long.long.makeZeroed( 5, null );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //     //
 //     // test.case = 'src = number, ins = undefined';
 //     // var got = long.long.makeZeroed( 5, undefined );
-//     // var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     // var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     // test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - number';
 //     var got = long.long.makeZeroed( null, 5 );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = null, ins - long';
 //     var got = long.long.makeZeroed( null, new makeLong( [ 1, 2, 3, 4, 5 ] ) );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'src = empty long, not ins';
@@ -6234,10 +6264,10 @@ function makeFillingCommon( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -6492,10 +6522,10 @@ function makeFillingCommonWithLongDescriptor( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -6508,8 +6538,8 @@ function makeFillingCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -6533,7 +6563,7 @@ function makeFillingCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'value - null, length - number';
 //     var got = _.longMakeFilling( null, 5 );
-//     var expected = _.defaultLong.make( [ null, null, null, null, null ] );
+//     var expected = _.long.default.make( [ null, null, null, null, null ] );
 //     test.identical( got, expected );
 //
 //     test.case = `value - zero, length - ${ makeLong.name }`;
@@ -6545,12 +6575,12 @@ function makeFillingCommonWithLongDescriptor( test )
 //
 //     test.case = 'type - null, value - string, length - number';
 //     var got = _.longMakeFilling( null, 'str', 5 );
-//     var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'type - null, value - string, length - BufferTyped';
 //     var got = _.longMakeFilling( null, 'str', new U8x( 5 ) );
-//     var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
@@ -6627,34 +6657,34 @@ function makeFillingCommonWithLongDescriptor( test )
 // {
 //   test.case = 'value - null, length - number';
 //   var got = _.longMakeFilling( null, 5 );
-//   var expected = _.defaultLong.make( [ null, null, null, null, null ] );
+//   var expected = _.long.default.make( [ null, null, null, null, null ] );
 //   test.identical( got, expected );
 //
 //   test.case = `value - zero, length - ArgumentsArray`;
 //   var got = _.longMakeFilling( 0, _.argumentsArray.make( 5 ) );
-//   var expected = _.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//   var expected = _.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //   test.identical( got, expected );
 //
 //   /* */
 //
 //   test.case = 'type - null, value - string, length - number';
 //   var got = _.longMakeFilling( null, 'str', 5 );
-//   var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//   var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //   test.identical( got, expected );
 //
 //   test.case = 'type - null, value - string, length - ArgumentsArray';
 //   var got = _.longMakeFilling( null, 'str', _.argumentsArray.make( 5 ) );
-//   var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//   var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //   test.identical( got, expected );
 //
 //   test.case = `type - ArgumentsArray instance, value - map, length - number`;
 //   var got = _.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, 3 );
-//   var expected = _.defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+//   var expected = _.long.default.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
 //   test.identical( got, expected );
 //
 //   test.case = `type - ArgumentsArray instance, value - map, length - ArgumentsArray`;
 //   var got = _.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, _.argumentsArray.make( 3 ) );
-//   var expected = _.defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+//   var expected = _.long.default.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
 //   test.identical( got, expected );
 //
 //   test.case = `type - U8x, value - number, length - number`;
@@ -6714,7 +6744,7 @@ function makeFillingCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'value - null, length - number';
 //     var got = _.longMakeFilling( null, 5 );
-//     var expected = _.defaultLong.make( [ null, null, null, null, null ] );
+//     var expected = _.long.default.make( [ null, null, null, null, null ] );
 //     test.identical( got, expected );
 //
 //     test.case = `value - zero, length - ${ makeLong.name }`;
@@ -6726,12 +6756,12 @@ function makeFillingCommonWithLongDescriptor( test )
 //
 //     test.case = 'type - null, value - string, length - number';
 //     var got = _.longMakeFilling( null, 'str', 5 );
-//     var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'type - null, value - string, length - BufferTyped';
 //     var got = _.longMakeFilling( null, 'str', new U8x( 5 ) );
-//     var expected = _.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = _.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
@@ -6785,8 +6815,8 @@ function makeFillingCommonWithLongDescriptor( test )
 //   var longConstr = ( src ) =>
 //   {
 //     if( src )
-//     return _.defaultLong.make( src );
-//     return _.defaultLong.make( 0 );
+//     return _.long.default.make( src );
+//     return _.long.default.make( 0 );
 //   }
 //   var list =
 //   [
@@ -6821,7 +6851,7 @@ function makeFillingCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'value - null, length - number';
 //     var got = long.longMakeFilling( null, 5 );
-//     var expected = long.defaultLong.make( [ null, null, null, null, null ] );
+//     var expected = long.long.default.make( [ null, null, null, null, null ] );
 //     test.identical( got, expected );
 //
 //     test.case = `value - zero, length - ${ makeLong.name }`;
@@ -6833,12 +6863,12 @@ function makeFillingCommonWithLongDescriptor( test )
 //
 //     test.case = 'type - null, value - string, length - number';
 //     var got = long.longMakeFilling( null, 'str', 5 );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'type - null, value - string, length - BufferTyped';
 //     var got = long.longMakeFilling( null, 'str', new U8x( 5 ) );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
@@ -6936,34 +6966,34 @@ function makeFillingCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'value - null, length - number';
 //     var got = long.longMakeFilling( null, 5 );
-//     var expected = long.defaultLong.make( [ null, null, null, null, null ] );
+//     var expected = long.long.default.make( [ null, null, null, null, null ] );
 //     test.identical( got, expected );
 //
 //     test.case = `value - zero, length - ArgumentsArray`;
 //     var got = long.longMakeFilling( 0, _.argumentsArray.make( 5 ) );
-//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     var expected = long.long.default.make( [ 0, 0, 0, 0, 0 ] );
 //     test.identical( got, expected );
 //
 //     /* */
 //
 //     test.case = 'type - null, value - string, length - number';
 //     var got = long.longMakeFilling( null, 'str', 5 );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'type - null, value - string, length - ArgumentsArray';
 //     var got = long.longMakeFilling( null, 'str', _.argumentsArray.make( 5 ) );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ArgumentsArray instance, value - map, length - number`;
 //     var got = long.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, 3 );
-//     var expected = long.defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+//     var expected = long.long.default.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ArgumentsArray instance, value - map, length - ArgumentsArray`;
 //     var got = long.longMakeFilling( _.argumentsArray.make( 0 ), { a : 1 }, _.argumentsArray.make( 3 ) );
-//     var expected = long.defaultLong.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+//     var expected = long.long.default.make( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - U8x, value - number, length - number`;
@@ -7034,7 +7064,7 @@ function makeFillingCommonWithLongDescriptor( test )
 //   {
 //     test.case = 'value - null, length - number';
 //     var got = long.longMakeFilling( null, 5 );
-//     var expected = long.defaultLong.make( [ null, null, null, null, null ] );
+//     var expected = long.long.default.make( [ null, null, null, null, null ] );
 //     test.identical( got, expected );
 //
 //     test.case = `value - zero, length - ${ makeLong.name }`;
@@ -7046,12 +7076,12 @@ function makeFillingCommonWithLongDescriptor( test )
 //
 //     test.case = 'type - null, value - string, length - number';
 //     var got = long.longMakeFilling( null, 'str', 5 );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = 'type - null, value - string, length - BufferTyped';
 //     var got = long.longMakeFilling( null, 'str', new U8x( 5 ) );
-//     var expected = long.defaultLong.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+//     var expected = long.long.default.make( [ 'str', 'str', 'str', 'str', 'str' ] );
 //     test.identical( got, expected );
 //
 //     test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
@@ -7261,6 +7291,14 @@ function fromCommon( test )
     test.true( _.f64x.is( got ) );
     test.true( got === src );
 
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
+
     /* - */
 
     if( Config.debug )
@@ -7295,10 +7333,10 @@ function fromCommon( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.tools ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.tools ].long.default.InstanceConstructor;
   }
 }
 
@@ -7481,6 +7519,14 @@ function fromCommonWithLongDescriptor( test )
     test.true( _.f64x.is( got ) );
     test.true( got === src );
 
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
+
     test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
 
@@ -7500,10 +7546,10 @@ function fromCommonWithLongDescriptor( test )
   function defaultConstructorGet( env )
   {
     if( env.tools === 'default' )
-    return _.defaultLong.InstanceConstructor;
+    return _.long.default.InstanceConstructor;
     if( env.tools === 'bufferTyped' )
-    return _.defaultBufferTyped.InstanceConstructor;
-    return _.withLong[ env.type ].defaultLong.InstanceConstructor;
+    return _.bufferTyped.default.InstanceConstructor;
+    return _.withLong[ env.type ].long.default.InstanceConstructor;
   }
 }
 
@@ -7638,18 +7684,18 @@ function fromCommonWithLongDescriptor( test )
 //     test.case = 'null';
 //     var src = null;
 //     var got = long.long.from( src );
-//     var exp = long.defaultLong.make( 0 );
+//     var exp = long.long.default.make( 0 );
 //     test.identical( got, exp );
 //     if( !_.argumentsArray.is( exp ) )
-//     test.true( got instanceof long.defaultLong.InstanceConstructor );
+//     test.true( got instanceof long.long.default.InstanceConstructor );
 //
 //     test.case = 'number';
 //     var src = 2;
 //     var got = long.long.from( src );
-//     var exp = long.defaultLong.make( 2 );
+//     var exp = long.long.default.make( 2 );
 //     test.identical( got, exp );
 //     if( !_.argumentsArray.is( exp ) )
-//     test.true( got instanceof long.defaultLong.InstanceConstructor );
+//     test.true( got instanceof long.long.default.InstanceConstructor );
 //
 //     test.case = 'empty array';
 //     var src = [];

@@ -21,7 +21,7 @@ function isArrayUnrollArgumentsArray( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     test.open( descriptorsList[ i ] );
     testRun( descriptor );
@@ -131,7 +131,8 @@ function isBufferTypedInstance( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    _.assert( !!_.withLong[ descriptorsList[ i ] ] );
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     test.open( descriptorsList[ i ] );
     testRun( descriptor );
@@ -277,7 +278,7 @@ function makeArrayUnrollArgumentsArray( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
     test.open( descriptorsList[ i ] );
@@ -504,7 +505,7 @@ function makeBufferTypedInstance( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
     test.open( descriptorsList[ i ] );
@@ -716,7 +717,7 @@ function fromArrayUnrollArgumentsArray( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
     test.open( descriptorsList[ i ] );
@@ -933,7 +934,7 @@ function fromBufferTypedInstance( test )
 
   for( let i = 0; i < descriptorsList.length; i++ )
   {
-    let descriptor = _.withLong[ descriptorsList[ i ] ].defaultLong;
+    let descriptor = _.withLong[ descriptorsList[ i ] ].long.default;
     // let descriptor = _.withLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
     test.open( descriptorsList[ i ] );

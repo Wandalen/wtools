@@ -29,6 +29,14 @@ function like( src )
   return _.props.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -1856,6 +1864,26 @@ function descriptorOwnOf( object, name )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.map.is( src ) )
+  return _.map;
+  if( _.aux.is( src ) )
+  return _.aux;
+  if( _.object.is( src ) )
+  return _.object;
+  if( _.props.is( src ) )
+  return _.props;
+
+  return null;
+}
+
+// --
 // props extension
 // --
 
@@ -1865,11 +1893,13 @@ let PropsExtension =
   //
 
   NamespaceName : 'props',
+  NamespaceNames : [ 'props' ],
   NamespaceQname : 'wTools/props',
   MoreGeneralNamespaceName : 'props',
   MostGeneralNamespaceName : 'props',
   TypeName : 'Props',
-  SecondTypeName : 'Properties',
+  TypeNames : [ 'Props', 'Properties' ],
+  // SecondTypeName : 'Properties',
   InstanceConstructor : null,
   tools : _,
 
@@ -1877,6 +1907,7 @@ let PropsExtension =
 
   is,
   like,
+  IsResizable,
 
   // maker
 
@@ -1951,6 +1982,12 @@ let PropsExtension =
   descriptorActiveOf, /* qqq : cover please */
   descriptorOf, /* qqq : cover please */
   descriptorOwnOf,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.long.namespaceWithDefaultOf,
+  _functor_functor : _.long._functor_functor,
 
 }
 

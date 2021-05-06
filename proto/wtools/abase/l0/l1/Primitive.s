@@ -49,22 +49,28 @@ let _is = _primitiveIs_functor();
 _is.functor = _primitiveIs_functor;
 
 // --
-// extension
+// meta
 // --
 
-let ToolsExtension =
+/* qqq2 : full implementation is required */
+/* qqq2 : optimize */
+function namespaceOf( src )
 {
 
-  // dichotomy
+  debugger;
+  if( _.str.is( src ) )
+  return _.str;
+  if( _.number.is( src ) )
+  return _.number;
+  if( _.symbol.is( src ) )
+  return _.symbol;
 
-  primitiveIs : is.bind( _.primitive ),
-  primitiveLike : like.bind( _.primitive ),
-
+  return null;
 }
 
-Object.assign( _, ToolsExtension );
-
-//
+// --
+// extension
+// --
 
 let PrimitiveExtension =
 {
@@ -72,11 +78,13 @@ let PrimitiveExtension =
   //
 
   NamespaceName : 'primitive',
+  NamespaceNames : [ 'primitive' ],
   NamespaceQname : 'wTools/primitive',
   MoreGeneralNamespaceName : 'primitive',
   MostGeneralNamespaceName : 'primitive',
   TypeName : 'Primitive',
-  SecondTypeName : 'Primitive',
+  TypeNames : [ 'Primitive' ],
+  // SecondTypeName : 'Primitive',
   InstanceConstructor : null,
   tools : _,
 
@@ -98,8 +106,28 @@ let PrimitiveExtension =
   cloneShallow : _.blank.cloneShallow, /* qqq : for junior : cover */
   from : _.blank.from, /* qqq : for junior : cover */
 
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
+
 }
 
 Object.assign( _.primitive, PrimitiveExtension );
+
+//
+
+let ToolsExtension =
+{
+
+  // dichotomy
+
+  primitiveIs : is.bind( _.primitive ),
+  primitiveLike : like.bind( _.primitive ),
+
+}
+
+Object.assign( _, ToolsExtension );
 
 })();

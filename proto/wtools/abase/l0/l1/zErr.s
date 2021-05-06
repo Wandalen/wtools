@@ -864,7 +864,7 @@ function _err( o )
             let original = arg;
             arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
             console.error( String( err ) );
-            if( _.strLinesSelect ) /* qqq : for Dmytro : make sure it works and cover */
+            if( _.strLinesSelect ) /* aaa : for Dmytro : make sure it works and cover */ /* Dmytro : works, covered. Test routine `_errWithArgsIncludedRoutine` */
             console.error( _.strLinesSelect
             ({
               src : original.toString(),

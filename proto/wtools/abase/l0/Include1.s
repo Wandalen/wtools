@@ -15,9 +15,9 @@ if( typeof module !== 'undefined' )
   require( './l1/1Diagnostic.s' );
   require( './l1/2Long.s' );
   require( './l1/2Props.s' );
-  require( './l1/3ArgumentsArray.s' );
   require( './l1/3Blank.s' );
-  require( './l1/3BufferTyped.s' );
+  require( './l1/5ArgumentsArray.s' );
+  require( './l1/5BufferTyped.s' );
   require( './l1/Array.s' );
   require( './l1/ArraySet.s' );
   require( './l1/Auxiliary.s' );

@@ -638,732 +638,4469 @@ function bufferBytesIs( test )
 
 //
 
-function bufferMakeWithArrayAndUnroll( test )
+function makeCommon( test )
 {
-  var array = ( src ) => _.array.make( src );
-  var unroll = ( src ) => _.unroll.make( src );
-
-  var list =
-  [
-    array,
-    unroll,
-  ];
-
-  /* tests */
-
-  for( let i = 0; i < list.length; i++ )
-  {
-    test.open( list[ i ].name );
-    testRun( list[ i ] );
-    test.close( list[ i ].name );
-  }
-
-  /* test subroutine */
-
-  function testRun( makeBuffer )
-  {
-    test.case = 'src - empty long, not ins';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - null';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, null );
-    var expected = _.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, undefined );
-    var expected = _.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src, 2 );
-    var expected = makeBuffer( [ 1, 2 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src, 4 );
-    var expected = makeBuffer( [ 1, 2, 3, undefined ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = _.bufferMake( src, ins );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-  }
-
-  test.case = 'src - null';
-  var got = _.bufferMake( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMake( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMake( null, new U8x( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMake( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMake( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMake( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMake( F32x, ins );
-  var expected = new F32x( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMake( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = [ 1, 1, 1, 1, 1 ];
-  var got = _.bufferMake( Array, ins );
-  var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
-  test.identical( got, expected );
-  test.true( got !== ins );
+  methodEach({ tools : 'default', type : 'Array' });
+  methodEach({ tools : 'Array', type : 'Array' });
+  methodEach({ tools : 'F32x', type : 'F32x' });
 
   /* - */
 
-  if( !Config.debug )
-  return;
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 4, 'extra' ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.bufferMake( undefined ) );
-  test.shouldThrowErrorSync( () => _.bufferMake( 'wrong', 1 ) );
-  test.shouldThrowErrorSync( () => _.bufferMake( 1, 1 ) );
-
-  test.case = 'wrong type of ins';
-  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], Infinity  ) );
-}
-
-//
-
-function bufferMakeWithArgumentsArray( test )
-{
-  test.case = 'src - empty long, not ins';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - null';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src, null );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - undefined';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src, undefined );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - number';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src, 2 );
-  var expected = _.tools.defaultBufferTyped.make( 2 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - empty array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src, [] );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMake( src, [ 1, 2, 3 ] );
-  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, not ins';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMake( src );
-  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - number, ins < src.length';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMake( src, 2 );
-  var expected = _.tools.defaultBufferTyped.make( [ 1, 2 ] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - number, ins > src.length';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMake( src, 4 );
-  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3, 0 ] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - array, ins.length > src.length';
-  var src = _.argumentsArray.make( [ 0, 1 ] );
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMake( src, ins );
-  var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-  test.true( got !== ins );
-  test.true( got !== src );
-
-  /* */
-
-  test.case = 'src - null';
-  var got = _.bufferMake( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMake( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMake( null, _.argumentsArray.make( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( new Array( 5 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMake( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMake( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMake( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
-  var got = _.bufferMake( F32x, ins );
-  var expected = new F32x( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMake( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
-  var got = _.bufferMake( Array, ins );
-  var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
-  test.identical( got, expected );
-  test.true( got !== ins );
-}
-
-//
-
-function bufferMakeWithBuffers( test )
-{
-  var bufferTyped = ( buf ) =>
+  function methodEach( env )
   {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
-  };
-  var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
-  var bufferRaw = ( src ) => new U8x( src ).buffer;
-  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
-
-  /* lists */
-
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-  ];
-  var list = [ bufferRaw, bufferView ];
-  // var list = []; // xxx
-
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
-  if( Config.interpreter === 'njs' )
-  list.push( bufferNode );
-
-  /* tests */
-
-  for( let i = 0; i < list.length; i++ )
-  {
-    test.open( list[ i ].name );
-    testRun( list[ i ] );
-    test.close( list[ i ].name );
+    env.method = 'make';
+    act( env );
+    env.method = 'cloneShallow';
+    act( env );
   }
 
-  /* test subroutine */
+  /* */
 
-  function testRun( makeBuffer )
+  function act( env )
   {
-    test.case = 'src - empty buffer, not ins';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor );
+    test.open( `${__.entity.exportStringSolo( env )}` );
 
-    test.case = 'src - empty buffer, ins - null';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
-    test.case = 'src - empty buffer, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+    /* */
 
-    test.case = 'src - empty buffer, ins - number';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+    if( env.method !== 'cloneShallow' )
+    {
+      test.case = `no args`;
+      var got = long[ env.method ]();
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
 
-    test.case = 'src - empty buffer, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      test.case = `length`;
+      var got = long[ env.method ]( 3 );
+      test.true( got instanceof Constructor );
+      test.true( got.length === 3 );
 
-    test.case = 'src - empty buffer, ins - array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMake( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      /* */
 
-    test.case = 'src - filled buffer, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      test.case = `empty array`;
+      var src = [];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
 
-    test.case = 'src - filled buffer, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src, 2 );
-    var expected = makeBuffer( [ 1, 2 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      test.case = `filled array`;
+      var src = [ 2, 3 ];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
 
-    test.case = 'src - filled buffer, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMake( src, 4 );
-    var expected = makeBuffer( [ 1, 2, 3, 0 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      /* */
 
-    test.case = 'src - filled buffer, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = _.bufferMake( src, ins );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-    test.true( got instanceof src.constructor )
+      test.case = `empty unroll`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled unroll`;
+      var src = _.unroll.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty argumentsArray`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled argumentsArray`;
+      var src = _.argumentsArray.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+    }
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long[ env.method ]( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 2, 3 ]) );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 3 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 3 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 3 ]) );
+    }
+
+    /* */
+
+    if( env.method !== 'cloneShallow' )
+    {
+      test.case = `null and length - number`;
+      var got = long[ env.method ]( null, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and length - array`;
+      var got = long[ env.method ]( null, [ 1, 2 ] );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and length - raw buffer`;
+      var got = long[ env.method ]( null, new BufferRaw( 2 ) );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( null, length );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 3 );
+
+      /* */
+
+      test.case = `empty array and length`;
+      var src = [];
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty unroll and length`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty argumentsArray and length`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty typed buffer and length`;
+      var src = _.u8x.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof U8x );
+      test.identical( got.length, 2 );
+
+      test.case = `empty raw buffer and length`;
+      var src = new BufferRaw( 0 );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got.byteLength, 2 );
+
+      test.case = `empty view buffer and length`;
+      var src = new BufferView( new BufferRaw( 0 ) );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferView );
+      test.identical( got.byteLength, 2 );
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `empty node buffer and length`;
+        var src = BufferNode.alloc( 0 );
+        var got = long[ env.method ]( src, 2 );
+        test.true( got instanceof BufferNode );
+        test.identical( got.length, 2 );
+      }
+
+      /* */
+
+      test.case = `non-empty array and length longer`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty array and length shorter`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty unroll and length longer`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty unroll and length shorter`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty argumentsArray and length longer`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty argumentsArray and length shorter`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty typed buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof U8x );
+      test.identical( got, _.u8x.make([ 3, 4, 0 ]) );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.f32x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof F32x );
+      test.identical( got, _.f32x.make([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty raw buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3, 4, 0 ]).buffer );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3 ]).buffer );
+
+      /* */
+
+      test.case = `non-empty view buffer and length longer`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3, 4, 0 ]).buffer ) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3 ]).buffer ) );
+
+      /* */
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `non-empty view buffer and length longer`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 3 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3, 4, 0 ]) );
+
+        test.case = `non-empty view buffer and length shorter`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 1 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3 ]) );
+      }
+
+      /* */
+
+      test.case = `array and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( [ 0, 0, 0, 0 ], length );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    }
+
+    /* */
+
+    if( Config.debug )
+    {
+      if( env.method === 'cloneShallow' )
+      {
+        test.case = 'without arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]() );
+
+        test.case = 'extra arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1 ) );
+      }
+      else
+      {
+        test.case = 'extra arguments';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
+
+        test.case = 'wrong type of length';
+        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( 3, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( Array, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( null, null ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( 3, undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( Array, undefined ) );
+        test.shouldThrowErrorSync( () => long[ env.method ]( null, undefined ) );
+
+        test.case = 'wrong type of src';
+        test.shouldThrowErrorSync( () => long[ env.method ]( 'wrong', 3 ) );
+      }
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
   }
 
-  test.case = 'src - null';
-  var got = _.bufferMake( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMake( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMake( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMake( null, new U8x( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMake( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMake( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMake( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMake( F32x, ins );
-  var expected = new F32x( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMake( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = [ 1, 1, 1, 1, 1 ];
-  var got = _.bufferMake( Array, ins );
-  var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
-  test.identical( got, expected );
-  test.true( got !== ins );
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
+  }
 }
 
 //
 
-function bufferMakeWithArrayAndUnrollLongDescriptor( test )
+function makeCommonWithLongDescriptor( test )
 {
-  var array = ( src ) => _.array.make( src );
-  var unroll = ( src ) => _.unroll.make( src );
-
-  var list =
-  [
-    array,
-    unroll,
-  ];
-
-  /* tests */
-
   let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
   for( let k in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
+    let type = namespace.TypeName;
 
-    for( let i = 0; i < list.length; i++ )
-    {
-      test.open( `long - ${ name }, buffer - ${ list[ i ].name }` );
-      testRun( long, list[ i ] );
-      test.close( `long - ${ name }, buffer - ${ list[ i ].name }` );
-    }
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    methodEach({ tools : 'default', type });
+    methodEach({ tools : 'Array', type });
+    methodEach({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
 
     if( times < 1 )
     break;
     times--;
   }
 
-  /* test subroutine */
+  /* - */
 
-  function testRun( long, makeBuffer )
+  function methodEach( env )
   {
-    test.case = 'src - empty long, not ins';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
+    env.method = 'make';
+    act( env );
+    env.method = 'cloneShallow';
+    act( env );
+  }
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    if( env.method !== 'cloneShallow' )
+    {
+      test.case = `no args`;
+      var got = long[ env.method ]();
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `length`;
+      var got = long[ env.method ]( 3 );
+      test.true( got instanceof Constructor );
+      test.true( got.length === 3 );
+
+      /* */
+
+      test.case = `empty array`;
+      var src = [];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled array`;
+      var src = [ 2, 3 ];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty unroll`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled unroll`;
+      var src = _.unroll.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty argumentsArray`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled argumentsArray`;
+      var src = _.argumentsArray.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+    }
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long[ env.method ]( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 2, 3 ]) );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 3 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long[ env.method ]( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 3 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 3 ]) );
+    }
+
+    /* */
+
+    if( env.method !== 'cloneShallow' )
+    {
+      test.case = `null and length - number`;
+      var got = long[ env.method ]( null, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and length - array`;
+      var got = long[ env.method ]( null, [ 1, 2 ] );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and length - raw buffer`;
+      var got = long[ env.method ]( null, new BufferRaw( 2 ) );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `null and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( null, length );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 3 );
+
+      /* */
+
+      test.case = `empty array and length`;
+      var src = [];
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty unroll and length`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty argumentsArray and length`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+
+      test.case = `empty typed buffer and length`;
+      var src = _.u8x.make( [] );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof U8x );
+      test.identical( got.length, 2 );
+
+      test.case = `empty raw buffer and length`;
+      var src = new BufferRaw( 0 );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got.byteLength, 2 );
+
+      test.case = `empty view buffer and length`;
+      var src = new BufferView( new BufferRaw( 0 ) );
+      var got = long[ env.method ]( src, 2 );
+      test.true( got instanceof BufferView );
+      test.identical( got.byteLength, 2 );
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `empty node buffer and length`;
+        var src = BufferNode.alloc( 0 );
+        var got = long[ env.method ]( src, 2 );
+        test.true( got instanceof BufferNode );
+        test.identical( got.length, 2 );
+      }
+
+      /* */
+
+      test.case = `non-empty array and length longer`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty array and length shorter`;
+      var src = [ 3, 4 ];
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty unroll and length longer`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty unroll and length shorter`;
+      var src = _.unroll.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty argumentsArray and length longer`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3, 4, 0 ]) );
+
+      test.case = `non-empty argumentsArray and length shorter`;
+      var src = _.argumentsArray.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty typed buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof U8x );
+      test.identical( got, _.u8x.make([ 3, 4, 0 ]) );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.f32x.make([ 3, 4 ]);
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof F32x );
+      test.identical( got, _.f32x.make([ 3 ]) );
+
+      /* */
+
+      test.case = `non-empty raw buffer and length longer`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3, 4, 0 ]).buffer );
+
+      test.case = `non-empty typed buffer and length shorter`;
+      var src = _.u8x.make([ 3, 4 ]).buffer;
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferRaw );
+      test.identical( got, _.u8x.make([ 3 ]).buffer );
+
+      /* */
+
+      test.case = `non-empty view buffer and length longer`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 3 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3, 4, 0 ]).buffer ) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+      var got = long[ env.method ]( src, 1 );
+      test.true( got instanceof BufferView );
+      test.identical( got, new BufferView( _.u8x.make([ 3 ]).buffer ) );
+
+      /* */
+
+      if( Config.interpreter === 'njs' )
+      {
+        test.case = `non-empty view buffer and length longer`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 3 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3, 4, 0 ]) );
+
+        test.case = `non-empty view buffer and length shorter`;
+        var src = BufferNode.from([ 3, 4 ]);
+        var got = long[ env.method ]( src, 1 );
+        test.true( got instanceof BufferNode );
+        test.identical( got, BufferNode.from([ 3 ]) );
+      }
+
+      /* */
+
+      test.case = `array and countable`;
+      var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( [ 0, 0, 0, 0 ], length );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
+  }
+}
+
+// function bufferMakeWithArrayAndUnroll( test )
+// {
+//   var array = ( src ) => _.array.make( src );
+//   var unroll = ( src ) => _.unroll.make( src );
+//
+//   var list =
+//   [
+//     array,
+//     unroll,
+//   ];
+//
+//   /* tests */
+//
+//   for( let i = 0; i < list.length; i++ )
+//   {
+//     test.open( list[ i ].name );
+//     testRun( list[ i ] );
+//     test.close( list[ i ].name );
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( makeBuffer )
+//   {
+//     test.case = 'src - empty long, not ins';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, null );
+//     var expected = _.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, undefined );
+//     var expected = _.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src, 2 );
+//     var expected = makeBuffer( [ 1, 2 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src, 4 );
+//     var expected = makeBuffer( [ 1, 2, 3, undefined ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = _.bufferMake( src, ins );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//   }
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMake( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMake( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMake( null, new U8x( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMake( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMake( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMake( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMake( F32x, ins );
+//   var expected = new F32x( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMake( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = [ 1, 1, 1, 1, 1 ];
+//   var got = _.bufferMake( Array, ins );
+//   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+//
+//   /* - */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'extra argument';
+//   test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 4, 'extra' ) );
+//
+//   test.case = 'wrong type of src';
+//   test.shouldThrowErrorSync( () => _.bufferMake( undefined ) );
+//   test.shouldThrowErrorSync( () => _.bufferMake( 'wrong', 1 ) );
+//   test.shouldThrowErrorSync( () => _.bufferMake( 1, 1 ) );
+//
+//   test.case = 'wrong type of ins';
+//   test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 'wrong' ) );
+//   test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], Infinity  ) );
+// }
+//
+// //
+//
+// function bufferMakeWithArgumentsArray( test )
+// {
+//   test.case = 'src - empty long, not ins';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - null';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src, null );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - undefined';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - number';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src, 2 );
+//   var expected = _.tools.defaultBufferTyped.make( 2 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - empty array';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src, [] );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - array';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMake( src, [ 1, 2, 3 ] );
+//   var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, not ins';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMake( src );
+//   var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - number, ins < src.length';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMake( src, 2 );
+//   var expected = _.tools.defaultBufferTyped.make( [ 1, 2 ] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - number, ins > src.length';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMake( src, 4 );
+//   var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3, 0 ] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - array, ins.length > src.length';
+//   var src = _.argumentsArray.make( [ 0, 1 ] );
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMake( src, ins );
+//   var expected = _.tools.defaultBufferTyped.make( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+//   test.true( got !== src );
+//
+//   /* */
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMake( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMake( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMake( null, _.argumentsArray.make( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( new Array( 5 ) );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMake( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMake( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMake( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
+//   var got = _.bufferMake( F32x, ins );
+//   var expected = new F32x( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMake( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
+//   var got = _.bufferMake( Array, ins );
+//   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+// }
+//
+// //
+//
+// function bufferMakeWithBuffers( test )
+// {
+//   var bufferTyped = ( buf ) =>
+//   {
+//     let name = buf.name;
+//     return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+//   };
+//   var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+//   var bufferRaw = ( src ) => new U8x( src ).buffer;
+//   var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+//
+//   /* lists */
+//
+//   var typedList =
+//   [
+//     I8x,
+//     U16x,
+//     F32x,
+//     F64x,
+//   ];
+//   var list = [ bufferRaw, bufferView ];
+//   // var list = []; // xxx
+//
+//   for( let i = 0; i < typedList.length; i++ )
+//   list.push( bufferTyped( typedList[ i ] ) );
+//   if( Config.interpreter === 'njs' )
+//   list.push( bufferNode );
+//
+//   /* tests */
+//
+//   for( let i = 0; i < list.length; i++ )
+//   {
+//     test.open( list[ i ].name );
+//     testRun( list[ i ] );
+//     test.close( list[ i ].name );
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( makeBuffer )
+//   {
+//     test.case = 'src - empty buffer, not ins';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor );
+//
+//     test.case = 'src - empty buffer, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - empty buffer, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - empty buffer, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - empty buffer, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - empty buffer, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMake( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - filled buffer, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - filled buffer, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src, 2 );
+//     var expected = makeBuffer( [ 1, 2 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - filled buffer, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMake( src, 4 );
+//     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//
+//     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = _.bufferMake( src, ins );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//     test.true( got instanceof src.constructor )
+//   }
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMake( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMake( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMake( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMake( null, new U8x( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( [ 0, 0, 0, 0, 0 ] );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMake( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMake( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMake( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMake( F32x, ins );
+//   var expected = new F32x( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMake( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = [ 1, 1, 1, 1, 1 ];
+//   var got = _.bufferMake( Array, ins );
+//   var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+// }
+//
+// //
+//
+// function bufferMakeWithArrayAndUnrollLongDescriptor( test )
+// {
+//   let times = 4;
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     test.open( `long - ${ name }` );
+//     testRun( long );
+//     test.close( `long - ${ name }` );
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( long )
+//   {
+//     test.case = 'without arguments';
+//     var got = long.bufferMake();
+//     var expected = _.defaultBufferTyped.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - empty long, not ins';
+//     var src = [];
+//     var got = long.bufferMake( src );
+//     var expected = _.defaultBufferTyped.make( 0 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     // test.case = 'src - empty long, ins - null';
+//     // var src = [];
+//     // var got = long.bufferMake( src, null );
+//     // var expected = [];
+//     // test.identical( got, expected );
+//     // test.true( got !== src );
+//
+//     // test.case = 'src - empty long, ins - undefined';
+//     // var src = [];
+//     // var got = long.bufferMake( src, undefined );
+//     // var expected = [];
+//     // test.identical( got, expected );
+//     // test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = [];
+//     var got = long.bufferMake( src, 2 );
+//     var expected = _.defaultBufferTyped.make( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = [];
+//     var got = long.bufferMake( src, [] );
+//     var expected = _.defaultBufferTyped.make( 0 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = [];
+//     var got = long.bufferMake( src, [ 1, 2, 3 ] );
+//     var expected = _.defaultBufferTyped.make([ 1, 2, 3 ]);
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = [ 1, 2, 3 ];
+//     var got = long.bufferMake( src );
+//     var expected = _.defaultBufferTyped.make([ 1, 2, 3 ]);
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = [ 1, 2, 3 ];
+//     var got = long.bufferMake( src, 2 );
+//     var expected = _.defaultBufferTyped.make([ 1, 2 ]);
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     // test.case = 'src - filled long, ins - number, ins > src.length';
+//     // var src = [ 1, 2, 3 ];
+//     // var got = long.bufferMake( src, 4 );
+//     // var expected = [ 1, 2, 3, undefined ];
+//     // test.identical( got, expected );
+//     // test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = [ 0, 1 ];
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMake( src, ins );
+//     var expected = _.defaultBufferTyped.make([ 1, 2, 3 ]);
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMake( null ); /* aaa2 : for Dmytro : should create typed buffer! */ /* Dmytro :routines make, makeUndefined, makeZeroed, makeEmpty creates typed buffers */
+//     var expected = _.defaultBufferTyped.make( 0 );
+//     test.identical( got, expected );
+//
+//     // test.case = 'src - null, ins - null';
+//     // var got = long.bufferMake( null, null );
+//     // var expected = long.defaultLong.make( 0 );
+//     // test.identical( got, expected );
+//
+//     // test.case = 'src - null, ins - null';
+//     // var got = long.bufferMake( null, undefined );
+//     // var expected = long.defaultLong.make( 0 );
+//     // test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMake( null, 5 );
+//     var expected = _.defaultBufferTyped.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMake( null, new U8x( 5 ) );
+//     var expected = _.defaultBufferTyped.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     // test.case = 'src - number, ins - null';
+//     // var got = long.bufferMake( 5, null );
+//     // var expected = long.defaultLong.make( 5 );
+//     // test.identical( got, expected );
+//     //
+//     // test.case = 'src - number, ins - undefined';
+//     // var got = long.bufferMake( 5, undefined );
+//     // var expected = long.defaultLong.make( 5 );
+//     // test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMake( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMake( F32x, ins );
+//     var expected = new F32x( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMake( U8x, 5 );
+//     var expected = _.u8x.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var ins = [ 1, 1, 1 ];
+//     var got = long.bufferMake( U8x, ins );
+//     var expected = _.u8x.make([ 1, 1, 1 ]);
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//
+//     /* - */
+//
+//     if( Config.debug )
+//     {
+//       test.case = 'extra argument';
+//       test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], 4, 'extra' ) );
+//
+//       test.case = 'wrong type of ins';
+//       test.shouldThrowErrorSync( () => long.bufferMake( 'wrong', 1 ) );
+//       test.shouldThrowErrorSync( () => long.bufferMake( 1, 1 ) );
+//
+//       test.case = 'wrong type of ins';
+//       test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], 'wrong' ) );
+//       test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], Infinity  ) );
+//     }
+//   }
+// }
+//
+// bufferMakeWithArrayAndUnrollLongDescriptor.timeOut = 15000;
+//
+// //
+//
+// function bufferMakeWithArgumentsArrayLongDescriptor( test )
+// {
+//   let times = 4;
+//   // for( let e in _.LongDescriptors )
+//   // {
+//   //   let name = _.LongDescriptors[ e ].name;
+//   //   let long = _.withLong[ name ];
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     test.open( `long - ${ name }` );
+//     testRun( long );
+//     test.close( `long - ${ name }` );
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* - */
+//
+//   function testRun( long )
+//   {
+//     test.case = 'src - empty long, not ins';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - null';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src, null );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - undefined';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src, undefined );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src, 2 );
+//     var expected = long.defaultLong.make( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src, [] );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMake( src, [ 1, 2, 3 ] );
+//     var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src );
+//     var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src, 2 );
+//     var expected = long.defaultLong.make( [ 1, 2 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins > src.length';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src, 4 );
+//     var expected = long.defaultLong.make( [ 1, 2, 3, undefined ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = _.argumentsArray.make( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMake( src, ins );
+//     var expected = long.defaultLong.make( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMake( null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMake( null, null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMake( null, undefined );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMake( null, 5 );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMake( null, _.argumentsArray.make( 5 ) );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - number, ins - null';
+//     var got = long.bufferMake( 5, null );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - number, ins - undefined';
+//     var got = long.bufferMake( 5, undefined );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMake( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
+//     var got = long.bufferMake( F32x, ins );
+//     var expected = new F32x( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var got = long.bufferMake( Array, 5 );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
+//     var got = long.bufferMake( Array, ins );
+//     var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//   }
+// }
+//
+// bufferMakeWithArgumentsArrayLongDescriptor.timeOut = 10000;
+//
+// //
+//
+// function bufferMakeWithBuffersLongDescriptor( test )
+// {
+//   var bufferTyped = ( buf ) =>
+//   {
+//     let name = buf.name;
+//     return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+//   };
+//   var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+//   var bufferRaw = ( src ) => new U8x( src ).buffer;
+//   var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+//
+//   /* lists */
+//
+//   var typedList =
+//   [
+//     I8x,
+//     U16x,
+//     F32x,
+//     F64x,
+//   ];
+//   var list = [ bufferRaw, bufferView ];
+//
+//   for( let i = 0; i < typedList.length; i++ )
+//   list.push( bufferTyped( typedList[ i ] ) );
+//   if( Config.interpreter === 'njs' )
+//   list.push( bufferNode );
+//
+//   /* tests */
+//
+//   let times = 4;
+//   // for( let e in _.LongDescriptors )
+//   // {
+//   //   let name = _.LongDescriptors[ e ].name;
+//   //   let long = _.withLong[ name ];
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     for( let i = 0; i < list.length; i++ )
+//     {
+//       test.open( `long - ${ name }, long - ${ list[ i ].name }` );
+//       testRun( long, list[ i ] );
+//       test.close( `long - ${ name }, long - ${ list[ i ].name }` );
+//     }
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( long, makeBuffer )
+//   {
+//     test.case = 'src - empty buffer, not ins';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMake( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src, 2 );
+//     var expected = makeBuffer( [ 1, 2 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMake( src, 4 );
+//     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMake( src, ins );
+//     var expected = makeBuffer( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMake( null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMake( null, null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMake( null, undefined );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMake( null, 5 );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMake( null, new U8x( 5 ) );
+//     var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - number, ins - null';
+//     var got = long.bufferMake( 5, null );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - number, ins - undefined';
+//     var got = long.bufferMake( 5, undefined );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMake( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMake( F32x, ins );
+//     var expected = new F32x( [ 1, 2, 3 ] );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var got = long.bufferMake( Array, 5 );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var ins = [ 1, 1, 1, 1, 1 ];
+//     var got = long.bufferMake( Array, ins );
+//     var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//   }
+// }
+//
+// bufferMakeWithBuffersLongDescriptor.timeOut = 15000;
+
+//
+
+function makeUndefined( test )
+{
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeUndefined();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `length`;
+    var got = long.makeUndefined( 3 );
+    test.true( got instanceof Constructor );
+    test.true( got.length === 3 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled array`;
+    var src = [ 2, 3 ];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled unroll`;
+    var src = _.unroll.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled argumentsArray`;
+    var src = _.argumentsArray.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0 ]) );
+    }
+
+    /* */
+
+    test.case = `null and length - number`;
+    var got = long.makeUndefined( null, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - array`;
+    var got = long.makeUndefined( null, [ 1, 2 ] );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - raw buffer`;
+    var got = long.makeUndefined( null, new BufferRaw( 2 ) );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( null, length );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 3 );
+
+    /* */
+
+    test.case = `empty array and length`;
+    var src = [];
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty unroll and length`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty argumentsArray and length`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty typed buffer and length`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 2 );
+
+    test.case = `empty raw buffer and length`;
+    var src = new BufferRaw( 0 );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 2 );
+
+    test.case = `empty view buffer and length`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 2 );
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer and length`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src, 2 );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 2 );
+    }
+
+    /* */
+
+    test.case = `non-empty array and length longer`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty array and length shorter`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty unroll and length longer`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty unroll and length shorter`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty argumentsArray and length longer`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty argumentsArray and length shorter`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty typed buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof U8x );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]) );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.f32x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty raw buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]).buffer );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0 ]).buffer );
+
+    /* */
+
+    test.case = `non-empty view buffer and length longer`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0, 0 ]).buffer ) );
+
+    test.case = `non-empty view buffer and length shorter`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `non-empty view buffer and length longer`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 3 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0, 0 ]) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 1 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0 ]) );
+    }
+
+    /* */
+
+    test.case = `array and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( [ 0, 0, 0, 0 ], length );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeUndefined( [], 1, 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long.makeUndefined( undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 'wrong', 3 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeUndefined( [ 1, 2, 3 ], null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 3, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( Array, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( null, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( [ 1, 2, 3 ], undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 3, undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( Array, undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( null, undefined ) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
+  }
+}
+
+//
+
+function makeUndefinedWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeUndefined();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `length`;
+    var got = long.makeUndefined( 3 );
+    test.true( got instanceof Constructor );
+    test.true( got.length === 3 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled array`;
+    var src = [ 2, 3 ];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled unroll`;
+    var src = _.unroll.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled argumentsArray`;
+    var src = _.argumentsArray.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0 ]) );
+    }
+
+    /* */
+
+    test.case = `null and length - number`;
+    var got = long.makeUndefined( null, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - array`;
+    var got = long.makeUndefined( null, [ 1, 2 ] );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - raw buffer`;
+    var got = long.makeUndefined( null, new BufferRaw( 2 ) );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( null, length );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 3 );
+
+    /* */
+
+    test.case = `empty array and length`;
+    var src = [];
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty unroll and length`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty argumentsArray and length`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty typed buffer and length`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 2 );
+
+    test.case = `empty raw buffer and length`;
+    var src = new BufferRaw( 0 );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 2 );
+
+    test.case = `empty view buffer and length`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 2 );
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer and length`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src, 2 );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 2 );
+    }
+
+    /* */
+
+    test.case = `non-empty array and length longer`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty array and length shorter`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty unroll and length longer`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty unroll and length shorter`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty argumentsArray and length longer`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty argumentsArray and length shorter`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty typed buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof U8x );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]) );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.f32x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty raw buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]).buffer );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0 ]).buffer );
+
+    /* */
+
+    test.case = `non-empty view buffer and length longer`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0, 0 ]).buffer ) );
+
+    test.case = `non-empty view buffer and length shorter`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `non-empty view buffer and length longer`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 3 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0, 0 ]) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 1 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0 ]) );
+    }
+
+    /* */
+
+    test.case = `array and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( [ 0, 0, 0, 0 ], length );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
+  }
+}
+
+makeUndefinedWithLongDescriptor.timeOut = 10000;
+
+// function bufferMakeUndefinedWithArrayAndUnroll( test )
+// {
+//   var array = ( src ) => _.array.make( src );
+//   var unroll = ( src ) => _.unroll.make( src );
+//
+//   var list =
+//   [
+//     array,
+//     unroll,
+//   ];
+//
+//   /* tests */
+//
+//   for( let i = 0; i < list.length; i++ )
+//   {
+//     test.open( list[ i ].name );
+//     testRun( list[ i ] );
+//     test.close( list[ i ].name );
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( makeBuffer )
+//   {
+//     test.case = 'src - empty long, not ins';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src, 4 );
+//     var expected = makeBuffer( 4 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = _.bufferMakeUndefined( src, ins );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//   }
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMakeUndefined( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMakeUndefined( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMakeUndefined( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMakeUndefined( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMakeUndefined( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMakeUndefined( F32x, ins );
+//   var expected = new F32x( 3 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMakeUndefined( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = [ 1, 1, 1, 1, 1 ];
+//   var got = _.bufferMakeUndefined( Array, ins );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+//
+//   /* - */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'extra argument';
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra' ) );
+//
+//   test.case = 'wrong type of src';
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( undefined ) );
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 'wrong', 1 ) );
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 1, 1 ) );
+//
+//   test.case = 'wrong type of ins';
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong' ) );
+//   test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], Infinity  ) );
+// }
+//
+// //
+//
+// function bufferMakeUndefinedWithArgumentsArray( test )
+// {
+//   test.case = 'src - empty long, not ins';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - null';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src, null );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - undefined';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - number';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src, 2 );
+//   var expected = _.tools.defaultBufferTyped.make( 2 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - empty array';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src, [] );
+//   var expected = _.tools.defaultBufferTyped.make( [] );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - empty long, ins - array';
+//   var src = _.argumentsArray.make( [] );
+//   var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//   var expected = _.tools.defaultBufferTyped.make( 3 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, not ins';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMakeUndefined( src );
+//   var expected = _.tools.defaultBufferTyped.make( 3 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - number, ins < src.length';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMakeUndefined( src, 2 );
+//   var expected = _.tools.defaultBufferTyped.make( 2 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - number, ins > src.length';
+//   var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//   var got = _.bufferMakeUndefined( src, 4 );
+//   var expected = _.tools.defaultBufferTyped.make( 4 );
+//   test.identical( got, expected );
+//   test.true( got !== src );
+//
+//   test.case = 'src - filled long, ins - array, ins.length > src.length';
+//   var src = _.argumentsArray.make( [ 0, 1 ] );
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMakeUndefined( src, ins );
+//   var expected = _.tools.defaultBufferTyped.make( 3 );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+//   test.true( got !== src );
+//
+//   /* */
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMakeUndefined( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMakeUndefined( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMakeUndefined( null, _.argumentsArray.make( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMakeUndefined( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMakeUndefined( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMakeUndefined( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
+//   var got = _.bufferMakeUndefined( F32x, ins );
+//   var expected = new F32x( 3 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMakeUndefined( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
+//   var got = _.bufferMakeUndefined( Array, ins );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+// }
+//
+// //
+//
+// function bufferMakeUndefinedWithBuffers( test )
+// {
+//   var bufferTyped = ( buf ) =>
+//   {
+//     let name = buf.name;
+//     return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+//   };
+//   var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+//   var bufferRaw = ( src ) => new U8x( src ).buffer;
+//   var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+//
+//   /* lists */
+//
+//   var typedList =
+//   [
+//     I8x,
+//     U16x,
+//     F32x,
+//     F64x,
+//   ];
+//   var list = [ bufferRaw, bufferView ];
+//
+//   for( let i = 0; i < typedList.length; i++ )
+//   list.push( bufferTyped( typedList[ i ] ) );
+//   if( Config.interpreter === 'njs' )
+//   list.push( bufferNode );
+//
+//   /* tests */
+//
+//   for( let i = 0; i < list.length; i++ )
+//   {
+//     test.open( list[ i ].name );
+//     testRun( list[ i ] );
+//     test.close( list[ i ].name );
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( makeBuffer )
+//   {
+//     test.case = 'src - empty buffer, not ins';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = _.bufferMakeUndefined( src, 4 );
+//     var expected = makeBuffer( 4 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = _.bufferMakeUndefined( src, ins );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//   }
+//
+//   test.case = 'src - null';
+//   var got = _.bufferMakeUndefined( null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, null );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - null';
+//   var got = _.bufferMakeUndefined( null, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 0 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - number';
+//   var got = _.bufferMakeUndefined( null, 5 );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - null, ins - long';
+//   var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - number, ins - null';
+//   var got = _.bufferMakeUndefined( 5, null );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - number, ins - undefined';
+//   var got = _.bufferMakeUndefined( 5, undefined );
+//   var expected = _.tools.defaultBufferTyped.make( 5 );
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'src - U8x constructor, ins - number';
+//   var got = _.bufferMakeUndefined( U8x, 5 );
+//   var expected = new U8x( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - F32x constructor, ins - long';
+//   var ins = [ 1, 2, 3 ];
+//   var got = _.bufferMakeUndefined( F32x, ins );
+//   var expected = new F32x( 3 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var got = _.bufferMakeUndefined( Array, 5 );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//
+//   test.case = 'src - Array constructor, ins - number';
+//   var ins = [ 1, 1, 1, 1, 1 ];
+//   var got = _.bufferMakeUndefined( Array, ins );
+//   var expected = new Array( 5 );
+//   test.identical( got, expected );
+//   test.true( got !== ins );
+// }
+//
+// //
+//
+// function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
+// {
+//   var array = ( src ) => _.array.make( src );
+//   var unroll = ( src ) => _.unroll.make( src );
+//
+//   var list =
+//   [
+//     array,
+//     unroll,
+//   ];
+//
+//   /* tests */
+//
+//   let times = 4;
+//   // for( let e in _.LongDescriptors )
+//   // {
+//   //   let name = _.LongDescriptors[ e ].name;
+//   //   let long = _.withLong[ name ];
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     for( let i = 0; i < list.length; i++ )
+//     {
+//       test.open( `long - ${ name }, buffer - ${ list[ i ].name }` );
+//       testRun( long, list[ i ] );
+//       test.close( `long - ${ name }, buffer - ${ list[ i ].name }` );
+//     }
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( long, makeBuffer )
+//   {
+//     test.case = 'src - empty long, not ins';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 4 );
+//     var expected = makeBuffer( 4 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMakeUndefined( src, ins );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMakeUndefined( null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, undefined );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMakeUndefined( null, 5 );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMakeUndefined( null, new U8x( 5 ) );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - number, ins - null';
+//     var got = long.bufferMakeUndefined( 5, null );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - number, ins - undefined';
+//     var got = long.bufferMakeUndefined( 5, undefined );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMakeUndefined( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMakeUndefined( F32x, ins );
+//     var expected = new F32x( 3 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var got = long.bufferMakeUndefined( Array, 5 );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var ins = [ 1, 1, 1, 1, 1 ];
+//     var got = long.bufferMakeUndefined( Array, ins );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//
+//     /* - */
+//
+//     if( Config.debug )
+//     {
+//       test.case = 'without arguments';
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined() );
+//
+//       test.case = 'extra argument';
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra' ) );
+//
+//       test.case = 'wrong type of ins';
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined( 'wrong', 1 ) );
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined( 1, 1 ) );
+//
+//       test.case = 'wrong type of ins';
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong' ) );
+//       test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], Infinity  ) );
+//     }
+//   }
+// }
+//
+// bufferMakeUndefinedWithArrayAndUnrollLongDescriptor.timeOut = 15000;
+//
+// //
+//
+// function bufferMakeUndefinedWithArgumentsArrayLongDescriptor( test )
+// {
+//   let times = 4;
+//   // for( let e in _.LongDescriptors )
+//   // {
+//   //   let name = _.LongDescriptors[ e ].name;
+//   //   let long = _.withLong[ name ];
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     test.open( `long - ${ name }` );
+//     testRun( long );
+//     test.close( `long - ${ name }` );
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* - */
+//
+//   function testRun( long )
+//   {
+//     test.case = 'src - empty long, not ins';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - null';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src, null );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - undefined';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src, undefined );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - number';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = long.defaultLong.make( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - empty array';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src, [] );
+//     var expected = long.defaultLong.make( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty long, ins - array';
+//     var src = _.argumentsArray.make( [] );
+//     var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//     var expected = long.defaultLong.make( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, not ins';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = long.defaultLong.make( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins < src.length';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = long.defaultLong.make( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - number, ins > src.length';
+//     var src = _.argumentsArray.make( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 4 );
+//     var expected = long.defaultLong.make( 4 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled long, ins - array, ins.length > src.length';
+//     var src = _.argumentsArray.make( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMakeUndefined( src, ins );
+//     var expected = long.defaultLong.make( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMakeUndefined( null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, undefined );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMakeUndefined( null, 5 );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMakeUndefined( null, _.argumentsArray.make( 5 ) );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - number, ins - null';
+//     var got = long.bufferMakeUndefined( 5, null );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - number, ins - undefined';
+//     var got = long.bufferMakeUndefined( 5, undefined );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMakeUndefined( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
+//     var got = long.bufferMakeUndefined( F32x, ins );
+//     var expected = new F32x( 3 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var got = long.bufferMakeUndefined( Array, 5 );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
+//     var got = long.bufferMakeUndefined( Array, ins );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//   }
+// }
+//
+// bufferMakeUndefinedWithArgumentsArrayLongDescriptor.timeOut = 10000;
+//
+// //
+//
+// function bufferMakeUndefinedWithBuffersLongDescriptor( test )
+// {
+//   var bufferTyped = ( buf ) =>
+//   {
+//     let name = buf.name;
+//     return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
+//   };
+//   var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+//   var bufferRaw = ( src ) => new U8x( src ).buffer;
+//   var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+//
+//   /* lists */
+//
+//   var typedList =
+//   [
+//     I8x,
+//     U16x,
+//     F32x,
+//     F64x,
+//   ];
+//   var list = [ bufferRaw, bufferView ];
+//
+//   for( let i = 0; i < typedList.length; i++ )
+//   list.push( bufferTyped( typedList[ i ] ) );
+//   if( Config.interpreter === 'njs' )
+//   list.push( bufferNode );
+//
+//   /* tests */
+//
+//   let times = 4;
+//   // for( let e in _.LongDescriptors )
+//   // {
+//   //   let name = _.LongDescriptors[ e ].name;
+//   //   let long = _.withLong[ name ];
+//   for( let k in _.long.namespaces )
+//   {
+//     let namespace = _.long.namespaces[ k ];
+//     let name = namespace.TypeName;
+//     let long = _.withLong[ name ];
+//
+//     for( let i = 0; i < list.length; i++ )
+//     {
+//       test.open( `long - ${ name }, long - ${ list[ i ].name }` );
+//       testRun( long, list[ i ] );
+//       test.close( `long - ${ name }, long - ${ list[ i ].name }` );
+//     }
+//
+//     if( times < 1 )
+//     break;
+//     times--;
+//   }
+//
+//   /* test subroutine */
+//
+//   function testRun( long, makeBuffer )
+//   {
+//     test.case = 'src - empty buffer, not ins';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - null';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, null );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - undefined';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, undefined );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - number';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - empty array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, [] );
+//     var expected = makeBuffer( [] );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - empty buffer, ins - array';
+//     var src = makeBuffer( [] );
+//     var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, not ins';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins < src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 2 );
+//     var expected = makeBuffer( 2 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - number, ins > src.length';
+//     var src = makeBuffer( [ 1, 2, 3 ] );
+//     var got = long.bufferMakeUndefined( src, 4 );
+//     var expected = makeBuffer( 4 );
+//     test.identical( got, expected );
+//     test.true( got !== src );
+//
+//     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
+//     var src = makeBuffer( [ 0, 1 ] );
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMakeUndefined( src, ins );
+//     var expected = makeBuffer( 3 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//     test.true( got !== src );
+//
+//     /* */
+//
+//     test.case = 'src - null';
+//     var got = long.bufferMakeUndefined( null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, null );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - null';
+//     var got = long.bufferMakeUndefined( null, undefined );
+//     var expected = long.defaultLong.make( 0 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - number';
+//     var got = long.bufferMakeUndefined( null, 5 );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - null, ins - long';
+//     var got = long.bufferMakeUndefined( null, new U8x( 5 ) );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - number, ins - null';
+//     var got = long.bufferMakeUndefined( 5, null );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - number, ins - undefined';
+//     var got = long.bufferMakeUndefined( 5, undefined );
+//     var expected = long.defaultLong.make( 5 );
+//     test.identical( got, expected );
+//
+//     /* */
+//
+//     test.case = 'src - U8x constructor, ins - number';
+//     var got = long.bufferMakeUndefined( U8x, 5 );
+//     var expected = new U8x( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - F32x constructor, ins - long';
+//     var ins = [ 1, 2, 3 ];
+//     var got = long.bufferMakeUndefined( F32x, ins );
+//     var expected = new F32x( 3 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var got = long.bufferMakeUndefined( Array, 5 );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//
+//     test.case = 'src - Array constructor, ins - number';
+//     var ins = [ 1, 1, 1, 1, 1 ];
+//     var got = long.bufferMakeUndefined( Array, ins );
+//     var expected = new Array( 5 );
+//     test.identical( got, expected );
+//     test.true( got !== ins );
+//   }
+// }
+//
+// bufferMakeUndefinedWithBuffersLongDescriptor.timeOut = 15000;
+
+//
+
+function makeEmpty( test )
+{
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeEmpty();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
     test.true( got !== src );
 
-    test.case = 'src - empty long, ins - null';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 2 );
-    var expected = makeBuffer( [ 1, 2 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 4 );
-    var expected = makeBuffer( [ 1, 2, 3, undefined ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMake( src, ins );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
+    test.case = `array - filled`;
+    var src = [ 2, 2 ];
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
     test.true( got !== src );
 
     /* */
 
-    test.case = 'src - null';
-    var got = long.bufferMake( null ); /* qqq2 : for Dmytro : should create typed buffer! */
-    var expected = long.defaultLong.make( 0 );
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `unroll - filled`;
+    var src = _.unroll.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `argumentsArray - filled`;
+    var src = _.argumentsArray.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `typed buffer - filled`;
+    var src = _.f32x.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof F32x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw( 0 );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    test.case = `raw buffer - filled`;
+    var src = _.u8x.make([ 2, 2 ]).buffer;
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    test.case = `view buffer - filled`;
+    var src = new BufferView( _.u8x.make([ 2, 2 ]).buffer );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeEmpty( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+      test.true( got !== src );
+
+      test.case = `raw buffer - filled`;
+      var src = BufferNode.from([ 2, 2 ]);
+      var got = long.makeEmpty( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.byteLength, 0 );
+      test.true( got !== src );
+    }
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeEmpty( [], 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long.makeEmpty( undefined ) );
+      test.shouldThrowErrorSync( () => long.makeEmpty( null ) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
+  }
+}
+
+//
+
+function makeEmptyWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeEmpty();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `array - filled`;
+    var src = [ 2, 2 ];
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `unroll - filled`;
+    var src = _.unroll.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `argumentsArray - filled`;
+    var src = _.argumentsArray.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    test.case = `typed buffer - filled`;
+    var src = _.f32x.make([ 2, 2 ]);
+    var got = long.makeEmpty( src );
+    test.true( got instanceof F32x );
+    test.identical( got.length, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw( 0 );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    test.case = `raw buffer - filled`;
+    var src = _.u8x.make([ 2, 2 ]).buffer;
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    test.case = `view buffer - filled`;
+    var src = new BufferView( _.u8x.make([ 2, 2 ]).buffer );
+    var got = long.makeEmpty( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+    test.true( got !== src );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeEmpty( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+      test.true( got !== src );
+
+      test.case = `raw buffer - filled`;
+      var src = BufferNode.from([ 2, 2 ]);
+      var got = long.makeEmpty( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.byteLength, 0 );
+      test.true( got !== src );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
+  }
+}
+
+//
+
+function makeFilling( test )
+{
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'value - null, length - number';
+    var got = long.makeFilling( null, 3 );
+    var expected = Constructor.from([ null, null, null ]);
     test.identical( got, expected );
 
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, null );
-    var expected = long.defaultLong.make( 0 );
+    test.case = `value - number, length - filled array`;
+    var length = [ 1, 2, 3 ];
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMake( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMake( null, new U8x( 5 ) );
-    var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
+    test.case = `value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
     /* */
 
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMake( 5, null );
-    var expected = long.defaultLong.make( 5 );
+    test.case = 'type - null, value - number, length - number';
+    var got = long.makeFilling( null, 1, 3 );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMake( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
+    test.case = 'type - null, value - number, length - long';
+    var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - countable';
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( null, 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
     test.identical( got, expected );
 
     /* */
 
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMake( U8x, 5 );
-    var expected = new U8x( 5 );
+    test.case = `type - U8x constructor, value - number, length - number`;
+    var got = long.makeFilling( U8x, 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
     test.identical( got, expected );
 
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMake( F32x, ins );
-    var expected = new F32x( [ 1, 2, 3 ] );
+    test.case = `type - BufferRaw constructor, value - number, length - long`;
+    var got = long.makeFilling( BufferRaw, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
     test.identical( got, expected );
 
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMake( Array, 5 );
-    var expected = new Array( 5 );
+    /* */
+
+    test.case = `type - empty array, value - number, length - number`;
+    var got = long.makeFilling( [], 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
     test.identical( got, expected );
 
-    test.case = 'src - Array constructor, ins - number';
-    var ins = [ 1, 1, 1, 1, 1 ];
-    var got = long.bufferMake( Array, ins );
-    var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
+    test.case = `type - filled array, value - number, length - long`;
+    var got = long.makeFilling( [ 1, 2, 3, 4 ], 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
     test.identical( got, expected );
-    test.true( got !== ins );
+
+    /* */
+
+    test.case = `type - empty unroll, value - number, length - number`;
+    var got = long.makeFilling( _.unroll.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled unroll, value - number, length - long`;
+    var got = long.makeFilling( _.unroll.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty argumentsArray, value - number, length - number`;
+    var got = long.makeFilling( _.argumentsArray.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled argumentsArray, value - number, length - long`;
+    var got = long.makeFilling( _.argumentsArray.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - number`;
+    var got = long.makeFilling( _.u8x.make( [] ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled typed array, value - number, length - long`;
+    var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = _.f32x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty raw buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferRaw( 0 ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( _.u8x.make([ 1, 2, 3, 4 ]).buffer, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty view buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferView( new BufferRaw( 0 ) ), 10, 3 );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( new BufferView( _.u8x.make([ 1, 2, 3, 4 ]).buffer ), 10, new I16x( 3 ) );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `type - empty node buffer, value - number, length - number`;
+      var got = long.makeFilling( BufferNode.alloc( 0 ), 10, 3 );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+
+      test.case = `type - filled raw buffer, value - number, length - long`;
+      var got = long.makeFilling( BufferNode.from([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( _.u8x.make( [] ), 10, length );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling() );
+
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( null ) );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
+
+      test.case = 'wrong type of type argument';
+      test.shouldThrowErrorSync( () => long.makeFilling( {}, 2, 2 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 2, 2 ) );
+
+      test.case = 'wrong type of value';
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 1 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [], undefined, 1 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], undefined ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 2, undefined ) );
+    }
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
+  }
+}
+
+//
+
+function makeFillingWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'value - null, length - number';
+    var got = long.makeFilling( null, 3 );
+    var expected = Constructor.from([ null, null, null ]);
+    test.identical( got, expected );
+
+    test.case = `value - number, length - filled array`;
+    var length = [ 1, 2, 3 ];
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = `value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - number, length - number';
+    var got = long.makeFilling( null, 1, 3 );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - long';
+    var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - countable';
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( null, 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - U8x constructor, value - number, length - number`;
+    var got = long.makeFilling( U8x, 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - BufferRaw constructor, value - number, length - long`;
+    var got = long.makeFilling( BufferRaw, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty array, value - number, length - number`;
+    var got = long.makeFilling( [], 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled array, value - number, length - long`;
+    var got = long.makeFilling( [ 1, 2, 3, 4 ], 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty unroll, value - number, length - number`;
+    var got = long.makeFilling( _.unroll.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled unroll, value - number, length - long`;
+    var got = long.makeFilling( _.unroll.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty argumentsArray, value - number, length - number`;
+    var got = long.makeFilling( _.argumentsArray.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled argumentsArray, value - number, length - long`;
+    var got = long.makeFilling( _.argumentsArray.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - number`;
+    var got = long.makeFilling( _.u8x.make( [] ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled typed array, value - number, length - long`;
+    var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = _.f32x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty raw buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferRaw( 0 ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( _.u8x.make([ 1, 2, 3, 4 ]).buffer, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty view buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferView( new BufferRaw( 0 ) ), 10, 3 );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( new BufferView( _.u8x.make([ 1, 2, 3, 4 ]).buffer ), 10, new I16x( 3 ) );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `type - empty node buffer, value - number, length - number`;
+      var got = long.makeFilling( BufferNode.alloc( 0 ), 10, 3 );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+
+      test.case = `type - filled raw buffer, value - number, length - long`;
+      var got = long.makeFilling( BufferNode.from([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( _.u8x.make( [] ), 10, length );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
+  }
+}
+
+//
+
+function from( test )
+{
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'null';
+    var got = long.from( null );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got instanceof Constructor );
+
+    test.case = 'number';
+    var src = 2;
+    var got = long.from( src );
+    var value = _.buffer.typedIs( Constructor.from( [] ) ) ? 0 : undefined;
+    test.identical( got, Constructor.from([ value, value ]) );
+    test.true( got instanceof Constructor );
+
+    /* */
+
+    test.case = 'empty array';
+    var src = [];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+
+    test.case = 'filled array';
+    var src = [ 1, 2, 3 ];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty unroll';
+    var src = _.unroll.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+    test.case = 'filled unroll';
+    var src = _.unroll.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty argumentsArray';
+    var src = _.argumentsArray.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+    test.case = 'filled argumentsArray';
+    var src = _.argumentsArray.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty BufferTyped';
+    var src = new U8x( [] );
+    var got = long.from( src );
+    test.identical( got, new U8x( [] ) );
+    test.true( _.u8x.is( got ) );
+    test.true( got === src );
+
+    var src = new I16x( [] );
+    var got = long.from( src );
+    test.identical( got, new I16x( [] ) );
+    test.true( _.i16x.is( got ) );
+    test.true( got === src );
+
+    test.case = 'filled BufferTyped';
+    var src = new F32x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F32x([ 1, 2, 3 ]) );
+    test.true( _.f32x.is( got ) );
+    test.true( got === src );
+
+    var src = new F64x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F64x([ 1, 2, 3 ]) );
+    test.true( _.f64x.is( got ) );
+    test.true( got === src );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw( 0 );
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, new BufferRaw( 0 ) );
+    test.true( got === src );
+
+    test.case = `raw buffer - filled`;
+    var src = _.u8x.make([ 2, 2 ]).buffer;
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 2 ]).buffer );
+    test.true( got === src );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( new BufferRaw( 0 ) ) );
+    test.true( got === src );
+
+    test.case = `view buffer - filled`;
+    var src = new BufferView( _.u8x.make([ 2, 2 ]).buffer );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 2 ]).buffer ) );
+    test.true( got === src );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.alloc( 0 ) );
+      test.true( got === src );
+
+      test.case = `raw buffer - filled`;
+      var src = BufferNode.from([ 2, 2 ]);
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 2 ]) );
+      test.true( got === src );
+    }
 
     /* - */
 
     if( Config.debug )
     {
       test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => long.bufferMake() );
+      test.shouldThrowErrorSync( () => long.from() );
 
-      test.case = 'extra argument';
-      test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], 4, 'extra' ) );
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.from( 1, [] ) );
 
-      test.case = 'wrong type of ins';
-      test.shouldThrowErrorSync( () => long.bufferMake( 'wrong', 1 ) );
-      test.shouldThrowErrorSync( () => long.bufferMake( 1, 1 ) );
-
-      test.case = 'wrong type of ins';
-      test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], 'wrong' ) );
-      test.shouldThrowErrorSync( () => long.bufferMake( [ 1, 2, 3 ], Infinity  ) );
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long.from( 'str' ) );
+      test.shouldThrowErrorSync( () => long.from( { 1 : 2 } ) );
     }
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
   }
 }
 
-bufferMakeWithArrayAndUnrollLongDescriptor.timeOut = 15000;
-
 //
 
-function bufferMakeWithArgumentsArrayLongDescriptor( test )
+function fromWithLongDescriptor( test )
 {
   let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
   for( let k in _.long.namespaces )
   {
     let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
+    let type = namespace.TypeName;
 
-    test.open( `long - ${ name }` );
-    testRun( long );
-    test.close( `long - ${ name }` );
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
 
     if( times < 1 )
     break;
@@ -1372,1410 +5109,167 @@ function bufferMakeWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function testRun( long )
+  function act( env )
   {
-    test.case = 'src - empty long, not ins';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'null';
+    var got = long.from( null );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got instanceof Constructor );
+
+    test.case = 'number';
+    var src = 2;
+    var got = long.from( src );
+    var value = _.buffer.typedIs( Constructor.from( [] ) ) ? 0 : undefined;
+    test.identical( got, Constructor.from([ value, value ]) );
+    test.true( got instanceof Constructor );
+
+    /* */
+
+    test.case = 'empty array';
+    var src = [];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
     test.true( got !== src );
 
-    test.case = 'src - empty long, ins - null';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src, null );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
 
-    test.case = 'src - empty long, ins - undefined';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src, undefined );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src, 2 );
-    var expected = long.defaultLong.make( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src, [] );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMake( src, [ 1, 2, 3 ] );
-    var expected = long.defaultLong.make( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src );
-    var expected = long.defaultLong.make( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 2 );
-    var expected = long.defaultLong.make( [ 1, 2 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 4 );
-    var expected = long.defaultLong.make( [ 1, 2, 3, undefined ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = _.argumentsArray.make( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMake( src, ins );
-    var expected = long.defaultLong.make( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
+    test.case = 'filled array';
+    var src = [ 1, 2, 3 ];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
     test.true( got !== src );
 
     /* */
 
-    test.case = 'src - null';
-    var got = long.bufferMake( null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
+    test.case = 'empty unroll';
+    var src = _.unroll.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
 
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMake( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMake( null, _.argumentsArray.make( 5 ) );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
+    test.case = 'filled unroll';
+    var src = _.unroll.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
 
     /* */
 
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMake( 5, null );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
+    test.case = 'empty argumentsArray';
+    var src = _.argumentsArray.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
 
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMake( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
+    test.case = 'filled argumentsArray';
+    var src = _.argumentsArray.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
 
     /* */
 
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMake( U8x, 5 );
-    var expected = new U8x( 5 );
-    test.identical( got, expected );
+    test.case = 'empty BufferTyped';
+    var src = new U8x( [] );
+    var got = long.from( src );
+    test.identical( got, new U8x( [] ) );
+    test.true( _.u8x.is( got ) );
+    test.true( got === src );
 
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
-    var got = long.bufferMake( F32x, ins );
-    var expected = new F32x( [ 1, 2, 3 ] );
-    test.identical( got, expected );
+    var src = new I16x( [] );
+    var got = long.from( src );
+    test.identical( got, new I16x( [] ) );
+    test.true( _.i16x.is( got ) );
+    test.true( got === src );
 
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMake( Array, 5 );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
+    test.case = 'filled BufferTyped';
+    var src = new F32x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F32x([ 1, 2, 3 ]) );
+    test.true( _.f32x.is( got ) );
+    test.true( got === src );
 
-    test.case = 'src - Array constructor, ins - number';
-    var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
-    var got = long.bufferMake( Array, ins );
-    var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
-  }
-}
+    var src = new F64x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F64x([ 1, 2, 3 ]) );
+    test.true( _.f64x.is( got ) );
+    test.true( got === src );
 
-bufferMakeWithArgumentsArrayLongDescriptor.timeOut = 10000;
+    /* */
 
-//
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw( 0 );
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, new BufferRaw( 0 ) );
+    test.true( got === src );
 
-function bufferMakeWithBuffersLongDescriptor( test )
-{
-  var bufferTyped = ( buf ) =>
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
-  };
-  var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
-  var bufferRaw = ( src ) => new U8x( src ).buffer;
-  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+    test.case = `raw buffer - filled`;
+    var src = _.u8x.make([ 2, 2 ]).buffer;
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 2 ]).buffer );
+    test.true( got === src );
 
-  /* lists */
+    /* */
 
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-  ];
-  var list = [ bufferRaw, bufferView ];
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( new BufferRaw( 0 ) ) );
+    test.true( got === src );
 
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
-  if( Config.interpreter === 'njs' )
-  list.push( bufferNode );
+    test.case = `view buffer - filled`;
+    var src = new BufferView( _.u8x.make([ 2, 2 ]).buffer );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 2 ]).buffer ) );
+    test.true( got === src );
 
-  /* tests */
+    /* */
 
-  let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
-  for( let k in _.long.namespaces )
-  {
-    let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
-
-    for( let i = 0; i < list.length; i++ )
+    if( Config.interpreter === 'njs' )
     {
-      test.open( `long - ${ name }, long - ${ list[ i ].name }` );
-      testRun( long, list[ i ] );
-      test.close( `long - ${ name }, long - ${ list[ i ].name }` );
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.alloc( 0 ) );
+      test.true( got === src );
+
+      test.case = `raw buffer - filled`;
+      var src = BufferNode.from([ 2, 2 ]);
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 2 ]) );
+      test.true( got === src );
     }
 
-    if( times < 1 )
-    break;
-    times--;
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
-
-  /* test subroutine */
-
-  function testRun( long, makeBuffer )
-  {
-    test.case = 'src - empty buffer, not ins';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - null';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - number';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMake( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 2 );
-    var expected = makeBuffer( [ 1, 2 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMake( src, 4 );
-    var expected = makeBuffer( [ 1, 2, 3, 0 ] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMake( src, ins );
-    var expected = makeBuffer( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-
-    /* */
-
-    test.case = 'src - null';
-    var got = long.bufferMake( null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMake( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMake( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMake( null, new U8x( 5 ) );
-    var expected = long.defaultLong.make( [ 0, 0, 0, 0, 0 ] );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMake( 5, null );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMake( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMake( U8x, 5 );
-    var expected = new U8x( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMake( F32x, ins );
-    var expected = new F32x( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMake( Array, 5 );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var ins = [ 1, 1, 1, 1, 1 ];
-    var got = long.bufferMake( Array, ins );
-    var expected = Array.from( [ 1, 1, 1, 1, 1 ] );
-    test.identical( got, expected );
-    test.true( got !== ins );
-  }
-}
-
-bufferMakeWithBuffersLongDescriptor.timeOut = 15000;
-
-//
-
-function bufferMakeUndefinedWithArrayAndUnroll( test )
-{
-  var array = ( src ) => _.array.make( src );
-  var unroll = ( src ) => _.unroll.make( src );
-
-  var list =
-  [
-    array,
-    unroll,
-  ];
-
-  /* tests */
-
-  for( let i = 0; i < list.length; i++ )
-  {
-    test.open( list[ i ].name );
-    testRun( list[ i ] );
-    test.close( list[ i ].name );
-  }
-
-  /* test subroutine */
-
-  function testRun( makeBuffer )
-  {
-    test.case = 'src - empty long, not ins';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - null';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src, 4 );
-    var expected = makeBuffer( 4 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = _.bufferMakeUndefined( src, ins );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-  }
-
-  test.case = 'src - null';
-  var got = _.bufferMakeUndefined( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
 
   /* */
 
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMakeUndefined( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMakeUndefined( F32x, ins );
-  var expected = new F32x( 3 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMakeUndefined( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = [ 1, 1, 1, 1, 1 ];
-  var got = _.bufferMakeUndefined( Array, ins );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-  test.true( got !== ins );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra' ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( undefined ) );
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 'wrong', 1 ) );
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 1, 1 ) );
-
-  test.case = 'wrong type of ins';
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], Infinity  ) );
-}
-
-//
-
-function bufferMakeUndefinedWithArgumentsArray( test )
-{
-  test.case = 'src - empty long, not ins';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - null';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src, null );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - undefined';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src, undefined );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - number';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src, 2 );
-  var expected = _.tools.defaultBufferTyped.make( 2 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - empty array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src, [] );
-  var expected = _.tools.defaultBufferTyped.make( [] );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - empty long, ins - array';
-  var src = _.argumentsArray.make( [] );
-  var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-  var expected = _.tools.defaultBufferTyped.make( 3 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, not ins';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMakeUndefined( src );
-  var expected = _.tools.defaultBufferTyped.make( 3 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - number, ins < src.length';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMakeUndefined( src, 2 );
-  var expected = _.tools.defaultBufferTyped.make( 2 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - number, ins > src.length';
-  var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-  var got = _.bufferMakeUndefined( src, 4 );
-  var expected = _.tools.defaultBufferTyped.make( 4 );
-  test.identical( got, expected );
-  test.true( got !== src );
-
-  test.case = 'src - filled long, ins - array, ins.length > src.length';
-  var src = _.argumentsArray.make( [ 0, 1 ] );
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMakeUndefined( src, ins );
-  var expected = _.tools.defaultBufferTyped.make( 3 );
-  test.identical( got, expected );
-  test.true( got !== ins );
-  test.true( got !== src );
-
-  /* */
-
-  test.case = 'src - null';
-  var got = _.bufferMakeUndefined( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMakeUndefined( null, _.argumentsArray.make( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMakeUndefined( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
-  var got = _.bufferMakeUndefined( F32x, ins );
-  var expected = new F32x( 3 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMakeUndefined( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
-  var got = _.bufferMakeUndefined( Array, ins );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-  test.true( got !== ins );
-}
-
-//
-
-function bufferMakeUndefinedWithBuffers( test )
-{
-  var bufferTyped = ( buf ) =>
+  function namespaceGet( env )
   {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
-  };
-  var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
-  var bufferRaw = ( src ) => new U8x( src ).buffer;
-  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
-
-  /* lists */
-
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-  ];
-  var list = [ bufferRaw, bufferView ];
-
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
-  if( Config.interpreter === 'njs' )
-  list.push( bufferNode );
-
-  /* tests */
-
-  for( let i = 0; i < list.length; i++ )
-  {
-    test.open( list[ i ].name );
-    testRun( list[ i ] );
-    test.close( list[ i ].name );
-  }
-
-  /* test subroutine */
-
-  function testRun( makeBuffer )
-  {
-    test.case = 'src - empty buffer, not ins';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - null';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - number';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - array';
-    var src = makeBuffer( [] );
-    var got = _.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = _.bufferMakeUndefined( src, 4 );
-    var expected = makeBuffer( 4 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = _.bufferMakeUndefined( src, ins );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-  }
-
-  test.case = 'src - null';
-  var got = _.bufferMakeUndefined( null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, null );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - null';
-  var got = _.bufferMakeUndefined( null, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - number';
-  var got = _.bufferMakeUndefined( null, 5 );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - null, ins - long';
-  var got = _.bufferMakeUndefined( null, new U8x( 5 ) );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - number, ins - null';
-  var got = _.bufferMakeUndefined( 5, null );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - number, ins - undefined';
-  var got = _.bufferMakeUndefined( 5, undefined );
-  var expected = _.tools.defaultBufferTyped.make( 5 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'src - U8x constructor, ins - number';
-  var got = _.bufferMakeUndefined( U8x, 5 );
-  var expected = new U8x( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - F32x constructor, ins - long';
-  var ins = [ 1, 2, 3 ];
-  var got = _.bufferMakeUndefined( F32x, ins );
-  var expected = new F32x( 3 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var got = _.bufferMakeUndefined( Array, 5 );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-
-  test.case = 'src - Array constructor, ins - number';
-  var ins = [ 1, 1, 1, 1, 1 ];
-  var got = _.bufferMakeUndefined( Array, ins );
-  var expected = new Array( 5 );
-  test.identical( got, expected );
-  test.true( got !== ins );
-}
-
-//
-
-function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
-{
-  var array = ( src ) => _.array.make( src );
-  var unroll = ( src ) => _.unroll.make( src );
-
-  var list =
-  [
-    array,
-    unroll,
-  ];
-
-  /* tests */
-
-  let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
-  for( let k in _.long.namespaces )
-  {
-    let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
-
-    for( let i = 0; i < list.length; i++ )
-    {
-      test.open( `long - ${ name }, buffer - ${ list[ i ].name }` );
-      testRun( long, list[ i ] );
-      test.close( `long - ${ name }, buffer - ${ list[ i ].name }` );
-    }
-
-    if( times < 1 )
-    break;
-    times--;
-  }
-
-  /* test subroutine */
-
-  function testRun( long, makeBuffer )
-  {
-    test.case = 'src - empty long, not ins';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - null';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 4 );
-    var expected = makeBuffer( 4 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMakeUndefined( src, ins );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-
-    /* */
-
-    test.case = 'src - null';
-    var got = long.bufferMakeUndefined( null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMakeUndefined( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMakeUndefined( null, new U8x( 5 ) );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMakeUndefined( 5, null );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMakeUndefined( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMakeUndefined( U8x, 5 );
-    var expected = new U8x( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMakeUndefined( F32x, ins );
-    var expected = new F32x( 3 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMakeUndefined( Array, 5 );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var ins = [ 1, 1, 1, 1, 1 ];
-    var got = long.bufferMakeUndefined( Array, ins );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-
-    /* - */
-
-    if( Config.debug )
-    {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined() );
-
-      test.case = 'extra argument';
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra' ) );
-
-      test.case = 'wrong type of ins';
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined( 'wrong', 1 ) );
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined( 1, 1 ) );
-
-      test.case = 'wrong type of ins';
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong' ) );
-      test.shouldThrowErrorSync( () => long.bufferMakeUndefined( [ 1, 2, 3 ], Infinity  ) );
-    }
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
   }
 }
-
-bufferMakeUndefinedWithArrayAndUnrollLongDescriptor.timeOut = 15000;
-
-//
-
-function bufferMakeUndefinedWithArgumentsArrayLongDescriptor( test )
-{
-  let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
-  for( let k in _.long.namespaces )
-  {
-    let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
-
-    test.open( `long - ${ name }` );
-    testRun( long );
-    test.close( `long - ${ name }` );
-
-    if( times < 1 )
-    break;
-    times--;
-  }
-
-  /* - */
-
-  function testRun( long )
-  {
-    test.case = 'src - empty long, not ins';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - null';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src, null );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - undefined';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src, undefined );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - number';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = long.defaultLong.make( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - empty array';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src, [] );
-    var expected = long.defaultLong.make( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty long, ins - array';
-    var src = _.argumentsArray.make( [] );
-    var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-    var expected = long.defaultLong.make( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, not ins';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = long.defaultLong.make( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins < src.length';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = long.defaultLong.make( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - number, ins > src.length';
-    var src = _.argumentsArray.make( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 4 );
-    var expected = long.defaultLong.make( 4 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled long, ins - array, ins.length > src.length';
-    var src = _.argumentsArray.make( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMakeUndefined( src, ins );
-    var expected = long.defaultLong.make( 3 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-
-    /* */
-
-    test.case = 'src - null';
-    var got = long.bufferMakeUndefined( null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMakeUndefined( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMakeUndefined( null, _.argumentsArray.make( 5 ) );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMakeUndefined( 5, null );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMakeUndefined( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMakeUndefined( U8x, 5 );
-    var expected = new U8x( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = _.argumentsArray.make( [ 1, 2, 3 ] )
-    var got = long.bufferMakeUndefined( F32x, ins );
-    var expected = new F32x( 3 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMakeUndefined( Array, 5 );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var ins = _.argumentsArray.make( [ 1, 1, 1, 1, 1 ] );
-    var got = long.bufferMakeUndefined( Array, ins );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-  }
-}
-
-bufferMakeUndefinedWithArgumentsArrayLongDescriptor.timeOut = 10000;
-
-//
-
-function bufferMakeUndefinedWithBuffersLongDescriptor( test )
-{
-  var bufferTyped = ( buf ) =>
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
-  };
-  var bufferNode = ( src ) => _.number.is( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
-  var bufferRaw = ( src ) => new U8x( src ).buffer;
-  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
-
-  /* lists */
-
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-  ];
-  var list = [ bufferRaw, bufferView ];
-
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
-  if( Config.interpreter === 'njs' )
-  list.push( bufferNode );
-
-  /* tests */
-
-  let times = 4;
-  // for( let e in _.LongDescriptors )
-  // {
-  //   let name = _.LongDescriptors[ e ].name;
-  //   let long = _.withLong[ name ];
-  for( let k in _.long.namespaces )
-  {
-    let namespace = _.long.namespaces[ k ];
-    let name = namespace.TypeName;
-    let long = _.withLong[ name ];
-
-    for( let i = 0; i < list.length; i++ )
-    {
-      test.open( `long - ${ name }, long - ${ list[ i ].name }` );
-      testRun( long, list[ i ] );
-      test.close( `long - ${ name }, long - ${ list[ i ].name }` );
-    }
-
-    if( times < 1 )
-    break;
-    times--;
-  }
-
-  /* test subroutine */
-
-  function testRun( long, makeBuffer )
-  {
-    test.case = 'src - empty buffer, not ins';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - null';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, null );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - undefined';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, undefined );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - number';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - empty array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, [] );
-    var expected = makeBuffer( [] );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - empty buffer, ins - array';
-    var src = makeBuffer( [] );
-    var got = long.bufferMakeUndefined( src, [ 1, 2, 3 ] );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, not ins';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins < src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 2 );
-    var expected = makeBuffer( 2 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - number, ins > src.length';
-    var src = makeBuffer( [ 1, 2, 3 ] );
-    var got = long.bufferMakeUndefined( src, 4 );
-    var expected = makeBuffer( 4 );
-    test.identical( got, expected );
-    test.true( got !== src );
-
-    test.case = 'src - filled buffer, ins - array, ins.length > src.length';
-    var src = makeBuffer( [ 0, 1 ] );
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMakeUndefined( src, ins );
-    var expected = makeBuffer( 3 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-    test.true( got !== src );
-
-    /* */
-
-    test.case = 'src - null';
-    var got = long.bufferMakeUndefined( null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, null );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - null';
-    var got = long.bufferMakeUndefined( null, undefined );
-    var expected = long.defaultLong.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - number';
-    var got = long.bufferMakeUndefined( null, 5 );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - null, ins - long';
-    var got = long.bufferMakeUndefined( null, new U8x( 5 ) );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - number, ins - null';
-    var got = long.bufferMakeUndefined( 5, null );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - number, ins - undefined';
-    var got = long.bufferMakeUndefined( 5, undefined );
-    var expected = long.defaultLong.make( 5 );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'src - U8x constructor, ins - number';
-    var got = long.bufferMakeUndefined( U8x, 5 );
-    var expected = new U8x( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - F32x constructor, ins - long';
-    var ins = [ 1, 2, 3 ];
-    var got = long.bufferMakeUndefined( F32x, ins );
-    var expected = new F32x( 3 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var got = long.bufferMakeUndefined( Array, 5 );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-
-    test.case = 'src - Array constructor, ins - number';
-    var ins = [ 1, 1, 1, 1, 1 ];
-    var got = long.bufferMakeUndefined( Array, ins );
-    var expected = new Array( 5 );
-    test.identical( got, expected );
-    test.true( got !== ins );
-  }
-}
-
-bufferMakeUndefinedWithBuffersLongDescriptor.timeOut = 15000;
 
 //
 
@@ -3352,19 +5846,32 @@ const Proto =
 
     // buffer, l0/l8
 
-    bufferMakeWithArrayAndUnroll,
-    bufferMakeWithArgumentsArray,
-    bufferMakeWithBuffers,
-    // bufferMakeWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeWithBuffersLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
+    makeCommon,
+    makeCommonWithLongDescriptor,
+    // bufferMakeWithArrayAndUnroll, /* Dmytro : all coverage in routines  makeCommon* */
+    // bufferMakeWithArgumentsArray, /* Dmytro : all coverage in routines  makeCommon* */
+    // bufferMakeWithBuffers, /* Dmytro : all coverage in routines  makeCommon* */
+    // bufferMakeWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
+    // bufferMakeWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
+    // bufferMakeWithBuffersLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
 
-    bufferMakeUndefinedWithArrayAndUnroll,
-    bufferMakeUndefinedWithArgumentsArray,
-    bufferMakeUndefinedWithBuffers,
-    // bufferMakeUndefinedWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeUndefinedWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeUndefinedWithBuffersLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
+    makeUndefined,
+    makeUndefinedWithLongDescriptor,
+    // bufferMakeUndefinedWithArrayAndUnroll, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArgumentsArray, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithBuffers, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithBuffersLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
+
+    makeEmpty,
+    makeEmptyWithLongDescriptor,
+
+    makeFilling,
+    makeFillingWithLongDescriptor,
+
+    from,
+    fromWithLongDescriptor,
 
     // bufferCoerceFrom,
     bufferRawFromTyped,

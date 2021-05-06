@@ -23,7 +23,6 @@ function composeBasic( test )
   /* - */
 
   test.case = 'empty';
-
   var counter = 0;
   var routines = [];
   var composition = _.routine.s.compose( routines );
@@ -31,6 +30,28 @@ function composeBasic( test )
   var expected = [];
   test.identical( got, expected );
   test.identical( counter, 0 );
+
+  /* - */
+
+  test.case = 'single function without args';
+  var counter = 0;
+  var routines = [];
+  var composition = _.routine.s.compose( r2 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 112 ];
+  test.identical( got, expected );
+  test.identical( counter, 112 );
+
+  /* - */
+
+  test.case = 'single function with args';
+  var counter = 0;
+  var routines = [];
+  var composition = _.routine.s.compose( r3 );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 112 ];
+  test.identical( got, expected );
+  test.identical( counter, 112 );
 
   /* - */
 
@@ -153,7 +174,15 @@ function composeBasic( test )
   function r2()
   {
     counter += 100;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function r3( arg1, arg2, arg3 )
+  {
     debugger;
+    counter += 100;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += 2*arguments[ a ];
     return counter;

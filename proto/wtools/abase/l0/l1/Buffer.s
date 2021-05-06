@@ -24,6 +24,14 @@ function anyIs( src )
   return true;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // maker
 // --
@@ -130,12 +138,12 @@ function _make_functor( onMake )
     /* */
 
     if( _.argumentsArray.is( src ) )
-    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
-    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.bufferTyped.default, this.tools.bufferTyped.default.make );
+    // src = _.routine.join( this.tools.long.default, this.tools.long.default.make );
 
     if( src === null )
-    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
-    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.bufferTyped.default, this.tools.bufferTyped.default.make );
+    // src = _.routine.join( this.tools.long.default, this.tools.long.default.make );
 
     _.assert( 0 <= arguments.length && arguments.length <= 2 );
     // _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -220,44 +228,154 @@ function _make_functor( onMake )
  * @namespace Tools
  */
 
-let make = _make_functor( function( /* src, ins, length, minLength */ )
+function _make( src, length )
 {
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
+  if( length === undefined )
+  length = src;
+  let data = length;
+
+  if( _.number.is( length ) )
+  {
+    data = src;
+  }
+  else if( length )
+  {
+    if( _.number.is( length.length ) )
+    {
+      length = length.length;
+    }
+    else if( _.number.is( length.byteLength ) )
+    {
+      length = length.byteLength;
+    }
+    else
+    {
+      data = [ ... length ];
+      length = data.length;
+    }
+  }
+
+  if( arguments.length === 2 )
+  {
+    if( src === null )
+    return fill( this.tools.bufferTyped.make( length ), data );
+    if( _.buffer.rawIs( src ) )
+    return fill( new BufferRaw( length ), data );
+    if( _.buffer.viewIs( src ) )
+    return new BufferView( fill( new BufferRaw( length ), data ) );
+    if( _.buffer.typedIs( src ) )
+    return fill( new src.constructor( length ), data );
+    if( _.buffer.nodeIs( src ) )
+    return fill( BufferNode.alloc( length ), data );
+    if( _.long.is( src ) )
+    return fill( this.tools.bufferTyped.make( length ), data );
+
+    let result;
+    if( _.routineIs( src ) )
+    result = fill( new src( length ), data )
+    _.assert( _.buffer.is( result ), 'Not clear how to make such buffer' );
+    return result;
+  }
+  else if( arguments.length === 1 )
+  {
+    if( src === null || _.number.is( src ) )
+    return this.tools.bufferTyped.make( src );
+    if( _.buffer.rawIs( src ) )
+    return fill( new BufferRaw( length ), data );
+    if( _.buffer.viewIs( src ) )
+    return new BufferView( fill( new BufferRaw( length ), data ) );
+    if( _.buffer.typedIs( src ) )
+    return fill( new src.constructor( src ) );
+    if( _.buffer.nodeIs( src ) )
+    return fill( BufferNode.from( src ) );
+    if( _.countable.is( src ) )
+    return this.tools.bufferTyped.make( src );
+  }
+
+  return this.tools.bufferTyped.make();
 
   /* */
 
-  let resultTyped;
-  /* qqq : for Dmytro : bad solution! */
-  if( _.routine.is( src ) )
+  function fill( dst, data )
   {
-    if( src.name === 'make' || src.name === 'bound make' )
-    resultTyped = src( length );
-    else
-    resultTyped = new src( length );
+    if( data === null || data === undefined )
+    return dst;
+
+    let dstTyped = dst;
+    if( _.bufferRawIs( dst ) )
+    dstTyped = new U8x( dst );
+    if( _.bufferViewIs( dst ) )
+    dstTyped = new U8x( dst.buffer );
+
+    let dataTyped = data;
+    if( _.bufferRawIs( data ) )
+    dataTyped = new U8x( data );
+    if( _.bufferViewIs( data ) )
+    dataTyped = new U8x( data.buffer );
+
+    let l = Math.min( length, dataTyped.length );
+    for( let i = 0 ; i < l ; i++ )
+    dstTyped[ i ] = dataTyped[ i ];
+
+    return dst;
   }
-  else if( _.bufferNodeIs( src ) )
-  resultTyped = BufferNode.alloc( length );
-  else if( _.bufferViewIs( src ) )
-  resultTyped = new BufferView( new BufferRaw( length ) );
-  else if( _.unrollIs( src ) )
-  resultTyped = _.unroll.make( length );
-  else
-  resultTyped = new src.constructor( length );
+}
 
-  let result = resultTyped;
-  if( _.bufferRawIs( result ) )
-  resultTyped = new U8x( result );
-  if( _.bufferViewIs( result ) )
-  resultTyped = new U8x( result.buffer );
+//
 
-  for( let i = 0 ; i < minLength ; i++ )
-  resultTyped[ i ] = ins[ i ];
+function make( src, length )
+{
+  _.assert( arguments.length <= 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || this.is( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.number.is( length ) || this.is( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.number.is( src ) || this.is( src ) || _.long.is( src ) || _.routineIs( src ) );
+  }
+  return this._make( ... arguments );
+}
 
-  return result;
-});
+// let make = _make_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   /* */
+//
+//   let resultTyped;
+//   /* qqq : for Dmytro : bad solution! */
+//   if( _.routine.is( src ) )
+//   {
+//     if( src.name === 'make' || src.name === 'bound make' )
+//     resultTyped = src( length );
+//     else
+//     resultTyped = new src( length );
+//   }
+//   else if( _.bufferNodeIs( src ) )
+//   resultTyped = BufferNode.alloc( length );
+//   else if( _.bufferViewIs( src ) )
+//   resultTyped = new BufferView( new BufferRaw( length ) );
+//   else if( _.unrollIs( src ) )
+//   resultTyped = _.unroll.make( length );
+//   else
+//   resultTyped = new src.constructor( length );
+//
+//   let result = resultTyped;
+//   if( _.bufferRawIs( result ) )
+//   resultTyped = new U8x( result );
+//   if( _.bufferViewIs( result ) )
+//   resultTyped = new U8x( result.buffer );
+//
+//   for( let i = 0 ; i < minLength ; i++ )
+//   resultTyped[ i ] = ins[ i ];
+//
+//   return result;
+// });
 
 //
 
@@ -272,9 +390,16 @@ function _makeEmpty( src )
       return result;
     }
     if( this.like( src ) )
-    return new src.constructor();
+    {
+      if( _.buffer.viewIs( src ) )
+      return new src.constructor( new BufferRaw() );
+      else if( _.buffer.nodeIs( src ) )
+      return BufferNode.alloc( 0 );
+      else
+      return new src.constructor();
+    }
   }
-  return this.tools.defaultBufferTyped.make();
+  return this.tools.bufferTyped.default.make();
 }
 
 //
@@ -283,9 +408,8 @@ function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
-  }
+  _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
+
   return this._makeEmpty( ... arguments );
 }
 
@@ -358,42 +482,145 @@ function makeEmpty( src )
  * @namespace Tools
  */
 
-let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
+function _makeUndefined( src, length )
 {
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
+  if( length === undefined )
+  length = src;
 
-  /* */
-
-  let result;
-  /* qqq : for Dmytro : bad solution! */
-  if( _.routine.is( src ) )
+  if( length && !_.number.is( length ) )
   {
-    if( src.name === 'make' || src.name === 'bound make' )
-    result = src( length );
+    if( _.number.is( length.length ) )
+    length = length.length;
+    else if( _.number.is( length.byteLength ) )
+    length = length.byteLength;
     else
-    result = new src( length );
+    length = [ ... length ].length;
   }
-  else if( _.bufferNodeIs( src ) )
-  result = BufferNode.alloc( length );
-  else if( _.bufferViewIs( src ) )
-  result = new BufferView( new BufferRaw( length ) );
-  else if( _.unrollIs( src ) )
-  result = _.unroll.make( length );
-  else
-  result = new src.constructor( length );
 
-  return result;
-});
+  if( src === null || _.number.is( src ) )
+  return this.tools.bufferTyped.make( length );
+  if( _.buffer.rawIs( src ) )
+  return new BufferRaw( length );
+  if( _.buffer.viewIs( src ) )
+  return new BufferView( new BufferRaw( length ) );
+  if( _.buffer.typedIs( src ) )
+  return new src.constructor( length );
+  if( _.buffer.nodeIs( src ) )
+  return BufferNode.alloc( length );
+  if( _.countable.is( src ) )
+  return this.tools.bufferTyped.make( length );
+
+  if( _.routineIs( src ) )
+  {
+    _.assert( arguments.length === 2 );
+    let result = new src( length );
+    _.assert( _.buffer.is( result ), 'Not clear how to make such buffer' );
+    return result;
+  }
+
+  return this.tools.bufferTyped.make();
+}
 
 //
 
-function makeZeroed( src, ins )
+function makeUndefined( src, length )
 {
-  let result = makeUndefined.apply( this, arguments );
-  return result.fill( 0 );
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || this.like( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.number.is( length ) || this.like( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.long.is( src ) || _.routineIs( src ) );
+  }
+  return this._makeUndefined( ... arguments );
+}
+
+// let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   /* */
+//
+//   let result;
+//   /* qqq : for Dmytro : bad solution! */
+//   if( _.routine.is( src ) )
+//   {
+//     if( src.name === 'make' || src.name === 'bound make' )
+//     result = src( length );
+//     else
+//     result = new src( length );
+//   }
+//   else if( _.bufferNodeIs( src ) )
+//   result = BufferNode.alloc( length );
+//   else if( _.bufferViewIs( src ) )
+//   result = new BufferView( new BufferRaw( length ) );
+//   else if( _.unrollIs( src ) )
+//   result = _.unroll.make( length );
+//   else
+//   result = new src.constructor( length );
+//
+//   return result;
+// });
+
+//
+
+function _makeFilling( type, value, length )
+{
+  if( arguments.length === 2 )
+  {
+    type = null;
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+  }
+
+  if( !_.number.is( length ) )
+  if(  length.length )
+  length = length.length;
+  else if(  length.byteLength )
+  length = length.byteLength;
+  else if( _.countable.is( length ) )
+  length = [ ... length ].length;
+
+  let result = this._make( type, length );
+  let resultTyped = result;
+  if( !resultTyped.length )
+  {
+    if( _.buffer.viewIs( resultTyped ) )
+    resultTyped = new U8x( resultTyped.buffer );
+    else
+    resultTyped = new U8x( resultTyped );
+  }
+  for( let i = 0 ; i < length ; i++ )
+  resultTyped[ i ] = value;
+
+  return result;
+}
+
+//
+
+function makeFilling( type, value, length )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    _.assert( _.number.is( value ) || _.countable.is( value ) || this.like( length ) );
+    _.assert( type !== undefined );
+  }
+  else
+  {
+    _.assert( value !== undefined );
+    _.assert( _.number.is( length ) || _.countable.is( length ) || this.like( length ) );
+    _.assert( type === null || _.long.is( type ) || this.like( type ) || _.routine.is( type ) );
+  }
+
+  return this._makeFilling( ... arguments );
 }
 
 //
@@ -407,14 +634,16 @@ function _cloneShallow( src )
   if( _.buffer.typedIs( src ) )
   return src.slice( 0 );
   if( _.buffer.nodeIs( src ) )
-  return src.copy();
+  return BufferNode.from( src );
 
   /* */
 
   function bufferRawCopy( src )
   {
-    var dst = new BufferRaw( src.byteLength );
-    new U8x( dst ).set( new U8x( src ) );
+    const dst = new BufferRaw( src.byteLength );
+    const buffer = src.buffer || src;
+    const offset = src.byteOffset || 0;
+    new U8x( dst ).set( new U8x( buffer, offset, src.byteLength ) );
     return dst;
   }
 }
@@ -668,6 +897,24 @@ function bufferNodeFrom( buffer )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.bufferRaw.is( src ) )
+  return _.bufferRaw;
+  if( _.bufferView.is( src ) )
+  return _.bufferView;
+  if( _.bufferNode.is( src ) )
+  return _.bufferNode;
+
+  return _.bufferTyped.namespaceOf( src );
+}
+
+// --
 // declaration
 // --
 
@@ -677,34 +924,44 @@ let BufferExtension =
   //
 
   NamespaceName : 'buffer',
+  NamespaceNames : [ 'buffer' ],
   NamespaceQname : 'wTools/buffer',
   TypeName : 'Buffer',
-  SecondTypeName : 'BufferAny',
+  TypeNames : [ 'Buffer', 'BufferAny' ],
+  // SecondTypeName : 'BufferAny',
   InstanceConstructor : null,
   tools : _,
 
   // dichotomy
 
   anyIs,
-
   is : anyIs,
   like : anyIs,
+  IsResizable,
 
   // maker
 
-  _make_functor, /* qqq : remove maybe */
-  // _make, /* qqq : implement */
+  _make_functor, /* aaa : remove maybe */ /* Dmytro : implemented */
+  _make, /* aaa : implement */ /* Dmytro : implemented */
   make,
   _makeEmpty,
   makeEmpty,
-  // _makeUndefined, /* qqq : implement */
+  _makeUndefined, /* aaa : implement */ /* Dmytro : implemented */
   makeUndefined,
-  // _makeZeroed, /* qqq : implement */
-  makeZeroed,
+  _makeZeroed : _makeUndefined, /* aaa : implement */ /* Dmytro : implemented */
+  makeZeroed : makeUndefined,
+  _makeFilling,
+  makeFilling,
 
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
-  // from, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 
@@ -726,7 +983,7 @@ let ToolsExtension =
   bufferMake : make.bind( _.buffer ),
   bufferMakeEmpty : makeEmpty.bind( _.buffer ),
   bufferMakeUndefined : makeUndefined.bind( _.buffer ),
-  bufferMakeZeroed : makeZeroed.bind( _.buffer ),
+  bufferMakeZeroed : _.buffer.makeZeroed.bind( _.buffer ),
 
   bufferFromArrayOfArray,
   bufferRawFromTyped,

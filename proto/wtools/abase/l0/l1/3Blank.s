@@ -23,6 +23,14 @@ function like( src )
   return this.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // maker
 // --
@@ -79,6 +87,23 @@ function _cloneShallow( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  return this;
+}
+
+//
+
+function namespaceWithDefaultOf( src )
+{
+  return this;
+}
+
+// --
 // extension
 // --
 
@@ -102,11 +127,13 @@ let BlankExtension =
   //
 
   NamespaceName : 'blank',
+  NamespaceNames : [ 'blank' ],
   NamespaceQname : 'wTools/blank',
   MoreGeneralNamespaceName : 'blank',
   MostGeneralNamespaceName : 'blank',
   TypeName : 'Blank',
-  SecondTypeName : 'Blank',
+  TypeNames : [ 'Blank' ],
+  // SecondTypeName : 'Blank',
   InstanceConstructor : null,
   tools : _,
 
@@ -114,6 +141,7 @@ let BlankExtension =
 
   is,
   like,
+  IsResizable,
 
   // maker
 
@@ -126,6 +154,12 @@ let BlankExtension =
   _cloneShallow,
   cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
   from : _.props.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

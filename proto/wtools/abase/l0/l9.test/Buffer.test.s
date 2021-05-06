@@ -42,19 +42,19 @@ function bufferBut_DstIsArrayUnroll( test )
   test.case = 'dst = unroll, range = number > src.length, ins';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( null, dst, 5, [ 0, 2 ] );
-  test.identical( got, [ 1, 2, 3, 4, 0, 2 ] );
+  test.identical( got, _.bufferTyped.make([ 1, 2, 3, 4, 0, 2 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ], without ins';
   var dst = _.unroll.from( [] );
   var got = _.bufferBut_( null, dst, [ 1, 2 ] );
-  test.identical( got, [] );
+  test.identical( got, _.bufferTyped.make( [] ) );
   test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ], ins';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( null, dst, [ 1, 0 ], [ 0, 0 ] );
-  test.identical( got, [ 1, 0, 0, 2, 3, 4 ] );
+  test.identical( got, _.bufferTyped.make([ 1, 0, 0, 2, 3, 4 ]) );
   test.true( got !== dst );
 
   /* */
@@ -62,13 +62,13 @@ function bufferBut_DstIsArrayUnroll( test )
   test.case = 'dst = argumentsArray, range[ 0 ] === 0, range[ 1 ] === 0, without ins';
   var dst = _.argumentsArray.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, [ 0, 0 ] );
-  test.identical( got, new F32x([ 2, 3, 4 ]) );
+  test.identical( got, _.bufferTyped.make([ 2, 3, 4 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty argumentsArray, range[ 0 ] > range[ 1 ], ins';
   var dst = _.argumentsArray.from( [] );
   var got = _.bufferBut_( dst, [ 0, -1 ], [ 1, 2 ] );
-  test.identical( got, new F32x([ 1, 2 ]) );
+  test.identical( got, _.bufferTyped.make([ 1, 2 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = argumentsArray, range - undefined, ins';
@@ -1523,19 +1523,19 @@ function bufferOnly_DstIsArrayUnroll( test )
   test.case = 'dst = unroll, range = number > src.length';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferOnly_( null, dst, 5 );
-  test.identical( got, [ 1, 2, 3, 4 ] );
+  test.identical( got, _.bufferTyped.make([ 1, 2, 3, 4 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ]';
   var dst = _.unroll.from( [] );
   var got = _.bufferOnly_( null, dst, [ 1, 2 ] );
-  test.identical( got, [] );
+  test.identical( got, _.bufferTyped.make( [] ) );
   test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferOnly_( null, dst, [ 1, 0 ] );
-  test.identical( got, [] );
+  test.identical( got, _.bufferTyped.make( [] ) );
   test.true( got !== dst );
 
   /* */
@@ -6121,7 +6121,7 @@ function bufferReusingButDstIsArrayUnroll( test )
   test.case = 'dst = array, range - number < 0, without ins';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferReusingBut( dst, -5 );
-  test.identical( got, [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ] );
+  test.identical( got, _.bufferTyped.make([ 1, 2, 3, 4, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = array, range - number < 0, without ins';
@@ -6147,19 +6147,19 @@ function bufferReusingButDstIsArrayUnroll( test )
   test.case = 'dst = unroll, range = number > src.length, ins';
   var dst = _.unroll.from([ 1, 2, 3, 4 ]);
   var got = _.bufferReusingBut( null, dst, 4, [ 0, 2 ] );
-  test.identical( got, [ 1, 2, 3, 4, 0, 2, undefined, undefined ] );
+  test.identical( got, _.bufferTyped.make([ 1, 2, 3, 4, 0, 2, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ], without ins';
   var dst = _.unroll.from( [] );
   var got = _.bufferReusingBut( null, dst, [ 1, 2 ], undefined );
-  test.identical( got, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  test.identical( got, _.bufferTyped.make([ 0, 0, 0, 0, 0, 0, 0, 0 ]) );
   test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ], ins';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingBut( null, dst, [ 1, 0 ], [ 0, 0 ] );
-  test.identical( got, [ 1, 0, 0, 2, 3, 4, undefined, undefined ] );
+  test.identical( got, _.bufferTyped.make([ 1, 0, 0, 2, 3, 4, 0, 0 ]) );
   test.true( got !== dst );
 
   /* */
@@ -7109,21 +7109,21 @@ function bufferReusingOnlyDstIsArrayUnroll( test )
   test.case = 'dst = unroll, range = number > src.length';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingOnly( null, dst, 5 );
-  var exp = [ 1, 2, 3, 4, undefined, undefined, undefined, undefined ]
+  var exp = _.bufferTyped.make([ 1, 2, 3, 4, 0, 0, 0, 0 ]);
   test.identical( got, exp );
   test.true( got !== dst );
 
   test.case = 'dst = empty unroll, range[ 0 ] > 0, range[ 1 ] > range[ 0 ]';
   var dst = _.unroll.from( [] );
   var got = _.bufferReusingOnly( null, dst, [ 1, 2 ] );
-  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  var exp = _.bufferTyped.make([ 0, 0, 0, 0, 0, 0, 0, 0 ]);
   test.identical( got, exp );
   test.true( got !== dst );
 
   test.case = 'dst = unroll, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
   var dst = _.unroll.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferReusingOnly( null, dst, [ 1, 0 ] );
-  var exp = [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ]
+  var exp = _.bufferTyped.make([ 0, 0, 0, 0, 0, 0, 0, 0 ]);
   test.identical( got, exp );
   test.true( got !== dst );
 

@@ -179,6 +179,14 @@ function isPopulated( src )
   return this.keys( src ).length > 0;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -750,6 +758,20 @@ allPairs.defaults =
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.map.is( src ) )
+  return _.map;
+
+  return null;
+}
+
+// --
 // extension
 // --
 
@@ -792,11 +814,13 @@ let ExtensionMap =
   //
 
   NamespaceName : 'map',
+  NamespaceNames : [ 'map' ],
   NamespaceQname : 'wTools/map',
   MoreGeneralNamespaceName : 'aux',
   MostGeneralNamespaceName : 'props',
   TypeName : 'Map',
-  SecondTypeName : 'Map',
+  TypeNames : [ 'Map' ],
+  // SecondTypeName : 'Map',
   InstanceConstructor : null,
   tools : _,
 
@@ -809,6 +833,7 @@ let ExtensionMap =
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */
+  IsResizable,
 
   // maker
 
@@ -856,6 +881,12 @@ let ExtensionMap =
   _supplementUniversal : _.props._supplementUniversal,
   supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

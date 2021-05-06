@@ -105,8 +105,13 @@ var VectorExtension =
   elementWithKeyDel : _.countable.elementWithKeyDel, /* qqq : cover */
   _elementWithCardinalDel : _.countable._elementWithCardinalDel,
   elementWithCardinalDel : _.countable.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.blank._empty,
-  empty : _.blank.empty,  /* qqq : cover */
+  _empty : _.countable._empty,
+  empty : _.countable.empty,  /* qqq : cover */
+
+  _elementAppend : _.countable._elementAppend,
+  elementAppend : _.countable.elementAppend, /* qqq : cover */
+  _elementPrepend : _.countable._elementPrepend,
+  elementPrepend : _.countable.elementPrepend, /* qqq : cover */
 
   _each : _.countable._each,
   each : _.countable.each, /* qqq : cover */
@@ -129,8 +134,7 @@ var VectorExtension =
   aptRight : _.countable.aptRight,
   last : _.countable.last, /* qqq : cover */
 
-  _filterAct0 : _.countable._filterAct0,
-  _filterAct1 : _.countable._filterAct1,
+  _filterAct : _.countable._filterAct,
   filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
   filterWithoutEscape : _.countable.filterWithoutEscape,
@@ -139,8 +143,7 @@ var VectorExtension =
   filterWithEscape : _.countable.filterWithEscape,
   filter : _.countable.filter,
 
-  _mapAct0 : _.countable._mapAct0,
-  _mapAct1 : _.countable._mapAct1,
+  _mapAct : _.countable._mapAct,
   mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
   mapWithoutEscape : _.countable.mapWithoutEscape,
@@ -148,6 +151,26 @@ var VectorExtension =
   mapWithEscapeRight : _.countable.mapWithEscapeRight,
   mapWithEscape : _.countable.mapWithEscape,
   map : _.countable.map,
+
+  // _filterAct0 : _.countable._filterAct0,
+  // _filterAct : _.countable._filterAct,
+  // filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
+  // filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
+  // filterWithoutEscape : _.countable.filterWithoutEscape,
+  // filterWithEscapeLeft : _.countable.filterWithEscapeLeft,
+  // filterWithEscapeRight : _.countable.filterWithEscapeRight,
+  // filterWithEscape : _.countable.filterWithEscape,
+  // filter : _.countable.filter,
+  //
+  // _mapAct0 : _.countable._mapAct0,
+  // _mapAct : _.countable._mapAct,
+  // mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
+  // mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
+  // mapWithoutEscape : _.countable.mapWithoutEscape,
+  // mapWithEscapeLeft : _.countable.mapWithEscapeLeft,
+  // mapWithEscapeRight : _.countable.mapWithEscapeRight,
+  // mapWithEscape : _.countable.mapWithEscape,
+  // map : _.countable.map,
 
 }
 

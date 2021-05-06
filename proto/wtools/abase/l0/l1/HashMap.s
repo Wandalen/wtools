@@ -43,6 +43,14 @@ function isPopulated()
   return !!src.size;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -272,6 +280,7 @@ let Extension =
   //
 
   NamespaceName : 'hashMap',
+  NamespaceNames : [ 'hashMap' ],
   NamespaceQname : 'wTools/hashMap',
   MoreGeneralNamespaceName : 'hashMap',
   MostGeneralNamespaceName : 'countable',
@@ -286,6 +295,7 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
+  IsResizable,
 
   /* xxx : qqq : implement keys* routines */
 
@@ -310,6 +320,12 @@ let Extension =
   vals, /* qqq : for junior : cover */
   _pairs,
   pairs, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

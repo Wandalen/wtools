@@ -113,7 +113,7 @@ function _longMake_functor( onMake )
     if( src === null )
     src = function( src )
     {
-      return self.tools.defaultLong.make( src );
+      return self.tools.long.default.make( src );
     };
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -333,7 +333,7 @@ function _longMake_functor( onMake )
 //   src = null;
 //
 //   if( src === null )
-//   src = this.tools.defaultLong.make;
+//   src = this.tools.long.default.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
@@ -402,7 +402,7 @@ function _longMake_functor( onMake )
 //     }
 //   }
 //
-//   _.assert( result instanceof this.tools.defaultLong.InstanceConstructor );
+//   _.assert( result instanceof this.tools.long.default.InstanceConstructor );
 //   // _.assert( _.longLike( result ) );
 //
 //   return result;
@@ -416,7 +416,7 @@ function _longMake_functor( onMake )
 function longMakeEmpty( src )
 {
   if( arguments.length === 0 )
-  return this.tools.defaultLong.make( 0 );
+  return this.tools.long.default.make( 0 );
 
   _.assert( arguments.length === 1 );
 
@@ -426,7 +426,7 @@ function longMakeEmpty( src )
   }
   else if( src === null || _.argumentsArray.is( src ) )
   {
-    return this.tools.defaultLong.make( 0 );
+    return this.tools.long.default.make( 0 );
   }
   // else if( _.longLike( src ) )
   else if( _.vector.like( src ) )
@@ -546,10 +546,10 @@ function longMakeEmpty( src )
 //   len = 0;
 //
 //   if( _.argumentsArray.is( src ) )
-//   src = this.tools.defaultLong.name === 'ArgumentsArray' ? this.tools.defaultLong.make : this.tools.defaultLong.make( src );
+//   src = this.tools.long.default.name === 'ArgumentsArray' ? this.tools.long.default.make : this.tools.long.default.make( src );
 //
 //   if( src === null )
-//   src = this.tools.defaultLong.make;
+//   src = this.tools.long.default.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( len ) );
@@ -693,7 +693,7 @@ Dmytro : longMakeUndefined creates unrolls.
 //   else if( _.unrollIs( src ) )
 //   result = _.unroll.make( length );
 //   else if( src === null )
-//   result = this.tools.defaultLong.make( length );
+//   result = this.tools.long.default.make( length );
 //   else
 //   result = new src.constructor( length );
 //
@@ -746,7 +746,7 @@ Dmytro : longMakeUndefined creates unrolls.
 //   else if( _.unrollIs( ins ) )
 //   result = _.unroll.make( length );
 //   else if( ins === null ) /* aaa3 : ask */
-//   result = this.tools.defaultLong.make( length );
+//   result = this.tools.long.default.make( length );
 //   else
 //   result = new ins.constructor( length );
 //
@@ -774,7 +774,7 @@ Dmytro : longMakeUndefined creates unrolls.
 //   else if( _.unrollIs( src ) )
 //   result = _.unroll.make( length );
 //   else if( src === null )
-//   result = this.tools.defaultLong.make( length );
+//   result = this.tools.long.default.make( length );
 //   else
 //   result = new src.constructor( length );
 //
@@ -878,7 +878,7 @@ function longMakeFilling( type, value, length )
 function longFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( src instanceof this.tools.defaultLong.InstanceConstructor )
+  if( src instanceof this.tools.long.default.InstanceConstructor )
   if( !_.unrollIs( src ) && _.longIs( src ) )
   return src;
   return this.longMake.call( this, src );
@@ -934,8 +934,8 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( this.defaultLong.InstanceConstructor )
-  if( src instanceof this.defaultLong.InstanceConstructor && _.longIs( src ) )
+  if( this.long.default.InstanceConstructor )
+  if( src instanceof this.long.default.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
@@ -944,7 +944,7 @@ function longFromCoercing( src )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
-  return this.defaultLong.from( src );
+  return this.long.default.from( src );
 
   if( _.object.isBasic( src ) )
   return this.longFromCoercing( _.props.pairs( src ) );

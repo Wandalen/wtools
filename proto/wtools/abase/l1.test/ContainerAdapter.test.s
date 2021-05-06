@@ -20154,23 +20154,23 @@ function longMakeEmpty( test )
 {
   test.case = 'src - containerAdapter, empty array';
   var got = _.long.makeEmpty( _.containerAdapter.make( [] ) );
-  test.true( _.containerAdapter.is( got ) );
-  test.identical( got.original, [] );
+  test.true( _.long.default.is( got ) );
+  test.identical( got, _.long.default.make( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.long.makeEmpty( _.containerAdapter.make([ 1, 2, 3 ]) );
-  test.true( _.containerAdapter.is( got ) );
-  test.identical( got.original, [] );
+  test.true( _.long.default.is( got ) );
+  test.identical( got, _.long.default.make( [] ) );
 
   test.case = 'src - containerAdapter, empty array';
   var got = _.long.makeEmpty( _.containerAdapter.make( new Set( [] ) ) );
-  test.true( _.containerAdapter.is( got ) );
-  test.identical( got.original, new Set( [] ) );
+  test.true( _.long.default.is( got ) );
+  test.identical( got, _.long.default.make( [] ) );
 
   test.case = 'src - containerAdapter, filled array';
   var got = _.long.makeEmpty( _.containerAdapter.make( new Set([ 1, 2, 3 ]) ) );
-  test.true( _.containerAdapter.is( got ) );
-  test.identical( got.original, new Set( [] ) );
+  test.true( _.long.default.is( got ) );
+  test.identical( got, _.long.default.make( [] ) );
 }
 
 //

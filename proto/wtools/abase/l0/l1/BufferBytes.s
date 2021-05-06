@@ -5,13 +5,15 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.bufferBytes = _.bufferBytes || Object.create( null );
+_.assert( _.bufferBytes === undefined );
+_.assert( _.u8x === undefined );
+_.bufferBytes = _.u8x = _.bufferBytes || _.u8x || Object.create( null );
 
 // --
 // implementation
 // --
 
-function bytesIs( src )
+function is( src )
 {
   if( _.buffer.nodeIs( src ) )
   return false;
@@ -27,27 +29,28 @@ let BufferBytesExtension =
 
   //
 
-  NamespaceName : 'bufferBytes',
-  NamespaceQname : 'wTools/bufferBytes',
-  TypeName : 'BufferBytes',
-  SecondTypeName : 'ArrayTyped',
-  InstanceConstructor : null,
+  NamespaceName : 'u8x',
+  NamespaceNames : [ 'u8x', 'bufferBytes' ],
+  NamespaceQname : 'wTools/u8x',
+  TypeName : 'U8x',
+  TypeNames : [ 'U8x', 'Uint8Array', 'BufferBytes',  ],
+  InstanceConstructor : U8x,
   tools : _,
 
   // dichotomy
 
-  bytesIs,
-  is : bytesIs,
-  like : bytesIs,
+  // bytesIs,
+  is,
+  like : is,
 
   // maker
 
-  _make : _.buffer._make, /* qqq : cover */
-  make : _.buffer.make,
-  _makeEmpty : _.buffer._makeEmpty,
-  makeEmpty : _.buffer.makeEmpty,
-  _makeUndefined : _.buffer._makeUndefined, /* qqq : implement */
-  makeUndefined : _.buffer.makeUndefined,
+  // _make : _.buffer._make, /* qqq : cover */
+  // make : _.buffer.make,
+  // _makeEmpty : _.buffer._makeEmpty,
+  // makeEmpty : _.buffer.makeEmpty,
+  // _makeUndefined : _.buffer._makeUndefined, /* qqq : implement */
+  // makeUndefined : _.buffer.makeUndefined,
   // _makeZeroed : _.buffer._makeZeroed,
   // makeZeroed : _.buffer.makeZeroed, /* qqq : for junior : cover */
   // _cloneShallow : _.buffer._cloneShallow,
@@ -66,7 +69,7 @@ let BufferExtension =
 
   // dichotomy
 
-  bytesIs : bytesIs.bind( _.buffer ),
+  bytesIs : is.bind( _.bufferBytes ),
 
 }
 
@@ -79,7 +82,8 @@ let ToolsExtension =
 
   // dichotomy
 
-  bufferBytesIs : bytesIs.bind( _.buffer ),
+  bufferBytesIs : is.bind( _.bufferBytes ),
+  bufferBytesLike : is.bind( _.bufferBytes ),
 
 }
 

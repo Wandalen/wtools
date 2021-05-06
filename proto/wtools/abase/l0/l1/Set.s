@@ -40,6 +40,13 @@ function isPopulated()
   return !!src.size;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
 
 // --
 // maker
@@ -242,11 +249,13 @@ let SetExtension =
   //
 
   NamespaceName : 'set',
+  NamespaceNames : [ 'set' ],
   NamespaceQname : 'wTools/set',
   MoreGeneralNamespaceName : 'set',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Set',
-  SecondTypeName : 'Set',
+  TypeNames : [ 'Set' ],
+  // SecondTypeName : 'Set',
   InstanceConstructor : Set,
   tools : _,
 
@@ -257,6 +266,7 @@ let SetExtension =
   // adapterLike,
   isEmpty,
   isPopulated,
+  IsResizable,
 
   // maker
 
@@ -278,6 +288,12 @@ let SetExtension =
   vals, /* qqq : for junior : cover */
   _pairs,
   pairs, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

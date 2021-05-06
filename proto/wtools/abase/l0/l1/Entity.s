@@ -175,7 +175,7 @@ function strTypeWithoutTraits( src )
 // meta
 // --
 
-function namespaceForContainer( src ) /* qqq for junior : cover please */
+function namespaceOfContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
 
@@ -268,9 +268,12 @@ let EntityExtension =
 
   // fields
 
-  NamespaceName : 'wTools.entity',
+  NamespaceName : 'entity',
+  NamespaceNames : [ 'entity' ],
+  NamespaceQname : 'wTools/entity',
   TypeName : 'Entity',
-  SecondTypeName : 'Entity',
+  TypeNames : [ 'Entity' ],
+  // SecondTypeName : 'Entity',
   InstanceConstructor : null,
   tools : _,
   TranslatedTypeMap,
@@ -281,23 +284,16 @@ let EntityExtension =
   is,
   like,
 
-  // // maker
-  //
-  // cloneShallow, /* qqq : cover */
-  // make, /* qqq : cover */
-  // makeEmpty, /* qqq : cover */
-  // makeUndefined, /* qqq : cover */
-
   // maker
 
-  // _cloneShallow : _.container._cloneShallow, /* qqq : implement */
+  // _cloneShallow : _.container._cloneShallow, /* xxx : implement? */
   cloneShallow : _.container.cloneShallow, /* qqq : cover */
   // _make : _.container._make, /* qqq : implement */
-  make : _.container.make, /* qqq : cover */
+  make : _.container.make, /* xxx : implement? */
   // _makeEmpty : _.container._makeEmpty, /* qqq : implement */
-  makeEmpty : _.container.makeEmpty, /* qqq : cover */
+  makeEmpty : _.container.makeEmpty, /* xxx : implement? */
   // _makeUndefined : _.container._makeUndefined, /* qqq : implement */
-  makeUndefined : _.container.makeUndefined, /* qqq : cover */
+  makeUndefined : _.container.makeUndefined, /* xxx : implement? */
 
   // exporter
 
@@ -309,9 +305,11 @@ let EntityExtension =
 
   // meta
 
-  namespaceForContainer,
-  namespaceForEntity : _.container.namespaceForEntity,
-  _functor_functor : _.container._functor_functor,
+  namespaceOfContainer,
+  namespaceOfEntity : _.container.namespaceOfEntity,
+  namespaceOf : namespaceOfContainer,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

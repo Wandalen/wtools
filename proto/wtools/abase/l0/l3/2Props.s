@@ -331,7 +331,7 @@ function elementWithCardinal( src, cardinal )
 function _elementWithKeySet( dst, key, val )
 {
   dst[ key ] = val;
-  return [ val, key, true ];
+  return [ key, true ];
 }
 
 //
@@ -351,11 +351,11 @@ function _elementWithCardinalSet( dst, cardinal, val )
   if( was[ 2 ] === true )
   {
     dst[ was[ 1 ] ] = val;
-    return [ val, was[ 1 ], true ];
+    return [ was[ 1 ], true ];
   }
   else
   {
-    return [ undefined, cardinal, false ];
+    return [ cardinal, false ];
   }
 }
 
@@ -653,7 +653,7 @@ function _filterAct0()
 
 //
 
-function _filterAct1()
+function _filterAct()
 {
   let self = this;
   let dst = arguments[ 0 ];
@@ -674,6 +674,7 @@ function _filterAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => 'onEach is not a routine' )
   }
 
   this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
@@ -685,28 +686,28 @@ function _filterAct1()
 
 function filterWithoutEscapeLeft( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => val );
+  return this._filterAct( ... arguments, true, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function filterWithoutEscapeRight( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => val );
+  return this._filterAct( ... arguments, false, 'eachRight', ( val ) => val );
 }
 
 //
 
 function filterWithEscapeLeft( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
+  return this._filterAct( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function filterWithEscapeRight( dst, src, onEach )
 {
-  return this._filterAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
+  return this._filterAct( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 //
@@ -745,7 +746,7 @@ function _mapAct0()
 
 //
 
-function _mapAct1()
+function _mapAct()
 {
   let self = this;
   let dst = arguments[ 0 ];
@@ -766,6 +767,7 @@ function _mapAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
   }
 
   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
@@ -777,28 +779,28 @@ function _mapAct1()
 
 function mapWithoutEscapeLeft( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => val );
+  return this._mapAct( ... arguments, true, 'eachLeft', ( val ) => val );
 }
 
 //
 
 function mapWithoutEscapeRight( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => val );
+  return this._mapAct( ... arguments, false, 'eachRight', ( val ) => val );
 }
 
 //
 
 function mapWithEscapeLeft( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
+  return this._mapAct( ... arguments, true, 'eachLeft', ( val ) => _.escape.right( val ) );
 }
 
 //
 
 function mapWithEscapeRight( dst, src, onEach )
 {
-  return this._mapAct1( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
+  return this._mapAct( ... arguments, false, 'eachRight', ( val ) => _.escape.right( val ) );
 }
 
 // --
@@ -911,7 +913,7 @@ let Extension =
   last : aptRight, /* qqq : cover */
 
   _filterAct0,
-  _filterAct1,
+  _filterAct,
   filterWithoutEscapeLeft,
   filterWithoutEscapeRight,
   filterWithoutEscape : filterWithoutEscapeLeft,
@@ -921,7 +923,7 @@ let Extension =
   filter : filterWithoutEscapeLeft,
 
   _mapAct0,
-  _mapAct1,
+  _mapAct,
   mapWithoutEscapeLeft,
   mapWithoutEscapeRight,
   mapWithoutEscape : mapWithoutEscapeLeft,

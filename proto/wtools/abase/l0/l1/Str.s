@@ -167,7 +167,6 @@ function strHas( src, ins )
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
@@ -198,7 +197,6 @@ function strHas( src, ins )
 // //
 // //   if( strIs1 && strIs2 )
 // //   {
-// //     /* qqq : for junior : bad | aaa : Fixed. */
 // //     if( src1 === src2 )
 // //     return true;
 // //
@@ -1059,7 +1057,7 @@ function _strBeginOf( src, begin )
   }
   else _.assert( 0, 'Expects string-like ( string or regexp )' );
 
-  return undefined; /* qqq : should return undefined */
+  return undefined;
 }
 
 //
@@ -1087,7 +1085,7 @@ function _strEndOf( src, end )
   }
   else _.assert( 0, 'Expects string-like ( string or regexp )' );
 
-  return undefined; /* qqq : should return undefined */
+  return undefined;
 }
 
 //
@@ -1511,14 +1509,14 @@ let ToolsExtension =
   // strType : strTypeWithTraits,
   strHas,
 
-  // strEquivalent, /* qqq : for junior : bad */
+  // strEquivalent,
   // areEquivalentShallow : strEquivalent, xxx
   // strsEquivalent,
 
   // converter
 
   strstrShort_ : strShort_, /* xxx : remove */
-  strShort_, /* qqq for junior : cover | aaa : Done. */
+  strShort_, 
   strShortWidth,
   _strShortWidth,
   strShortHeight,

@@ -144,6 +144,9 @@ function __arrayFlatten( src )
   let result = [];
   if( src === null )
   return result;
+  if( !_.argumentsArray.like( src ) )
+  result.push( src );
+  else
   for( let i = 0 ; i < src.length ; i++ )
   {
     let e = src[ i ];
@@ -2229,13 +2232,11 @@ function _compose_old_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       _.assert( args !== undefined && args !== false );
@@ -2300,6 +2301,11 @@ function _compose_head( routine, args )
   // debugger;
   // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
   // o.bodies = merge( o.bodies );
+
+  // let bodies2 = __arrayFlatten( o.bodies );
+  // if( bodies2.length && bodies2[ 0 ] === undefined )
+  // debugger;
+
   o.bodies = __arrayFlatten( o.bodies );
   o.bodies = o.bodies.filter( ( e ) => e !== null );
 
@@ -2408,12 +2414,11 @@ function _compose_body( o )
   {
     let result = [];
     let args = _.unroll.from( arguments );
-    _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+    // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
     let routine = bodies[ 0 ];
     let r = routine.apply( this, args );
     _.assert( !_.argumentsArray.is( r ) );
     if( r !== undefined )
-    // result.push( r )
     _.unrollAppend( result, r );
     return result;
   }
@@ -2424,12 +2429,11 @@ function _compose_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       if( args === _.dont )
@@ -2511,9 +2515,11 @@ let RoutineExtension =
   // fields
 
   NamespaceName : 'routine',
+  NamespaceNames : [ 'routine' ],
   NamespaceQname : 'wTools/routine',
   TypeName : 'Routine',
-  SecondTypeName : 'Function',
+  TypeNames : [ 'Routine', 'Function' ],
+  // SecondTypeName : 'Function',
   InstanceConstructor : null,
   tools : _,
 

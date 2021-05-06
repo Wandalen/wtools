@@ -98,66 +98,69 @@ function filterMapCommonPass( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
-
-    /* */
-
     env.namespace = 'countable';
-    env.isFixedLength = false;
+    env.isResizable = true;
     env.makable = false;
     caseEach( env );
     env.namespace = 'vector';
-    env.isFixedLength = false;
+    env.isResizable = true;
     env.makable = false;
     caseEach( env );
 
     /* fixed */
 
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -169,11 +172,11 @@ function filterMapCommonPass( test )
     test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
     if( env.makable !== false )
-    test.identical( _.countable.isFixedLength( _[ env.namespace ].make( 0 ) ), env.isFixedLength );
+    test.identical( _.countable.isResizable( _[ env.namespace ].make( 0 ) ), env.isResizable );
 
     /* */
 
-    if( !env.isFixedLength )
+    if( env.isResizable )
     {
       test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
       clean();
@@ -207,7 +210,7 @@ function filterMapCommonPass( test )
 
     /* */
 
-    if( !env.isFixedLength )
+    if( env.isResizable )
     {
       test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
       clean();
@@ -215,7 +218,7 @@ function filterMapCommonPass( test )
       var dst = _[ env.namespace ].make([ 4, 5, 6, 7 ]);
       var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
       test.true( got === dst );
-      var exp = _[ env.namespace ].make([ 11, 12, 13, 7 ]);
+      var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
       test.identical( got, exp );
       var exp = [ 1, 2, 3 ];
       test.identical( src, exp );
@@ -264,6 +267,52 @@ function filterMapCommonPass( test )
 
     /* */
 
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length, countable`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length, vector`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     clean();
     var src = [ 1, 2, 3 ];
@@ -283,6 +332,71 @@ function filterMapCommonPass( test )
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
     var exp = order([ got, got, got ]);
+    if( !env.isResizable && _.strBegins( env.method, 'filter' ) )
+    {
+      var dst2 = [ 11, 12, 13 ];
+      exp = order([ dst2, dst2, dst2 ]);
+    }
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, countable`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    if( env.namespace === 'countable' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 12, 13 ] });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    if( !_.countable.isResizable( got ) && _.strBegins( env.method, 'filter' ) )
+    {
+      var dst2 = [ 11, 12, 13 ];
+      exp = order([ dst2, dst2, dst2 ]);
+    }
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, vector`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    if( env.namespace === 'countable' || env.namespace === 'vector' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 12, 13 ], vector : 1 });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    if( !_.countable.isResizable( got ) && _.strBegins( env.method, 'filter' ) )
+    {
+      var dst2 = [ 11, 12, 13 ];
+      exp = order([ dst2, dst2, dst2 ]);
+    }
     test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
@@ -367,12 +481,12 @@ function filterCommonDropping( test )
   let env;
 
   namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
-  // namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
-  // namespaceEach({ method : 'filterWithoutEscape', left : 1 });
-  // namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
-  // namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
-  // namespaceEach({ method : 'filterWithEscape', left : 1 });
-  // namespaceEach({ method : 'filter', left : 1 });
+  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithoutEscape', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithEscape', left : 1 });
+  namespaceEach({ method : 'filter', left : 1 });
 
   /* - */
 
@@ -382,56 +496,70 @@ function filterCommonDropping( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
-    // env.namespace = 'array';
-    // env.isFixedLength = false;
-    // caseEach( env );
-    // env.namespace = 'unroll';
-    // env.isFixedLength = false;
-    // caseEach( env );
+    env.namespace = 'array';
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'unroll';
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
 
-    // /* fixed */
-    //
-    // env.namespace = 'argumentsArray';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'f32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'f64x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'fx';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i16x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i8x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'ix';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u16x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u8x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u8xClamped';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'ux';
-    // env.isFixedLength = true;
-    // caseEach( env );
+    /* fixed */
+
+    env.namespace = 'argumentsArray';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'f32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'f64x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'fx';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i16x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i8x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'ix';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u16x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u8x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u8xClamped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'ux';
+    env.isResizable = false;
+    caseEach( env );
 
   }
 
@@ -443,15 +571,71 @@ function filterCommonDropping( test )
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length`;
     var src = [ 1, 2, 3 ];
     var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = _[ env.namespace ].make([ 4, 5, 6, 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 5, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length, countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 5, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length, vector`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 5, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    test.identical( src, exp );
+
+    /* */
+
+    if( env.isResizable )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4 ]);
+      var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+      test.true( got === dst );
+      var exp = _[ env.namespace ].make([ 11, 13 ]);
+      test.identical( got, exp );
+      var exp = [ 1, 2, 3 ];
+      test.identical( src, exp );
+    }
+    else if( Config.debug )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4 ]);
+      test.shouldThrowErrorSync( () => _[ env.namespace ][ env.method ]( dst, src, f1 ) );
+      var exp = _[ env.namespace ].make([ 4 ]);
+      test.identical( dst, exp );
+      var exp = [ 1, 2, 3 ];
+      test.identical( src, exp );
+    }
 
     /* */
 
@@ -467,11 +651,41 @@ function filterCommonDropping( test )
 
     /* */
 
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
+    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    if( env.namespace === 'countable' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 13 ], countable : 1 });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, vector`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
+    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    if( env.namespace === 'countable' || env.namespace === 'vector' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 13 ], vector : 1 });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    test.identical( src, exp );
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
     var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -480,7 +694,9 @@ function filterCommonDropping( test )
     var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -525,55 +741,69 @@ function mapCommonReturningUndefined( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
     caseEach( env );
 
     /* fixed */
 
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -588,12 +818,36 @@ function mapCommonReturningUndefined( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
     var src = [ 1, 2, 3 ];
-    var dst = _[ env.namespace ].make([ 4 ]);
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = { d : 4, a : 11, b : 2, c : 13 }
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, vector`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
     test.identical( src, exp );
 
     /* */
@@ -603,27 +857,55 @@ function mapCommonReturningUndefined( test )
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
     test.true( _[ env.namespace ].is( got ) );
-    var exp = { a : 11, b : 2, c : 13 }
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
     test.identical( src, exp );
 
     /* */
 
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.namespace === 'countable' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 2, 13 ], countable : 1 });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, vector`;
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( got !== src );
+    test.true( _[ env.namespace ].is( got ) );
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.namespace === 'vector' || env.namespace === 'countable' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 2, 13 ], vector : 1 });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], vector : 1 });
+    test.identical( src, exp );
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : 2, c : 13 }
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
     test.identical( got, exp );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : 2, c : 13 }
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -676,55 +958,70 @@ function filterMapCommonEscaping( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
     caseEach( env );
 
     /* fixed */
 
+
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -825,8 +1122,8 @@ const Proto =
     identical,
 
     filterMapCommonPass,
-    // filterCommonDropping,
-    // mapCommonReturningUndefined,
+    filterCommonDropping,
+    mapCommonReturningUndefined,
     // filterMapCommonEscaping,
 
   }

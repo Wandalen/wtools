@@ -88,7 +88,7 @@ function _exportStringShallow( src, o )
   try
   {
 
-    let namespace = this.namespaceForEntity( src );
+    let namespace = this.namespaceOfEntity( src );
     if( namespace === null )
     {
       _.assert( 0, 'not tested' );

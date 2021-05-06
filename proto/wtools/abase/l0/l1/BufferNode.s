@@ -28,10 +28,12 @@ let BufferNodeExtension =
   //
 
   NamespaceName : 'bufferNode',
+  NamespaceNames : [ 'bufferNode' ],
   NamespaceQname : 'wTools/bufferNode',
   TypeName : 'BufferNode',
-  SecondTypeName : 'ArrayNode',
-  InstanceConstructor : null,
+  TypeNames : [ 'BufferNode' ],
+  // SecondTypeName : 'ArrayNode',
+  InstanceConstructor : Buffer,
   tools : _,
 
   // dichotomy

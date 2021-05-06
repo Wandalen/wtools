@@ -1421,8 +1421,6 @@ function arrayMakeUndefined( test )
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.array.makeUndefined( {} ) );
   test.shouldThrowErrorSync( () => _.array.makeUndefined( 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.array.makeUndefined( new Set() ) );
-  test.shouldThrowErrorSync( () => _.array.makeUndefined( new Set([ 1, 2, 3 ]) ) );
 
   test.case = 'wrong type of length';
   test.shouldThrowErrorSync( () => _.array.makeUndefined( [], 'wrong' ) );

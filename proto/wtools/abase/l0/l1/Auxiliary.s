@@ -245,6 +245,14 @@ function isPopulated( src )
   return this.keys( src ).length > 0;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -365,6 +373,22 @@ function _cloneShallow( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.map.is( src ) )
+  return _.map;
+  if( _.aux.is( src ) )
+  return _.aux;
+
+  return null;
+}
+
+// --
 // extension
 // --
 
@@ -405,11 +429,13 @@ var AuxiliaryExtension =
   //
 
   NamespaceName : 'aux',
+  NamespaceNames : [ 'aux' ],
   NamespaceQname : 'wTools/aux',
   MoreGeneralNamespaceName : 'props',
   MostGeneralNamespaceName : 'props',
   TypeName : 'Aux',
-  SecondTypeName : 'Auxiliary',
+  TypeNames : [ 'Aux', 'Auxiliary' ],
+  // SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,
   tools : _,
 
@@ -423,6 +449,7 @@ var AuxiliaryExtension =
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */
+  IsResizable,
 
   // maker
 
@@ -473,6 +500,12 @@ var AuxiliaryExtension =
   _supplementUniversal : _.props._supplementUniversal,
   supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

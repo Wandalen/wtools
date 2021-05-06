@@ -200,9 +200,9 @@ module:
           - ../proto/wtools/abase/l0/l1/1Diagnostic.s
           - ../proto/wtools/abase/l0/l1/2Long.s
           - ../proto/wtools/abase/l0/l1/2Props.s
-          - ../proto/wtools/abase/l0/l1/3ArgumentsArray.s
           - ../proto/wtools/abase/l0/l1/3Blank.s
-          - ../proto/wtools/abase/l0/l1/3BufferTyped.s
+          - ../proto/wtools/abase/l0/l1/5ArgumentsArray.s
+          - ../proto/wtools/abase/l0/l1/5BufferTyped.s
           - ../proto/wtools/abase/l0/l1/Array.s
           - ../proto/wtools/abase/l0/l1/ArraySet.s
           - ../proto/wtools/abase/l0/l1/Auxiliary.s

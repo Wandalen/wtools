@@ -27,6 +27,14 @@ function is( src )
 
 //
 
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
+//
+
 function _make( src, length )
 {
   if( arguments.length === 2 )
@@ -36,7 +44,8 @@ function _make( src, length )
     {
       data = src;
     }
-    else if( _.long.is( length ) )
+    else if( length.length )
+    // else if( _.long.is( length ) )
     {
       length = length.length;
     }
@@ -49,15 +58,15 @@ function _make( src, length )
 
     if( this.like( src ) )
     return fill( new src.constructor( length ), data );
-    return fill( this.tools.defaultBufferTyped.make( length ), data );
+    return fill( this.tools.bufferTyped.default.make( length ), data );
   }
   else if( arguments.length === 1 )
   {
     if( this.like( src ) )
     return new src.constructor( src );
-    return this.tools.defaultBufferTyped.make( src );
+    return this.tools.bufferTyped.default.make( src );
   }
-  return this.tools.defaultBufferTyped.make( 0 );
+  return this.tools.bufferTyped.default.make( 0 );
 
   /* */
 
@@ -78,7 +87,7 @@ function _makeEmpty( src )
 {
   if( arguments.length === 1 )
   {
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src( 0 );
       _.assert( this.like( result ) );
@@ -87,18 +96,19 @@ function _makeEmpty( src )
     if( this.like( src ) )
     return new src.constructor();
   }
-  return this.tools.defaultBufferTyped.make();
+  return this.tools.bufferTyped.default.make();
 }
 
 //
 
 function makeEmpty( src )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
-  }
+  _.assert( arguments.length === 0 || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+  _.assert( arguments.length <= 1 );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // if( arguments.length === 1 )
+  // _.assert( this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+
   return this._makeEmpty( ... arguments );
 }
 
@@ -138,7 +148,8 @@ function _makeFilling( type, value, length )
   }
 
   if( !_.number.is( length ) )
-  if( _.long.is( length ) )
+  // if( _.long.is( length ) )
+  if(  length.length )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;
@@ -180,13 +191,47 @@ function _cloneShallow( src )
 
 function _namespaceRegister( namespace, defaultNamespaceName )
 {
-  _.bufferTyped.namespaces[ namespace.NamespaceName ] = namespace;
+
+  namespace.NamespaceNames.forEach( ( name ) =>
+  {
+    _.assert( _.bufferTyped.namespaces[ name ] === undefined );
+    _.bufferTyped.namespaces[ name ] = namespace;
+  });
 
   _.assert( namespace.IsTyped === undefined || namespace.IsTyped === true );
-
   namespace.IsTyped = true;
 
   return _.long._namespaceRegister( ... arguments );
+}
+
+//
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.f32x.is( src ) )
+  return _.f32x;
+  if( _.f64x.is( src ) )
+  return _.f64x;
+
+  if( _.i8x.is( src ) )
+  return _.i8x;
+  if( _.i16x.is( src ) )
+  return _.i16x;
+  if( _.i32x.is( src ) )
+  return _.i32x;
+
+  if( _.u8x.is( src ) )
+  return _.u8x;
+  if( _.u8xClamped.is( src ) )
+  return _.u8xClamped;
+  if( _.u16x.is( src ) )
+  return _.u16x;
+  if( _.u32x.is( src ) )
+  return _.u32x;
+
+  return null;
 }
 
 // --
@@ -199,11 +244,13 @@ let BufferTypedExtension =
   //
 
   NamespaceName : 'bufferTyped',
+  NamespaceNames : [ 'bufferTyped' ],
   NamespaceQname : 'wTools/bufferTyped',
   MoreGeneralNamespaceName : 'long',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'BufferTyped',
-  SecondTypeName : 'ArrayTyped',
+  TypeNames : [ 'BufferTyped' ],
+  // SecondTypeName : 'ArrayTyped',
   InstanceConstructor : null,
   tools : _,
 
@@ -212,6 +259,7 @@ let BufferTypedExtension =
   // typedIs : is,
   is : is,
   like : is,
+  IsResizable,
 
   // maker
 
@@ -232,6 +280,10 @@ let BufferTypedExtension =
   // meta
 
   _namespaceRegister,
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

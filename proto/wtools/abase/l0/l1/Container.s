@@ -5,6 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
+const _functor_functor = _.props._functor_functor;
 
 // --
 // implementation
@@ -87,7 +88,7 @@ makeUndefined.functor = _functor_functor( 'makeUndefined' );
 // meta
 // --
 
-function namespaceForContainer( src ) /* qqq for junior : cover please */
+function namespaceOfContainer( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
 
@@ -111,7 +112,7 @@ function namespaceForContainer( src ) /* qqq for junior : cover please */
 
 //
 
-function namespaceForEntity( src )
+function namespaceOfEntity( src )
 {
   if( _.primitive.is( src ) )
   return _.primitive;
@@ -135,52 +136,6 @@ function namespaceForEntity( src )
   return _.object;
 
   return null;
-}
-
-//
-
-function _functor_functor( methodName, typer, which )
-{
-  _.assert( !!( methodName ) );
-  // if( _.numberIs( typer ) )
-  // {
-  //   _.assert( which === undefined );
-  //   which = arguments[ 1 ];
-  //   typer = arguments[ 0 ];
-  // }
-  if( !typer )
-  typer = 'namespaceForContainer';
-  if( !which )
-  which = 0;
-  if( which === 0 )
-  return _functor0;
-  if( which === 1 )
-  return _functor1;
-  _.assert( 0 );
-
-  function _functor0( container )
-  {
-    _.assert( arguments.length === 1 );
-    _.assert( _.routine.is( this[ typer ] ),() => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
-    const namespace = this[ typer ]( container );
-    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
-    return namespace[ methodName ].bind( namespace, container );
-  }
-
-  function _functor1( container )
-  {
-    _.assert( arguments.length === 1 );
-    _.assert( _.routine.is( this[ typer ] ),() => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
-    const namespace = this[ typer ]( container );
-    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
-    const routine0 = namespace[ methodName ];
-    return routine1.bind( namespace );
-    function routine1( arg1, ... args )
-    {
-      return routine0.call( this, arg1, container, ... args );
-    }
-  }
-
 }
 
 // --
@@ -213,9 +168,12 @@ Self.original = Container;
 let ContainerExtension =
 {
 
-  NamespaceName : 'wTools.container',
+  NamespaceName : 'container',
+  NamespaceNames : [ 'container' ],
+  NamespaceQname : 'wTools/container',
   TypeName : 'Container',
-  SecondTypeName : 'Container',
+  TypeNames : [ 'Container' ],
+  // SecondTypeName : 'Container',
   InstanceConstructor : null,
   tools : _,
 
@@ -233,9 +191,11 @@ let ContainerExtension =
 
   // meta
 
-  namespaceForContainer,
-  namespaceForEntity,
-  _functor_functor,
+  namespaceOfContainer,
+  namespaceOfEntity,
+  namespaceOf : namespaceOfContainer,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

@@ -2472,28 +2472,28 @@ function mapToStr( test )
 {
 
   test.case = 'returns an empty string';
-  var got = _.mapToStr({ src : [], keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : [], keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an object';
-  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = 'a : 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array';
-  var got = _.mapToStr({ src : [ 1, 2, 3 ], keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : [ 1, 2, 3 ], keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3';
   test.identical( got, expected );
 
   test.case = 'returns a string representing an array-like object';
   function args() { return arguments };
-  var got = _.mapToStr({ src : args(  1, 2, 3, 4, 5 ), keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : args( 1, 2, 3, 4, 5 ), keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
   test.identical( got, expected );
 
   test.case = 'returns a string representing a string';
-  var got = _.mapToStr({ src : 'abc', keyValDelimeter : ' : ',  entryDelimeter : '; ' });
+  var got = _.mapToStr({ src : 'abc', keyValDelimeter : ' : ', entryDelimeter : '; ' });
   var expected = '0 : a; 1 : b; 2 : c';
   test.identical( got, expected );
 
@@ -7486,7 +7486,7 @@ function mapButIgnoringUndefines_ButMapIsVector( test )
 
   test.case = 'dstMap - filled, no replacing, srcMap - filled, butMap - vector, full deleting';
   var dstMap = { c : 3 };
-  var srcMap = { a : undefined, b : undefined};
+  var srcMap = { a : undefined, b : undefined };
   var butMap = _.containerAdapter.make( new Set([ 'a', 'b' ]) );
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, butMap );
   var expected = { c : 3 };
@@ -12175,7 +12175,6 @@ function mapOnlyComplementing_ScreenMapIsVector( test )
 //
 // }
 //
-// //
 //
 // function mapsAreIdentical( test )
 // {

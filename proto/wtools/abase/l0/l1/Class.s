@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.class = _.class || Object.create( null );
+_.class = _.class || Object.create( null );
 
 // --
 // container
@@ -97,6 +97,28 @@ function methodElementSetOf( src )
   return src[ elementSetSymbol ];
   if( _.routine.is( src.eSet ) )
   return src.eSet;
+  return;
+}
+
+//
+
+function methodMakeEmptyOf( src )
+{
+  if( _.routine.is( src.makeEmpty ) )
+  return src.makeEmpty;
+  if( _.routine.is( src.MakeEmpty ) )
+  return src.MakeEmpty;
+  return;
+}
+
+//
+
+function methodMakeUndefinedOf( src )
+{
+  if( _.routine.is( src.makeUndefined ) )
+  return src.makeUndefined;
+  if( _.routine.is( src.MakeUndefined ) )
+  return src.MakeUndefined;
   return;
 }
 
@@ -259,6 +281,8 @@ let ClassExtension =
   methodCloneDeepOf,
   methodElementWithKeySetOf,
   methodElementSetOf,
+  methodMakeEmptyOf,
+  methodMakeUndefinedOf,
 
   declareBasic,
 

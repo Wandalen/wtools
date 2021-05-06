@@ -28,10 +28,12 @@ let BufferViewExtension =
   //
 
   NamespaceName : 'bufferView',
+  NamespaceNames : [ 'bufferView' ],
   NamespaceQname : 'wTools/bufferView',
   TypeName : 'BufferView',
-  SecondTypeName : 'ArrayView',
-  InstanceConstructor : null,
+  TypeNames : [ 'BufferView', 'DataView' ],
+  // SecondTypeName : 'DataView',
+  InstanceConstructor : DataView,
   tools : _,
 
   // dichotomy

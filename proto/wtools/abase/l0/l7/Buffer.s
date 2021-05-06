@@ -1469,25 +1469,28 @@ function bufferReusingBut_body( o )
     let right = left + ins.length
     let start = cinterval[ 1 ] + 1;
 
-    if( dstTyped.buffer === srcTyped.buffer )
+    if( srcTyped.length )
     {
-      let val = srcTyped[ srcTyped.length - 1 ];
-      /* qqq for Dmytro : not optimal */
-      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+      if( dstTyped.buffer === srcTyped.buffer )
       {
-        let temp = srcTyped[ i - 1 ];
-        dstTyped[ right + i - start ] = val;
-        val = temp;
+        let val = srcTyped[ srcTyped.length - 1 ];
+        /* qqq for Dmytro : not optimal */
+        for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+        {
+          let temp = srcTyped[ i - 1 ];
+          dstTyped[ right + i - start ] = val;
+          val = temp;
+        }
       }
-    }
-    else
-    {
-      for( let i = srcTyped.length - 1 ; i >= start ; i-- )
-      dstTyped[ right + i - start ] = srcTyped[ i ];
-    }
+      else
+      {
+        for( let i = srcTyped.length - 1 ; i >= start ; i-- )
+        dstTyped[ right + i - start ] = srcTyped[ i ];
+      }
 
-    for( let i = 0 ; i < left ; i++ )
-    dstTyped[ i ] = srcTyped[ i ];
+      for( let i = 0 ; i < left ; i++ )
+      dstTyped[ i ] = srcTyped[ i ];
+    }
 
     for( let i = left ; i < right ; i++ )
     dstTyped[ i ] = ins[ i - left ];

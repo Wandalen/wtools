@@ -121,10 +121,6 @@ Object.assign( _, ToolsExtension );
 let PrimitiveExtension =
 {
 
-  //
-
-  NamespaceName : 'primitive',
-
   // equaler
 
   _identicalShallow,

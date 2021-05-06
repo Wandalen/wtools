@@ -6,6 +6,8 @@
 const _global = _global_;
 const _ = _global_.wTools;
 _.array = _.array || Object.create( null );
+_.countable = _.countable || Object.create( null );
+_.vector = _.vector || Object.create( null );
 
 _.assert( !!_.argumentsArray.make, 'Expects routine _.argumentsArray.make' );
 
@@ -72,30 +74,38 @@ function like( src ) /* qqq : cover */
   return this.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
 
-function _makeEmpty( src )
-{
-  return [];
-}
-
+// function _makeEmpty( src )
+// {
+//   return [];
+// }
 //
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) );
-    return [];
-  }
-  else
-  {
-    return [];
-  }
-}
+// //
+//
+// function makeEmpty( src )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   if( arguments.length === 1 )
+//   {
+//     _.assert( this.like( src ) );
+//     return [];
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
 
 //
 
@@ -175,9 +185,19 @@ function _make( src, length )
   {
     let data = length;
     if( _.number.is( length ) )
-    data = src;
+    {
+      data = src;
+    }
+    else if( length.length )
+    {
+      length = length.length;
+    }
     if( _.countable.is( length ) )
-    length = length.length;
+    {
+      data = [ ... length ];
+      length = data.length;
+    }
+
     return fill( new Array( length ), data );
   }
   else if( arguments.length === 1 )
@@ -252,6 +272,71 @@ function _cloneShallow( srcArray )
 // declaration
 // --
 
+let ArrayExtension =
+{
+
+  // fields
+
+  NamespaceName : 'array',
+  NamespaceNames : [ 'array' ],
+  NamespaceQname : 'wTools/array',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
+  TypeName : 'Array',
+  TypeNames : [ 'Array' ],
+  // SecondTypeName : 'Array',
+  InstanceConstructor : Array,
+  tools : _,
+
+  // dichotomy
+
+  is,
+  isEmpty,
+  isPopulated,
+  likeResizable,
+  like,
+  IsResizable,
+
+  // maker
+
+  _makeEmpty : _.argumentsArray._makeEmpty,
+  makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
+  _makeUndefined : _.argumentsArray._makeUndefined,
+  makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed : _.argumentsArray._makeZeroed,
+  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
+  _makeFilling : _.argumentsArray._makeFilling,
+  makeFilling : _.argumentsArray.makeFilling,
+  _make,
+  make : _.argumentsArray.make, /* qqq : for junior : cover */
+  _cloneShallow,
+  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
+
+}
+
+//
+
+Object.assign( _.array, ArrayExtension );
+
+_.long._namespaceRegister( _.array );
+_.assert( _.long.default === undefined );
+_.long.default = _.array;
+
+_.assert( _.countable.default === undefined );
+_.countable.default = _.array;
+
+_.assert( _.vector.default === undefined );
+_.vector.default = _.array;
+
+//
+
 /* qqq : for junior : duplicate routines on all levels */
 let ToolsExtension =
 {
@@ -266,73 +351,17 @@ let ToolsExtension =
 
   // maker
 
-  arrayMakeEmpty : makeEmpty.bind( _.array ),
+  arrayMakeEmpty : _.argumentsArray.makeEmpty.bind( _.array ),
+  // arrayMakeEmpty : makeEmpty.bind( _.array ),
   arrayMakeUndefined : _.argumentsArray.makeUndefined.bind( _.array ),
-  // arrayMakeUndefined : makeUndefined.bind( _.array ),
   arrayMake : _.argumentsArray.make.bind( _.array ),
-  // arrayMake : make.bind( _.array ),
   arrayCloneShallow : _.argumentsArray.cloneShallow.bind( _.array ),
-  // arrayCloneShallow : cloneShallow.bind( _.array ),
   arrayFrom : _.argumentsArray.from.bind( _.array ),
-  // arrayFrom : from.bind( _.array ),
 
 }
 
 //
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let ArrayExtension =
-{
-
-  // fields
-
-  NamespaceName : 'array',
-  NamespaceQname : 'wTools/array',
-  MoreGeneralNamespaceName : 'long',
-  MostGeneralNamespaceName : 'countable',
-  TypeName : 'Array',
-  SecondTypeName : 'Array',
-  InstanceConstructor : Array,
-  IsFixedLength : false,
-  tools : _,
-
-  // dichotomy
-
-  is,
-  isEmpty,
-  isPopulated,
-  likeResizable,
-  like,
-
-  // maker
-
-  _makeEmpty,
-  makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined : _.argumentsArray._makeUndefined,
-  makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
-  _makeZeroed : _.argumentsArray._makeZeroed,
-  makeZeroed : _.argumentsArray.makeZeroed, /* qqq : for junior : cover */
-  _makeFilling : _.argumentsArray._makeFilling,
-  makeFilling : _.argumentsArray.makeFilling,
-  _make,
-  make : _.argumentsArray.make, /* qqq : for junior : cover */
-  // make, /* qqq : for junior : cover */
-  _cloneShallow,
-  cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
-  from : _.argumentsArray.from, /* qqq : for junior : cover */
-
-}
-
-//
-
-Object.assign( _.array, ArrayExtension );
-
-_.long._namespaceRegister( _.array );
-_.assert( _.defaultLong === undefined );
-_.defaultLong = _.array;
-
 
 })();

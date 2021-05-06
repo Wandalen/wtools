@@ -364,7 +364,7 @@ let ToolsExtension =
   instanceIs,
 
   workerIs,
-  streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
+  streamIs,
   // consoleIs,
   // loggerIs,
   processIs,

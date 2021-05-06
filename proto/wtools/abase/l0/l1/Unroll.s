@@ -90,22 +90,30 @@ function like( src )
   return _.unroll.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
 
-function _makeEmpty( src )
-{
-  return _.unroll._make();
-}
-
+// function _makeEmpty( src )
+// {
+//   return _.unroll._make();
+// }
 //
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  return _.unroll._makeEmpty( ... arguments );
-}
+// //
+//
+// function makeEmpty( src )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   return _.unroll._makeEmpty( ... arguments );
+// }
 
 //
 
@@ -800,7 +808,8 @@ let ToolsExtension =
 
   // maker
 
-  unrollMakeEmpty : makeEmpty.bind( _.unroll ),
+  unrollMakeEmpty : _.argumentsArray.makeEmpty.bind( _.unroll ),
+  // unrollMakeEmpty : makeEmpty.bind( _.unroll ),
   unrollMakeUndefined : _.argumentsArray.makeUndefined.bind( _.unroll ),
   // unrollMakeUndefined : makeUndefined.bind( _.unroll ),
   unrollMake : _.argumentsArray.make.bind( _.unroll ),
@@ -832,14 +841,16 @@ let UnrollExtension =
   //
 
   NamespaceName : 'unroll',
+  NamespaceNames : [ 'unroll' ],
   NamespaceQname : 'wTools/unroll',
   MoreGeneralNamespaceName : 'long',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Unroll',
-  SecondTypeName : 'Unroll',
+  TypeNames : [ 'Unroll' ],
+  // SecondTypeName : 'Unroll',
   InstanceConstructor : null,
-  IsFixedLength : false,
   tools : _,
+  symbol : unrollSymbol,
 
   // dichotomy
 
@@ -847,11 +858,12 @@ let UnrollExtension =
   isEmpty,
   isPopulated,
   like,
+  IsResizable,
 
   // maker
 
-  _makeEmpty,
-  makeEmpty, /* qqq : for junior : cover */
+  _makeEmpty : _.argumentsArray._makeEmpty,
+  makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.argumentsArray._makeUndefined,
   makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
@@ -875,9 +887,11 @@ let UnrollExtension =
   append,
   remove,
 
-  // field
+  // meta
 
-  symbol : unrollSymbol,
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

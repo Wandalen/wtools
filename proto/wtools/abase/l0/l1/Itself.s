@@ -25,6 +25,14 @@ function like( src )
   return true;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // extension
 // --
@@ -49,11 +57,13 @@ let ItselfExtension =
   // fields
 
   NamespaceName : 'itself',
+  NamespaceNames : [ 'itself' ],
   NamespaceQname : 'wTools/itself',
   MoreGeneralNamespaceName : 'itself',
   MostGeneralNamespaceName : 'itself',
   TypeName : 'Itself',
-  SecondTypeName : 'Itself',
+  TypeNames : [ 'Itself' ],
+  // SecondTypeName : 'Itself',
   InstanceConstructor : null,
   tools : _,
 
@@ -61,6 +71,7 @@ let ItselfExtension =
 
   is,
   like,
+  IsResizable,
 
   // maker
 
@@ -73,6 +84,12 @@ let ItselfExtension =
   _cloneShallow : _.blank._cloneShallow,
   cloneShallow : _.blank.cloneShallow, /* qqq : for junior : cover */
   from : _.blank.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

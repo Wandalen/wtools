@@ -31,10 +31,12 @@ let BufferRawExtension =
   //
 
   NamespaceName : 'bufferRaw',
+  NamespaceNames : [ 'bufferRaw' ],
   NamespaceQname : 'wTools/bufferRaw',
   TypeName : 'BufferRaw',
-  SecondTypeName : 'ArrayRaw',
-  InstanceConstructor : null,
+  TypeNames : [ 'BufferRaw', 'ArrayBuffer' ],
+  // SecondTypeName : 'ArrayRaw',
+  InstanceConstructor : ArrayBuffer,
   tools : _,
 
   // dichotomy

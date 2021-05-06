@@ -1,4 +1,5 @@
-( function _l0_l9_Functional_test_s_( ) {
+( function _l0_l9_Functional_test_s_()
+{
 
 'use strict';
 
@@ -17278,8 +17279,6 @@ function entityFilter( test )
 //   test.case = 'not map like, not long like, cannot extend map';
 //   test.shouldThrowErrorSync( () => _.container.filter_( {}, 1, ( e ) => e ) );
 // }
-
-//
 
 /* qqq for Dmytro : bad coverage
 

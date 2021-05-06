@@ -37,11 +37,20 @@ function like( src )
 
 //
 
-function isFixedLength( src )
+function isResizable( src )
 {
   if( _.array.is( src ) )
+  return true;
   return false;
-  return this.is( src );
+  // return this.is( src );
+}
+
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return this.default.IsResizable();
 }
 
 // --
@@ -50,9 +59,9 @@ function isFixedLength( src )
 
 function _makeEmpty( src )
 {
-  if( _.long.is( src ) )
-  return _.long._makeEmpty( src );
-  return _.object.makeEmpty( src );
+  if( arguments.length === 0 || src === null || _.long.is( src ) )
+  return _.long._makeEmpty( ... arguments );
+  return _.object.makeEmpty( ... arguments );
 }
 
 //
@@ -77,8 +86,8 @@ function makeEmpty( src )
 function _makeUndefined( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._makeUndefined( src );
-  return _.object.makeUndefined( src );
+  return _.long._makeUndefined( ... arguments );
+  return _.object.makeUndefined( ... arguments );
 }
 
 //
@@ -104,8 +113,8 @@ function makeUndefined( src, length )
 function _makeZeroed( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._makeZeroed( src );
-  return _.object.make( src );
+  return _.long._makeZeroed( ... arguments );
+  return _.object.make( ... arguments );
 }
 
 //
@@ -132,8 +141,8 @@ function makeZeroed( src, length )
 function _make( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._make( src );
-  return _.object.make( src );
+  return _.long._make( ... arguments );
+  return _.object.make( ... arguments );
 }
 
 //
@@ -145,7 +154,7 @@ function make( src, length )
   _.assert( arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.countable.is( src ) || _.routineIs( src ) );
     _.assert( _.numberIs( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
@@ -187,6 +196,23 @@ function from( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  if( !this.is( src ) )
+  return null;
+
+  let result = _.long.namespaceOf( src );
+  if( result )
+  return result;
+
+  return this;
+}
+
+// --
 // extension
 // --
 
@@ -210,11 +236,13 @@ var CountableExtension =
   //
 
   NamespaceName : 'countable',
+  NamespaceNames : [ 'countable' ],
   NamespaceQname : 'wTools/countable',
   MoreGeneralNamespaceName : 'countable',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Countable',
-  SecondTypeName : 'Countable',
+  TypeNames : [ 'Countable' ],
+  // SecondTypeName : 'Countable',
   InstanceConstructor : null,
   tools : _,
 
@@ -222,7 +250,8 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
-  isFixedLength,
+  isResizable,
+  IsResizable,
 
   // maker
 
@@ -238,18 +267,11 @@ var CountableExtension =
   cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
 
-  /* xxx : implement */
-  // maker
-  //
-  // _makeEmpty,
-  // makeEmpty, /* qqq : for junior : cover */
-  // _makeUndefined,
-  // makeUndefined, /* qqq : for junior : cover */
-  // _make,
-  // make, /* qqq : for junior : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for junior : cover */
-  // from, /* qqq : for junior : cover */
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

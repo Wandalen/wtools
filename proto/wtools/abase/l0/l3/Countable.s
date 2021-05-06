@@ -89,7 +89,6 @@ function _equivalentShallow( src1, src2 )
     for( let val of arrayLoop )
     if( Array.prototype.indexOf.call( arrayCheck, val ) === -1 )
     return false
-
     return true;
   }
 }
@@ -111,6 +110,8 @@ function _exportStringDiagnosticShallow( src, o )
 
 function _lengthOf( src )
 {
+  if( _.vector.is( src ) )
+  return src.length;
   return [ ... src ].length;
 }
 
@@ -154,6 +155,10 @@ function _cardinalWithKey( src, key )
 
 function _elementWithKey( src, key )
 {
+
+  if( _.long.is( src ) )
+  return _.long._elementWithKey( ... arguments );
+
   if( _.number.is( key ) )
   {
     if( key < 0 )
@@ -172,17 +177,12 @@ function _elementWithKey( src, key )
 
 //
 
-function _elementWithImplicit( src, key )
-{
-  if( _.props.keyIsImplicit( key ) )
-  return _.props._onlyImplicitWithKeyTuple( src, key );
-  return this._elementWithKey( src, key );
-}
-
-//
-
 function _elementWithCardinal( src, cardinal )
 {
+
+  if( _.long.is( src ) )
+  return _.long._elementWithCardinal( ... arguments );
+
   if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
   const src2 = [ ... src ];
@@ -196,11 +196,18 @@ function _elementWithCardinal( src, cardinal )
 
 function _elementWithKeySet( dst, key, val )
 {
+
+  if( _.long.is( dst ) )
+  return _.long._elementWithKeySet( ... arguments );
+
   if( !_.number.is( key ) || key < 0 )
-  return [ undefined, key, false ];
-  const dst2 = [ ... dst ];
-  if( dst2.length <= key )
-  return [ undefined, key, false ];
+  return [ key, false ];
+  // const dst2 = [ ... dst ];
+  // if( dst2.length <= key )
+  // return [ key, false ];
+  const length = this._lengthOf( dst );
+  if( length <= key )
+  return [ key, false ];
 
   let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
@@ -217,22 +224,30 @@ function _elementWithKeySet( dst, key, val )
 
 function _elementWithCardinalSet( dst, cardinal, val )
 {
+
+  if( _.long.is( dst ) )
+  return _.long._elementWithCardinalSet( ... arguments );
+
   if( !_.number.is( cardinal ) || cardinal < 0 )
-  return [ undefined, cardinal, false ];
-  const dst2 = [ ... dst ];
-  if( dst2.length <= cardinal )
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
+  // const dst2 = [ ... dst ];
+  // if( dst2.length <= cardinal )
+  const length = this._lengthOf( dst );
+  if( length <= cardinal )
+  return [ cardinal, false ];
 
   let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] )
   this._elementWithKeySet( dst, was[ 1 ], val );
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
 }
 
 //
 
 function _elementWithKeyDel( dst, key )
 {
+  if( _.array.is( dst ) )
+  return _.array._elementWithKeyDel( dst, key );
   _.assert( 0, 'Countable does not have implemented method "_elementWithKeyDel"' );
 }
 
@@ -240,6 +255,8 @@ function _elementWithKeyDel( dst, key )
 
 function _elementWithCardinalDel( dst, cardinal )
 {
+  if( _.array.is( dst ) )
+  return _.array._elementWithCardinalDel( dst, cardinal );
   _.assert( 0, 'Countable does not have implemented method "_elementWithCardinalDel"' );
 }
 
@@ -247,7 +264,33 @@ function _elementWithCardinalDel( dst, cardinal )
 
 function _empty( dst )
 {
+  if( _.array.is( dst ) )
+  return _.array._empty( dst );
   _.assert( 0, 'Countable does not have implemented method "_empty"' );
+}
+
+//
+
+function _elementAppend( dst, val )
+{
+  if( _.array.is( dst ) )
+  {
+    dst.push( val );
+    return dst.length-1;
+  }
+  _.assert( 0, 'Countable does not have implemented method "_elementAppend"' );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  if( _.array.is( dst ) )
+  {
+    dst.unshift( val );
+    return 0;
+  }
+  _.assert( 0, 'Countable does not have implemented method "_elementPrepend"' );
 }
 
 //
@@ -316,28 +359,28 @@ function _whileRight( src, onEach )
 
 //
 
-function _filterAct1()
+function _filterAct()
 {
   let self = this;
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
 
   if( _.longIs( src ) )
-  return _.long._filterAct1( ... arguments );
-  return _.props._filterAct1.call( self, ... arguments );
+  return _.long._filterAct( ... arguments );
+  return _.props._filterAct.call( self, ... arguments );
 }
 
 //
 
-function _mapAct1()
+function _mapAct()
 {
   let self = this;
   let dst = arguments[ 0 ];
   let src = arguments[ 1 ];
 
   if( _.longIs( src ) )
-  return _.long._mapAct1( ... arguments );
-  return _.props._mapAct1.call( self, ... arguments );
+  return _.long._mapAct( ... arguments );
+  return _.props._mapAct.call( self, ... arguments );
 }
 
 // --
@@ -412,6 +455,11 @@ var CountableExtension =
   _empty,
   empty : _.props.empty, /* qqq : for junior : cover */
 
+  _elementAppend,
+  elementAppend : _.long.elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend : _.long.elementPrepend, /* qqq : cover */
+
   // iterator
 
   _each : _eachLeft,
@@ -435,25 +483,43 @@ var CountableExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filterAct0 : _.props._filterAct0,
-  _filterAct1,
-  filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
-  filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
-  filterWithoutEscape : _.props.filterWithoutEscape,
-  filterWithEscapeLeft : _.props.filterWithEscapeLeft,
-  filterWithEscapeRight : _.props.filterWithEscapeRight,
-  filterWithEscape : _.props.filterWithEscape,
-  filter : _.props.filter,
+  _filterAct : _.long._filterAct,
+  filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
+  filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
+  filterWithoutEscape : _.long.filterWithoutEscape,
+  filterWithEscapeLeft : _.long.filterWithEscapeLeft,
+  filterWithEscapeRight : _.long.filterWithEscapeRight,
+  filterWithEscape : _.long.filterWithEscape,
+  filter : _.long.filter,
 
-  _mapAct0 : _.props._mapAct0,
-  _mapAct1,
-  mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
-  mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
-  mapWithoutEscape : _.props.mapWithoutEscape,
-  mapWithEscapeLeft : _.props.mapWithEscapeLeft,
-  mapWithEscapeRight : _.props.mapWithEscapeRight,
-  mapWithEscape : _.props.mapWithEscape,
-  map : _.props.map,
+  _mapAct : _.long._mapAct,
+  mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
+  mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
+  mapWithoutEscape : _.long.mapWithoutEscape,
+  mapWithEscapeLeft : _.long.mapWithEscapeLeft,
+  mapWithEscapeRight : _.long.mapWithEscapeRight,
+  mapWithEscape : _.long.mapWithEscape,
+  map : _.long.map,
+
+  // _filterAct0 : _.props._filterAct0,
+  // _filterAct,
+  // filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
+  // filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
+  // filterWithoutEscape : _.props.filterWithoutEscape,
+  // filterWithEscapeLeft : _.props.filterWithEscapeLeft,
+  // filterWithEscapeRight : _.props.filterWithEscapeRight,
+  // filterWithEscape : _.props.filterWithEscape,
+  // filter : _.props.filter,
+  //
+  // _mapAct0 : _.props._mapAct0,
+  // _mapAct,
+  // mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
+  // mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
+  // mapWithoutEscape : _.props.mapWithoutEscape,
+  // mapWithEscapeLeft : _.props.mapWithEscapeLeft,
+  // mapWithEscapeRight : _.props.mapWithEscapeRight,
+  // mapWithEscape : _.props.mapWithEscape,
+  // map : _.props.map,
 
 }
 

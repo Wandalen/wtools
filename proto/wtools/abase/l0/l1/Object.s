@@ -153,12 +153,26 @@ function isPopulated( src )
   return this.keys( src ).length > 0;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
 
 function _makeEmpty( src )
 {
+  if( src )
+  {
+    let method = _.class.methodMakeEmptyOf( src );
+    if( method )
+    return method.call( src );
+  }
   return new src.constructor();
 }
 
@@ -176,6 +190,12 @@ function makeEmpty( src )
 
 function _makeUndefined( src )
 {
+  if( src )
+  {
+    let method = _.class.methodMakeUndefinedOf( src );
+    if( method )
+    return method.call( src );
+  }
   return new src.constructor();
 }
 
@@ -206,7 +226,10 @@ function _make( src, length )
   return this._cloneShallow( src );
   if( _.aux.is( src ) )
   return _.aux._cloneShallow( src );
-  return new src.constructor( ... arguments );
+  if( arguments.length === 2 )
+  return new src.constructor( length );
+  else
+  return new src.constructor( src );
 }
 
 //
@@ -229,6 +252,20 @@ function _cloneShallow( src )
   if( _.aux.is( src ) )
   return _.aux._cloneShallow( src );
   return new src.constructor( src );
+}
+
+// --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.object.is( src ) )
+  return _.object;
+
+  return null;
 }
 
 // --
@@ -267,11 +304,13 @@ let ObjectExtension =
   //
 
   NamespaceName : 'object',
+  NamespaceNames : [ 'object' ],
   NamespaceQname : 'wTools/object',
   MoreGeneralNamespaceName : 'props',
   MostGeneralNamespaceName : 'props',
   TypeName : 'Object',
-  SecondTypeName : 'Object',
+  TypeNames : [ 'Object' ],
+  // SecondTypeName : 'Object',
   InstanceConstructor : null,
   tools : _,
 
@@ -284,6 +323,7 @@ let ObjectExtension =
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */
+  IsResizable,
 
   // maker
 
@@ -334,6 +374,12 @@ let ObjectExtension =
   _supplementUniversal : _.props._supplementUniversal,
   supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 
