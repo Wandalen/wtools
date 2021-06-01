@@ -3253,36 +3253,6 @@ function refine( test )
 
   test.case = 'windows path';
 
-  var path = '..\\C:';
-  var expected = '../C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:..';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:.';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:...';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '..\\..\\..\\C:';
-  var expected = '../../../C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '..\\..\\..\\C:\\';
-  var expected = '../../../C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
   var path = 'C:\\\\';
   var expected = '/C//';
   var got = _.path.refine( path );
@@ -3325,6 +3295,43 @@ function refine( test )
 
   var path = 'C:\\temp\\\\foo\\bar\\..\\..\\.';
   var expected = '/C/temp//foo/bar/../../.';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  test.case = 'Not covered windows paths';
+
+  var path = '..\\C:';
+  var expected = '../C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = 'C:..';
+  var expected = '/C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = 'C:.';
+  var expected = '/C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = 'C:...';
+  var expected = '/C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = '..\\..\\..\\C:';
+  var expected = '../../../C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = '..\\..\\..\\C:\\';
+  var expected = '../../../C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = '..\\..\\..\\..\\C:\\Drivers\\..\\..\\D:';
+  var expected = '../../../../C/Drivers/../../D';
   var got = _.path.refine( path );
   test.identical( got, expected );
 
