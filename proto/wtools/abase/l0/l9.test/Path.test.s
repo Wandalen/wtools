@@ -3274,12 +3274,12 @@ function refine( test )
   test.identical( got, expected );
 
   var path = '..\\..\\..\\C:';
-  var expected = '../../../C/';
+  var expected = '../../../C';
   var got = _.path.refine( path );
   test.identical( got, expected );
 
   var path = '..\\..\\..\\C:\\';
-  var expected = '../../../C/';
+  var expected = '../../../C';
   var got = _.path.refine( path );
   test.identical( got, expected );
 
