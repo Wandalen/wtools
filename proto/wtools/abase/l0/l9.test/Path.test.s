@@ -3222,12 +3222,12 @@ function ends( test )
 
 //
 
-function refineTestRoutine( test )
+function refineWithCasesNotImplemented( test )
 {
-  refineTestRoutineTemplate( { method : 'refine' } );
-  refineTestRoutineTemplate( { method : 'refineTest' } );
+  refineWithCasesNotImplementedTemplate( { method : 'refine' } );
+  refineWithCasesNotImplementedTemplate( { method : 'refineTest' } );
 
-  function refineTestRoutineTemplate( env )
+  function refineWithCasesNotImplementedTemplate( env )
   {
     test.case = 'Not covered windows paths';
 
@@ -7225,7 +7225,7 @@ const Proto =
     ends,
 
     refine,
-    refineTestRoutine,
+    refineWithCasesNotImplemented,
 
     normalize,
     normalizeTolerant,
