@@ -3305,21 +3305,6 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  var path = 'C:..';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:.';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:...';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
   var path = '..\\..\\..\\C:';
   var expected = '../../../C';
   var got = _.path.refine( path );
@@ -3327,6 +3312,11 @@ function refine( test )
 
   var path = '..\\..\\..\\C:\\';
   var expected = '../../../C';
+  var got = _.path.refine( path );
+  test.identical( got, expected );
+
+  var path = '..\\..\\..\\C:\\\\';
+  var expected = '../../../C//';
   var got = _.path.refine( path );
   test.identical( got, expected );
 
