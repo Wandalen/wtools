@@ -1203,6 +1203,7 @@ let Extension =
   // reformer
 
   refine,
+  refineTest,
 
   _normalize,
   normalize,
