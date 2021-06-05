@@ -3772,6 +3772,16 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
+  var path = '..\\..\\..\\..\\C:\\Drivers\\..\\..\\D:';
+  var expected = '../../../../D';
+  var got = _.path.normalize( path );
+  test.identical( got, expected );
+
+  var path = '..\\..\\..\\..\\C:\\Drivers\\';
+  var expected = '../../../../C/Drivers/';
+  var got = _.path.normalize( path );
+  test.identical( got, expected );
+
   /* */
 
   test.case = 'empty path';
