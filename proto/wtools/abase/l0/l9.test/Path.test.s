@@ -3222,416 +3222,459 @@ function ends( test )
 
 //
 
+function refineWithCasesNotImplemented( test )
+{
+  refineWithCasesNotImplementedTemplate( { method : 'refine' } );
+  refineWithCasesNotImplementedTemplate( { method : 'refineTest' } );
+
+  function refineWithCasesNotImplementedTemplate( env )
+  {
+    test.case = `Method:${ env.method }, Cases not implemented`;
+
+    var path = '..\\C:';
+    var expected = '../C';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..\\..\\..\\C:';
+    var expected = '../../../C';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..\\..\\..\\C:\\';
+    var expected = '../../../C';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..\\..\\..\\C:\\\\';
+    var expected = '../../../C//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..\\..\\..\\..\\C:\\Drivers\\..\\..\\D:';
+    var expected = '../../../../C/Drivers/../../D';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+  }
+}
+
+//
+
 function refine( test )
 {
-
-  /* */
-
-  test.case = 'posix path';
-
-  var path = '/foo/bar//baz/asdf/quux/..';
-  var expected = '/foo/bar//baz/asdf/quux/..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/foo/bar//baz/asdf/quux/../';
-  var expected = '/foo/bar//baz/asdf/quux/../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '//foo/bar//baz/asdf/quux/..//';
-  var expected = '//foo/bar//baz/asdf/quux/..//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar//baz/asdf/quux/..//.';
-  var expected = 'foo/bar//baz/asdf/quux/..//.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'winoows path';
-
-  var path = 'C:\\\\';
-  var expected = '/C//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:';
-  var expected = '/C';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\';
-  var expected = '/C/temp//foo/bar/../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\\\';
-  var expected = '/C/temp//foo/bar/..//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\\\';
-  var expected = '/C/temp//foo/bar/..//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\..';
-  var expected = '/C/temp//foo/bar/../..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\..\\';
-  var expected = '/C/temp//foo/bar/../../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'C:\\temp\\\\foo\\bar\\..\\..\\.';
-  var expected = '/C/temp//foo/bar/../../.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  test.case = 'empty path';
-  var path = '';
-  var expected = '';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/';
-  var expected = '/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\\';
-  var expected = '/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\\\\';
-  var expected = '//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\/';
-  var expected = '/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '//';
-  var expected = '//';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '///';
-  var expected = '///';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/.';
-  var expected = '/.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/./.';
-  var expected = '/./.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '.';
-  var expected = '.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = './.';
-  var expected = './.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '././';
-  var expected = '././';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with "." in the middle';
-
-  var path = 'foo/./bar/baz';
-  var expected = 'foo/./bar/baz';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/././bar/baz/';
-  var expected = 'foo/././bar/baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/././bar/././baz/';
-  var expected = 'foo/././bar/././baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/foo/././bar/././baz/';
-  var expected = '/foo/././bar/././baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with "." in the beginning';
-
-  var path = './foo/bar';
-  var expected = './foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '././foo/bar/';
-  var expected = '././foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = './/.//foo/bar/';
-  var expected = './/.//foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/.//.//foo/bar/';
-  var expected = '/.//.//foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '.x/foo/bar';
-  var expected = '.x/foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '.x./foo/bar';
-  var expected = '.x./foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with "." in the end';
-
-  var path = 'foo/bar.';
-  var expected = 'foo/bar.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/.bar.';
-  var expected = 'foo/.bar.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/.';
-  var expected = 'foo/bar/.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/./.';
-  var expected = 'foo/bar/./.';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/././';
-  var expected = 'foo/bar/././';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/foo/bar/././';
-  var expected = '/foo/bar/././';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with ".." in the middle';
-
-  var path = 'foo/../bar/baz';
-  var expected = 'foo/../bar/baz';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/../../bar/baz/';
-  var expected = 'foo/../../bar/baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/../../bar/../../baz/';
-  var expected = 'foo/../../bar/../../baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/foo/../../bar/../../baz/';
-  var expected = '/foo/../../bar/../../baz/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with ".." in the beginning';
-
-  var path = '../foo/bar';
-  var expected = '../foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '../../foo/bar/';
-  var expected = '../../foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '..//..//foo/bar/';
-  var expected = '..//..//foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/..//..//foo/bar/';
-  var expected = '/..//..//foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '..x/foo/bar';
-  var expected = '..x/foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '..x../foo/bar';
-  var expected = '..x../foo/bar';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with ".." in the end';
-
-  var path = 'foo/bar..';
-  var expected = 'foo/bar..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/..bar..';
-  var expected = 'foo/..bar..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/..';
-  var expected = 'foo/bar/..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/../..';
-  var expected = 'foo/bar/../..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/bar/../../';
-  var expected = 'foo/bar/../../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '/foo/bar/../../';
-  var expected = '/foo/bar/../../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with \\';
-
-  var path = 'foo/bar\\';
-  var expected = 'foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/\\bar\\';
-  var expected = 'foo//bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\\foo/bar/..';
-  var expected = '/foo/bar/..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\\foo\\bar/../..';
-  var expected = '/foo/bar/../..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\\foo\\bar/../../';
-  var expected = '/foo/bar/../../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'path with \/';
-
-  var path = 'foo/bar\/';
-  var expected = 'foo/bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = 'foo/\/bar\/';
-  var expected = 'foo//bar/';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\/foo/bar/..';
-  var expected = '/foo/bar/..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\/foo\/bar/../..';
-  var expected = '/foo/bar/../..';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  var path = '\/foo\/bar/../../';
-  var expected = '/foo/bar/../../';
-  var got = _.path.refine( path );
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'No arguments';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( ) );
-
-  test.case = 'Two arguments';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( 'a', 'b' ) );
-
-  test.case = 'No path - regexp';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( /foo/ ) );
-
-  test.case = 'No path - number';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( 3 ) );
-
-  test.case = 'No path - array';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( [ '/C/', 'work/f' ] ) );
-
-  test.case = 'No path - object';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( { Path : 'C:/foo/baz/bar' } ) );
-
-  test.case = 'No path - undefined';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( undefined ) );
-
-  test.case = 'No path - null';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( null ) );
-
-  test.case = 'No path - NaN';
-  test.shouldThrowErrorOfAnyKind( () => _.path.refine( NaN ) );
+  refineTemplate( { method : 'refine' } );
+  refineTemplate( { method : 'refineTest' } );
+
+  function refineTemplate( env )
+  {
+    test.case = `Mthod:${env.name}, Posix Path`;
+
+    var path = '/foo/bar//baz/asdf/quux/..';
+    var expected = '/foo/bar//baz/asdf/quux/..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/foo/bar//baz/asdf/quux/../';
+    var expected = '/foo/bar//baz/asdf/quux/../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '//foo/bar//baz/asdf/quux/..//';
+    var expected = '//foo/bar//baz/asdf/quux/..//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar//baz/asdf/quux/..//.';
+    var expected = 'foo/bar//baz/asdf/quux/..//.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, Windows Path`;
+
+    var path = 'C:\\\\';
+    var expected = '/C//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\';
+    var expected = '/C';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:';
+    var expected = '/C';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\';
+    var expected = '/C/temp//foo/bar/../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\\\';
+    var expected = '/C/temp//foo/bar/..//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\\\';
+    var expected = '/C/temp//foo/bar/..//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\..';
+    var expected = '/C/temp//foo/bar/../..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\..\\';
+    var expected = '/C/temp//foo/bar/../../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'C:\\temp\\\\foo\\bar\\..\\..\\.';
+    var expected = '/C/temp//foo/bar/../../.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, Empty Path`;
+    var path = '';
+    var expected = '';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/';
+    var expected = '/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\\';
+    var expected = '/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\\\\';
+    var expected = '//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\/';
+    var expected = '/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '//';
+    var expected = '//';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '///';
+    var expected = '///';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/.';
+    var expected = '/.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/./.';
+    var expected = '/./.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '.';
+    var expected = '.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = './.';
+    var expected = './.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '././';
+    var expected = '././';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with "." in the middle`;
+
+    var path = 'foo/./bar/baz';
+    var expected = 'foo/./bar/baz';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/././bar/baz/';
+    var expected = 'foo/././bar/baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/././bar/././baz/';
+    var expected = 'foo/././bar/././baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/foo/././bar/././baz/';
+    var expected = '/foo/././bar/././baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with "." in the beginning`;
+
+    var path = './foo/bar';
+    var expected = './foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '././foo/bar/';
+    var expected = '././foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = './/.//foo/bar/';
+    var expected = './/.//foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/.//.//foo/bar/';
+    var expected = '/.//.//foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '.x/foo/bar';
+    var expected = '.x/foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '.x./foo/bar';
+    var expected = '.x./foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with "." in the end`;
+
+    var path = 'foo/bar.';
+    var expected = 'foo/bar.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/.bar.';
+    var expected = 'foo/.bar.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/.';
+    var expected = 'foo/bar/.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/./.';
+    var expected = 'foo/bar/./.';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/././';
+    var expected = 'foo/bar/././';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/foo/bar/././';
+    var expected = '/foo/bar/././';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with ".." in the middle`;
+
+    var path = 'foo/../bar/baz';
+    var expected = 'foo/../bar/baz';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/../../bar/baz/';
+    var expected = 'foo/../../bar/baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/../../bar/../../baz/';
+    var expected = 'foo/../../bar/../../baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/foo/../../bar/../../baz/';
+    var expected = '/foo/../../bar/../../baz/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with ".." in the beginning`;
+
+    var path = '../foo/bar';
+    var expected = '../foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '../../foo/bar/';
+    var expected = '../../foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..//..//foo/bar/';
+    var expected = '..//..//foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/..//..//foo/bar/';
+    var expected = '/..//..//foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..x/foo/bar';
+    var expected = '..x/foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '..x../foo/bar';
+    var expected = '..x../foo/bar';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with ".." in the end`;
+
+    var path = 'foo/bar..';
+    var expected = 'foo/bar..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/..bar..';
+    var expected = 'foo/..bar..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/..';
+    var expected = 'foo/bar/..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/../..';
+    var expected = 'foo/bar/../..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/bar/../../';
+    var expected = 'foo/bar/../../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '/foo/bar/../../';
+    var expected = '/foo/bar/../../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with \\`;
+
+    var path = 'foo/bar\\';
+    var expected = 'foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/\\bar\\';
+    var expected = 'foo//bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\\foo/bar/..';
+    var expected = '/foo/bar/..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\\foo\\bar/../..';
+    var expected = '/foo/bar/../..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\\foo\\bar/../../';
+    var expected = '/foo/bar/../../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `Method:${env.name}, path with \/`;
+
+    var path = 'foo/bar\/';
+    var expected = 'foo/bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = 'foo/\/bar\/';
+    var expected = 'foo//bar/';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\/foo/bar/..';
+    var expected = '/foo/bar/..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\/foo\/bar/../..';
+    var expected = '/foo/bar/../..';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    var path = '\/foo\/bar/../../';
+    var expected = '/foo/bar/../../';
+    var got = _.path[ env.method ]( path );
+    test.identical( got, expected );
+
+    /* */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'No arguments';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( ) );
+
+    test.case = 'Two arguments';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( 'a', 'b' ) );
+
+    test.case = 'No path - regexp';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( /foo/ ) );
+
+    test.case = 'No path - number';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( 3 ) );
+
+    test.case = 'No path - array';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( [ '/C/', 'work/f' ] ) );
+
+    test.case = 'No path - object';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( { Path : 'C:/foo/baz/bar' } ) );
+
+    test.case = 'No path - undefined';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( undefined ) );
+
+    test.case = 'No path - null';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( null ) );
+
+    test.case = 'No path - NaN';
+    test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( NaN ) );
+  }
 }
 
 //
@@ -7184,6 +7227,7 @@ const Proto =
     ends,
 
     refine,
+    refineWithCasesNotImplemented,
 
     normalize,
     normalizeTolerant,
