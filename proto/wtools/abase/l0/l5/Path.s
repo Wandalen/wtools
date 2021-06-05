@@ -299,6 +299,49 @@ function refine( src )
 
 //
 
+function refineFasterFunctor_functor()
+{
+  var backSlash = '\\';
+  var colon = ':';
+  var forwardSlash = '/';
+  var regex = /\\/g;
+  return refineFaster;
+
+  function refineFaster ( src )
+  {
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.assert( _.strIs( src ) );
+
+    let result = src;
+    var noBackSlash = !result.includes( backSlash );
+    var hasColon = result[ 1 ] === colon;
+
+    if( hasColon )
+    {
+      if( result[ 2 ] === backSlash || result[ 2 ] === forwardSlash )
+      {
+        if( result.length > 3 )
+        result = forwardSlash + result[ 0 ] + forwardSlash + result.substring( 3 );
+        else
+        result = forwardSlash + result[ 0 ]
+      }
+      else if( result.length === 2 )
+      {
+        result = forwardSlash + result[ 0 ];
+      }
+    }
+
+    if( noBackSlash )
+    return result;
+    else
+    return result.replace( regex, forwardSlash );
+  }
+}
+
+let refineFaster = refineFasterFunctor_functor();
+
+//
+
 function refineTest( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1203,6 +1246,7 @@ let Extension =
   // reformer
 
   refine,
+  refineFaster,
   refineTest,
 
   _normalize,

@@ -3263,6 +3263,7 @@ function refineWithCasesNotImplemented( test )
 function refine( test )
 {
   refineTemplate( { method : 'refine' } );
+  refineTemplate( { method : 'refineFaster' } );
   refineTemplate( { method : 'refineTest' } );
 
   function refineTemplate( env )
@@ -3674,6 +3675,239 @@ function refine( test )
     test.shouldThrowErrorOfAnyKind( () => _.path[ env.method ]( NaN ) );
   }
 }
+
+//
+
+function refinePerformance( test )
+{
+
+  debugger; /* eslint-disable-line no-debugger */
+  var debugFlag = Config.debug;
+  Config.debug = false;
+
+  /* */
+
+  refinePerformanceTemplate( { method : 'refine' } );
+  //refinePerformanceTemplate( { method : 'refineFaster' } );
+  //refinePerformanceTemplate( { method : 'refineTest' } );
+
+  /* */
+
+  Config.debug = debugFlag;
+  debugger; /* eslint-disable-line no-debugger */
+
+  /* */
+
+  function refinePerformanceTemplate( data )
+  {
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+    _.time.sleep( 100 );
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = _.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+
+  }
+
+  /* */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 500000;
+
+    env.paths =
+    {
+
+    }
+
+    env.posixPaths =
+    {
+      0 : '/foo/bar//baz/asdf/quux/..',
+      1 : '/foo/bar//baz/asdf/quux/../',
+      2 : '//foo/bar//baz/asdf/quux/..//',
+      3 : 'foo/bar//baz/asdf/quux/..//.'
+    };
+
+    env.windowsPaths =
+    {
+      0 : 'C:\\\\',
+      1  : 'C:\\',
+      2 : 'C:',
+      3 : 'C:\\temp\\\\foo\\bar\\..\\',
+      4 : 'C:\\temp\\\\foo\\bar\\..\\\\',
+      5 : 'C:\\temp\\\\foo\\bar\\..\\\\',
+      6 : 'C:\\temp\\\\foo\\bar\\..\\..',
+      7 : 'C:\\temp\\\\foo\\bar\\..\\..\\',
+      8 : 'C:\\temp\\\\foo\\bar\\..\\..\\.'
+    };
+
+    env.emptyPaths =
+    {
+      0 : '',
+      1 :  '/',
+      2 :  '\\',
+      3 : '\\\\',
+      4 :  '\/',
+      5 :   '//',
+      6 :   '///',
+      7 :   '/.',
+      8 :   '/./.',
+      9 :    '.',
+      10 : './.',
+      11 :  '././'
+    };
+
+    env.pathHasHereTokenInTheMiddle =
+    {
+      0 : 'foo/./bar/baz',
+      1 : 'foo/././bar/baz/',
+      2 :  'foo/././bar/././baz/',
+      3 : '/foo/././bar/././baz/'
+    };
+
+    env.pathBeginsWithHereToken =
+    {
+      0 : './foo/bar',
+      1 :  '././foo/bar/',
+      2 : './/.//foo/bar/',
+      3 :  '/.//.//foo/bar/',
+      4 :  '.x/foo/bar',
+      5 :  '.x./foo/bar'
+
+    };
+
+    env.pathEndsWithHereToken =
+    {
+      0 : 'foo/bar.',
+      1 : 'foo/.bar.',
+      2 : 'foo/bar/.',
+      3 : 'foo/bar/./.',
+      4 : 'foo/bar/././.',
+    };
+
+    env.pathHasDownTokenInTheMiddle =
+    {
+      0 : 'foo/../bar/baz',
+      1 : 'foo/../../bar/baz/',
+      2 : 'foo/../../bar/../../baz/',
+      3 : '/foo/../../bar/../../baz/'
+    };
+
+    env.pathBeginsWithDownToken =
+    {
+      0 : '../foo/bar',
+      1 : '../../foo/bar/',
+      2 : '..//..//foo/bar/',
+      3 : '/..//..//foo/bar/',
+      4 : '..x/foo/bar',
+      5 : '..x../foo/bar'
+    };
+
+    env.pathEndsWithDownToken =
+    {
+      0 : 'foo/bar..',
+      1 : 'foo/..bar..',
+      2 : 'foo/bar/..',
+      3 : 'foo/bar/../..',
+      4 : 'foo/bar/../../',
+      5 : '/foo/bar/../../',
+      6 : '/foo/bar/../../'
+    };
+
+    env.pathHasBackSlash =
+    {
+      0 : 'foo/bar\\',
+      1 :  'foo/\\bar\\',
+      2 :  '\\foo/bar/..',
+      3 : '\\foo\\bar/../..',
+      4 :  '\\foo\\bar/../../'
+    };
+
+    env.pathHasJointBackAndForwardSlash =
+    {
+      0 : 'foo/bar\/',
+      1 : 'foo/\/bar\/',
+      2 : '\/foo/bar/..',
+      3 : '\/foo\/bar/../..',
+      4 : '\/foo\/bar/../../'
+    };
+
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    for( const item in env.posixPaths )
+    {
+      _.path[ env.name ]( env.posixPaths[ item ] );
+    }
+
+    for( const item in env.windowsPaths )
+    {
+      _.path[ env.name ]( env.windowsPaths[ item ] );
+    }
+
+    for( const item in env.emptyPaths )
+    {
+      _.path[ env.name ]( env.emptyPaths[ item ] );
+    }
+
+    for( const item in env.pathHasHereTokenInTheMiddle )
+    {
+      _.path[ env.name ]( env.pathHasHereTokenInTheMiddle[ item ] );
+    }
+
+    for( const item in env.pathBeginsWithHereToken )
+    {
+      _.path[ env.name ]( env.pathBeginsWithHereToken[ item ] );
+    }
+
+    for( const item in env.pathEndsWithHereToken )
+    {
+      _.path[ env.name ]( env.pathEndsWithHereToken[ item ] );
+    }
+
+    for( const item in env.pathHasDownTokenInTheMiddle )
+    {
+      _.path[ env.name ]( env.pathHasDownTokenInTheMiddle[ item ] );
+    }
+
+    for( const item in env.pathBeginsWithDownToken )
+    {
+      _.path[ env.name ]( env.pathBeginsWithDownToken[ item ] );
+    }
+
+    for( const item in env.pathEndsWithDownToken )
+    {
+      _.path[ env.name ]( env.pathEndsWithDownToken[ item ] );
+    }
+
+    for( const item in env.pathHasBackSlash )
+    {
+      _.path[ env.name ]( env.pathHasBackSlash[ item ] );
+    }
+
+    for( const item in env.pathHasJointBackAndForwardSlash )
+    {
+      _.path[ env.name ]( env.pathHasJointBackAndForwardSlash[ item ] );
+    }
+  }
+}
+
+refinePerformance.timeOut = 1e7;
+refinePerformance.experimental = true;
 
 //
 
@@ -7226,6 +7460,7 @@ const Proto =
 
     refine,
     refineWithCasesNotImplemented,
+    refinePerformance,
 
     normalize,
     normalizeTolerant,
