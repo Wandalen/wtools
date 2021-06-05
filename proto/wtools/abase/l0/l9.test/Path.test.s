@@ -3222,52 +3222,11 @@ function ends( test )
 
 //
 
-function refineWithCasesNotImplemented( test )
-{
-  refineWithCasesNotImplementedTemplate( { method : 'refine' } );
-  refineWithCasesNotImplementedTemplate( { method : 'refineTest' } );
-  refineWithCasesNotImplementedTemplate( { method : 'refineOld' } );
-  refineWithCasesNotImplementedTemplate( { method : 'refineFaster' } );
-
-  function refineWithCasesNotImplementedTemplate( env )
-  {
-    test.case = 'Not covered windows paths';
-
-    var path = '..\\C:';
-    var expected = '../C';
-    var got = _.path[ env.method ]( path );
-    test.identical( got, expected );
-
-    var path = '..\\..\\..\\C:';
-    var expected = '../../../C';
-    var got = _.path[ env.method ]( path );
-    test.identical( got, expected );
-
-    var path = '..\\..\\..\\C:\\';
-    var expected = '../../../C';
-    var got = _.path[ env.method ]( path );
-    test.identical( got, expected );
-
-    var path = '..\\..\\..\\C:\\\\';
-    var expected = '../../../C//';
-    var got = _.path[ env.method ]( path );
-    test.identical( got, expected );
-
-    var path = '..\\..\\..\\..\\C:\\Drivers\\..\\..\\D:';
-    var expected = '../../../../C/Drivers/../../D';
-    var got = _.path[ env.method ]( path );
-    test.identical( got, expected );
-  }
-}
-
-//
-
 function refine( test )
 {
   refineTemplate( { method : 'refine' } );
   refineTemplate( { method : 'refineOld' } );
   refineTemplate( { method : 'refineFaster' } );
-  refineTemplate( { method : 'refineTest' } );
 
   function refineTemplate( env )
   {
@@ -3704,7 +3663,7 @@ function refinePerformance( test )
   /* */
 
   refinePerformanceTemplate( { method : 'refine' } );
-  refinePerformanceTemplate( { method : 'refineOLd' } );
+  refinePerformanceTemplate( { method : 'refineOld' } );
   refinePerformanceTemplate( { method : 'refineFaster' } );
 
   /* */
@@ -7470,7 +7429,6 @@ const Proto =
     ends,
 
     refine,
-    refineWithCasesNotImplemented,
     refinePerformance,
 
     normalize,

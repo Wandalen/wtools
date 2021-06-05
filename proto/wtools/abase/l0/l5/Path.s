@@ -362,42 +362,6 @@ function refineFaster( src )
 
 //
 
-function refineTest( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ) );
-
-  var result = src;
-
-  var hasBackslash = result.includes( '\\' );
-  var hasColon = result.includes( ':' );
-
-  if( !( hasBackslash || hasColon ) )
-  return result;
-
-  if( result.length >= 3 )
-  {
-    if( result[ result.length-2 ] === ':' && result[ result.length-1 ] === '\\' )
-    {
-      result = result.substring( 0, result.length - 1 );
-    }
-  }
-
-  if( result[ 1 ] === ':' )
-  {
-    result = '/'.concat( result );
-  }
-
-  if( hasBackslash )
-  result = result.replace( /\\/g, '/' );
-  if( hasColon )
-  result = result.replace( /:/g, '' );
-
-  return result;
-}
-
-//
-
 function _normalize( o )
 {
   // let debug = 0;
@@ -1268,7 +1232,6 @@ let Extension =
   refine,
   refineOld,
   refineFaster,
-  refineTest,
 
   _normalize,
   normalize,
