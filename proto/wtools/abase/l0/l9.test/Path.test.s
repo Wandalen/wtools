@@ -3226,6 +3226,8 @@ function refineWithCasesNotImplemented( test )
 {
   refineWithCasesNotImplementedTemplate( { method : 'refine' } );
   refineWithCasesNotImplementedTemplate( { method : 'refineTest' } );
+  refineWithCasesNotImplementedTemplate( { method : 'refineOld' } );
+  refineWithCasesNotImplementedTemplate( { method : 'refineFaster' } );
 
   function refineWithCasesNotImplementedTemplate( env )
   {
@@ -3263,12 +3265,13 @@ function refineWithCasesNotImplemented( test )
 function refine( test )
 {
   refineTemplate( { method : 'refine' } );
+  refineTemplate( { method : 'refineOld' } );
   refineTemplate( { method : 'refineFaster' } );
   refineTemplate( { method : 'refineTest' } );
 
   function refineTemplate( env )
   {
-    test.case = 'posix path';
+    test.case = `Mthod:${env.name}, Posix Path`;
 
     var path = '/foo/bar//baz/asdf/quux/..';
     var expected = '/foo/bar//baz/asdf/quux/..';
@@ -3292,7 +3295,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'windows path';
+    test.case = `Method:${env.name}, Windows Path`;
 
     var path = 'C:\\\\';
     var expected = '/C//';
@@ -3339,7 +3342,9 @@ function refine( test )
     var got = _.path[ env.method ]( path );
     test.identical( got, expected );
 
-    test.case = 'empty path';
+    /* */
+
+    test.case = `Method:${env.name}, Empty Path`;
     var path = '';
     var expected = '';
     var got = _.path[ env.method ]( path );
@@ -3402,7 +3407,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with "." in the middle';
+    test.case = `Method:${env.name}, path with "." in the middle`;
 
     var path = 'foo/./bar/baz';
     var expected = 'foo/./bar/baz';
@@ -3426,7 +3431,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with "." in the beginning';
+    test.case = `Method:${env.name}, path with "." in the beginning`;
 
     var path = './foo/bar';
     var expected = './foo/bar';
@@ -3460,7 +3465,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with "." in the end';
+    test.case = `Method:${env.name}, path with "." in the end`;
 
     var path = 'foo/bar.';
     var expected = 'foo/bar.';
@@ -3494,7 +3499,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with ".." in the middle';
+    test.case = `Method:${env.name}, path with ".." in the middle`;
 
     var path = 'foo/../bar/baz';
     var expected = 'foo/../bar/baz';
@@ -3518,7 +3523,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with ".." in the beginning';
+    test.case = `Method:${env.name}, path with ".." in the beginning`;
 
     var path = '../foo/bar';
     var expected = '../foo/bar';
@@ -3552,7 +3557,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with ".." in the end';
+    test.case = `Method:${env.name}, path with ".." in the end`;
 
     var path = 'foo/bar..';
     var expected = 'foo/bar..';
@@ -3586,7 +3591,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with \\';
+    test.case = `Method:${env.name}, path with \\`;
 
     var path = 'foo/bar\\';
     var expected = 'foo/bar/';
@@ -3615,7 +3620,7 @@ function refine( test )
 
     /* */
 
-    test.case = 'path with \/';
+    test.case = `Method:${env.name}, path with \/`;
 
     var path = 'foo/bar\/';
     var expected = 'foo/bar/';
@@ -3680,6 +3685,17 @@ function refine( test )
 
 function refinePerformance( test )
 {
+  /* Average of 10 runs of 0.5 million iterations of 67 path varaints
+  ╔════════════════════════╤══════╤═════════╤════════════╗
+  ║                        │refine│refineOld│refineFaster║
+  ╟────────────────────────┼──────┼─────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│ 9.616│  9.616  │    7.903   ║
+  ╟────────────────────────┼──────┼─────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│ 8.815│  8.815  │    7.994   ║
+  ╟────────────────────────┼──────┼─────────┼────────────╢
+  ║    Linux-Kos, 12.9.1   │      │         │            ║
+  ╚════════════════════════╧══════╧═════════╧════════════╝
+  */
 
   debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
@@ -3688,8 +3704,8 @@ function refinePerformance( test )
   /* */
 
   refinePerformanceTemplate( { method : 'refine' } );
-  //refinePerformanceTemplate( { method : 'refineFaster' } );
-  //refinePerformanceTemplate( { method : 'refineTest' } );
+  refinePerformanceTemplate( { method : 'refineOLd' } );
+  refinePerformanceTemplate( { method : 'refineFaster' } );
 
   /* */
 
@@ -3724,11 +3740,6 @@ function refinePerformance( test )
   {
     var env = {};
     env.times = 500000;
-
-    env.paths =
-    {
-
-    }
 
     env.posixPaths =
     {
