@@ -299,46 +299,36 @@ function refine( src )
 
 //
 
-function refineFasterFunctor_functor()
+function refineFaster( src )
 {
-  var backSlash = '\\';
-  var colon = ':';
-  var forwardSlash = '/';
-  var regex = /\\/g;
-  return refineFaster;
 
-  function refineFaster ( src )
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ) );
+
+  let result = src;
+
+  var hasBackSlash = result.includes( '\\' );
+  var hasColon = result[ 1 ] === ':';
+
+  if( !hasBackSlash && !hasColon )
+  return result;
+
+  if( hasColon )
   {
-    _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( _.strIs( src ) );
-
-    let result = src;
-    var noBackSlash = !result.includes( backSlash );
-    var hasColon = result[ 1 ] === colon;
-
-    if( hasColon )
+    if( result[ 2 ] === '\\' || result[ 2 ] === '/' || result.length === 2 )
     {
-      if( result[ 2 ] === backSlash || result[ 2 ] === forwardSlash )
-      {
-        if( result.length > 3 )
-        result = forwardSlash + result[ 0 ] + forwardSlash + result.substring( 3 );
-        else
-        result = forwardSlash + result[ 0 ]
-      }
-      else if( result.length === 2 )
-      {
-        result = forwardSlash + result[ 0 ];
-      }
+      if( result.length > 3 )
+      result = '/' + result[ 0 ] + '/' + result.substring( 3 );
+      else
+      result = '/' + result[ 0 ]
     }
-
-    if( noBackSlash )
-    return result;
-    else
-    return result.replace( regex, forwardSlash );
   }
-}
 
-let refineFaster = refineFasterFunctor_functor();
+  if( !hasBackSlash )
+  return result;
+  else
+  return result.replace( /\\/g, '/' );
+}
 
 //
 
