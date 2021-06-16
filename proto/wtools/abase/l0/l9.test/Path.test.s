@@ -3224,13 +3224,13 @@ function ends( test )
 
 function refine( test )
 {
-  refineTemplate( { method : 'refine' } );
-  refineTemplate( { method : 'refineOld' } );
-  refineTemplate( { method : 'refineFaster' } );
+  act({ method : 'refine' });
+  act({ method : 'refineOld' });
+  act({ method : 'refineFaster' });
 
-  function refineTemplate( env )
+  function act( env )
   {
-    test.case = `Mthod:${env.name}, Posix Path`;
+    test.case = `Method:${env.name}, Posix Path`;
 
     var path = '/foo/bar//baz/asdf/quux/..';
     var expected = '/foo/bar//baz/asdf/quux/..';
@@ -3648,9 +3648,9 @@ function refinePerformance( test )
   ╔════════════════════════╤══════╤═════════╤════════════╗
   ║                        │refine│refineOld│refineFaster║
   ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-20H2, 10.24.1│ 9.616│  9.616  │    7.903   ║
+  ║Windows-10-21H1, 10.24.1│ 9.840│  8.292  │    7.827   ║
   ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-20H2, 14.17.0│ 8.815│  8.815  │    7.994   ║
+  ║Windows-10-21H1, 14.17.0│ 9.180│  9.112  │    8.172   ║
   ╟────────────────────────┼──────┼─────────┼────────────╢
   ║    Linux-Kos, 12.9.1   │      │         │            ║
   ╚════════════════════════╧══════╧═════════╧════════════╝
@@ -3819,60 +3819,64 @@ function refinePerformance( test )
 
   function run( env )
   {
+    const r = [];
+
     for( const item in env.posixPaths )
     {
-      _.path[ env.name ]( env.posixPaths[ item ] );
+      r.push( _.path[ env.name ]( env.posixPaths[ item ] ) );
     }
 
     for( const item in env.windowsPaths )
     {
-      _.path[ env.name ]( env.windowsPaths[ item ] );
+      r.push( _.path[ env.name ]( env.windowsPaths[ item ] ) );
     }
 
     for( const item in env.emptyPaths )
     {
-      _.path[ env.name ]( env.emptyPaths[ item ] );
+      r.push( _.path[ env.name ]( env.emptyPaths[ item ] ) );
     }
 
     for( const item in env.pathHasHereTokenInTheMiddle )
     {
-      _.path[ env.name ]( env.pathHasHereTokenInTheMiddle[ item ] );
+      r.push( _.path[ env.name ]( env.pathHasHereTokenInTheMiddle[ item ] ) );
     }
 
     for( const item in env.pathBeginsWithHereToken )
     {
-      _.path[ env.name ]( env.pathBeginsWithHereToken[ item ] );
+      r.push( _.path[ env.name ]( env.pathBeginsWithHereToken[ item ] ) );
     }
 
     for( const item in env.pathEndsWithHereToken )
     {
-      _.path[ env.name ]( env.pathEndsWithHereToken[ item ] );
+      r.push( _.path[ env.name ]( env.pathEndsWithHereToken[ item ] ) );
     }
 
     for( const item in env.pathHasDownTokenInTheMiddle )
     {
-      _.path[ env.name ]( env.pathHasDownTokenInTheMiddle[ item ] );
+      r.push( _.path[ env.name ]( env.pathHasDownTokenInTheMiddle[ item ] ) );
     }
 
     for( const item in env.pathBeginsWithDownToken )
     {
-      _.path[ env.name ]( env.pathBeginsWithDownToken[ item ] );
+      r.push( _.path[ env.name ]( env.pathBeginsWithDownToken[ item ] ) );
     }
 
     for( const item in env.pathEndsWithDownToken )
     {
-      _.path[ env.name ]( env.pathEndsWithDownToken[ item ] );
+      r.push( _.path[ env.name ]( env.pathEndsWithDownToken[ item ] ) );
     }
 
     for( const item in env.pathHasBackSlash )
     {
-      _.path[ env.name ]( env.pathHasBackSlash[ item ] );
+      r.push( _.path[ env.name ]( env.pathHasBackSlash[ item ] ) );
     }
 
     for( const item in env.pathHasJointBackAndForwardSlash )
     {
-      _.path[ env.name ]( env.pathHasJointBackAndForwardSlash[ item ] );
+      r.push( _.path[ env.name ]( env.pathHasJointBackAndForwardSlash[ item ] ) );
     }
+
+    return r;
   }
 }
 

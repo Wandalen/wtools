@@ -345,19 +345,23 @@ function refineFaster( src )
 
   if( hasColon )
   {
-    if( result[ 2 ] === '\\' || result[ 2 ] === '/' || result.length === 2 )
+    if( result[ 2 ] === '\\' || result[ 2 ] === '/' )
     {
       if( result.length > 3 )
       result = '/' + result[ 0 ] + '/' + result.substring( 3 );
       else
       result = '/' + result[ 0 ]
     }
+    else if( result.length === 2 )
+    {
+      result = '/' + result[ 0 ];
+    }
   }
 
-  if( !hasBackSlash )
-  return result;
-  else
+  if( hasBackSlash )
   return result.replace( /\\/g, '/' );
+  else
+  return result;
 }
 
 //
